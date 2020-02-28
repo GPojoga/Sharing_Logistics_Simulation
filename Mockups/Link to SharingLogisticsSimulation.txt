@@ -1,0 +1,7 @@
+https://xd.adobe.com/view/44d4b783-2608-47ac-4f83-d71b88ab868f-32e5/
+
+Quick Guide
+
+Homepage Working Buttons -> Book/Get a Quotation -> Book/Quotation page
+Book/Quotation Working Buttons -> Way Back/The A unsigned box/ Add Package/ Calculate Rate - press it again to return to the previous state.
+If you don't know how to get back Click on the "Sharing Logistics Simulation" top left, you will be redirected to the home page 
