@@ -9,7 +9,7 @@ The truck manufacture with the greatest market share is DAIMLER.
 About 21% of trucks on the roads in Europe are manufactured by DAIMLER.
 ([Source](https://www.eea.europa.eu/data-and-maps/daviz/hdv-market-share-for-vehicle#tab-chart_1))
 
-![Pie chart: Market-share of Truck manufactures in Europe](images/marketshare-truck-manufacturers-EU.png "Market-share of Truck manufactures in Europe")
+![Pie chart: Market-share of Truck manufactures in Europe](images/marketshare-truck-manufacturers-eu.png "Market-share of Truck manufactures in Europe")
 
 With regards to light duty trucks in the EU there is even more statistics available.
 According to the paper "European vehicle market statistics" the most used model of light duty truck is the Ford Transit.
@@ -32,7 +32,7 @@ The limit is 13.6m for box semi-trailers, and for road trains the limit is 18.75
 Other European countries such as Finland, Iceland, Norway, or Sweden allow for longer trailers and road trains, this is achieved by combining different models together to make longer ones.
 (Source: Market analysis of heavy-duty commercial trailers in Europe)
 
-![Diagram: Vehicle combination in Europe](images/vehicle-combinations-EU.png "")
+![Diagram: Vehicle combination in Europe](images/vehicle-combinations-eu.png "")
 
 The largest producer of semitrailers in Europe is Schmitz Cargobull in 2011 their market share stabilized around 26% of the total market share.
 
@@ -71,3 +71,6 @@ The largest producer of semitrailers in Europe is Schmitz Cargobull in 2011 thei
 - White paper "Market analysis of heavy-duty commercial trailers in Europe"
 - https://www.irmi.com/term/insurance-definitions/gross-combination-weight
 - https://en.wikipedia.org/wiki/Gross_vehicle_weight_rating#cite_note-49CFR571.3-1
+
+- https://ec.europa.eu/transport/sites/transport/files/modes/road/events/doc/2009_06_24/2009_gigaliners_workshop_acea.pdf
+-
