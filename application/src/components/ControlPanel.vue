@@ -11,12 +11,17 @@
         <input type="text" id="location2" placeholder="Location">
       </div>
     </div>
+
+    <VehicleSelector></VehicleSelector>
+
   </div>
 </template>
 
 <script>
+import VehicleSelector from "./VehicleSelector";
 export default {
   name: 'ControlPanel',
+  components: {VehicleSelector},
   data() {
     return{
       controlPanelLeftPos: 0,
