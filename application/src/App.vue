@@ -1,15 +1,19 @@
 <template>
   <div id="app">
-    <ControlPanel />
+    <Map/>
+<!--    <ControlPanel/>-->
   </div>
 </template>
 
 <script>
-import ControlPanel from "@/components/ControlPanel";
+  // import ControlPanel from "@/components/ControlPanel";
+  import Map from "@/components/Map";
+
 export default {
   name: 'App',
   components: {
-    ControlPanel,
+    // ControlPanel,
+    Map,
   }
 }
 </script>
