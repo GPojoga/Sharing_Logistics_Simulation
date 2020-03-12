@@ -1,6 +1,7 @@
 <template>
     <div id="vehicleSelector">
-        <p align="left">Type of vehicles</p>
+        <br>
+        <p id="vehicleSelectorTitle">Type of vehicles</p>
         <div>
             <VehicleSelectorEntry vehicleDetails="Light Duty Van"></VehicleSelectorEntry>
             <VehicleSelectorEntry vehicleDetails="Heavy Duty Truck"></VehicleSelectorEntry>
@@ -19,5 +20,15 @@
 </script>
 
 <style scoped>
+    #vehicleSelector {
+        background-color: white;
+    }
 
+    #vehicleSelectorTitle {
+        text-align: left;
+        color: #007FEB;
+        font-family: "Arial", Arial, sans-serif;
+        font-weight: bold;
+        font-size: 90%;
+    }
 </style>
