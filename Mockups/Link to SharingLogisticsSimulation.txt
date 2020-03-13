@@ -10,3 +10,5 @@ If you don't know how to get back Click on the "Sharing Logistics Simulation" to
 Changes: 
   1. A map is added on the background
   2. New Layer in style of google maps for entering the Input
+
+***LINK UPDATES*** I updated the previous link with the "new" outup UI, it is not very different from the previous one.
