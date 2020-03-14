@@ -1,16 +1,16 @@
 <template>
-    <div class="map">
-        <l-map
-                style="height: 100%; width: 100%;z-index: 0;"
-                :zoom="zoom"
-                :center="center"
-                @update:zoom="zoomUpdated"
-                @update:center="centerUpdated"
-                @update:bounds="boundsUpdated"
-        >
-            <l-tile-layer :url="url"></l-tile-layer>
-        </l-map>
-    </div>
+    <l-map  class="map"
+            :zoom="zoom"
+            :center="center"
+            @update:zoom="zoomUpdated"
+            @update:center="centerUpdated"
+            @update:bounds="boundsUpdated"
+            :minZoom="minZoom"
+            :maxBounds="maxBounds"
+
+    >
+        <l-tile-layer :url="url"></l-tile-layer>
+    </l-map>
 
 </template>
 
@@ -28,7 +28,10 @@
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 zoom: 3,
                 center: [47.413220, -1.219482],
-                bounds: null
+                bounds: null,
+                minZoom: 2,
+                maxBounds: [[-90, Infinity], //South,West
+                           [90, -Infinity]],  //North,East
             };
         },
         methods: {
@@ -46,10 +49,12 @@
 </script>
 
 <style scoped>
+
     .map{
         height: 100%;
         width: 100%;
         position: absolute;
         background: #c3c3ca;
+        z-index: 0;
     }
 </style>
