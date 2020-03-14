@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ControlPanel from "@/components/ControlPanel";
+import ControlPanel from "./components/ControlPanel";
 export default {
   name: 'App',
   components: {
