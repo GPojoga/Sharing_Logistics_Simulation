@@ -30,13 +30,13 @@ export default {
   methods:{
     collapseCP(){
 
-      let controlPanel = document.getElementById('controlPanel');
+        let controlPanel = document.getElementById('controlPanel');
 
-      this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -400 : 0;
-      controlPanel.style.left = this.controlPanelLeftPos.toString(10)+"px";
+        this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -400 : 0;
+        controlPanel.style.left = this.controlPanelLeftPos.toString(10)+"px";
+      }
     }
   }
-}
 </script>
 
 <style scoped>
