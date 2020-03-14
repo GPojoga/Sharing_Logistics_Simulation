@@ -79,7 +79,7 @@
         height: 100%;
         width: 100%;
         position: absolute;
-        background: #e8e8f0;
+        background: #f7f7ff;
         z-index: 0;
     }
 </style>
