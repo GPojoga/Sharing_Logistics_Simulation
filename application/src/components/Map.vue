@@ -1,7 +1,7 @@
 <template>
     <div class="map">
         <l-map
-                style="height: 100%; width: 100%"
+                style="height: 100%; width: 100%;z-index: 0;"
                 :zoom="zoom"
                 :center="center"
                 @update:zoom="zoomUpdated"
@@ -50,5 +50,6 @@
         height: 100%;
         width: 100%;
         position: absolute;
+        background: #c3c3ca;
     }
 </style>

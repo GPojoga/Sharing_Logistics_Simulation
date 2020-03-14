@@ -15,23 +15,24 @@
 </template>
 
 <script>
-export default {
-  name: 'ControlPanel',
-  data() {
-    return{
-      controlPanelLeftPos: 0,
-    }
-  },
-  methods:{
-    collapseCP(){
 
-      let controlPanel = document.getElementById('controlPanel');
+  export default {
+    name: 'ControlPanel',
+    data() {
+      return{
+        controlPanelLeftPos: 0,
+      }
+    },
+    methods:{
+      collapseCP(){
 
-      this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -400 : 0;
-      controlPanel.style.left = this.controlPanelLeftPos.toString(10)+"px";
+        let controlPanel = document.getElementById('controlPanel');
+
+        this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -400 : 0;
+        controlPanel.style.left = this.controlPanelLeftPos.toString(10)+"px";
+      }
     }
   }
-}
 </script>
 
 <style scoped>
