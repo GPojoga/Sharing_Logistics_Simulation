@@ -7,7 +7,7 @@
             @update:bounds="boundsUpdated"
             :minZoom="minZoom"
             :maxBounds="maxBounds"
-
+            :maxBoundsViscosity="maxBoundsViscosity"
     >
         <l-tile-layer :url="url"></l-tile-layer>
     </l-map>
@@ -32,6 +32,9 @@
                 minZoom: 2,
                 maxBounds: [[-90, Infinity], //South,West
                            [90, -Infinity]],  //North,East
+                maxBoundsViscosity: 0.8, //If maxBounds is set, this option will control
+                                         // how solid the bounds are when dragging the map around.
+                                         // the domain is [0.0,1.0]
             };
         },
         methods: {
@@ -54,7 +57,7 @@
         height: 100%;
         width: 100%;
         position: absolute;
-        background: #c3c3ca;
+        background: #e8e8f0;
         z-index: 0;
     }
 </style>
