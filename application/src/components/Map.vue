@@ -4,6 +4,7 @@
                         zoomControl:false
                       }"
             :zoom="zoom"
+            :minZoom="minZoom"
             :center="center"
             :maxBounds="maxBounds"
             :maxBoundsViscosity="maxBoundsViscosity"
@@ -32,6 +33,7 @@
             return {
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 zoom: 5,
+                minZoom:2,
                 center: [47.368106, 14.197493],
                 maxBounds: [[-90, Infinity], //South,West
                            [90, -Infinity]],  //North,East
