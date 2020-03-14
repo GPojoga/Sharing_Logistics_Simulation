@@ -1,10 +1,12 @@
 <template>
-    <div id="vehicleSelector">
-        <p id="vehicleSelectorTitle">Type of vehicles</p>
-        <div>
-            <VehicleSelectorEntry v-for="vehicle in vehicles" :key="vehicle.label" :vehicleDetails="vehicle.label" :ref="vehicle.ref">
-            </VehicleSelectorEntry>
-        </div>
+    <div id="vehicleSelectorBackground">
+
+        <p id="vehicleSelectorTitle">
+            Type of vehicles
+        </p>
+
+        <!-- Have a Entry component for every optional vehicle 'v', listed in the array 'vehicles'. --->
+        <VehicleSelectorEntry v-for="v in vehicles" :key="v.key" :entryTitle="v.label" :ref="v.ref" />
     </div>
 </template>
 
@@ -16,17 +18,20 @@
         components: {VehicleSelectorEntry},
         data: function () {
             return {
-                vehicles: [
+                vehicles: [ // The array vehicles holds all the different types of vehicles.
                     {
                         label: "Light Duty Van",
+                        key: "light-duty",
                         ref: "A"
                     },
                     {
                         label: "Heavy Duty Truck",
+                        key: "heavy-duty",
                         ref: "B"
                     },
                     {
                         label: "Train Truck",
+                        key: "train",
                         ref: "C"
                     }
                 ]
@@ -35,9 +40,9 @@
         methods: {
             /**
              * This method gets the quantities of all the vehicles in this component (selected & unselected).
-             * @returns {[number, number, number]} 3 elements; [#Light_Duty_Vans, #Heavy_Duty_Trucks, #Train_Trucks]
+             * @returns {[number, number, number]} 3 elements; [#light-duty, #heavy-duty, #train]
              */
-            getQuantities: function () {
+            getVehicleQuantities: function () {
                 return [
                     this.$refs.A[0].getQuantity(),
                     this.$refs.B[0].getQuantity(),
@@ -49,16 +54,18 @@
 </script>
 
 <style scoped>
-    #vehicleSelector {
+    /* Style the background of the vehicle selector component */
+    #vehicleSelectorBackground {
         background-color: white;
         margin: 5%;
     }
 
+    /* Style the title of field of vehicle selector */
     #vehicleSelectorTitle {
         text-align: left;
         color: #007FEB;
         font-family: "Arial", Arial, sans-serif;
         font-weight: bold;
-        font-size: 90%;
+        font-size: 100%;
     }
 </style>
