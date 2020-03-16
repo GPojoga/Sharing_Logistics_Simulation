@@ -1,28 +1,30 @@
 <template>
   <div id="app">
-    <ControlPanel />
+    <Map/>
+    <ControlPanel/>
   </div>
 </template>
 
 <script>
   import ControlPanel from "@/components/ControlPanel";
+  import Map from "@/components/Map";
 
   export default {
     name: 'App',
     components: {
       ControlPanel,
+      Map,
     }
   }
 </script>
 
-<style scoped>
-  #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #ff001f;
-    width: 100%;
-    height: 100%;
-  }
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
 </style>
