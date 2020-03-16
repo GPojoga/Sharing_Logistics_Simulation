@@ -3,23 +3,28 @@
     <div id="collapseController">
       <button id="collapseButton" v-on:click="collapseCP()"></button>
     </div>
-    <div class="locations">
-      <div class="location">
-        <input type="text" id="location1" placeholder="Location">
-      </div>
-      <div class="location">
-        <input type="text" id="location2" placeholder="Location">
-      </div>
+    <JourneyInput @journey-submitted="setJourney"></JourneyInput>
+    <p v-if="!journey">No journey details available.</p>
+    <div v-if="journey">
+      <p>{{ journey.from }}</p>
+      <p>{{ journey.to }}</p>
+      <p>{{ journey.date }}</p>
+      <p>{{ journey.twoWay }}</p>
     </div>
   </div>
 </template>
 
 <script>
+import JourneyInput from "./JourneyInput";
 export default {
   name: 'ControlPanel',
+  components: {
+    JourneyInput
+  },
   data() {
     return{
       controlPanelLeftPos: 0,
+      journey: null
     }
   },
   methods:{
@@ -29,6 +34,9 @@ export default {
 
       this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -400 : 0;
       controlPanel.style.left = this.controlPanelLeftPos.toString(10)+"px";
+    },
+    setJourney(journeyDetails) {
+      this.journey = journeyDetails;
     }
   }
 }
@@ -36,13 +44,13 @@ export default {
 
 <style scoped>
   #controlPanel{
-    background: #244e40;
+    background: #ffffff;
     height: 100%;
     width: 400px;
     overflow: visible;
     position: absolute;
     left:0;
-    color: #fffece;
+    color: #2284ff;
     transition: left 0.5s;
   }
 
@@ -64,28 +72,4 @@ export default {
   button:focus{
     outline: none;
   }
-
-  .location > ::placeholder{
-    color:#93cd7c
-  }
-
-  .location{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 5%;
-  }
-
-  .location > input{
-    display: block;
-    height: 100%;
-    width: 90%;
-    position: absolute;
-    background-color: #806c7f;
-    border: solid #939540;
-    color: #87aeb8;
-    font-weight: bold;
-    font-size: large;
-  }
-
 </style>

@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
-    "vue": "^2.6.11"
+    "leaflet": "^1.6.0",
+    "leaflet-geosearch": "^2.7.0",
+    "vue": "^2.6.11",
+    "vue-async-computed": "^3.8.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",

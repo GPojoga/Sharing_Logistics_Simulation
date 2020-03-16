@@ -1,0 +1,24 @@
+
+html, body{
+    height:100%;
+    margin: 0;
+    background-color: #ddc000;
+}
+
+input{
+    margin-top: 5px;
+    padding-left: 10px;
+    height: 30px;
+    width: 95%;
+    background-color: #f1f9ff;
+    border: solid #2699fb;
+    color: #2284ff;
+    font-weight: bold;
+    font-size: medium;
+    border-radius: 5px;
+}
+
+label {
+    font-weight: bold;
+    height: 20px;
+}
