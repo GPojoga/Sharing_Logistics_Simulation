@@ -6,16 +6,7 @@
       </button>
     </div>
     <JourneyInput @journey-submitted="setJourney"></JourneyInput>
-    <p v-if="!journey">No journey details available.</p>
-    <div v-if="journey">
-      <p>{{ journey.from }}</p>
-      <p>{{ journey.to }}</p>
-      <p>{{ journey.date }}</p>
-      <p>{{ journey.twoWay }}</p>
-    </div>
-
     <VehicleSelector></VehicleSelector>
-
   </div>
 </template>
 
@@ -57,14 +48,14 @@ export default {
 <style scoped>
   #controlPanel{
     background: rgb(255, 255, 255);
-    border: solid #7796ff;
+    border: solid #2284ff;
     height: 98%;
     width: 400px;
     overflow: visible;
     position: absolute;
     top: 0.5%;
     left:0;
-    color: #fffece;
+    color: #007FEB;
     transition: left 0.5s;
   }
 
@@ -88,8 +79,8 @@ export default {
 
   #collapseArrow{
     font-size: 300%;
-    color: #7796ff;
-    transition: transform 1s;
+    color: #2284ff;
+    transition: transform 0.5s;
   }
 
   button:focus{
@@ -98,29 +89,6 @@ export default {
 
   button::-moz-focus-inner {
     border: 0;
-  }
-
-  .location > ::placeholder{
-    color:#93cd7c
-  }
-
-  .location{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 5%;
-  }
-
-  .location > input{
-    display: block;
-    height: 100%;
-    width: 90%;
-    position: absolute;
-    background-color: #806c7f;
-    border: solid #939540;
-    color: #87aeb8;
-    font-weight: bold;
-    font-size: large;
   }
 
 
