@@ -7,6 +7,7 @@
     </div>
     <JourneyInput @journey-submitted="setJourney"></JourneyInput>
     <VehicleSelector></VehicleSelector>
+    <ProductInput></ProductInput>
   </div>
 </template>
 
@@ -14,11 +15,13 @@
 
 import VehicleSelector from "./VehicleSelector";
 import JourneyInput from "./JourneyInput";
+import ProductInput from "./ProductInput";
 export default {
   name: 'ControlPanel',
   components: {
     JourneyInput,
-    VehicleSelector
+    VehicleSelector,
+    ProductInput
   },
   data() {
     return {
