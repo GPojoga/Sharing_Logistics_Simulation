@@ -2,17 +2,21 @@
   <div id="app">
     <Map/>
     <ControlPanel/>
+    <ControlPanelOutput/>
   </div>
 </template>
 
 <script>
   import ControlPanel from "@/components/ControlPanel";
   import Map from "@/components/Map";
+  import ControlPanelOutput from "@/components/ControlPanelOutput";
+
 
   export default {
     name: 'App',
     components: {
       ControlPanel,
+      ControlPanelOutput,
       Map,
     }
   }
