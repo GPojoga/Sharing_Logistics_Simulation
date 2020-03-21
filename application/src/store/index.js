@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         maxNrLocations : 2,
-        locations : [],
+        locations : new Array(2).fill(null),
     },
     getters: {},
     mutations: {},
