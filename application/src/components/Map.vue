@@ -13,13 +13,15 @@
     >
         <l-tile-layer :url="url"></l-tile-layer>
         <l-control-zoom position="bottomright"/>
-        <l-marker v-for="(location,index) in locations" :key="index" :lat-lng="location" @click="removeLocation(index)"></l-marker>
+        <l-marker v-for="(location,index) in this.validLocations"
+                  :key="index" :lat-lng="location.pos" @click="removeLocation(location.index)"></l-marker>
     </l-map>
 
 </template>
 
 <script>
     import {LMap, LTileLayer,LControlZoom,LMarker} from 'vue2-leaflet';
+    import Vue from 'vue'
 
     export default {
         name: "Map",
@@ -41,20 +43,30 @@
                                          // how solid the bounds are when dragging the map around.
                                          // the domain is [0.0,1.0]
                 zoomAnimation: true,
-                locations: [],   // The coordinates of all markers/locations
                 timeoutId: null, // Necessary to handle single clicks
+                locations: this.$store.state.locations // shortcut
             };
+        },
+        computed: {
+            /**
+             * the list with locations that are not null, used for markers
+             */
+            validLocations: function() {
+                return this.locations.filter(function(location){
+                    return location != null;
+                });
+            }
         },
         methods: {
             /**
-             * This function adds a new entry to locations when the map is clicked (once)
+             * This function adds a new location if the map is clicked ONCE
              * @param event
              */
             addLocation(event){
                 if(!this.timeoutId) {
                     this.timeoutId = setTimeout(() => {
                         //Single click
-                        this.locations.push(event.latlng);
+                        this.addLocationHelper(event.latlng);
                         this.timeoutId = null;
                     }, 400); //tolerance in ms
                 }else{
@@ -64,11 +76,28 @@
                 }
             },
             /**
+             * this function add the new location if it conforms to the conditions
+             * @param latlng latitude and longitude of the location to be added
+             */
+            addLocationHelper(latlng){
+                let maxNrLocations = this.$store.state.maxNrLocations;
+                for (let i = 0;i < maxNrLocations;i++){
+                    if (this.locations[i] === null){
+                        let location = {
+                            pos : latlng, // latitude and longitude
+                            index: i  // index in the locations array
+                        };
+                        Vue.set(this.locations,i,location);
+                        break;
+                    }
+                }
+            },
+            /**
              * This function removes the location with the given index
              * @param index of the location to be removed
              */
             removeLocation(index){
-                this.locations.splice(index,1);
+                Vue.set(this.locations,index,null);
             }
         }
     }

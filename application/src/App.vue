@@ -14,6 +14,12 @@
     components: {
       ControlPanel,
       Map,
+    },
+    created: function () {
+      let store = this.$store.state;
+      for (let i = 0; i < store.maxNrLocations;i++){
+        store.locations.push(null);
+      }
     }
   }
 </script>
