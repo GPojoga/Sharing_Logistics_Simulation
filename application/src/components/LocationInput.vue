@@ -42,7 +42,7 @@
         name: "LocationInput",
         props: {
             locationInputLabel: String,
-            value: String
+            value: Object
         },
         data() {
             return {
