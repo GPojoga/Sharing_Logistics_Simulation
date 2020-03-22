@@ -1,7 +1,7 @@
 <template>
     <form class="journey">
         <!-- Input from and to -->
-        <LocationInput v-model="from" location-input-label="From"></LocationInput>
+        <LocationInput v-model="from" location-input-label="From" @input="addFromToStore"></LocationInput>
         <LocationInput v-model="to" location-input-label="To"></LocationInput>
 
         <!-- Input departure and possibly return date -->
@@ -46,12 +46,13 @@
              */
             addFromToStore(){
                 if (this.from != "") {
-                    var latlng = [this.from.x, this.from.y];
+                    var latlng = [parseFloat(this.from.y),parseFloat(this.from.x)];
                     let location = {
                         pos: latlng,
                         index: 0
                     }
                     Vue.set(this.$store.state.locations,0,location);
+                    console.log(this.$store.state.locations);
                 }
             }
         }
