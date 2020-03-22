@@ -20,6 +20,7 @@
     import SelectorCheckBox from "./SelectorCheckBox";
     import DateInput from "./DateInput";
     import LocationInput from "./LocationInput";
+    import Vue from 'vue';
 
     export default {
         name: "JourneyInput",
@@ -39,6 +40,19 @@
             },
             setIsTwoWay(checkboxResult) {
                 this.twoWay = checkboxResult;
+            },
+            /**
+             * This function adds the location that has been clicked on in the location input.
+             */
+            addFromToStore(){
+                if (this.from != "") {
+                    var latlng = [this.from.x, this.from.y];
+                    let location = {
+                        pos: latlng,
+                        index: 0
+                    }
+                    Vue.set(this.$store.state.locations,0,location);
+                }
             }
         }
     }
