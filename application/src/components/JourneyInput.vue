@@ -1,8 +1,8 @@
 <template>
     <form class="journey">
         <!-- Input from and to -->
-        <LocationInput v-model="from" location-input-label="From"></LocationInput>
-        <LocationInput v-model="to" location-input-label="To"></LocationInput>
+        <LocationInput v-model="from" @input="addToStore(0)" location-input-label="From"></LocationInput>
+        <LocationInput v-model="to" @input="addToStore(1)" location-input-label="To"></LocationInput>
 
         <!-- Input departure and possibly return date -->
         <DateInput date-input-label="Depart on" :minimum-date="new Date().toISOString().substr(0,10)" v-model="date"></DateInput>
@@ -35,23 +35,33 @@
             }
         },
         methods: {
+            /**
+             * Occurs when the submit button is pressed. TODO NOTE: submit button only exists for testing. It should be deleted
+             * in a later stage in development.
+             */
             onSubmit() {
                 this.$emit('journey-submitted', this.$data);
             },
+            /**
+             * Sets the boolean variable 'twoWay', which stores if there is a return trip or not.
+             */
             setIsTwoWay(checkboxResult) {
                 this.twoWay = checkboxResult;
             },
             /**
-             * This function adds the location that has been clicked on in the location input.
+             * This function adds the location that has been clicked on in the location input to the store in Map.vue.
              */
-            addFromToStore(){
-                if (this.from != "") {
-                    var latlng = [this.from.x, this.from.y];
+            addToStore(locationIndex) {
+                const location = (locationIndex === 0? this.from : this.to);
+                console.log("in addToStore");
+                if (location !== "") {
+                    console.log("hello");
+                    var latlng = [location.x, location.y];
                     let location = {
                         pos: latlng,
-                        index: 0
-                    }
-                    Vue.set(this.$store.state.locations,0,location);
+                        index: locationIndex
+                    };
+                    Vue.set(this.$store.state.locations,locationIndex,location);
                 }
             }
         }
