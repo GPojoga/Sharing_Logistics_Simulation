@@ -53,21 +53,19 @@ The following is a list of used technologies and frameworks:
   - Required for npm. A back-end javascript framework.
 
 For the map, we use:
-- Google Maps API / Leaflet, an open source Javascript mapping library.
-
-- leaflet: npm install leaflet
+- Leaflet, an open source Javascript mapping library.
+  - To install: npm install leaflet
   - Open source alternative to Google Maps API. Javascript mapping library.
-- leaflet GeoSearch: npm install --save leaflet-geosearch
+- leaflet GeoSearch
+  - To install: npm install --save leaflet-geosearch
   - to enable searching based on addresses and names instead of coordinates
   - Though it is called leaflet geosearch, it has no dependencies on Leaflet.
 
-Vue plugin's used:
-- npm install vue-async-computed --save
-
 ## Team organization
-<!-- Team Organization: What teams are there and what are their responsibilities?Are the team responsibilities focused on different components?-->
+<!-- Team Organization: What teams are there and what are their responsibilities? Are the team responsibilities focused on different components?-->
 
 There is one team in our project. Each member of this team has their own Vue component to work on, however.
+
 
 
 ## Change log

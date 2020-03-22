@@ -1,21 +1,19 @@
 <template>
-    <div class="journey">
+    <form class="journey">
         <!-- Input from and to -->
         <LocationInput v-model="from" location-input-label="From"></LocationInput>
         <LocationInput v-model="to" location-input-label="To"></LocationInput>
 
         <!-- Input departure and possibly return date -->
-        <DateInput date-input-label="Depart on" :minimum-date="today" v-model="date"></DateInput>
+        <DateInput date-input-label="Depart on" :minimum-date="new Date().toISOString().substr(0,10)" v-model="date"></DateInput>
         <div class="two-way">
             <SelectorCheckBox label-text="Round trip" checkbox-id="two-way" @boxChecked="setIsTwoWay"></SelectorCheckBox>
         </div>
         <DateInput date-input-label="Return on" :minimum-date="date" v-model="dateReturn" v-if="twoWay"></DateInput>
 
         <!-- TODO Submit for testing purposes -->
-        <button class="submit" v-on:click="onSubmit">
-            Submit
-        </button>
-    </div>
+        <input type="submit" value="Submit" v-on:click="onSubmit">
+    </form>
 </template>
 
 <script>
@@ -28,10 +26,10 @@
         components: {LocationInput, DateInput, SelectorCheckBox},
         data() {
             return {
-                from: null,
-                to: null,
-                date: null,
-                dateReturn: null,
+                from: "",
+                to: "",
+                date: "",
+                dateReturn: "",
                 twoWay: null
             }
         },
@@ -41,11 +39,6 @@
             },
             setIsTwoWay(checkboxResult) {
                 this.twoWay = checkboxResult;
-            }
-        },
-        computed: {
-            today() {
-                return new Date();
             }
         }
     }
@@ -68,7 +61,7 @@
         font-size: 16px !important;
     }
 
-    .submit {
+    input[type="submit"] {
         margin: 15px;
         width: 90%;
     }

@@ -2,7 +2,7 @@
     <div class="location">
         <label>
             {{ locationInputLabel }}
-            <input type="text" :list="suggestions" v-model="enteredText" v-on:input="updatePossibilities">
+            <input required type="text" :list="suggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
         </label>
         <div class="optionList" :id="suggestions" v-if="displayPossibilities && possibilities != null">
             <p class="option" v-for="(p, index) in possibilities" :id="index" :key="index" @click="selectLocation(p)">

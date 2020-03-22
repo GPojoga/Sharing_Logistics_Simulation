@@ -2,11 +2,8 @@
     <div class="date">
         <label>
             {{ dateInputLabel }}
-            <input required type="date" :id="dateInputLabel" :value="value" v-on:input="this.$emit('input', $event.target.value)">
+            <input v-bind:class="{ inputError: error }" required type="date" :id="dateInputLabel" :value="value" v-on:input="sendInput($event.target.value)">
         </label>
-        <p v-if="error">
-            Please enter a valid date.
-        </p>
     </div>
 </template>
 
@@ -15,9 +12,12 @@
         name: "DateInput",
         props: {
             dateInputLabel: String,
-            value: Date,
+            value: {
+                type: String,
+                required: true
+            },
             minimumDate: {
-                type: Date,
+                type: String,
                 required: true
             }
         },
@@ -27,15 +27,15 @@
             }
         },
         methods: {
-            sendInput($event) {
-                const date = $event.target.value;
-                this.error = (date < this.minimumDate);
+            sendInput(date) {
+                if (date < this.minimumDate) {
+                    this.error = true;
+                    date = this.minimumDate;
+                } else {
+                    this.error = false;
+                }
+                console.log(date);
                 this.$emit('input', date);
-            }
-        },
-        computed: {
-            today: function() {
-                return new Date();
             }
         }
     }
@@ -49,6 +49,10 @@
         position: relative;
     }
 
+    .inputError {
+        color: red;
+    }
+
     input{
         margin-top: 5px;
         padding-left: 10px;
@@ -60,6 +64,11 @@
         font-weight: bold;
         font-size: medium;
         border-radius: 5px;
+    }
+
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     label {
