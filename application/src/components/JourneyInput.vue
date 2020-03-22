@@ -1,8 +1,8 @@
 <template>
     <form class="journey">
         <!-- Input from and to -->
-        <LocationInput v-model="from" @input="addToStore(0)" location-input-label="From"></LocationInput>
-        <LocationInput v-model="to" @input="addToStore(1)" location-input-label="To"></LocationInput>
+        <LocationInput v-model="from" location-input-label="From"  @input="addToStore(0)"></LocationInput>
+        <LocationInput v-model="to" location-input-label="To" @input="addToStore(1)"></LocationInput>
 
         <!-- Input departure and possibly return date -->
         <DateInput date-input-label="Depart on" :minimum-date="new Date().toISOString().substr(0,10)" v-model="date"></DateInput>
@@ -52,11 +52,12 @@
              * This function adds the location that has been clicked on in the location input to the store in Map.vue.
              */
             addToStore(locationIndex) {
-                const location = (locationIndex === 0? this.from : this.to);
+                let locationT = (locationIndex === 0 ? this.from : this.to);
                 console.log("in addToStore");
-                if (location !== "") {
+                console.log(locationT);
+                if (locationT !== "") {
                     console.log("hello");
-                    var latlng = [parseFloat(location.y), parseFloat(location.y)];
+                    var latlng = [parseFloat(locationT.y), parseFloat(locationT.x)];
                     let location = {
                         pos: latlng,
                         index: locationIndex
