@@ -52,7 +52,7 @@
              * the list with locations that are not null, used for markers
              */
             validLocations: function() {
-                return this.locations.filter(function(location){
+                return this.$store.state.locations.filter(function(location){
                     return location != null;
                 });
             }
@@ -88,6 +88,7 @@
                             index: i  // index in the locations array
                         };
                         Vue.set(this.locations,i,location);
+                        console.log(this.locations);
                         break;
                     }
                 }

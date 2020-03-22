@@ -56,11 +56,13 @@
                 console.log("in addToStore");
                 if (location !== "") {
                     console.log("hello");
-                    var latlng = [location.x, location.y];
+                    var latlng = [parseFloat(location.y), parseFloat(location.y)];
                     let location = {
                         pos: latlng,
                         index: locationIndex
                     };
+                    Vue.set(this.$store.state.locations,0,location);
+                    console.log(this.$store.state.locations);
                     Vue.set(this.$store.state.locations,locationIndex,location);
                 }
             }
