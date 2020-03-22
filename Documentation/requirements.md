@@ -1,3 +1,4 @@
+
 # Requirements Document
 ### **Sharing Logistics Simulation** -  2020
    Version : 1.0   
@@ -65,8 +66,10 @@ As a user of this applet I want to ...
 | **When**  | **What** 
 |:---------:|----------
 | 17th Feb. | Introduction of project; discussion of projects goals, stages (priorities), different simulations methods, accuracy of the goal, technologies needed.
+| 16th Mar. | Feedback received on the draft UI and code.
 
 ## Changelog
 | **Who**        | **When**  | **Which Section** | **What** 
 |----------------|:---------:|-------------------|----------
 | Antonin Thioux | 23rd Feb. | The document.     | Created the document, added sections: introduction, user wishes, customer meetings, changelog.
+| Bjar Karim 	| 22nd Mar.	| Customer meetings.  | Added the new meeting (email) with the customer. 
