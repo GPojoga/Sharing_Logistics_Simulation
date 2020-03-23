@@ -27,8 +27,8 @@
         components: {LocationInput, DateInput, SelectorCheckBox},
         data() {
             return {
-                from: "",
-                to: "",
+                from: null,
+                to: null,
                 date: "",
                 dateReturn: "",
                 twoWay: null
