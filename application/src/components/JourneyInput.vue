@@ -53,17 +53,12 @@
              */
             addToStore(locationIndex) {
                 let locationT = (locationIndex === 0 ? this.from : this.to);
-                console.log("in addToStore");
-                console.log(locationT);
                 if (locationT !== "") {
-                    console.log("hello");
                     var latlng = [parseFloat(locationT.y), parseFloat(locationT.x)];
                     let location = {
                         pos: latlng,
                         index: locationIndex
                     };
-                    Vue.set(this.$store.state.locations,0,location);
-                    console.log(this.$store.state.locations);
                     Vue.set(this.$store.state.locations,locationIndex,location);
                 }
             }

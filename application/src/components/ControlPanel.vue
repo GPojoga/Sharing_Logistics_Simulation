@@ -5,9 +5,11 @@
         <i class="fas fa-angle-left" id="collapseArrow"></i>
       </button>
     </div>
-    <JourneyInput @journey-submitted="setJourney"></JourneyInput>
-    <VehicleSelector></VehicleSelector>
-    <ProductInput></ProductInput>
+    <div class = "content">
+      <JourneyInput @journey-submitted="setJourney"/>
+      <VehicleSelector/>
+      <ProductInput/>
+    </div>
   </div>
 </template>
 
@@ -60,6 +62,12 @@ export default {
     left:0;
     color: #007FEB;
     transition: left 0.5s;
+  }
+
+  .content{
+    width: 100%;
+    height: 100%;
+    overflow:auto;
   }
 
   #collapseController{
