@@ -1,5 +1,5 @@
 <template>
-    <l-map  class="map"
+    <l-map  class="map" ref="map"
             :options="{
                         zoomControl:false
                       }"
@@ -11,7 +11,7 @@
             :zoomAnimation="zoomAnimation"
             @click="addLocation"
     >
-        <l-tile-layer :url="url"></l-tile-layer>
+        <l-tile-layer :url="url"/>
         <l-control-zoom position="bottomright"/>
         <l-marker v-for="(location,index) in this.validLocations"
                   :key="index" :lat-lng="location.pos" @click="removeLocation(location.index)"></l-marker>
@@ -20,8 +20,10 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer,LControlZoom,LMarker} from 'vue2-leaflet';
+    import {LMap, LTileLayer,LControlZoom,LMarker} from 'vue2-leaflet'
     import Vue from 'vue'
+    import L from 'leaflet'
+    import 'leaflet-routing-machine'
 
     export default {
         name: "Map",
@@ -30,6 +32,9 @@
             LTileLayer,
             LControlZoom,
             LMarker,
+        },
+        mounted: function(){
+            this.initializeRoutingMachine();
         },
         data () {
             return {
@@ -51,6 +56,11 @@
             /**
              * the list with locations that are not null, used for markers
              */
+            routingMachine: function(){
+                return L.Routing.control({
+                    routeWhileDragging: true,
+                });
+            },
             validLocations: function() {
                 return this.$store.state.locations.filter(function(location){
                     return location != null;
@@ -58,6 +68,17 @@
             }
         },
         methods: {
+            initializeRoutingMachine(){
+                this.routingMachine.addTo(this.$refs.map.mapObject);
+                this.routingMachine._container.style.display="None";
+                this.routingMachine.on('routesfound',function(e){
+                    let routes = e.routes;
+                    let summary = routes[0].summary;
+
+                    console.log('Total distance is ' + summary.totalDistance / 1000 +
+                        ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+                })
+            },
             /**
              * This function adds a new location if the map is clicked ONCE
              * @param event
@@ -105,6 +126,7 @@
 </script>
 
 <style scoped>
+
     .map{
         height: 100%;
         width: 100%;
