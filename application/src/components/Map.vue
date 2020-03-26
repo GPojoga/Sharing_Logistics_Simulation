@@ -13,14 +13,12 @@
     >
         <l-tile-layer :url="url"/>
         <l-control-zoom position="bottomright"/>
-        <l-marker v-for="(location,index) in this.validLocations"
-                  :key="index" :lat-lng="location.pos" @click="removeLocation(location.index)"></l-marker>
     </l-map>
 
 </template>
 
 <script>
-    import {LMap, LTileLayer,LControlZoom,LMarker} from 'vue2-leaflet'
+    import {LMap, LTileLayer,LControlZoom} from 'vue2-leaflet'
     import Vue from 'vue'
     import L from 'leaflet'
     import 'leaflet-routing-machine'
@@ -31,10 +29,6 @@
             LMap,
             LTileLayer,
             LControlZoom,
-            LMarker,
-        },
-        mounted: function(){
-            this.initializeRoutingMachine();
         },
         data () {
             return {
@@ -49,36 +43,56 @@
                                          // the domain is [0.0,1.0]
                 zoomAnimation: true,
                 timeoutId: null, // Necessary to handle single clicks
-                locations: this.$store.state.locations // shortcut
+                locations: this.$store.state.locations, // shortcut
+                routingMachine: null,
+                dummy:'I"m a dummy',
             };
         },
         computed: {
             /**
              * the list with locations that are not null, used for markers
              */
-            routingMachine: function(){
-                return L.Routing.control({
-                    routeWhileDragging: true,
-                });
-            },
             validLocations: function() {
                 return this.$store.state.locations.filter(function(location){
                     return location != null;
                 });
             }
         },
-        methods: {
-            initializeRoutingMachine(){
-                this.routingMachine.addTo(this.$refs.map.mapObject);
-                this.routingMachine._container.style.display="None";
-                this.routingMachine.on('routesfound',function(e){
-                    let routes = e.routes;
-                    let summary = routes[0].summary;
+        mounted () {
+            const self = this;
+            let routingMachine = L.Routing.control({
+                routeWhileDragging: true,
+                createMarker: function(i,wp){
+                    console.log(self.dummy);
+                    let marker = L.marker(wp.latLng,{
+                        draggable: true,
+                    });
+                    marker.on('click', function(){
+                        self.removeLocation(i);
+                    });
+                    return marker;
+                }
+            });
+            let locations = this.locations;
+            routingMachine.addTo(this.$refs.map.mapObject);
+            routingMachine._container.style.display="None";
+            routingMachine.on('routesfound',function(e){
+                let routes = e.routes;
+                let summary = routes[0].summary;
 
-                    console.log('Total distance is ' + summary.totalDistance / 1000 +
-                        ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
-                })
-            },
+                console.log('Total distance is ' + summary.totalDistance / 1000 +
+                    ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+            });
+            routingMachine.on('waypointschanged',function(){
+                let waypoints = routingMachine.getWaypoints();
+                for (let i = 0;i < waypoints.length;i++){
+                    Vue.set(locations,i,waypoints[i].latLng);
+                }
+                console.log(locations);
+            });
+            this.routingMachine = routingMachine;
+        },
+        methods: {
             /**
              * This function adds a new location if the map is clicked ONCE
              * @param event
@@ -104,22 +118,17 @@
                 let maxNrLocations = this.$store.state.maxNrLocations;
                 for (let i = 0;i < maxNrLocations;i++){
                     if (this.locations[i] === null){
-                        let location = {
-                            pos : latlng, // latitude and longitude
-                            index: i  // index in the locations array
-                        };
-                        Vue.set(this.locations,i,location);
-                        console.log(this.locations);
+
+                        Vue.set(this.locations,i,latlng);
+                        this.routingMachine.setWaypoints(this.locations);
                         break;
                     }
                 }
             },
-            /**
-             * This function removes the location with the given index
-             * @param index of the location to be removed
-             */
+
             removeLocation(index){
                 Vue.set(this.locations,index,null);
+                this.routingMachine.setWaypoints(this.locations);
             }
         }
     }
