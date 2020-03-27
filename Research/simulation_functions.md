@@ -4,13 +4,13 @@ This document explores the way the simulation should take place. Before this exp
 
 ## Constants
 
-* Average fuel price (Euros per liter)
+- Average fuel price (Euros per liter)
 
-![equation](https://latex.codecogs.com/gif.latex?FP%20%3D%201.450%20%5Cfrac%7B%5Ceuro%7D%7BL%7D)
+  ![equation](https://latex.codecogs.com/gif.latex?FP%20%3D%201.450%20%5Cfrac%7B%5Ceuro%7D%7BL%7D)
 
-* Emissions burnt (Kilograms of Carbon dioxide per liter)
+- Emissions burnt (Kilograms of Carbon dioxide per liter)
 
-![equation](https://latex.codecogs.com/gif.latex?EB%20%3D%202.67%20%5Cfrac%7BKg%20%5Ccdot%20CO_%7B2%7D%7D%7BL%7D)
+  ![equation](https://latex.codecogs.com/gif.latex?EB%20%3D%202.67%20%5Cfrac%7BKg%20%5Ccdot%20CO_%7B2%7D%7D%7BL%7D)
 
 - Fuel consumption of empty truck (Liters per kilometer)
   
@@ -131,12 +131,20 @@ The idea behind these constraits is to simulated a situation where all logistics
 The time complexity of this algorithm is O(n) where n is the total number of trucks needed.
 
 ```python
-# This python code probably doesn't work, I have no idea I didn't test it. The purpose of this code is to give an idea of how the code could look and how it's logic could work.
+# This python code probably doesn't work, I have no idea I didn't test it.
+# The purpose of this code is to give an idea of how the code could look and how it's logic could work.
 
-# (*): There are some duplicated lines, if we can iterate over a list of truck types in JS we decrease the number of lines (I would need to look up how to do this in python).
+# (*): There are some duplicated lines. 
+# if we can iterate over a list of truck types in JS we decrease the number of lines 
+# (I would need to look up how to do this in python).
 
 def send(good, trucks):
-"""                                                                     This function sends trucks loaded with the goods, in a list.            :param good: The good that needs to be transported.                    :param trucks: The list of trucks available.                                                      :return: A list of trucks, where each truck has a certain payload.     """
+    """ 
+    This function sends trucks loaded with the goods, in a list.
+    :param good: The good that needs to be transported.
+    :param trucks: The list of trucks available.
+    :return: A list of trucks, where each truck has a certain payload.
+    """
     sent_trucks = []
     if good.quantity == 0 or isEmpty(trucks):
         return sent_trucks  # Base case no trucks will be sent.
@@ -190,7 +198,12 @@ def send(good, trucks):
     
 
 def tradition(A, B):
-"""                                                                   This function simulates the traditional method of sending packages between two points A & B.                                           :param A: Point A Location object.                                     :param B: Point B Location object.                                     :return: The time, emission, number of trucks used.                              """
+    """
+    This function simulates the traditional method of sending packages between two points A & B.
+    :param A: Point A Location object.
+    :param B: Point B Location object.
+    :return: The time, emission, number of trucks used.
+    """
     dis = distance(A, B)
     times = {A: 0, B: 0}
     emission = 0
@@ -218,8 +231,15 @@ def tradition(A, B):
 The time complexity of this algorithm is O(n) where n is the total number of trucks needed.
 
 ```python
+# This python code also probably doesn't work for the same reasons as the code above.
+# Note: this code used the send function defined above.
+
 def get_average_good(goods):
-"""                                                                   This function finds the average good giving a list of goods.         :param goods: The list of goods to find the average from.              :return: A good representing the average of a list.                    """
+    """
+    This function finds the average good giving a list of goods.
+    :param goods: The list of goods to find the average from.
+    :return: A good representing the average of a list.
+    """
     quantity = 0
     total_weight = 0
     total_volume = 0
@@ -232,7 +252,11 @@ def get_average_good(goods):
     return Good(quantity, total_weight/quantity, total_volume/quantity)
     
 def get_reusable_trucks(sent_trucks):
-"""                                                                    This function finds the reusable trucks, making a journey back.        :param sent_trucks: The list of the trucks sent.                         :return: The count of each type of truck sent.                         """
+    """
+    This function finds the reusable trucks, making a journey back.
+    :param sent_trucks: The list of the trucks sent.
+    :return: The count of each type of truck sent.
+    """
     reusable = [0, 0, 0]
     for truck in sent_trucks:
         if truck.Type == "Light":
@@ -244,7 +268,12 @@ def get_reusable_trucks(sent_trucks):
     return reusable
 
 def sharing_logistics(A, B):
-"""                                                                                                  This function simulates the sharing method of sending packages between two points A & B.                                                                        :param A: Point A Location object.                                                                             :param B: Point B Location object.                                                                              :return: The time, emission, number of trucks used.                                            """
+    """
+    This function simulates the sharing method of sending packages between two points A & B.
+    :param A: Point A Location object.
+    :param B: Point B Location object.
+    :return: The time, emission, number of trucks used.
+    """
     dis = distance(A, B)
     time = 0
     emission = 0
