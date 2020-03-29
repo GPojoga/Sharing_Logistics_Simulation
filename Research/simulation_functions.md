@@ -36,7 +36,7 @@ This document explores the way the simulation should take place. Before this exp
   
   ![equation](https://latex.codecogs.com/gif.latex?P2%20%3D%2032018%20kg)
 
-- Truck 3 Volum (Cubic meters)
+- Truck 3 Volume (Cubic meters)
   
   ![equation](https://latex.codecogs.com/gif.latex?V3%20%3D%20115%20m%5E%7B3%7D)
 
@@ -54,15 +54,15 @@ This document explores the way the simulation should take place. Before this exp
   
   ![equation](https://latex.codecogs.com/gif.latex?D%20km)
 
-* The number of trucks type i at point A, where i is an interger from 1 to 3
+* The number of trucks type i at point A, where i is an integer from 1 to 3
   
   ![equation](https://latex.codecogs.com/gif.latex?T%5E%7BA%7D_%7Bi%7D)
 
-* The number of trucks type i at point B, where i is an interger from 1 to 3
+* The number of trucks type i at point B, where i is an integer from 1 to 3
   
   ![equation](https://latex.codecogs.com/gif.latex?T%5E%7BB%7D_%7Bi%7D)
 
-* The quanity of a good  k at point A, where k is an positive interger
+* The quantity of a good k at point A, where k is an positive integer
   
   ![equation](https://latex.codecogs.com/gif.latex?GQ%5E%7BA%7D_%7Bk%7D)
 
@@ -70,11 +70,11 @@ This document explores the way the simulation should take place. Before this exp
   
   ![equation](https://latex.codecogs.com/gif.latex?GW%5E%7BA%7D_%7Bk%7D%20%5C%20kg)
 
-* The volume of a $k$ at point A, in meters cubed
+* The volume of a k at point A, in meters cubed
   
   ![equation](https://latex.codecogs.com/gif.latex?GV%5E%7BA%7D_%7Bk%7D%5C%20m%5E%7B3%7D)
 
-* The quanity of a good j at point B, where j is an positive interger
+* The quantity of a good j at point B, where j is an positive integer
   
   ![equation](https://latex.codecogs.com/gif.latex?GQ%5E%7BB%7D_%7Bj%7D)
 
@@ -96,13 +96,13 @@ This document explores the way the simulation should take place. Before this exp
 
 ## Constraints
 
-These constraints will for a large part define the algorithms we use. We pobably want different constraints for different algorithms.
+These constraints will for a large part define the algorithms we use. We probably want different constraints for different algorithms.
 
 ### Traditional
 
-The idea behind these constraits is to simulated a situtation where different clients are all trying to get their goods to the opposite point, without cooperation.
+The idea behind these constrains is to simulated a situation where different clients are all trying to get their goods to the opposite point, without cooperation.
 
-* Goods (Clients) are always procceed inorder they are inputted. (No optimizing done)
+* Goods (Clients) are always proceed in order they are inputted. (No optimizing done)
 
 * Trucks always come back empty.
 
@@ -114,7 +114,7 @@ The idea behind these constraits is to simulated a situtation where different cl
 
 ### Sharing logistics
 
-The idea behind these constraits is to simulated a situation where all logistics space is shared with the interests of all client.
+The idea behind these constraints is to simulated a situation where all logistics space is shared with the interests of all client.
 
 * Trucks must always return to their point of origin.
 
@@ -122,7 +122,7 @@ The idea behind these constraits is to simulated a situation where all logistics
 
 * Point A is processed before point B, so left over trucks of point A are used before B sends trucks itself.
 
-* Goods are simplief by an average good that represents are all goods at a point.
+* Goods are simplified by an average good that represents are all goods at a point.
 
 ## Possible Algorithms
 
@@ -313,7 +313,7 @@ def sharing_logistics(A, B):
 
 * Date isn't used, however can be used to calculate the returned date.
 
-* Returned date doesn't do anything, since it is never enfored
+* Returned date doesn't do anything, since it is never enforced
 
 * Point A and Point B both need vehicle fields
 
@@ -321,10 +321,26 @@ def sharing_logistics(A, B):
 
 ## Changes in outputted variables
 
-* Cost is no longer calculated however code can easly be apapted to calculate this. Simply output the total fuel used multiply it by FP (fuel price) and add the time multiplied by the average wage of a truck driver.
+* Cost is no longer calculated however code can easily be adapted to calculate this. Simply output the total fuel used multiply it by FP (fuel price) and add the time multiplied by the average wage of a truck driver.
 
-* Expected deilvery date, is also not caculated however can be easily caculated using the outputted time (assuming the trucks drive 24 hours a day).
+* Expected delivery date, is also not calculated however can be easily calculated using the outputted time (assuming the trucks drive 24 hours a day).
 
 ## List of invalid inputs
 
-* TODO
+* Location id:0 must not be null.
+
+* Location id:1 must not be null.
+
+* Depart on Date must not be empty.
+
+* There must be at least 1 vehicle at each location.
+
+* Each vehicle must be field must contain a natural number xor be unchecked.
+
+* There must be at least 1 good at either location.
+
+* All quantities of goods must be natural numbers (0 is allowed but doesn't make a lot of sense).
+
+* All weights of goods must be positive rational numbers (0 isn't allowed).
+
+* All volumes of goods must be positive rational number (0 isn't allowed).

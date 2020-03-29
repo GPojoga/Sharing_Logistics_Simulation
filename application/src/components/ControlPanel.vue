@@ -45,6 +45,17 @@ export default {
     },
     setJourney(journeyDetails) {
       this.journey = journeyDetails;
+    },
+
+    /**
+     * This function checks whether the current input falls within constraints.
+     */
+    checkInput: function () {
+      let isCorrect = true;
+
+      if (isCorrect){
+        this.$emit("valid input");
+      }
     }
   }
 }
