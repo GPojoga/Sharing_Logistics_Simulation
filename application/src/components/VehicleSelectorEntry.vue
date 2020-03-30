@@ -5,7 +5,7 @@
 
         <!-- If the vehicle entry is selected add the option to change the quantity -->
         <div id="inputFieldBackground" v-if="isSelected">
-            <input id="inputNumberBox" type="number" v-model="lastQuantity" min="0" oninput="this.value = Math.abs(this.value)">
+            <input id="inputNumberBox" type="number" v-model="lastQuantity" min="0" oninput="this.value = Math.abs(this.value)" v-on:input="sendInput">
             <label for="inputNumberBox" />
         </div>
 
@@ -42,6 +42,13 @@
              */
             updateSelectEntry: function (isChecked) {
                 this.isSelected = isChecked;
+                this.sendInput();
+            },
+            /**
+             * This method emits a message when the input is changed.
+             */
+            sendInput() {
+                this.$emit("input");
             }
         },
     }

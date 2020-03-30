@@ -8,17 +8,17 @@
                 <div class="form-labels">
                     <label>
                         Quantity
-                        <input v-model="product.quantity" :name="`cargo[${index}][quantity]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="#">
+                        <input v-model="product.quantity" :name="`cargo[${index}][quantity]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="#" v-on:input = "sentInput">
                     </label>
 
                     <label>
                         Weight
-                        <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="t">
+                        <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="t" v-on:input = "sentInput">
                     </label>
 
                     <label>
                         Volume
-                        <input v-model="product.volume" :name="`cargo[${index}][volume]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="m^3">
+                        <input v-model="product.volume" :name="`cargo[${index}][volume]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="m^3" v-on:input = "sentInput">
                     </label>
 
                     <button @click="removeProduct(index)" type="button" class="removeButton">X</button>
@@ -58,6 +58,10 @@
 
 
         methods: {
+            sentInput(){
+                this.$store.state.A.cargo = this.cargo;
+            },
+
             addProduct() {
                 this.cargo.push({
                     quantity: "",

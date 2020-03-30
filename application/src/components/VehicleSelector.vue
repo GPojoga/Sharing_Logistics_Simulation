@@ -6,7 +6,7 @@
         </p>
 
         <!-- Have a Entry component for every optional vehicle 'v', listed in the array 'vehicles'. --->
-        <VehicleSelectorEntry v-for="v in vehicles" :key="v.key" :entryTitle="v.label" :ref="v.ref" />
+        <VehicleSelectorEntry v-for="v in vehicles" :key="v.key" :entryTitle="v.label" :ref="v.ref" @input="storeVehicles"/>
     </div>
 </template>
 
@@ -48,6 +48,12 @@
                     this.$refs.B[0].getQuantity(),
                     this.$refs.C[0].getQuantity()
                 ];
+            },
+            /**
+             * This function stores the vehicles in the state of the app.
+             */
+            storeVehicles() {
+                this.$store.state.A.vehicles = this.getVehicleQuantities();
             }
         }
     }

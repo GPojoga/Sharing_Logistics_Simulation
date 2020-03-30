@@ -1,11 +1,11 @@
 <template>
     <form class="journey">
         <!-- Input from and to -->
-        <LocationInput v-model="from" location-input-label="From"  @input="addToStore(0)"></LocationInput>
-        <LocationInput v-model="to" location-input-label="To" @input="addToStore(1)"></LocationInput>
+        <LocationInput v-model="from" location-input-label="From"  @input="storeJourney(0)"></LocationInput>
+        <LocationInput v-model="to" location-input-label="To" @input="storeJourney(1)"></LocationInput>
 
         <!-- Input departure and possibly return date -->
-        <DateInput date-input-label="Depart on" :minimum-date="new Date().toISOString().substr(0,10)" v-model="date"></DateInput>
+        <DateInput date-input-label="Depart on" :minimum-date="new Date().toISOString().substr(0,10)" v-model="date" @input="storeDate()"></DateInput>
         <div class="two-way">
             <SelectorCheckBox label-text="Round trip" checkbox-id="two-way" @boxChecked="setIsTwoWay"></SelectorCheckBox>
         </div>
@@ -51,7 +51,7 @@
             /**
              * This function adds the location that has been clicked on in the location input to the store in Map.vue.
              */
-            addToStore(locationIndex) {
+            storeJourney(locationIndex) {
                 let locationT = (locationIndex === 0 ? this.from : this.to);
                 if (locationT !== "") {
                     var latlng = [parseFloat(locationT.y), parseFloat(locationT.x)];
@@ -61,6 +61,12 @@
                     };
                     Vue.set(this.$store.state.locations,locationIndex,location);
                 }
+            },
+            /**
+             * This function adds the date to the store in
+             */
+            storeDate() {
+                this.$store.state.departureDate = this.departureDate;
             }
         }
     }
