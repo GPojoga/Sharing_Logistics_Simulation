@@ -1,11 +1,11 @@
 <template>
-    <div id="checkBoxBackground">
+    <div class="temp">
 
-        <!-- When the input is clicked then the checkSelection() method is called --->
-        <input type="checkbox" :id="checkboxId" @click="checkSelection">
-        <label :for="checkboxId">
+        <div class="tag">
             {{labelText}}
-        </label>
+        </div>
+        <!-- When the input is clicked then the checkSelection() method is called --->
+        <input type="checkbox" :id="checkboxId" @click="checkSelection" class="regular-checkbox"><label :for="checkboxId"></label>
 
     </div>
 </template>
@@ -40,7 +40,7 @@
 
 <style scoped>
     /* Stylize the background of the checkbox and label */
-    #checkBoxBackground {
+    .checkBoxBackground {
         line-height: 25px;
         width: 50%;
         float: left;
@@ -54,18 +54,26 @@
     }
 
     /* Hide the default checkbox */
-    #checkBoxBackground input[type=checkbox] {
-        display: none;
+    .checkBoxBackground input[type=checkbox] {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
     }
 
     /* Change the mouse pointer when it hovers the label */
-    #checkBoxBackground label {
+    .checkBoxBackground label {
         cursor: pointer;
+        width: 20px;
+        display: inline-block;
     }
 
     /* Draw Custom checkbox */
-    #checkBoxBackground label:after {
-        display: inline-block;
+    .checkBoxBackground label:after {
+        /*display: inline-block;*/
+        top: 0;
+        left: 0;
         width: 21px;
         height: 21px;
 
@@ -76,13 +84,65 @@
     }
 
     /* Add a check-mark (✓) when the vehicle selection entry is selected */
-    #checkBoxBackground input:checked ~ label:after {
+    .checkBoxBackground input:checked ~ label:after {
         content: "\2713";
     }
 
     /* When hovering over checkbox background color is light grey */
-    #checkBoxBackground label:hover::after{
+    .checkBoxBackground label:hover::after{
         background: #f2f2f2;
         cursor: pointer;
     }
+
+
+
+
+
+    .temp {
+        text-align: left;
+        width: 50%;
+    }
+
+    label {
+        display: inline;
+    }
+
+    .regular-checkbox {
+        display: none;
+    }
+
+    .regular-checkbox + label {
+        background-color: #fafafa;
+        border: 3px solid #7FC4FD;
+        padding: 9px;
+        border-radius: 3px;
+        display: inline-block;
+        position: relative;
+    }
+
+    .regular-checkbox:checked + label:after {
+        content: '\2714';
+        font-size: 14px;
+        position: absolute;
+        top: 0px;
+        left: 3px;
+        color: #007FEB;
+    }
+
+    .regular-checkbox:hover::after{
+        background: #f2f2f2;
+        cursor: pointer;
+    }
+
+    .tag {
+        width: 135px;
+        position: relative;
+        top: 5px;
+        font-weight: bold;
+        text-align: left;
+        display: block;
+        float: left;
+        margin-right: 10px;
+    }
+
 </style>

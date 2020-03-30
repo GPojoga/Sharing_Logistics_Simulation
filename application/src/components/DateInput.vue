@@ -59,8 +59,8 @@
         height: 30px;
         width: 95%;
         background-color: #f1f9ff;
-        border: solid #007FEB;
-        color: #007FEB;
+        border: solid #2284ff;
+        color: #2284ff;
         font-weight: bold;
         font-size: medium;
         border-radius: 5px;

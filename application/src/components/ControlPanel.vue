@@ -81,7 +81,7 @@ export default {
 
   #collapseButton{
     width: 100%;
-    height:100%;
+    height: 100%;
     border: solid #f6f6f6;
     position: absolute;
     background-color: #f6f6f6;
@@ -102,5 +102,24 @@ export default {
     border: 0;
   }
 
+  /* Scrollbar layout */
+  /* width */
+   ::-webkit-scrollbar {
+     width: 8px;
+   }
 
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f9ff;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #2284ff;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #197cd8;
+  }
 </style>

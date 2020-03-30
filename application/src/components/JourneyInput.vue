@@ -5,26 +5,24 @@
         <LocationInput v-model="to" location-input-label="To" @input="addToStore(1)"></LocationInput>
 
         <!-- Input departure and possibly return date -->
-        <DateInput date-input-label="Depart on" :minimum-date="new Date().toISOString().substr(0,10)" v-model="date"></DateInput>
-        <div class="two-way">
-            <SelectorCheckBox label-text="Round trip" checkbox-id="two-way" @boxChecked="setIsTwoWay"></SelectorCheckBox>
-        </div>
-        <DateInput date-input-label="Return on" :minimum-date="date" v-model="dateReturn" v-if="twoWay"></DateInput>
+<!--        <DateInput date-input-label="Depart on" :minimum-date="new Date().toISOString().substr(0,10)" v-model="date"></DateInput>-->
+<!--        <div class="two-way">-->
+<!--            <SelectorCheckBox label-text="Round trip" checkbox-id="two-way" @boxChecked="setIsTwoWay"></SelectorCheckBox>-->
+<!--        </div>-->
+<!--        <DateInput date-input-label="Return on" :minimum-date="date" v-model="dateReturn" v-if="twoWay"></DateInput>-->
 
         <!-- TODO Submit for testing purposes -->
-        <input type="submit" value="Submit" v-on:click="onSubmit">
+<!--        <input type="submit" value="Submit" v-on:click="onSubmit">-->
     </form>
 </template>
 
 <script>
-    import SelectorCheckBox from "./SelectorCheckBox";
-    import DateInput from "./DateInput";
     import LocationInput from "./LocationInput";
     import Vue from 'vue';
 
     export default {
         name: "JourneyInput",
-        components: {LocationInput, DateInput, SelectorCheckBox},
+        components: {LocationInput},
         data() {
             return {
                 from: null,
@@ -68,8 +66,9 @@
 
 <style scoped>
     .journey {
-        margin: 25px;
+        margin: 0 25px;
         text-align: left;
+        overflow: auto;
     }
 
     .journey > div {

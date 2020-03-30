@@ -4,8 +4,8 @@
             <h1>New Way</h1>
             <div id="newWayPanel" class="panel">
                 <div id="deliveryDate" class="deliveryDate"><h3>Expected delivery date:</h3></div>
-                <div id="vehicleUsed" class="vehicleUsed"><h3>Total numbers of vehicles used:</h3></div>
-                <div id="Co2E" class="Co2E"><h3>Co2 Emissions:</h3></div>
+                <div id="vehicleUsed" class="vehicleUsed"><h3>Total number of vehicles used:</h3></div>
+                <div id="Co2E" class="Co2E"><h3>CO2 emissions:</h3></div>
             </div>
         </div>
         <div id="collapseController">
@@ -52,7 +52,7 @@
         background: rgb(255, 255, 255);
         border: solid #2284ff;
         height: 70%;
-        width: 600px;
+        width: 400px;
         overflow: visible;
         position: absolute;
         top: 0.5%;

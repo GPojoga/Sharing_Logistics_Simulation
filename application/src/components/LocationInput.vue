@@ -94,7 +94,7 @@
         opacity: 1; /* Make not transparent */
 
         /* Set border of the list with suggestions for places */
-        border: solid #007FEB;
+        border: solid #2284ff;
         border-width: 2px;
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -120,8 +120,8 @@
         height: 30px;
         width: 95%;
         background-color: #f1f9ff;
-        border: solid #007FEB;
-        color: #007FEB;
+        border: solid #2284ff;
+        color: #007feb;
         font-weight: bold;
         font-size: medium;
         border-radius: 5px;

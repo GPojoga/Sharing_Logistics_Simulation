@@ -1,11 +1,11 @@
 <template>
     <div id="vehicleSelectorBackground">
 
-        <p id="vehicleSelectorTitle">
-            Type of vehicles
-        </p>
+<!--        <p id="vehicleSelectorTitle">-->
+<!--            Type of vehicles-->
+<!--        </p>-->
 
-        <!-- Have a Entry component for every optional vehicle 'v', listed in the array 'vehicles'. --->
+        <!-- Have an Entry component for every optional vehicle 'v', listed in the array 'vehicles'. --->
         <VehicleSelectorEntry v-for="v in vehicles" :key="v.key" :entryTitle="v.label" :ref="v.ref" />
     </div>
 </template>
@@ -58,6 +58,8 @@
     #vehicleSelectorBackground {
         background-color: white;
         margin: 5%;
+        display: block;
+        text-align: left;
     }
 
     /* Style the title of field of vehicle selector */
