@@ -52,6 +52,7 @@
     .vehicleSelectorEntry {
         width: 100%;
         height: 32px;
+        display: inline-block;
     }
 
     /* Stylize the input field */

@@ -1,5 +1,5 @@
 <template>
-    <div class="temp">
+    <div class="checkboxHolder">
 
         <div class="tag">
             {{labelText}}
@@ -39,68 +39,10 @@
 </script>
 
 <style scoped>
-    /* Stylize the background of the checkbox and label */
-    .checkBoxBackground {
-        line-height: 25px;
-        width: 50%;
-        float: left;
-
-        /* Change the text; font, color, size, ect... */
+    .checkboxHolder {
         text-align: left;
-        color: #007FEB;
-        font-family: "Arial", Arial, sans-serif;
-        font-weight: bold;
-        font-size: 90%;
-    }
-
-    /* Hide the default checkbox */
-    .checkBoxBackground input[type=checkbox] {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-    }
-
-    /* Change the mouse pointer when it hovers the label */
-    .checkBoxBackground label {
-        cursor: pointer;
-        width: 20px;
+        width: 50%;
         display: inline-block;
-    }
-
-    /* Draw Custom checkbox */
-    .checkBoxBackground label:after {
-        /*display: inline-block;*/
-        top: 0;
-        left: 0;
-        width: 21px;
-        height: 21px;
-
-        content: "\00a0";
-        text-align: center;
-        border: 3px solid #7FC4FD;
-        border-radius: 4px;
-    }
-
-    /* Add a check-mark (✓) when the vehicle selection entry is selected */
-    .checkBoxBackground input:checked ~ label:after {
-        content: "\2713";
-    }
-
-    /* When hovering over checkbox background color is light grey */
-    .checkBoxBackground label:hover::after{
-        background: #f2f2f2;
-        cursor: pointer;
-    }
-
-
-
-
-
-    .temp {
-        text-align: left;
-        width: 50%;
     }
 
     label {
