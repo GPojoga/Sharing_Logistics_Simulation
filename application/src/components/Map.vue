@@ -79,6 +79,7 @@
 
                 console.log('Total distance is ' + summary.totalDistance / 1000 +
                     ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+
             });
             routingMachine.on('waypointschanged',function(){
                 self.locations.set(routingMachine.getWaypoints().map(x => x.latLng));
