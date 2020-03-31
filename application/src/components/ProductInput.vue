@@ -1,41 +1,41 @@
 <template>
-    <form>
-        <div class="product-info">
-            <p class="product-title">
-                Type of products
+    <div class="product-info">
+        <p class="product-title">
+            Type of products
+        </p>
+
+        <div>
+            <p id="errorMessage" v-if="!productsValid">
+                Invalid input, make sure that all product's fields are be filled in.
+                As well as: 0kg &lt; Weight &lt; 4700 and: 0 &lt; Volume &lt; 8.925 for all products.
             </p>
-            <div class="form-row" v-for="(product, index) in cargo" :key="index">
-                <div class="form-labels">
-                    <label>
-                        Quantity
-                        <input v-model="product.quantity" :name="`cargo[${index}][quantity]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="#" v-on:input = "sentInput">
-                    </label>
-
-                    <label>
-                        Weight
-                        <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="t" v-on:input = "sentInput">
-                    </label>
-
-                    <label>
-                        Volume
-                        <input v-model="product.volume" :name="`cargo[${index}][volume]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="m^3" v-on:input = "sentInput">
-                    </label>
-
-                    <button @click="removeProduct(index)" type="button" class="removeButton">X</button>
-                </div>
-
-            </div>
-
-            <div class="form-add">
-                <button @click="addProduct" type="button" class="addButton">Add product</button>
-            </div>
-
-            <div class="form-submit">
-                <button @click="productInfo" type="button" class="prodButton">Product Information</button>
-            </div>
-
         </div>
-    </form>
+
+        <div class="form-row" v-for="(product, index) in cargo" :key="index">
+            <div class="form-labels">
+                <label>
+                    Quantity
+                    <input v-model="product.quantity" :name="`cargo[${index}][quantity]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="#" @input="setUpdate">
+                </label>
+
+                <label>
+                    Weight
+                    <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="kg" @input="setUpdate">
+                </label>
+
+                <label>
+                    Volume
+                    <input v-model="product.volume" :name="`cargo[${index}][volume]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="m^3" @input="setUpdate">
+                </label>
+
+                <button @click="removeProduct(index)" type="button" class="removeButton">X</button>
+            </div>
+        </div>
+
+        <div class="form-add">
+            <button @click="addProduct" type="button" class="addButton">Add product</button>
+        </div>
+    </div>
 </template>
 
 
@@ -55,57 +55,50 @@
                 }
             ]
         }),
-
-
+        mounted() {
+            this.$store.state.A.cargo = this.cargo;
+        },
+        props : {
+            productsValid : Boolean,
+        },
         methods: {
-            sentInput(){
-                this.$store.state.A.cargo = this.cargo;
-            },
-
             addProduct() {
                 this.cargo.push({
                     quantity: "",
                     weight: "",
                     volume: ""
-                })
+                });
             },
-
             removeProduct(index) {
                 this.cargo.splice(index, 1);
+                this.setUpdate();
             },
-
-            productInfo (){
-                const data = {
-                    cargo: this.cargo
-                }
-                alert(JSON.stringify(data, null, 2))
-            },
-
             getQuantity(){
                 // eslint-disable-next-line no-unused-vars
                 let sum = 0;
                 for (let step = 0; step < this.cargo.length; step++) {
-                    sum += Number(this.cargo[step].quantity)
+                    sum += Number(this.cargo[step].quantity);
                 }
                 return sum;
             },
-
             getWeight(){
                 // eslint-disable-next-line no-unused-vars
                 let sum = 0;
                 for (let step = 0; step < this.cargo.length; step++) {
-                    sum += Number(this.cargo[step].weight)
+                    sum += Number(this.cargo[step].weight);
                 }
                 return sum;
             },
-
             getVolume(){
                 // eslint-disable-next-line no-unused-vars
                 let sum = 0;
                 for (let step = 0; step < this.cargo.length; step++) {
-                    sum += Number(this.cargo[step].volume)
+                    sum += Number(this.cargo[step].volume);
                 }
                 return sum;
+            },
+            setUpdate(){
+                this.$emit("productChange");
             }
 
         }
@@ -208,8 +201,6 @@
         cursor: pointer;
     }
 
-
-
     input {
         background: #F1F9FF;
         width: 50px;
@@ -237,9 +228,10 @@
         margin-right: 5px;
     }
 
-
-    .submit {
-        margin: 15px;
-        width: 90%;
+    /* Style the text in the error message */
+    #errorMessage {
+        text-align: left;
+        color: #b20207;
+        font-size: 60%;
     }
 </style>

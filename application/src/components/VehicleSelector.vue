@@ -4,6 +4,11 @@
         <p id="vehicleSelectorTitle">
             Type of vehicles
         </p>
+        <div >
+            <p id="errorMessage" v-if="!totalValid">
+                Must contain more than 0 total vehicles!
+            </p>
+        </div>
 
         <!-- Have a Entry component for every optional vehicle 'v', listed in the array 'vehicles'. --->
         <VehicleSelectorEntry v-for="v in vehicles" :key="v.key" :entryTitle="v.label" :ref="v.ref" @input="storeVehicles"/>
@@ -16,6 +21,10 @@
     export default {
         name: "VehicleSelector",
         components: {VehicleSelectorEntry},
+        props: {
+            totalValid: Boolean,
+            fieldValid: Array,
+        },
         data: function () {
             return {
                 vehicles: [ // The array vehicles holds all the different types of vehicles.
@@ -34,7 +43,7 @@
                         key: "train",
                         ref: "C"
                     }
-                ]
+                ],
             }
         },
         methods: {
@@ -54,6 +63,7 @@
              */
             storeVehicles() {
                 this.$store.state.A.vehicles = this.getVehicleQuantities();
+                this.$emit("vehicleChange");
             }
         }
     }
@@ -73,5 +83,12 @@
         font-family: "Arial", Arial, sans-serif;
         font-weight: bold;
         font-size: 100%;
+    }
+
+    /* Style the text in the error message */
+    #errorMessage {
+        text-align: left;
+        color: #b20207;
+        font-size: 60%;
     }
 </style>

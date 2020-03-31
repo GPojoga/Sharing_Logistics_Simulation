@@ -1,19 +1,28 @@
 <template>
-    <form class="journey">
+    <div class="journey">
         <!-- Input from and to -->
+        <div>
+            <p class="errorMessage" v-if="!locationsValid">
+                Fields FROM and TO mustn't be empty!
+            </p>
+        </div>
         <LocationInput v-model="from" location-input-label="From"  @input="storeJourney(0)"></LocationInput>
         <LocationInput v-model="to" location-input-label="To" @input="storeJourney(1)"></LocationInput>
 
+
         <!-- Input departure and possibly return date -->
+        <div>
+            <p class="errorMessage" v-if="!dateValid">
+                Must give a departure date!
+            </p>
+        </div>
         <DateInput date-input-label="Depart on" :minimum-date="new Date().toISOString().substr(0,10)" v-model="date" @input="storeDate()"></DateInput>
         <div class="two-way">
             <SelectorCheckBox label-text="Round trip" checkbox-id="two-way" @boxChecked="setIsTwoWay"></SelectorCheckBox>
         </div>
         <DateInput date-input-label="Return on" :minimum-date="date" v-model="dateReturn" v-if="twoWay"></DateInput>
 
-        <!-- TODO Submit for testing purposes -->
-        <input type="submit" value="Submit" v-on:click="onSubmit">
-    </form>
+    </div>
 </template>
 
 <script>
@@ -25,6 +34,10 @@
     export default {
         name: "JourneyInput",
         components: {LocationInput, DateInput, SelectorCheckBox},
+        props: {
+            locationsValid : Boolean,
+            dateValid : Boolean,
+        },
         data() {
             return {
                 from: null,
@@ -35,13 +48,6 @@
             }
         },
         methods: {
-            /**
-             * Occurs when the submit button is pressed. TODO NOTE: submit button only exists for testing. It should be deleted
-             * in a later stage in development.
-             */
-            onSubmit() {
-                this.$emit('journey-submitted', this.$data);
-            },
             /**
              * Sets the boolean variable 'twoWay', which stores if there is a return trip or not.
              */
@@ -61,12 +67,14 @@
                     };
                     Vue.set(this.$store.state.locations,locationIndex,location);
                 }
+                this.$emit("journeyChange");
             },
             /**
              * This function adds the date to the store in
              */
             storeDate() {
                 this.$store.state.departureDate = this.departureDate;
+                this.$emit("dateChange");
             }
         }
     }
@@ -76,6 +84,7 @@
     .journey {
         margin: 25px;
         text-align: left;
+        height: 300px;
     }
 
     .journey > div {
@@ -89,8 +98,10 @@
         font-size: 16px !important;
     }
 
-    input[type="submit"] {
-        margin: 15px;
-        width: 90%;
+    /* Style the text in the error message */
+    .errorMessage {
+        text-align: left;
+        color: #b20207;
+        font-size: 60%;
     }
 </style>

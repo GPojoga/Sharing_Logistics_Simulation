@@ -6,9 +6,9 @@
       </button>
     </div>
     <div class = "content">
-      <JourneyInput @journey-submitted="setJourney"/>
-      <VehicleSelector/>
-      <ProductInput/>
+      <JourneyInput :date-valid="validDate" :locations-valid="validLocations" @dateChange="setValidDate" @journeyChange="setValidLocations"/>
+      <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>
+      <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
     </div>
   </div>
 </template>
@@ -28,7 +28,12 @@ export default {
   data() {
     return {
       controlPanelLeftPos: 0,
-      journey: null
+
+      validLocations: true,
+      validDate : true,
+      validVehicles: true,
+      validVehiclesFields: [true, true, true],
+      validProducts : true
     }
   },
   methods: {
@@ -43,19 +48,94 @@ export default {
       collapseArrow.style.transform = this.controlPanelLeftPos === 0 ?
               "rotate(0)" : "rotate(180deg)";
     },
-    setJourney(journeyDetails) {
-      this.journey = journeyDetails;
-    },
-
     /**
-     * This function checks whether the current input falls within constraints.
+     * This function checks if the journey input is correct
+     * @returns {boolean} true if input is within constraints false otherwise.
      */
-    checkInput: function () {
+    checkJourneyInput() {
+      let isCorrect = (this.$store.state.locations[0] !== null) && (this.$store.state.locations[1] !== null);
+      this.validLocations = isCorrect;
+      return isCorrect;
+    },
+    setValidLocations() {
+      this.validLocations = true;
+    },
+    /**
+     * This function checks if the input date is correct.
+     * @returns {boolean} true if input is within constraints false otherwise.
+     */
+    checkDateInput() {
       let isCorrect = true;
-
-      if (isCorrect){
-        this.$emit("valid input");
+      if (this.$store.state.departureDate === ""){
+        isCorrect = false;
+        this.validDate = false;
       }
+      return isCorrect;
+    },
+    setValidDate() {
+      this.validDate = true;
+    },
+    /**
+     * This function checks if the input vehicle is correct.
+     * @returns {boolean} true if input is within constraints false otherwise.
+     */
+    checkVehicleInput() {
+      let isCorrect = true;
+      let vehicles = this.$store.state.A.vehicles;
+      let sum = 0;
+      for (let i = 0; i < vehicles.length; i++) {
+        sum += vehicles[i];
+        if (vehicles[i] < 0){
+          isCorrect = false;
+          this.validVehiclesFields[i] = false;
+        }
+      }
+      if (sum === 0){
+        isCorrect = false;
+        this.validVehicles = false;
+      }
+      return isCorrect;
+    },
+    setValidVehicles() {
+      this.validVehicles = true;
+      this.validVehiclesFields[0] = true;
+      this.validVehiclesFields[1] = true;
+      this.validVehiclesFields[2] = true;
+    },
+    /**
+     * This function checks if the input products is correct.
+     * @returns {boolean} true if input is within constraints false otherwise.
+     */
+    checkProductsInput() {
+      let isCorrect = true;
+      let maxWeight = this.$store.state.TruckTypes[0].maxPayload;
+      let maxVolume = this.$store.state.TruckTypes[0].volume;
+      let products = this.$store.state.A.cargo;
+      for (let i = 0; i < products.length; i++){
+        if (products[i].quantity === "" || products[i].quantity < 0) {
+          isCorrect = false;
+          this.validProducts = false;
+        }
+        if (products[i].weight === "" || products[i].weight < 1 || products[i].weight > maxWeight) {
+          isCorrect = false;
+          this.validProducts = false;
+        }
+        if (products[i].volume === "" || products[i].volume < 1 || products[i].volume > maxVolume) {
+          isCorrect = false;
+          this.validProducts = false;
+        }
+      }
+      return isCorrect;
+    },
+    setValidProducts() {
+      this.validProducts = true;
+    },
+    checkInputs() {
+      let isCorrect = true;
+      isCorrect = this.checkJourneyInput() && isCorrect;
+      isCorrect = this.checkDateInput() && isCorrect;
+      isCorrect  = this.checkProductsInput() && isCorrect;
+      return this.checkVehicleInput() && isCorrect;
     }
   }
 }

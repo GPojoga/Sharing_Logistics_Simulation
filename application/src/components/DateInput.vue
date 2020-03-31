@@ -2,7 +2,7 @@
     <div class="date">
         <label>
             {{ dateInputLabel }}
-            <input v-bind:class="{ inputError: error }" required type="date" :id="dateInputLabel" :value="value" v-on:input="sendInput($event.target.value)">
+            <input type="date" :id="dateInputLabel" :value="value" v-on:input="sendInput($event.target.value)">
         </label>
     </div>
 </template>
@@ -21,20 +21,8 @@
                 required: true
             }
         },
-        data() {
-            return {
-                error: false
-            }
-        },
         methods: {
             sendInput(date) {
-                if (date < this.minimumDate) {
-                    this.error = true;
-                    date = this.minimumDate;
-                } else {
-                    this.error = false;
-                }
-                console.log(date);
                 this.$emit('input', date);
             }
         }
@@ -43,14 +31,9 @@
 
 <style scoped>
     .date {
-        height: 60px;
         width: 45%;
         float: left;
         position: relative;
-    }
-
-    .inputError {
-        color: red;
     }
 
     input{
