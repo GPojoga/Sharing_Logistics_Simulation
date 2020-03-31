@@ -19,7 +19,6 @@
 
 <script>
     import {LMap, LTileLayer,LControlZoom} from 'vue2-leaflet'
-    import Vue from 'vue'
     import L from 'leaflet'
     import 'leaflet-routing-machine'
 
@@ -45,25 +44,23 @@
                 timeoutId: null, // Necessary to handle single clicks
                 locations: this.$store.state.locations, // shortcut
                 routingMachine: null,
-                dummy:'I"m a dummy',
             };
         },
-        computed: {
-            /**
-             * the list with locations that are not null, used for markers
-             */
-            validLocations: function() {
-                return this.$store.state.locations.filter(function(location){
-                    return location != null;
-                });
-            }
+        watch:{
+           locations:function(){
+               if (this.locations.event === 'locationListUpdate'){
+                   this.routingMachine.setWaypoints(this.locations.get());
+               }
+           }
         },
         mounted () {
             const self = this;
             let routingMachine = L.Routing.control({
                 routeWhileDragging: true,
+                fitSelectedRoutes: false,
+                waypointMode: 'connect',
+                addWaypoints: false,
                 createMarker: function(i,wp){
-                    console.log(self.dummy);
                     let marker = L.marker(wp.latLng,{
                         draggable: true,
                     });
@@ -73,7 +70,7 @@
                     return marker;
                 }
             });
-            let locations = this.locations;
+
             routingMachine.addTo(this.$refs.map.mapObject);
             routingMachine._container.style.display="None";
             routingMachine.on('routesfound',function(e){
@@ -84,11 +81,7 @@
                     ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
             });
             routingMachine.on('waypointschanged',function(){
-                let waypoints = routingMachine.getWaypoints();
-                for (let i = 0;i < waypoints.length;i++){
-                    Vue.set(locations,i,waypoints[i].latLng);
-                }
-                console.log(locations);
+                self.locations.set(routingMachine.getWaypoints().map(x => x.latLng));
             });
             this.routingMachine = routingMachine;
         },
@@ -116,19 +109,17 @@
              */
             addLocationHelper(latlng){
                 let maxNrLocations = this.$store.state.maxNrLocations;
+                let locations = this.locations.get();
                 for (let i = 0;i < maxNrLocations;i++){
-                    if (this.locations[i] === null){
-
-                        Vue.set(this.locations,i,latlng);
-                        this.routingMachine.setWaypoints(this.locations);
+                    if (locations[i] === null){
+                        this.$store.state.locations.set(latlng,i);
                         break;
                     }
                 }
             },
 
             removeLocation(index){
-                Vue.set(this.locations,index,null);
-                this.routingMachine.setWaypoints(this.locations);
+                this.locations.set(null,index);
             }
         }
     }
