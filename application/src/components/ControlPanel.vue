@@ -9,6 +9,7 @@
       <JourneyInput @journey-submitted="setJourney"/>
       <VehicleSelector/>
       <ProductInput/>
+      <router-link to="/output">OutputPage</router-link>
     </div>
   </div>
 </template>
