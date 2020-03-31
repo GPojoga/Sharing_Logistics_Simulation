@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
-    "esri-leaflet-geocoder": "^2.3.2",
     "leaflet": "^1.6.0",
     "leaflet-geosearch": "^2.7.0",
     "leaflet-routing-machine": "^3.2.12",
