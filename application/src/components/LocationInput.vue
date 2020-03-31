@@ -2,7 +2,7 @@
     <div class="location">
         <label>
             {{ locationInputLabel }}
-            <input required type="text" :list="suggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
+            <input type="text" :list="suggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
         </label>
         <div class="optionList" :id="suggestions" v-if="displayPossibilities && possibilities != null">
             <p class="option" v-for="(p, index) in possibilities" :id="index" :key="index" @click="selectLocation(p)">
@@ -65,12 +65,15 @@
                 } else {
                     this.displayPossibilities = false;
                     this.possibilities = null;
+                    this.selectLocation(null);
                 }
             },
             selectLocation(p) {
                 this.displayPossibilities = false;
                 this.selected = p;
-                this.enteredText = p.label;
+                if (p !== null){
+                    this.enteredText = p.label;
+                }
                 this.$emit('input', this.selected);
             }
         },

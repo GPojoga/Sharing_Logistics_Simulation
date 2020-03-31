@@ -18,7 +18,8 @@
 
 <script>
     import LocationInput from "./LocationInput";
-    import Vue from 'vue';
+    import L from 'leaflet';
+
 
     export default {
         name: "JourneyInput",
@@ -29,7 +30,13 @@
                 to: null,
                 date: "",
                 dateReturn: "",
-                twoWay: null
+                twoWay: null,
+                locations: this.$store.state.locations,
+            }
+        },
+        watch:{
+            locations : function(){
+                // reverse geocoding
             }
         },
         methods: {
@@ -50,14 +57,13 @@
              * This function adds the location that has been clicked on in the location input to the store in Map.vue.
              */
             addToStore(locationIndex) {
+                let state = this.$store.state;
                 let locationT = (locationIndex === 0 ? this.from : this.to);
-                if (locationT !== "") {
-                    var latlng = [parseFloat(locationT.y), parseFloat(locationT.x)];
-                    let location = {
-                        pos: latlng,
-                        index: locationIndex
-                    };
-                    Vue.set(this.$store.state.locations,locationIndex,location);
+                if (locationT === null){
+                    state.locations.set(null,locationIndex);
+                }else{
+                    let latlng = L.latLng(parseFloat(locationT.y), parseFloat(locationT.x));
+                    state.locations.set(latlng,locationIndex);
                 }
             }
         }
