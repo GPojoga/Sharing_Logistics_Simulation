@@ -30,10 +30,6 @@
                 <button @click="addProduct" type="button" class="addButton">Add product</button>
             </div>
 
-            <div class="form-submit">
-                <button @click="productInfo" type="button" class="prodButton">Product Information</button>
-            </div>
-
         </div>
     </form>
 </template>
@@ -77,36 +73,9 @@
             productInfo (){
                 const data = {
                     cargo: this.cargo
-                }
+                };
                 alert(JSON.stringify(data, null, 2))
             },
-
-            getQuantity(){
-                // eslint-disable-next-line no-unused-vars
-                let sum = 0;
-                for (let step = 0; step < this.cargo.length; step++) {
-                    sum += Number(this.cargo[step].quantity)
-                }
-                return sum;
-            },
-
-            getWeight(){
-                // eslint-disable-next-line no-unused-vars
-                let sum = 0;
-                for (let step = 0; step < this.cargo.length; step++) {
-                    sum += Number(this.cargo[step].weight)
-                }
-                return sum;
-            },
-
-            getVolume(){
-                // eslint-disable-next-line no-unused-vars
-                let sum = 0;
-                for (let step = 0; step < this.cargo.length; step++) {
-                    sum += Number(this.cargo[step].volume)
-                }
-                return sum;
-            }
 
         }
 

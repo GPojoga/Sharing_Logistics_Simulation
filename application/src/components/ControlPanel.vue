@@ -9,6 +9,7 @@
       <JourneyInput @journey-submitted="setJourney"/>
       <VehicleSelector/>
       <ProductInput/>
+      <CalculateRate/>
     </div>
   </div>
 </template>
@@ -18,9 +19,12 @@
 import VehicleSelector from "./VehicleSelector";
 import JourneyInput from "./JourneyInput";
 import ProductInput from "./ProductInput";
+import CalculateRate from "./CalculateRate";
+
 export default {
   name: 'ControlPanel',
   components: {
+    CalculateRate,
     JourneyInput,
     VehicleSelector,
     ProductInput
