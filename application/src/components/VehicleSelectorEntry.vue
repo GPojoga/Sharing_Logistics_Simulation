@@ -1,5 +1,5 @@
 <template>
-    <div id="vehicleSelectorEntryBackground">
+    <div class="vehicleSelectorEntry">
 
         <SelectorCheckBox :checkbox-id="checkboxID" :label-text="entryTitle" @boxChecked="updateSelectEntry" />
 
@@ -56,16 +56,17 @@
 
 <style scoped>
     /* Stylize the background field */
-    #vehicleSelectorEntryBackground {
+    .vehicleSelectorEntry {
         width: 100%;
-        height: 30px;
+        height: 32px;
+        display: inline-block;
     }
 
     /* Stylize the input field */
     #inputFieldBackground {
-        line-height: 25px;
+        line-height: 27px;
         width: 50%;
-        float: left;
+        float: right;
         text-align: left;
     }
 

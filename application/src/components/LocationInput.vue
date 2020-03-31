@@ -2,7 +2,7 @@
     <div class="location">
         <label>
             {{ locationInputLabel }}
-            <input required type="text" :list="suggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
+            <input type="text" :list="suggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
         </label>
         <div class="optionList" :id="suggestions" v-if="displayPossibilities && possibilities != null">
             <p class="option" v-for="(p, index) in possibilities" :id="index" :key="index" @click="selectLocation(p)">
@@ -65,12 +65,15 @@
                 } else {
                     this.displayPossibilities = false;
                     this.possibilities = null;
+                    this.selectLocation(null);
                 }
             },
             selectLocation(p) {
                 this.displayPossibilities = false;
                 this.selected = p;
-                this.enteredText = p.label;
+                if (p !== null){
+                    this.enteredText = p.label;
+                }
                 this.$emit('input', this.selected);
             }
         },
@@ -94,7 +97,7 @@
         opacity: 1; /* Make not transparent */
 
         /* Set border of the list with suggestions for places */
-        border: solid #007FEB;
+        border: solid #2284ff;
         border-width: 2px;
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -120,8 +123,8 @@
         height: 30px;
         width: 95%;
         background-color: #f1f9ff;
-        border: solid #007FEB;
-        color: #007FEB;
+        border: solid #2284ff;
+        color: #007feb;
         font-weight: bold;
         font-size: medium;
         border-radius: 5px;

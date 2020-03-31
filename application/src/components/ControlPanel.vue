@@ -10,6 +10,8 @@
       <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>
       <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
       <CalculateRate/>
+
+      <router-link to="/output">OutputPage</router-link>
     </div>
   </div>
 </template>
@@ -57,7 +59,7 @@ export default {
      * @returns {boolean} true if input is within constraints false otherwise.
      */
     checkJourneyInput() {
-      let isCorrect = (this.$store.state.locations[0] !== null) && (this.$store.state.locations[1] !== null);
+      let isCorrect = (this.$store.state.locations.list[0] !== null) && (this.$store.state.locations.list[1] !== null);
       this.validLocations = isCorrect;
       return isCorrect;
     },
@@ -176,7 +178,7 @@ export default {
 
   #collapseButton{
     width: 100%;
-    height:100%;
+    height: 100%;
     border: solid #f6f6f6;
     position: absolute;
     background-color: #f6f6f6;
@@ -197,5 +199,24 @@ export default {
     border: 0;
   }
 
+  /* Scrollbar layout */
+  /* width */
+   ::-webkit-scrollbar {
+     width: 8px;
+   }
 
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f9ff;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #2284ff;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #197cd8;
+  }
 </style>

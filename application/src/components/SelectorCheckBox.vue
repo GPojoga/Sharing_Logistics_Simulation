@@ -1,11 +1,11 @@
 <template>
-    <div id="checkBoxBackground">
+    <div class="checkboxHolder">
 
-        <!-- When the input is clicked then the checkSelection() method is called --->
-        <input type="checkbox" :id="checkboxId" @click="checkSelection">
-        <label :for="checkboxId">
+        <div class="tag">
             {{labelText}}
-        </label>
+        </div>
+        <!-- When the input is clicked then the checkSelection() method is called --->
+        <input type="checkbox" :id="checkboxId" @click="checkSelection" class="regular-checkbox"><label :for="checkboxId"></label>
 
     </div>
 </template>
@@ -39,50 +39,52 @@
 </script>
 
 <style scoped>
-    /* Stylize the background of the checkbox and label */
-    #checkBoxBackground {
-        line-height: 25px;
-        width: 50%;
-        float: left;
-
-        /* Change the text; font, color, size, ect... */
+    .checkboxHolder {
         text-align: left;
-        color: #007FEB;
-        font-family: "Arial", Arial, sans-serif;
-        font-weight: bold;
-        font-size: 90%;
+        width: 50%;
+        display: inline-block;
     }
 
-    /* Hide the default checkbox */
-    #checkBoxBackground input[type=checkbox] {
+    label {
+        display: inline;
+    }
+
+    .regular-checkbox {
         display: none;
     }
 
-    /* Change the mouse pointer when it hovers the label */
-    #checkBoxBackground label {
-        cursor: pointer;
-    }
-
-    /* Draw Custom checkbox */
-    #checkBoxBackground label:after {
-        display: inline-block;
-        width: 21px;
-        height: 21px;
-
-        content: "\00a0";
-        text-align: center;
+    .regular-checkbox + label {
+        background-color: #fafafa;
         border: 3px solid #7FC4FD;
-        border-radius: 4px;
+        padding: 9px;
+        border-radius: 3px;
+        display: inline-block;
+        position: relative;
     }
 
-    /* Add a check-mark (✓) when the vehicle selection entry is selected */
-    #checkBoxBackground input:checked ~ label:after {
-        content: "\2713";
+    .regular-checkbox:checked + label:after {
+        content: '\2714';
+        font-size: 14px;
+        position: absolute;
+        top: 0px;
+        left: 3px;
+        color: #007FEB;
     }
 
-    /* When hovering over checkbox background color is light grey */
-    #checkBoxBackground label:hover::after{
+    .regular-checkbox:hover::after{
         background: #f2f2f2;
         cursor: pointer;
     }
+
+    .tag {
+        width: 135px;
+        position: relative;
+        top: 5px;
+        font-weight: bold;
+        text-align: left;
+        display: block;
+        float: left;
+        margin-right: 10px;
+    }
+
 </style>
