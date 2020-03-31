@@ -38,9 +38,6 @@
     </div>
 </template>
 
-
-
-
 <script>
 
     export default {
@@ -73,38 +70,15 @@
                 this.cargo.splice(index, 1);
                 this.setUpdate();
             },
-            getQuantity(){
-                // eslint-disable-next-line no-unused-vars
-                let sum = 0;
-                for (let step = 0; step < this.cargo.length; step++) {
-                    sum += Number(this.cargo[step].quantity);
-                }
-                return sum;
-            },
-            getWeight(){
-                // eslint-disable-next-line no-unused-vars
-                let sum = 0;
-                for (let step = 0; step < this.cargo.length; step++) {
-                    sum += Number(this.cargo[step].weight);
-                }
-                return sum;
-            },
-            getVolume(){
-                // eslint-disable-next-line no-unused-vars
-                let sum = 0;
-                for (let step = 0; step < this.cargo.length; step++) {
-                    sum += Number(this.cargo[step].volume);
-                }
-                return sum;
-            },
             setUpdate(){
                 this.$emit("productChange");
             }
 
+
         }
 
 
-    };
+    }
 
 </script>
 

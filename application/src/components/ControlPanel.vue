@@ -9,6 +9,7 @@
       <JourneyInput :date-valid="validDate" :locations-valid="validLocations" @dateChange="setValidDate" @journeyChange="setValidLocations"/>
       <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>
       <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
+      <CalculateRate/>
     </div>
   </div>
 </template>
@@ -18,9 +19,12 @@
 import VehicleSelector from "./VehicleSelector";
 import JourneyInput from "./JourneyInput";
 import ProductInput from "./ProductInput";
+import CalculateRate from "./CalculateRate";
+
 export default {
   name: 'ControlPanel',
   components: {
+    CalculateRate,
     JourneyInput,
     VehicleSelector,
     ProductInput
