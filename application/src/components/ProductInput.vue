@@ -16,7 +16,7 @@
 
                 <label>
                     Weight
-                    <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="t" @input="setUpdate">
+                    <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="kg" @input="setUpdate">
                 </label>
 
                 <label>

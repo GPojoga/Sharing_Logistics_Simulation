@@ -9,9 +9,7 @@
       <JourneyInput :date-valid="validDate" :locations-valid="validLocations" @dateChange="setValidDate" @journeyChange="setValidLocations"/>
       <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>
       <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
-      <CalculateRate/>
-
-      <router-link to="/output">OutputPage</router-link>
+      <CalculateRate @calculateRate="calculateRate"/>
     </div>
   </div>
 </template>
@@ -142,6 +140,11 @@ export default {
       isCorrect = this.checkDateInput() && isCorrect;
       isCorrect  = this.checkProductsInput() && isCorrect;
       return this.checkVehicleInput() && isCorrect;
+    },
+    calculateRate() {
+      if (this.checkInputs()){
+        this.$router.push('output');
+      }
     }
   }
 }

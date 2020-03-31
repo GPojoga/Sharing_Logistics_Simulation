@@ -1,6 +1,6 @@
 <template>
     <div class="calcRate">
-        <button @click="getInput" type="button" class="calcRateButton">Calculate Rate</button>
+        <button @click="calculateRate" type="button" class="calcRateButton">Calculate Rate</button>
     </div>
 </template>
 
@@ -17,7 +17,9 @@
 
 
         methods: {
-
+            calculateRate(){
+              this.$emit("calculateRate");
+            },
             getInput(){
                 alert("Position From = " + this.getPositionFrom() +
                       "\nPosition To = "   + this.getPositionTo()   +
