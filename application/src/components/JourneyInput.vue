@@ -3,7 +3,7 @@
         <!-- Input from and to -->
         <div>
             <p class="errorMessage" v-if="!locationsValid">
-                Fields FROM and TO mustn't be empty!
+                Fields FROM and TO must not be empty!
             </p>
         </div>
         <LocationInput v-model="from" location-input-label="From"  @input="addToStore(0)"></LocationInput>
