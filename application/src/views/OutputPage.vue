@@ -156,8 +156,8 @@
         let totalVolume = 0;
         for (let i = 0; i < goods.length; i++){
           quantity += Number(goods[i].quantity);
-          totalWeight += Number(goods[i].weight);
-          totalVolume += Number(goods[i].volume);
+          totalWeight += Number(goods[i].weight) * Number(goods[i].quantity);
+          totalVolume += Number(goods[i].volume) * Number(goods[i].quantity);
         }
 
         return {
@@ -193,7 +193,7 @@
         let dis = this.$store.state.locations.distance;
         let goods = this.$store.state.A.cargo.map(a => Object.assign({}, a));
         let trucks = this.$store.state.A.vehicles.slice();
-        console.log("Hi");
+
         // TODO: change this so it supports goods being sent from both locations
         let good = this.getAverageGood(goods);
         while (Number(good.quantity) > 0){
