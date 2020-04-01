@@ -112,8 +112,8 @@ export default {
      */
     checkProductsInput() {
       let isCorrect = true;
-      let maxWeight = this.$store.state.TruckTypes[0].maxPayload;
-      let maxVolume = this.$store.state.TruckTypes[0].volume;
+      let maxWeight = this.$store.state.truckTypes[0].maxPayload;
+      let maxVolume = this.$store.state.truckTypes[0].volume;
       let products = this.$store.state.A.cargo;
       for (let i = 0; i < products.length; i++){
         if (products[i].quantity === "" || products[i].quantity < 0) {

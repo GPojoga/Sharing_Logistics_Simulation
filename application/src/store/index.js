@@ -10,18 +10,28 @@ export default new Vuex.Store({
         fuelPrice : 1.45,
         emissionBurnt : 2.67,
         averageSpeed : 100,
-        TruckTypes : [
+        numberTrucks : 3,
+        truckTypes : [
             {
+                key : "Light",
                 volume : 8.925,
-                maxPayload : 4700
+                maxPayload : 4700,
+                consumption0 : 0.2374,
+                consumption1 : 0.3616
             },
             {
+                key : "Heavy",
                 volume : 91.223,
-                maxPayload : 32018
+                maxPayload : 32018,
+                consumption0 : 0.2374,
+                consumption1 : 0.3616
             },
             {
+                key : "Train",
                 volume : 115.0,
-                maxPayload : 35300
+                maxPayload : 35300,
+                consumption0 : 0.2374,
+                consumption1 : 0.3616
             }
         ],
 
@@ -30,6 +40,7 @@ export default new Vuex.Store({
             list: new Array(2).fill(null),
             currentNrLocations: 0,
             event: '',
+            distance: 186.6795, //default value of 186.6795 km (distance between Groningen and Amsterdam).
             get: function () {
                 return this.list;
             },
