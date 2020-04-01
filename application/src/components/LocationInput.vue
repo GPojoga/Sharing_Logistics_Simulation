@@ -87,7 +87,7 @@
 
                     provider.search({ query: this.enteredText }).then(
                         list => {
-                            this.possibilities = list;
+                            this.possibilities = list.splice(0,5);
                         }
                     );
                 } else {
@@ -103,7 +103,6 @@
                     this.enteredText = p.label;
                 }
                 this.addToStore();
-                console.log('Location added to store');
                 this.$emit('input', this.selected);
             },
             addToStore() {

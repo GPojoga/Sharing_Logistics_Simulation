@@ -2,8 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 Vue.use(Vuex);
-
-export default new Vuex.Store({
+const storage = new Vuex.Store({
     state: {
         // Constants
         maxNrLocations : 2,
@@ -34,13 +33,23 @@ export default new Vuex.Store({
                 consumption1 : 0.3616
             }
         ],
-
+        route:{
+            distance: 0, //default value of 186.6795 km (distance between Groningen and Amsterdam).
+            time:{
+                hours: 0,
+                minutes: 0,
+            },
+            set: function(dist,time){
+                this.distance = dist;
+                this.time = time;
+                this.__ob__.dep.notify();
+            }
+        },
         // Inputs (Variables)
         locations : {
             list: new Array(2).fill(null),
             currentNrLocations: 0,
             event: '',
-            distance: 186.6795, //default value of 186.6795 km (distance between Groningen and Amsterdam).
             get: function () {
                 return this.list;
             },
@@ -76,6 +85,9 @@ export default new Vuex.Store({
                         this.__ob__.dep.notify();
                     }
                 }
+                if (this.currentNrLocations <= 1){
+                    storage.state.route.set(0,{hours:0,minutes:0});
+                }
             }
         },
 
@@ -94,3 +106,4 @@ export default new Vuex.Store({
     mutations: {},
     actions: {}
 });
+export default storage;

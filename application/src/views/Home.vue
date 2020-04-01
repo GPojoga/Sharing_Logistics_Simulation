@@ -20,6 +20,8 @@
             for(let i = 0;i < locations.length;i++){
                 locations[i] = null;
             }
+            let route = this.$store.state.route;
+            route.distance = route.time.hours = route.time.minutes = 0;
         }
     }
 </script>

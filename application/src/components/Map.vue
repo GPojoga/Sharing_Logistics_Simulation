@@ -74,12 +74,13 @@
             routingMachine.addTo(this.$refs.map.mapObject);
             routingMachine._container.style.display="None";
             routingMachine.on('routesfound',function(e){
-                let routes = e.routes;
-                let summary = routes[0].summary;
-
-                console.log('Total distance is ' + summary.totalDistance / 1000 +
-                    ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
-
+                let summary = e.routes[0].summary;
+                let dist =  parseFloat((summary.totalDistance / 1000).toFixed(2));
+                let time = {
+                    hours: Math.floor(summary.totalTime / 3600),
+                    minutes: Math.round(summary.totalTime % 3600 / 60),
+                };
+                self.$store.state.route.set(dist,time);
             });
             routingMachine.on('waypointschanged',function(){
                 self.locations.set(routingMachine.getWaypoints().map(x => x.latLng));

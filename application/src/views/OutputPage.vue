@@ -117,7 +117,7 @@
        * This function simulates the traditional method of sending packages between two points A & B.
        */
       findTraditional() {
-        let dis = this.$store.state.locations.distance;
+        let dis = this.$store.state.route.distance;
         let goods = this.$store.state.A.cargo.map(a => Object.assign({}, a));
         let trucks = this.$store.state.A.vehicles.slice();
 
@@ -190,7 +190,7 @@
        * This function simulates the sharing method of sending packages between two points A & B.
        */
       findSharing() {
-        let dis = this.$store.state.locations.distance;
+        let dis = this.$store.state.route.distance;
         let goods = this.$store.state.A.cargo.map(a => Object.assign({}, a));
         let trucks = this.$store.state.A.vehicles.slice();
 

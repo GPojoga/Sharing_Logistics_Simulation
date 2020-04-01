@@ -8,6 +8,7 @@
         </div>
         <LocationInput v-model="from" :index="0" location-input-label="From" @input="$emit('journeyChange')"/>
         <LocationInput v-model="to" :index="1" location-input-label="To" @input="$emit('journeyChange')"/>
+        <p>Distance : {{route.distance}} km | Time : {{route.time.hours}} h {{route.time.minutes}} m</p>
     </div>
 </template>
 
@@ -22,11 +23,11 @@
             locationsValid : Boolean,
             dateValid : Boolean,
         },
-
         data() {
             return {
                 from: null,
                 to: null,
+                route : this.$store.state.route,
             }
         }
     }
