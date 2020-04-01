@@ -6,14 +6,13 @@
                 Fields FROM and TO must not be empty!
             </p>
         </div>
-        <LocationInput v-model="from" location-input-label="From"  @input="addToStore(0)"></LocationInput>
-        <LocationInput v-model="to" location-input-label="To" @input="addToStore(1)"></LocationInput>
+        <LocationInput v-model="from" :index="0" location-input-label="From" @input="$emit('journeyChange')"/>
+        <LocationInput v-model="to" :index="1" location-input-label="To" @input="$emit('journeyChange')"/>
     </div>
 </template>
 
 <script>
     import LocationInput from "./LocationInput";
-    import L from 'leaflet';
 
 
     export default {
@@ -28,30 +27,7 @@
             return {
                 from: null,
                 to: null,
-                locations: this.$store.state.locations,
             }
-        },
-        watch:{
-            locations : function(){
-                // reverse geocoding
-            }
-        },
-        methods: {
-            /**
-             * This function adds the location that has been clicked on in the location input to the store in Map.vue.
-             */
-            addToStore(locationIndex) {
-                let state = this.$store.state;
-                let locationT = (locationIndex === 0 ? this.from : this.to);
-                if (locationT === null){
-                    state.locations.set(null,locationIndex);
-                }else{
-                    let latlng = L.latLng(parseFloat(locationT.y), parseFloat(locationT.x));
-                    state.locations.set(latlng,locationIndex);
-                }
-                this.$emit("journeyChange");
-            },
-
         }
     }
 </script>

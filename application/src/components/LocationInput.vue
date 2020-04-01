@@ -21,6 +21,7 @@
             https://smeijer.github.io/leaflet-geosearch/#openstreetmap
     */
     import {OpenStreetMapProvider} from "leaflet-geosearch";
+    import L from "leaflet";
 
     const provider = new OpenStreetMapProvider();
 
@@ -42,17 +43,44 @@
         name: "LocationInput",
         props: {
             locationInputLabel: String,
-            value: Object
+            value: Object,
+            index: Number
         },
         data() {
             return {
                 enteredText: null,
                 selected: null,
                 possibilities: null,
-                displayPossibilities: false
+                displayPossibilities: false,
+                locations: this.$store.state.locations
+            }
+        },
+        watch:{
+            locations: function(){
+                let location = this.locations.get()[this.index];
+                if (location !== null){
+                    this.reverseGeocode(location.lat,location.lng).then(
+                        lc => {
+                            this.enteredText = lc;
+                        }
+                    );
+                }else{
+                    this.enteredText = '';
+                }
             }
         },
         methods: {
+            async reverseGeocode(lat,lon){
+                let url = 'https://nominatim.openstreetmap.org/reverse?format=json';
+                url += '&lat=' + lat + '&lon=' + lon;
+                let result = await fetch(url);
+                let json = await result.json();
+                if (json.display_name !== undefined){
+                    return json.display_name;
+                }else{
+                    return '[' + lat +',' + lon + ']';
+                }
+            },
             updatePossibilities() {
                 if (this.enteredText !== '') {
                     this.displayPossibilities = true;
@@ -74,7 +102,19 @@
                 if (p !== null){
                     this.enteredText = p.label;
                 }
+                this.addToStore();
+                console.log('Location added to store');
                 this.$emit('input', this.selected);
+            },
+            addToStore() {
+                let state = this.$store.state;
+                if (this.selected === null){
+                    state.locations.set(null,this.index);
+                }else{
+                    state.locations.get()[this.index] = null;
+                    let latlng = L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
+                    state.locations.set(latlng,this.index);
+                }
             }
         },
         computed: {
