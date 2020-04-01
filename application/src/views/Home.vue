@@ -14,6 +14,12 @@
         components: {
             ControlPanel,
             Map,
+        },
+        mounted(){
+            let locations = this.$store.state.locations.get();
+            for(let i = 0;i < locations.length;i++){
+                locations[i] = null;
+            }
         }
     }
 </script>

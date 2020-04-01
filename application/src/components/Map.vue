@@ -48,9 +48,7 @@
         },
         watch:{
            locations:function(){
-               console.log('event received');
                if (this.locations.event === 'locationListUpdate'){
-                   console.log('but not executed');
                    this.routingMachine.setWaypoints(this.locations.get());
                }
            }
