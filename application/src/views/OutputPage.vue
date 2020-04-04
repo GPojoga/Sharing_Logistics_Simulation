@@ -1,38 +1,42 @@
 <template>
   <div>
-    <router-link to="/">Home</router-link>
-    <div class="new">
-      <div id="newWay">
+    <div class="navbar">
+      <router-link to="/">Home</router-link>
+    </div>
+
+    <div id="main">
+      <div id="newWay" class="header">
         <h2>Sharing Logistics</h2>
       </div>
       <div id="newWayPanel" class="panel">
-        <div id="deliveryTime1" class="deliveryTime1">
-          <h3>Expected delivery time: </h3>
+        <div class="outputElement">
+          <h3>Transport time</h3>
           <p class="output">{{Math.round(sharing.time)}} h</p>
         </div>
-        <div id="vehicleUsed1" class="vehicleUsed">
-          <h3>Total numbers of vehicles used:</h3>
+        <div class="outputElement">
+          <h3>Number of vehicles used</h3>
           <p class="output">{{sharing.count}}</p>
         </div>
-        <div id="co2E1" class="co2E">
-          <h3>CO2 Emissions:</h3>
+        <div class="outputElement">
+          <h3>CO2 emissions</h3>
           <p class="output">{{Math.round(sharing.emission)}} kg</p>
         </div>
       </div>
-      <div id="oldWay">
+
+      <div id="oldWay" class="header">
         <h2>Traditional Method</h2>
       </div>
       <div id="oldWayPanel" class="panel">
-        <div id="deliveryTime2" class="deliveryTime2">
-          <h3>Expected delivery time:</h3>
+        <div class="outputElement">
+          <h3>Transport time</h3>
           <p class="output">{{Math.round(traditional.time)}} h</p>
         </div>
-        <div id="vehicleUsed2" class="vehicleUsed">
-          <h3>Total numbers of vehicles used:</h3>
+        <div class="outputElement">
+          <h3>Number of vehicles used</h3>
           <p class="output">{{traditional.count}}</p>
         </div>
-        <div id="co2E2" class="co2E">
-          <h3>CO2 Emissions:</h3>
+        <div class="outputElement">
+          <h3>CO2 emissions</h3>
           <p class="output">{{Math.round(traditional.emission)}} kg</p>
         </div>
       </div>
@@ -218,70 +222,55 @@
 </script>
 
 <style>
-  #newWayPanel{
-    height: 70%;
-    width: 30%;
+  .navbar {
+    height: 30px;
+    text-align: center;
+    vertical-align: center;
+    padding-top: 20px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #FFF;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #007feb;
+    padding: 8px 12px;
+  }
+
+  .panel {
+    height: 70vh;
+    width: 30vw;
     background-color: #f1f9ff;
     position: absolute;
-    left: 10%;
-    top: 15%
+    top: 20vh;
+    border-radius: 10px;
+    padding: 10px 50px;
+    display: inline-block;
+    overflow: auto;
   }
 
-  #deliveryTime1{
-    left: 2%;
-    position: absolute;
+  .header {
+    width: 40vw;
+    display: inline-block;
+    text-align: center;
   }
 
-  #vehicleUsed1{
-    left: 2%;
-    position: absolute;
-    top: 25%;
+  #newWayPanel{
+    left: 10vw;
   }
 
-  #co2E1{
-    left: 2%;
-    position: absolute;
-    top: 50%;
+  .outputElement {
+    margin: 40px 0px;
   }
 
   #oldWayPanel{
-    height: 70%;
-    width: 30%;
-    background-color: #f1f9ff;
-    position: absolute;
-    right: 10%;
-    top: 15%
-  }
-
-  #deliveryTime2{
-    left: 2%;
-    position: absolute;
-  }
-
-  #vehicleUsed2{
-    left: 2%;
-    position: absolute;
-    top: 25%;
-  }
-
-  #co2E2{
-    left: 2%;
-    position: absolute;
-    top: 50%;
-  }
-
-  #newWay{
-    left: 10%;
-    position: absolute;
-  }
-
-  #oldWay{
-    right: 23.5%;
-    position: absolute;
+    right: 10vw;
   }
 
   .output{
-    text-align: left;
+    text-align: center;
     font-family: "Arial", Arial, sans-serif;
     margin: 20px;
     color: #007FEB;

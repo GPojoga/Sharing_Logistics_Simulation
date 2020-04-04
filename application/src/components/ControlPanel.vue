@@ -153,7 +153,7 @@ export default {
 <style scoped>
   #controlPanel{
     background: rgb(255, 255, 255);
-    border: solid #2284ff;
+    border: solid #007FEB;
     height: 98%;
     width: 400px;
     overflow: visible;
@@ -190,7 +190,7 @@ export default {
 
   #collapseArrow{
     font-size: 300%;
-    color: #2284ff;
+    color: #007FEB;
     transition: transform 0.5s;
   }
 

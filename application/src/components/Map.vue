@@ -31,7 +31,7 @@
         },
         data () {
             return {
-                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                url: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', // Standard map: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 zoom: 5,
                 minZoom:2,
                 center: [47.368106, 14.197493],

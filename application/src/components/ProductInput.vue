@@ -7,22 +7,17 @@
             </p>
         </div>
 
+        <div class="labels">
+            <label>Quantity</label>
+            <label>Weight</label>
+            <label>Volume</label>
+        </div>
+
         <div class="form-row" v-for="(product, index) in cargo" :key="index">
             <div class="form-labels">
-                <label>
-                    Quantity
-                    <input v-model="product.quantity" :name="`cargo[${index}][quantity]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="#" @input="setUpdate">
-                </label>
-
-                <label>
-                    Weight
-                    <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="kg" @input="setUpdate">
-                </label>
-
-                <label>
-                    Volume
-                    <input v-model="product.volume" :name="`cargo[${index}][volume]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="m^3" @input="setUpdate">
-                </label>
+                <input v-model="product.quantity" :name="`cargo[${index}][quantity]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="#" @input="setUpdate">
+                <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="kg" @input="setUpdate">
+                <input v-model="product.volume" :name="`cargo[${index}][volume]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="m^3" @input="setUpdate">
 
                 <button @click="removeProduct(index)" type="button" class="button circle cross" style="background-color: #f1f9ff;"  @input="setUpdate"></button>
             </div>
@@ -87,7 +82,7 @@
     }
 
     .product-info > div {
-        margin-top: 20px;
+        margin-top: 8px;
     }
 
     .product-title{
@@ -114,14 +109,21 @@
         cursor: pointer;
     }
 
+    .labels {
+        width: 100%;
+    }
+
+    .labels > label {
+        width: 90px;
+    }
+
     input {
         background: #F1F9FF;
-        width: 50px;
+        width: 60px;
         height: 25px;
         border: solid #007feb;
         border-radius: 5px;
-        margin-right: 5px;
-        margin-top: 5px;
+        margin-right: 30px;
         display: inline-block;
         position: relative;
         top: 1px;
