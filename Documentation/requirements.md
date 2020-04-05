@@ -3,7 +3,7 @@
 ### **Sharing Logistics Simulation** -  2020
    Version : 1.0   
    Client : Astone Shi ( astone.shi@gmail.com or c.shi@rug.nl )  
-   TA : Alex   
+   TA : Alex Tutea
 * Antonin Thioux
 * Bjar Karim
 * Gheorghe Pojoga
@@ -67,9 +67,11 @@ As a user of this applet I want to ...
 |:---------:|----------
 | 17th Feb. | Introduction of project; discussion of projects goals, stages (priorities), different simulations methods, accuracy of the goal, technologies needed.
 | 16th Mar. | Feedback received on the draft UI and code.
+| 24th Mar. | Feedback regarding different parameters.
 
 ## Changelog
 | **Who**        | **When**  | **Which Section** | **What** 
 |----------------|:---------:|-------------------|----------
 | Antonin Thioux | 23rd Feb. | The document.     | Created the document, added sections: introduction, user wishes, customer meetings, changelog.
 | Bjar Karim 	| 22nd Mar.	| Customer meetings.  | Added the new meeting (email) with the customer. 
+| Bjar Karim   | 5th  Mar. | Customer meetings.  | Added the new meeting (email) with the customer. 
