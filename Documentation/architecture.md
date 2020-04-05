@@ -124,7 +124,8 @@ For the map, we use:
 - Leaflet, an open source Javascript mapping library.
   - Open source alternative to Google Maps API. Javascript mapping library.
   - Plugins we used:
-    - ...
+    - vue2-leaflet - it provides wrapping constructs of the basic Leaflet objects, which are designed for the Vue framework.
+    - leaflet-routing-machine - this library is used for all the functionality that is related to routing e.g., finding the route,displaying the route, determining the distance and time necessary to complete the route etc.
 - leaflet GeoSearch
   - To enable searching based on addresses and names instead of coordinates.
   - Though it is called leaflet GeoSearch, it has no dependencies on Leaflet.
@@ -190,3 +191,4 @@ the JourneyInput.
 | Lonneke | 11-3-2020 | First draft of the architecture document.
 | Lonneke | 24-3-2020 | Updated technologies and added introduction, file structure and image of architecture. 
 | Lonneke | 4-4-2020  | Added why we chose technologies and blackbox description in introduction.
+| Gheorghe| 6-4-2020  | Added the plugins necessary for the map
