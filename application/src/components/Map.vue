@@ -48,7 +48,7 @@
         },
         watch:{
            locations:function(){
-               if (this.locations.event === 'locationListUpdate'){
+               if (this.locations.event === 'locationListUpdate'){  // A location was added/removed
                    this.routingMachine.setWaypoints(this.locations.get());
                }
            }
@@ -58,8 +58,7 @@
             let routingMachine = L.Routing.control({
                 routeWhileDragging: true,
                 fitSelectedRoutes: false,
-                waypointMode: 'connect',
-                addWaypoints: false,
+                addWaypoints: false, // user cannot add new waypoints to an already existing route
                 createMarker: function(i,wp){
                     let marker = L.marker(wp.latLng,{
                         draggable: true,
@@ -72,7 +71,8 @@
             });
 
             routingMachine.addTo(this.$refs.map.mapObject);
-            routingMachine._container.style.display="None";
+            routingMachine._container.style.display="None"; // the directions box is hidden
+            //when the route is found, time and distance from the storage is updated
             routingMachine.on('routesfound',function(e){
                 let summary = e.routes[0].summary;
                 let dist =  parseFloat((summary.totalDistance / 1000).toFixed(2));
@@ -82,6 +82,7 @@
                 };
                 self.$store.state.route.set(dist,time);
             });
+            // when the waypoints are changed the locations list from the storage is updated
             routingMachine.on('waypointschanged',function(){
                 self.locations.set(routingMachine.getWaypoints().map(x => x.latLng));
             });
@@ -106,7 +107,8 @@
                 }
             },
             /**
-             * this function add the new location if it conforms to the conditions
+             * this function adds the new location in the first empty spot available
+             * in the locations array, if it conforms to the conditions
              * @param latlng latitude and longitude of the location to be added
              */
             addLocationHelper(latlng){
@@ -119,7 +121,10 @@
                     }
                 }
             },
-
+            /**
+             *
+             * @param index of the location to be removed
+             */
             removeLocation(index){
                 this.locations.set(null,index);
             }

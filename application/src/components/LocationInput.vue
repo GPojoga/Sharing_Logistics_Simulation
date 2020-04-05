@@ -57,19 +57,28 @@
         },
         watch:{
             locations: function(){
-                let location = this.locations.get()[this.index];
-                if (location !== null){
+                let location = this.locations.get()[this.index]; // the location corresponding
+                                                                 // to this LocationInput
+                if (location !== null){ //location is not empty
                     this.reverseGeocode(location.lat,location.lng).then(
                         lc => {
                             this.enteredText = lc;
                         }
                     );
-                }else{
+                }else{ // the location is empty
                     this.enteredText = '';
                 }
             }
         },
         methods: {
+            /**
+             * This function performs the reverse geo-coding. If it is possible to identify
+             * the location using the coordinates, then the name of the location is returned.
+             * Otherwise, a string of the form '[<lat>,<lon>]' is returned.
+             * @param lat latitude
+             * @param lon longitude
+             * @returns {Promise<string|*>}
+             */
             async reverseGeocode(lat,lon){
                 let url = 'https://nominatim.openstreetmap.org/reverse?format=json';
                 url += '&lat=' + lat + '&lon=' + lon;
@@ -81,6 +90,10 @@
                     return '[' + lat +',' + lon + ']';
                 }
             },
+            /**
+             * This function is called every time the user inputs a new character. It queries
+             * the geo-coder, and returns a list of top 5 suggestions.
+             */
             updatePossibilities() {
                 if (this.enteredText !== '') {
                     this.displayPossibilities = true;
@@ -96,6 +109,10 @@
                     this.selectLocation(null);
                 }
             },
+            /**
+             * This function deactivates the suggestions box, and selects the one the user clicked on.
+             * @param p
+             */
             selectLocation(p) {
                 this.displayPossibilities = false;
                 this.selected = p;
@@ -105,6 +122,9 @@
                 this.addToStore();
                 this.$emit('input', this.selected);
             },
+            /**
+             * This function adds the selected location to the store.
+             */
             addToStore() {
                 let state = this.$store.state;
                 if (this.selected === null){
