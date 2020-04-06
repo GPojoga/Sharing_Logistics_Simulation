@@ -56,6 +56,7 @@
         mounted () {
             const self = this;
             let routingMachine = L.Routing.control({
+                serviceUrl :"http://router.project-osrm.org/route/v1",
                 routeWhileDragging: true,
                 fitSelectedRoutes: false,
                 addWaypoints: false, // user cannot add new waypoints to an already existing route
