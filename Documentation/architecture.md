@@ -98,7 +98,8 @@ The exact file structure and explanations of what the responsibility of each fil
     ├── main.js                         # renders and mounts the app
     ├── App.vue                         # the root of the app
     ├── components
-    │   ├── CalculateRate.vue           # combines all input after the calculate rate button has been pressed and stores this information
+    │   ├── CalculateRate.vue           # combines all input after the calculate rate button has been pressed and 
+    │   │                                 stores this information
     │   ├── ControlPanel.vue            # the panel on the left of the screen that handles the input
     │   ├── JourneyInput.vue            # input component for the starting and final destinations
     │   ├── LocationInput.vue           # base input component for locations
