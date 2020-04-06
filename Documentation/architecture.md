@@ -60,9 +60,36 @@ existing front-end application.
 
 The application is mainly created with Vue.js. This is a lightweight and open source
 front-end Javascript framework that mainly focuses on simplifying the creation of a dynamic Single Page Application.
-The project is split into so-called Vue (view) components, which are reactive and can be composed of other Vue components.
+A Vue project is split into two folders: a folder for static content called 'public' and a folder for reactive content
+called 'src'. This last folder contains javascript files and so-called Vue (view) components, which
+can be composed of other Vue components.
+Each component consists of three parts: an html template, a Vue part (where local data is stored and methods are
+created) and a css style part. These types of components are called single-file components and this is what largely characterises
+.vue files.
 
-<!-- Create nice schema to clarify architecture! -->
+In a more abstract way, the Vue app can split into three parts: the state, actions and the view.
+
+![Main parts of a Vue app.](vuex.png)
+
+The state consists of a store with the data, the actions are defined as functions in the .vue files and indirectly called by the
+user and the view consists of Vue components, which can be visualised as a tree. For our project, the view is composed of
+the following Vue components:
+
+![Application's architecture](architecture.png)
+
+The root component of the view is called App.vue.
+This App.vue file is linked to by a file called main.js, which first renders the app and then mounts it.
+
+The top-level components are the two views, or web pages, called Home.vue and OutputPage.vue.
+
+The Home view consists of two high-level components, ControlPanel.vue and Map.vue. In the ControlPanel the user can enter
+their input and choose values for the given parameters that will determine the simulation.
+
+These high-level components use the middle-level components JourneyInput, ProductInput, VehicleSelector and CalculateRate.
+
+These middle-level components, on their turn, may use the base components: LocationInput and SelectorCheckBox.
+
+The exact file structure and explanations of what the responsibility of each file is, can be found below.
 
 ````
 ├── public
@@ -71,34 +98,28 @@ The project is split into so-called Vue (view) components, which are reactive an
     ├── main.js                         # renders and mounts the app
     ├── App.vue                         # the root of the app
     ├── components
-    │   ├── App.vue                     # the root of the app
+    │   ├── CalculateRate.vue           # combines all input after the calculate rate button has been pressed and stores this information
     │   ├── ControlPanel.vue            # the panel on the left of the screen that handles the input
-    │   ├── ControlPanelOutput.vue
-    │   ├── DateInput.vue               # base input component for dates
-    │   ├── JourneyInput.vue
+    │   ├── JourneyInput.vue            # input component for the starting and final destinations
     │   ├── LocationInput.vue           # base input component for locations
     │   ├── Map.vue
     │   ├── ProductInput.vue            # input component for the goods
     │   ├── SelectorCheckBox.vue        # base input component for a checkbox
     │   ├── VehicleSelector.vue         # input component for all vehicle types
     │   └── VehicleSelectorEntry.vue    # input component for 1 vehicle type
-    └── store
-        └── index.js                    # the store of the entire application
+    ├── router                          
+        └── index.js                    # contains the references to the two pages of the application
+    ├── store
+        └── index.js                    # stores information that multiple parts of the application need access to
+    └── views                           # the pages of the application
+        ├── Home.vue                    # contains the input panel and the map
+        └── OutputPage.vue              # displays the simulated results
 ````
 
-![Application's architecture](architecture.png)
+Note that each element of the view can access the application's store.
 
-The core of the application consists of a index.html file, a style.css file and main.js file.
-This main.js file links to the file App.vue, which on its turn is linked to all Vue components.
-The main.js file first renders the app, after which it is mounted.
-
-The app consists of multiple components. The top level components are the map (Map.vue), the controlpanel on the left
-(ControlPanel.vue) and the control panel on the right (ControlPanelOutput.vue).
-
-These top level components use the middle level components JourneyInput, ProductInput and VehicleSelector.
-
-These middle level components, on their turn, use the base components: DateInput, LocationInput and SelectorCheckBox.
-
+Since Vue is meant to create Single Page Applications, we added a router to the project. What this router essentially
+does is mounting one of the two views (Home or OutputPage) to App.vue.
 
 ## Technology Stack
 <!-- Technology Stack: What programming languages are being used? What technologies are being used (Frameworks, libraries, platform, peripherals)? If different components have different technologies, present them individually.-->
@@ -141,9 +162,7 @@ allow Javascript code to be structured into components.
 
 Since is Vue.js is said to have the lowest learning curve out of
 the three frameworks, we decided to go with Vue.js. Our TA also recommended this and on 
-Stackshare.io it can be seen that Vue.js has the highest approval ratings. It has been
-developed by the Chinese Evan You and had been popular in China for some years already,
-before spreading to the West.
+Stackshare.io it can be seen that Vue.js has the highest approval ratings.
 
 Some other advantages of Vue.js are that it
 - is lightweight and therefore quite fast, especially
