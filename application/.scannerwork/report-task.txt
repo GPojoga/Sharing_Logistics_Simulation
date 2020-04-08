@@ -1,0 +1,6 @@
+projectKey=sharing_logistics_simulation
+serverUrl=http://localhost:9000
+serverVersion=8.2.0.32929
+dashboardUrl=http://localhost:9000/dashboard?id=sharing_logistics_simulation
+ceTaskId=AXFPKgbCfBQ39aqadnSj
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXFPKgbCfBQ39aqadnSj

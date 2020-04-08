@@ -1,8 +1,9 @@
+
 # Requirements Document
 ### **Sharing Logistics Simulation** -  2020
    Version : 1.0   
    Client : Astone Shi ( astone.shi@gmail.com or c.shi@rug.nl )  
-   TA : Alex   
+   TA : Alex Tutea
 * Antonin Thioux
 * Bjar Karim
 * Gheorghe Pojoga
@@ -41,7 +42,6 @@ As a user of this applet I want to ...
 - be able to change the quantity of vehicles makes the back and fourth journey so that I can observer the difference this makes to the comparison.
 - be able to change the distribution of vehicles making the back and fourth journey so that I can observer the difference this makes to the comparison.
 - have 3 types of vehicles (all different sizes) so that I can change between the 3 which is relevant for the previous step.
-- be able to change the amount of goods that need to be transported A->B and B->A.
 - be able to change the weight of the goods that need to be transported so that I can see what effects this has on both systems of transport. 
 - be able to change the size of the the goods that need to be transported so that I can see what effect this has on the transportation of these goods under both systems.
 
@@ -65,8 +65,12 @@ As a user of this applet I want to ...
 | **When**  | **What** 
 |:---------:|----------
 | 17th Feb. | Introduction of project; discussion of projects goals, stages (priorities), different simulations methods, accuracy of the goal, technologies needed.
+| 16th Mar. | Feedback received on the draft UI and code.
+| 24th Mar. | Feedback regarding different parameters.
 
 ## Changelog
 | **Who**        | **When**  | **Which Section** | **What** 
 |----------------|:---------:|-------------------|----------
 | Antonin Thioux | 23rd Feb. | The document.     | Created the document, added sections: introduction, user wishes, customer meetings, changelog.
+| Bjar Karim 	| 22nd Mar.	| Customer meetings.  | Added the new meeting (email) with the customer. 
+| Bjar Karim   | 6th  Apr. | Customer meetings.  | Added the new meeting (email) with the customer and updated the user stories. 
