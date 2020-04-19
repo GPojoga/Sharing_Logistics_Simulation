@@ -38,11 +38,6 @@ const storage = new Vuex.Store({
             time:{
                 hours: 0,
                 minutes: 0,
-            },
-            set: function(dist,time){
-                this.distance = dist;
-                this.time = time;
-                this.__ob__.dep.notify();
             }
         },
         // Inputs (Variables)
@@ -50,9 +45,6 @@ const storage = new Vuex.Store({
             list: new Array(2).fill(null),
             currentNrLocations: 0,
             event: '',
-            get: function () {
-                return this.list;
-            },
             set: function (newList, index) {
                 if (index === undefined) { // one argument
                     let newLocations = 0;
@@ -86,7 +78,8 @@ const storage = new Vuex.Store({
                     }
                 }
                 if (this.currentNrLocations <= 1){
-                    storage.state.route.set(0,{hours:0,minutes:0});
+                    storage.state.route.distance = 0;
+                    storage.state.route.time = {hours: 0, minutes: 0};
                 }
             }
         },
@@ -102,8 +95,36 @@ const storage = new Vuex.Store({
 
 
     },
-    getters: {},
-    mutations: {},
+
+    getters: {
+        locations: state => {
+            return state.locations.list;
+        }
+    },
+
+    mutations: {
+        setRoute(state, payload) {
+            this.distance = payload.dist;
+            this.time = payload.time;
+            state.route.__ob__.dep.notify();
+        },
+
+        /**
+         * This function adds the new location in the first empty spot available
+         * in the locations array, if it conforms to the conditions.
+         * @param latlng latitude and longitude of the location to be added
+         */
+        addLocation(state, latlng){
+            let maxNrLocations = state.maxNrLocations;
+            let locations = state.locations.list;
+            for (let i = 0;i < maxNrLocations;i++){
+                if (locations[i] === null){
+                    state.locations.set(latlng,i);
+                    break;
+                }
+            }
+        },
+    },
     actions: {}
 });
 export default storage;
