@@ -7,13 +7,15 @@
             </p>
         </div>
 
-        <div class="labels">
-            <label>Quantity</label>
-            <label>Weight</label>
-            <label>Volume</label>
-        </div>
+
 
         <div class="form-row" v-for="(product, index) in cargo" :key="index">
+            <p> Product {{index + 1}} </p>
+            <div class="labels">
+                <label>Quantity</label>
+                <label>Weight</label>
+                <label>Volume</label>
+            </div>
             <div class="form-labels">
                 <input v-model="product.quantity" :name="`cargo[${index}][quantity]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="#" @input="setUpdate">
                 <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="kg" @input="setUpdate">
@@ -21,6 +23,8 @@
 
                 <button @click="removeProduct(index)" type="button" class="button circle cross" style="background-color: #f1f9ff;"  @input="setUpdate"></button>
             </div>
+            <LocationInput v-model="from" :index="0" location-input-label="From" @input="$emit('journeyChange')"/>
+            <LocationInput v-model="to" :index="1" location-input-label="To" @input="$emit('journeyChange')"/>
         </div>
 
         <div class="form-add">
@@ -30,10 +34,13 @@
     </div>
 </template>
 
-<script>
 
+
+<script>
+    import LocationInput from "./LocationInput";
     export default {
         name: "ProductInput",
+        components: {LocationInput},
         data: () => ({
             cargo: [
                 {
@@ -43,12 +50,26 @@
                 }
             ]
         }),
+
+        props: {
+            locationsValid : Boolean,
+            dateValid : Boolean,
+            productsValid : Boolean,
+        },
+        // data() {
+        //     return {
+        //         from: null,
+        //         to: null,
+        //         route : this.$store.state.route,
+        //     }
+        // },
+
         mounted() {
             this.$store.state.A.cargo = this.cargo;
         },
-        props : {
-            productsValid : Boolean,
-        },
+        // props : {
+        //     productsValid : Boolean,
+        // },
 
         methods: {
             addProduct() {
