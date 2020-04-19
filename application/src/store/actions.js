@@ -45,9 +45,9 @@ export const actions = {
         });
     },
 
-    setLocations(context, payload) {
+    setLocations(context, newList) {
         context.commit('setLocations', {
-            newList: payload.newList,
+            newList: newList,
             currentNrLocations: context.getters.currentNrLocations
         });
     }

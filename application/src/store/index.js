@@ -49,17 +49,17 @@ export default new Vuex.Store({
         // Variables (based on input)
         locations : {
             list: new Array(2).fill(null),
-            // currentNrLocations: 0,
             event: ''
         },
 
-        // The vehicles that dispatch from the start location
+        // The vehicles that dispatch from the start location.
         A : {
             vehicles : new Array(3).fill(0),
             cargo : []
         },
 
-        // TODO currently not used. The vehicles that dispatch from the end location.
+        // TODO currently not used.
+        // The vehicles that dispatch from the end location.
         B : {
             vehicles : new Array(3).fill(0),
             cargo : []

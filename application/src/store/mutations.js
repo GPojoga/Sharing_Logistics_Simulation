@@ -64,11 +64,15 @@ export const mutations = {
     /**
      * Writes the given location to the given index of state.locations.
      * @param state
-     * @param newList: Object (latLng coordinates)
+     * @param payload has type {
+     *     newList: Object (latLng coordinates),
+     *     currentNrLocations: Integer
+     * }
      */
-    setLocations(state, newList) {
+    setLocations(state, payload) {
         const locations = state.locations;
-        const currentNrLocations = state.locations.currentNrLocations;
+        const newList = payload.newList;
+        const currentNrLocations = payload.currentNrLocations;
 
         let newLocations = 0;
         let changed = false;
