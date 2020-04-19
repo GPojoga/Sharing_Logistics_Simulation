@@ -26,8 +26,12 @@
         data() {
             return {
                 from: null,
-                to: null,
-                route : this.$store.state.route,
+                to: null
+            }
+        },
+        computed: {
+            route() {
+                return this.$store.state.route;
             }
         }
     }

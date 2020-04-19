@@ -50,6 +50,7 @@
         },
         watch:{
            locations: function() {
+               console.log('watcher map');
                if (this.locations.event === 'locationListUpdate'){  // A location was added/removed
                    this.routingMachine.setWaypoints(this.$store.getters.locations);
                }

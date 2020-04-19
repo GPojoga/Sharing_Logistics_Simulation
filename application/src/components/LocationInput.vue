@@ -54,17 +54,15 @@
                 displayPossibilities: false
             }
         },
-        watch:{
-            locations: function() {
-                let location = this.$store.getters.locations[this.index]; // the location corresponding
-                                                                 // to this LocationInput
-                if (location !== null) { //location is not empty
-                    this.reverseGeocode(location.lat,location.lng).then(
+        watch: {
+            location: function() {
+                if (this.location !== null) { // There is a location
+                    this.reverseGeocode(this.location.lat, this.location.lng).then(
                         lc => {
                             this.enteredText = lc;
                         }
                     );
-                } else { // the location is empty
+                } else { // the location is empty (and most likely deleted)
                     this.enteredText = '';
                 }
             }
@@ -83,9 +81,9 @@
                 url += '&lat=' + lat + '&lon=' + lon;
                 let result = await fetch(url);
                 let json = await result.json();
-                if (json.display_name !== undefined){
+                if (json.display_name !== undefined) {
                     return json.display_name;
-                }else{
+                } else {
                     return '[' + lat +',' + lon + ']';
                 }
             },
@@ -126,9 +124,9 @@
              */
             addToStore() {
                 if (this.selected === null) {
-                    this.$store.commit('removeLocation', this.index);
+                    this.$store.commit('eraseLocation', this.index);
                 } else {
-                    this.$store.commit('removeLocation', this.index);
+                    this.$store.commit('eraseLocation', this.index);
                     let latlng = L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
                     this.$store.dispatch('setLocationByIndex', {
                         newList: latlng,
@@ -144,11 +142,9 @@
                 return 'suggestions' + this.value;
             },
 
-            // The locations stored in the store
-            locations: {
-                get() {
-                    return this.$store.state.locations;
-                }
+            // The location corresponding to this LocationInput.
+            location() {
+                return this.$store.state.locations.list[this.index];
             }
         }
     }

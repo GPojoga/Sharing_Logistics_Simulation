@@ -6,6 +6,7 @@
  * 3) call getters (unlike mutations)
  *
  * As a guideline, you should create a mutation if you can. If not, you can create an action instead.
+ * Actions can also be a sort of wrappers that call mutations.
  *
  * They can be used by calling
  *      this.$store.dispatch('actionName', payload)
@@ -17,6 +18,7 @@
  *      }
  */
 export const actions = {
+    // Locations actions
     /**
      * This function adds the new location in the first empty spot available
      * in the locations array, if it conforms to the conditions.
@@ -24,7 +26,7 @@ export const actions = {
      * @param latlng latitude and longitude of the location to be added
      */
     addLocation(context, latlng) {
-        let maxNrLocations = context.state.maxNrLocations;
+        let maxNrLocations = context.getters.maxNrLocations;
         let locations = context.state.locations.list;
         for (let i = 0;i < maxNrLocations;i++){
             if (locations[i] === null){
@@ -50,6 +52,27 @@ export const actions = {
             newList: newList,
             currentNrLocations: context.getters.currentNrLocations
         });
+    },
+
+    // Cargo actions
+    addProduct(context) {
+        context.commit('addProduct'); // This method indirectly changes the value of maxNrLocations.
+        context.commit('resizeLocations', context.getters.maxNrLocations);
+    },
+
+    /**
+     * Removes the product at the given location from the cargo list and the locations array.
+     * @param context
+     * @param index
+     */
+    removeProduct(context, index) {
+        context.commit('removeProduct', index); // This method indirectly changes the value of maxNrLocations.
+        context.commit('removeLocation', {
+            index: 2*(index+1),
+            deleteCount: 2
+        }); // Remove 'from' and 'to' locations.
+        // Ensure that the array's size stays correct. This call shouldn't do anything.
+        context.commit('resizeLocations', context.getters.maxNrLocations);
     }
 };
 
