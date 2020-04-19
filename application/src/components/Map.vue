@@ -81,7 +81,10 @@
             });
             // when the waypoints are changed the locations list from the storage is updated
             routingMachine.on('waypointschanged',function(){
-                self.locations.set(routingMachine.getWaypoints().map(x => x.latLng));
+                self.$store.commit('setLocations', {
+                    newList: routingMachine.getWaypoints().map(x => x.latLng),
+                    index: null
+                });
             });
             this.routingMachine = routingMachine;
         },
@@ -102,7 +105,7 @@
                 if(!this.timeoutId) {
                     this.timeoutId = setTimeout(() => {
                         //Single click
-                        this.$store.commit('addLocation', event.latlng);
+                        this.$store.dispatch('addLocation', event.latlng);
                         this.timeoutId = null;
                     }, 400); //tolerance in ms
                 }else{
@@ -110,13 +113,6 @@
                     clearTimeout(this.timeoutId);
                     this.timeoutId = null;
                 }
-            },
-            /**
-             *
-             * @param index of the location to be removed
-             */
-            removeLocation(index){
-                this.locations.set(null,index);
             }
         }
     }

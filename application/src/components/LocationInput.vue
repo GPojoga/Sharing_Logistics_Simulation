@@ -51,13 +51,12 @@
                 enteredText: null,
                 selected: null,
                 possibilities: null,
-                displayPossibilities: false,
-                locations: this.$store.state.locations
+                displayPossibilities: false
             }
         },
         watch:{
             locations: function(){
-                let location = this.locations.get()[this.index]; // the location corresponding
+                let location = this.$store.getters.locations[this.index]; // the location corresponding
                                                                  // to this LocationInput
                 if (location !== null){ //location is not empty
                     this.reverseGeocode(location.lat,location.lng).then(
@@ -128,17 +127,32 @@
             addToStore() {
                 let state = this.$store.state;
                 if (this.selected === null){
-                    state.locations.set(null,this.index);
+                    state.commit('setLocations', {
+                        newList: null,
+                        index: this.index
+                    });
                 }else{
                     state.locations.get()[this.index] = null;
                     let latlng = L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
-                    state.locations.set(latlng,this.index);
+                    state.locations.set({
+                        newList: latlng,
+                        index: this.index
+                    });
                 }
             }
         },
+
         computed: {
+            // List of suggested locations based on the text the user inputted
             suggestions() {
                 return 'suggestions' + this.value;
+            },
+
+            // The locations stored in the store
+            locations: {
+                get() {
+                    return this.$store.state.locations;
+                }
             }
         }
     }
