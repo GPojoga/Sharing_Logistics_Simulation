@@ -36,6 +36,8 @@ export default new Vuex.Store({
                 consumption1 : 0.3616
             }
         ],
+
+        // Variables (computed)
         route:{
             distance: 0, //default value of 186.6795 km (distance between Groningen and Amsterdam).
             time:{
@@ -43,17 +45,21 @@ export default new Vuex.Store({
                 minutes: 0,
             }
         },
-        // Inputs (Variables)
+
+        // Variables (based on input)
         locations : {
             list: new Array(2).fill(null),
-            currentNrLocations: 0,
+            // currentNrLocations: 0,
             event: ''
         },
 
+        // The vehicles that dispatch from the start location
         A : {
             vehicles : new Array(3).fill(0),
             cargo : []
         },
+
+        // TODO currently not used. The vehicles that dispatch from the end location.
         B : {
             vehicles : new Array(3).fill(0),
             cargo : []
@@ -65,6 +71,19 @@ export default new Vuex.Store({
     getters: {
         locations: state => {
             return state.locations.list;
+        },
+
+        /**
+         * Calculates the number of spots in the locations array that contain a value.
+         *
+         * @param state
+         * @param getters
+         * @returns {number}
+         */
+        currentNrLocations: (state, getters) => {
+            let nrLocations = 0;
+            getters.locations.forEach(element => { nrLocations += (element !== null); });
+            return nrLocations;
         }
     },
 

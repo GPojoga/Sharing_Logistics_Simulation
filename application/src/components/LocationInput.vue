@@ -44,7 +44,7 @@
         props: {
             locationInputLabel: String,
             value: Object,
-            index: Number
+            index: Number // The index this location will have in the store's state.locations.list array.
         },
         data() {
             return {
@@ -55,16 +55,16 @@
             }
         },
         watch:{
-            locations: function(){
+            locations: function() {
                 let location = this.$store.getters.locations[this.index]; // the location corresponding
                                                                  // to this LocationInput
-                if (location !== null){ //location is not empty
+                if (location !== null) { //location is not empty
                     this.reverseGeocode(location.lat,location.lng).then(
                         lc => {
                             this.enteredText = lc;
                         }
                     );
-                }else{ // the location is empty
+                } else { // the location is empty
                     this.enteredText = '';
                 }
             }
@@ -125,16 +125,12 @@
              * This function adds the selected location to the store.
              */
             addToStore() {
-                let state = this.$store.state;
-                if (this.selected === null){
-                    state.commit('setLocations', {
-                        newList: null,
-                        index: this.index
-                    });
-                }else{
-                    state.locations.get()[this.index] = null;
+                if (this.selected === null) {
+                    this.$store.commit('removeLocation', this.index);
+                } else {
+                    this.$store.commit('removeLocation', this.index);
                     let latlng = L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
-                    state.locations.set({
+                    this.$store.dispatch('setLocationByIndex', {
                         newList: latlng,
                         index: this.index
                     });

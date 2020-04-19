@@ -10,7 +10,7 @@
       </div>
       <div id="newWayPanel" class="panel">
         <div class="outputElement">
-          <h3>Transport time</h3>
+          <h3>Transportation time</h3>
           <p class="output">{{Math.round(sharing.time)}} h</p>
         </div>
         <div class="outputElement">
@@ -28,7 +28,7 @@
       </div>
       <div id="oldWayPanel" class="panel">
         <div class="outputElement">
-          <h3>Transport time</h3>
+          <h3>Transportation time</h3>
           <p class="output">{{Math.round(traditional.time)}} h</p>
         </div>
         <div class="outputElement">
@@ -262,7 +262,7 @@
   }
 
   .outputElement {
-    margin: 40px 0px;
+    margin: 40px 0;
   }
 
   #oldWayPanel{

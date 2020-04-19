@@ -81,10 +81,7 @@
             });
             // when the waypoints are changed the locations list from the storage is updated
             routingMachine.on('waypointschanged',function(){
-                self.$store.commit('setLocations', {
-                    newList: routingMachine.getWaypoints().map(x => x.latLng),
-                    index: null
-                });
+                self.$store.dispatch('setLocations', routingMachine.getWaypoints().map(x => x.latLng) );
             });
             this.routingMachine = routingMachine;
         },
