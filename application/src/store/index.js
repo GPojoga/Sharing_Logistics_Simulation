@@ -8,7 +8,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         // Constants
-        maxNrLocations : 2,
         fuelPrice : 1.45,
         emissionBurnt : 2.67,
         averageSpeed : 100,
@@ -38,7 +37,7 @@ export default new Vuex.Store({
         ],
 
         // Variables (computed)
-        route:{
+        route : {
             distance: 0, //default value of 186.6795 km (distance between Groningen and Amsterdam).
             time:{
                 hours: 0,
@@ -64,11 +63,21 @@ export default new Vuex.Store({
             vehicles : new Array(3).fill(0),
             cargo : []
         }
-
-
     },
 
+    // The store's computed properties, in a way.
     getters: {
+        /**
+         * The maximum number of locations that can be contained in the locations array.
+         * It is equal to the general 'from' and 'to' locations of the trucks (2),
+         * plus the 'from' and 'to' locations of each product (2*number of products): 2 + 2*state.A.cargo.length;
+         * @param state
+         * @returns {number}
+         */
+        maxNrLocations: state => {
+            return 2 + 2*state.A.cargo.length;
+        },
+
         locations: state => {
             return state.locations.list;
         },

@@ -7,8 +7,6 @@
             </p>
         </div>
 
-
-
         <div class="form-row" v-for="(product, index) in cargo" :key="index">
             <p> Product {{index + 1}} </p>
             <div class="labels">
@@ -23,8 +21,8 @@
 
                 <button @click="removeProduct(index)" type="button" class="button circle cross" style="background-color: #f1f9ff;"  @input="setUpdate"></button>
             </div>
-            <LocationInput v-model="from" :index="0" location-input-label="From" @input="$emit('journeyChange')"/>
-            <LocationInput v-model="to" :index="1" location-input-label="To" @input="$emit('journeyChange')"/>
+            <LocationInput v-model="product.from" :index="2*(index+1)" location-input-label="From" @input="$emit('journeyChange')"/>
+            <LocationInput v-model="product.to" :index="2*(index+1)+1" location-input-label="To" @input="$emit('journeyChange')"/>
         </div>
 
         <div class="form-add">
@@ -35,52 +33,33 @@
 </template>
 
 
-
 <script>
     import LocationInput from "./LocationInput";
     export default {
         name: "ProductInput",
-        components: {LocationInput},
-        data: () => ({
-            cargo: [
-                {
-                    quantity: "",
-                    weight: "",
-                    volume: ""
-                }
-            ]
-        }),
-
+        components: { LocationInput },
         props: {
             locationsValid : Boolean,
             dateValid : Boolean,
             productsValid : Boolean,
         },
-        // data() {
-        //     return {
-        //         from: null,
-        //         to: null,
-        //         route : this.$store.state.route,
-        //     }
-        // },
 
         mounted() {
-            this.$store.state.A.cargo = this.cargo;
+            this.addProduct();
         },
-        // props : {
-        //     productsValid : Boolean,
-        // },
+
+        computed: {
+            cargo() {
+                return this.$store.state.A.cargo;
+            }
+        },
 
         methods: {
             addProduct() {
-                this.cargo.push({
-                    quantity: "",
-                    weight: "",
-                    volume: ""
-                });
+                this.$store.dispatch('addProduct');
             },
             removeProduct(index) {
-                this.cargo.splice(index, 1);
+                this.$store.dispatch('removeProduct', index);
                 this.setUpdate();
             },
             setUpdate(){
