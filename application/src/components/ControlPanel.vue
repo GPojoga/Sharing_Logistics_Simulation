@@ -211,6 +211,7 @@ export default {
     border: 0;
   }
 
+  /* Style the container of the link to settings */
   .settingContainer {
     width : 50%;
     height : 90px;
@@ -220,6 +221,18 @@ export default {
     line-height: 90px;
   }
 
+  /* Style the link itself */
+  a {
+    text-decoration: none;
+    color: #FFF;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #007feb;
+    padding: 8px 12px;
+  }
+
+  /* Style the container for the calc button */
   .calculateContainer {
     width : 50%;
     height : 90px;

@@ -27,16 +27,16 @@
             </div>
 
             <div id="fields">
-                <div v-for="(c, index) in globalConstants" class="constantField" :key="'box'+index">
-                    <InputNumberBox :default="c.default" :error="c.error" :min="c.min" :max="c.max" />
+                <div v-for="(c, index) in globalConstants" class="constantField" :key="'globalBox'+index">
+                    <InputNumberBox :default="c.default" :error="c.error" :min="c.min" :max="c.max" @change="updateGlobal($event, index)"/>
                 </div>
 
-                <div v-for="truck in trucks" :key="'box'+truck.title">
+                <div v-for="(truck, number) in trucks" :key="'truckBox'+number">
                     <div class="constantField">
                         <br>
                     </div>
-                    <div class="constantField" v-for="(c, index) in truck.constants" :key="'box'+truck.title+index">
-                        <InputNumberBox :default="c.default" :error="c.error" :min="c.min" :max="c.max" />
+                    <div class="constantField" v-for="(c, index) in truck.constants" :key="'truckBox'+number+index">
+                        <InputNumberBox :default="c.default" :error="c.error" :min="c.min" :max="c.max" @change="updateTruck($event, number, index)"/>
                     </div>
                 </div>
             </div>
@@ -54,6 +54,31 @@
     export default {
         name: "App",
         components: {InputNumberBox},
+        methods : {
+            /**
+             * This method updates the constant in the $store.state at every valid change in the given field.
+             * @param value The value the constant has been changed too.
+             * @param index The index representing the constant that was changed.
+             */
+            updateGlobal : function (value, index) {
+                if (index === 0){
+                    this.$store.state.emissionBurnt = value;
+                } else if (index === 1) {
+                    this.$store.state.averageSpeed = value;
+                }
+            },
+            updateTruck : function (value, truckId, index) {
+                if (index === 0){
+                    this.$store.state.truckTypes[truckId].volume = value;
+                } else if (index === 1) {
+                    this.$store.state.truckTypes[truckId].maxPayload = value;
+                } else if (index === 2) {
+                    this.$store.state.truckTypes[truckId].consumption0 = value;
+                } else if (index === 3) {
+                    this.$store.state.truckTypes[truckId].consumption1 = value;
+                }
+            }
+        },
         data : function () {
             return {
                 globalConstants : [
@@ -81,6 +106,7 @@
                 trucks : [
                     {
                         title : "Light Duty Van",
+                        number : 0,
                         constants : [
                             {
                                 index : 0,
@@ -127,6 +153,7 @@
                     },
                     {
                         title : "Heavy Duty Truck",
+                        number : 1,
                         constants : [
                             {
                                 index : 0,
@@ -173,6 +200,7 @@
                     },
                     {
                         title : "Train Truck",
+                        number : 2,
                         constants : [
                             {
                                 index : 0,
