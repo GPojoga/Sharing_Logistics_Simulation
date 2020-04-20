@@ -22,6 +22,8 @@
     import L from 'leaflet'
     import 'leaflet-routing-machine'
 
+    const mapLayoutUrl = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png'; // Standard map: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+
     export default {
         name: "Map",
         components: {
@@ -29,27 +31,27 @@
             LTileLayer,
             LControlZoom,
         },
+
         data () {
             return {
-                url: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', // Standard map: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                url: mapLayoutUrl,
                 zoom: 5,
                 minZoom:2,
-                center: [47.368106, 14.197493],
-                maxBounds: [[-90, Infinity], //South,West
-                           [90, -Infinity]],  //North,East
+                center: [47.368106, 14.197493], // Somewhere in the middle of Austria and therefore Europe
+                maxBounds: [[-90, Infinity], //South, West
+                           [90, -Infinity]],  //North, East
                 maxBoundsViscosity: 0.8, //If maxBounds is set, this option will control
                                          // how solid the bounds are when dragging the map around.
                                          // the domain is [0.0,1.0]
                 zoomAnimation: true,
                 timeoutId: null, // Necessary to handle single clicks
-                locations: this.$store.state.locations, // shortcut
-                routingMachine: null,
+                routingMachine: null
             };
         },
         watch:{
-           locations:function(){
+           locations: function() {
                if (this.locations.event === 'locationListUpdate'){  // A location was added/removed
-                   this.routingMachine.setWaypoints(this.locations.get());
+                   this.routingMachine.setWaypoints(this.$store.getters.locations);
                }
            }
         },
@@ -59,16 +61,7 @@
                 serviceUrl :"http://router.project-osrm.org/route/v1",
                 routeWhileDragging: true,
                 fitSelectedRoutes: false,
-                addWaypoints: false, // user cannot add new waypoints to an already existing route
-                createMarker: function(i,wp){
-                    let marker = L.marker(wp.latLng,{
-                        draggable: true,
-                    });
-                    marker.on('click', function(){
-                        self.removeLocation(i);
-                    });
-                    return marker;
-                }
+                addWaypoints: false // user cannot add new waypoints to an already existing route
             });
 
             routingMachine.addTo(this.$refs.map.mapObject);
@@ -81,24 +74,35 @@
                     hours: Math.floor(summary.totalTime / 3600),
                     minutes: Math.round(summary.totalTime % 3600 / 60),
                 };
-                self.$store.state.route.set(dist,time);
+                self.$store.commit('setRoute', {
+                    dist: dist,
+                    time: time
+                });
             });
             // when the waypoints are changed the locations list from the storage is updated
             routingMachine.on('waypointschanged',function(){
-                self.locations.set(routingMachine.getWaypoints().map(x => x.latLng));
+                self.$store.dispatch('setLocations', routingMachine.getWaypoints().map(x => x.latLng) );
             });
             this.routingMachine = routingMachine;
         },
+
+        computed: {
+            locations: {
+                get() {
+                    return this.$store.state.locations; // shortcut
+                }
+            }
+        },
         methods: {
             /**
-             * This function adds a new location if the map is clicked ONCE
+             * This function only adds a new location if the map is clicked ONCE.
              * @param event
              */
             addLocation(event){
                 if(!this.timeoutId) {
                     this.timeoutId = setTimeout(() => {
                         //Single click
-                        this.addLocationHelper(event.latlng);
+                        this.$store.dispatch('addLocation', event.latlng);
                         this.timeoutId = null;
                     }, 400); //tolerance in ms
                 }else{
@@ -106,28 +110,6 @@
                     clearTimeout(this.timeoutId);
                     this.timeoutId = null;
                 }
-            },
-            /**
-             * this function adds the new location in the first empty spot available
-             * in the locations array, if it conforms to the conditions
-             * @param latlng latitude and longitude of the location to be added
-             */
-            addLocationHelper(latlng){
-                let maxNrLocations = this.$store.state.maxNrLocations;
-                let locations = this.locations.get();
-                for (let i = 0;i < maxNrLocations;i++){
-                    if (locations[i] === null){
-                        this.$store.state.locations.set(latlng,i);
-                        break;
-                    }
-                }
-            },
-            /**
-             *
-             * @param index of the location to be removed
-             */
-            removeLocation(index){
-                this.locations.set(null,index);
             }
         }
     }
