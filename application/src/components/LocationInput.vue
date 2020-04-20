@@ -44,28 +44,27 @@
         props: {
             locationInputLabel: String,
             value: Object,
-            index: Number
+            index: Number // The index this location will have in the store's state.locations.list array.
         },
         data() {
             return {
                 enteredText: null,
                 selected: null,
                 possibilities: null,
-                displayPossibilities: false,
-                locations: this.$store.state.locations
+                displayPossibilities: false
             }
         },
         watch:{
-            locations: function(){
-                let location = this.locations.get()[this.index]; // the location corresponding
+            locations: function() {
+                let location = this.$store.getters.locations[this.index]; // the location corresponding
                                                                  // to this LocationInput
-                if (location !== null){ //location is not empty
+                if (location !== null) { //location is not empty
                     this.reverseGeocode(location.lat,location.lng).then(
                         lc => {
                             this.enteredText = lc;
                         }
                     );
-                }else{ // the location is empty
+                } else { // the location is empty
                     this.enteredText = '';
                 }
             }
@@ -126,19 +125,30 @@
              * This function adds the selected location to the store.
              */
             addToStore() {
-                let state = this.$store.state;
-                if (this.selected === null){
-                    state.locations.set(null,this.index);
-                }else{
-                    state.locations.get()[this.index] = null;
+                if (this.selected === null) {
+                    this.$store.commit('removeLocation', this.index);
+                } else {
+                    this.$store.commit('removeLocation', this.index);
                     let latlng = L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
-                    state.locations.set(latlng,this.index);
+                    this.$store.dispatch('setLocationByIndex', {
+                        newList: latlng,
+                        index: this.index
+                    });
                 }
             }
         },
+
         computed: {
+            // List of suggested locations based on the text the user inputted
             suggestions() {
                 return 'suggestions' + this.value;
+            },
+
+            // The locations stored in the store
+            locations: {
+                get() {
+                    return this.$store.state.locations;
+                }
             }
         }
     }

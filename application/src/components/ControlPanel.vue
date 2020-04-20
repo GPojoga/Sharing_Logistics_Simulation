@@ -9,7 +9,16 @@
       <JourneyInput :date-valid="validDate" :locations-valid="validLocations" @dateChange="setValidDate" @journeyChange="setValidLocations"/>
       <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>
       <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
-      <CalculateRate @calculateRate="calculateRate"/>
+      <div>
+        <div class="settingContainer">
+          <router-link to="/settings">
+            Settings
+          </router-link>
+        </div>
+        <div class="calculateContainer">
+          <CalculateRate @calculateRate="calculateRate"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -200,6 +209,35 @@ export default {
 
   button::-moz-focus-inner {
     border: 0;
+  }
+
+  /* Style the container of the link to settings */
+  .settingContainer {
+    width : 50%;
+    height : 90px;
+    margin : 0;
+    float : left;
+    vertical-align: center;
+    line-height: 90px;
+  }
+
+  /* Style the link itself */
+  a {
+    text-decoration: none;
+    color: #FFF;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #007feb;
+    padding: 8px 12px;
+  }
+
+  /* Style the container for the calc button */
+  .calculateContainer {
+    width : 50%;
+    height : 90px;
+    margin : 0;
+    float : right;
   }
 
   /* Scrollbar layout */

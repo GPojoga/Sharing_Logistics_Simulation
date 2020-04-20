@@ -16,7 +16,7 @@
             Map,
         },
         mounted(){
-            let locations = this.$store.state.locations.get();
+            let locations = this.$store.getters.locations;
             for(let i = 0;i < locations.length;i++){
                 locations[i] = null;
             }

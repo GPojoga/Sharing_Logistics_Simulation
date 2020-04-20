@@ -48,6 +48,7 @@
              * @returns {[number, number, number]} 3 elements; [#light-duty, #heavy-duty, #train]
              */
             getVehicleQuantities: function () {
+                console.log(this.$refs);
                 return [
                     this.$refs.A[0].getQuantity(),
                     this.$refs.B[0].getQuantity(),

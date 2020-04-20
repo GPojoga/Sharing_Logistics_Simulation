@@ -1,8 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import mutations from "./mutations";
+import actions from "./actions";
 
 Vue.use(Vuex);
-const storage = new Vuex.Store({
+
+export default new Vuex.Store({
     state: {
         // Constants
         maxNrLocations : 2,
@@ -33,68 +36,30 @@ const storage = new Vuex.Store({
                 consumption1 : 0.3616
             }
         ],
+
+        // Variables (computed)
         route:{
             distance: 0, //default value of 186.6795 km (distance between Groningen and Amsterdam).
             time:{
                 hours: 0,
                 minutes: 0,
-            },
-            set: function(dist,time){
-                this.distance = dist;
-                this.time = time;
-                this.__ob__.dep.notify();
-            }
-        },
-        // Inputs (Variables)
-        locations : {
-            list: new Array(2).fill(null),
-            currentNrLocations: 0,
-            event: '',
-            get: function () {
-                return this.list;
-            },
-            set: function (newList, index) {
-                if (index === undefined) { // one argument
-                    let newLocations = 0;
-                    let changed = false;
-                    for (let i = 0; i < newList.length; i++) {
-                        newLocations += newList[i] !== null;
-                        changed = changed || (newList[i] !== this.list[i]);
-                        this.list[i] = newList[i];
-                    }
-                    if (changed) {
-                        let event = this.currentNrLocations !== newLocations ?
-                            'locationListUpdate' : 'locationUpdate';
-                        this.currentNrLocations = newLocations;
-                        this.event = event;
-                        this.__ob__.dep.notify();
-                    }
-                } else { // 2 arguments
-                    const a = newList === null;
-                    const b = this.list[index] === null;
-                    let event = String;
-                    if (newList !== this.list[index]) {
-                        if (a ? !b : b) {
-                            event = 'locationListUpdate';
-                            this.currentNrLocations += a ? -1 : 1;
-                        } else {
-                            event = 'locationUpdate';
-                        }
-                        this.list[index] = newList;
-                        this.event = event;
-                        this.__ob__.dep.notify();
-                    }
-                }
-                if (this.currentNrLocations <= 1){
-                    storage.state.route.set(0,{hours:0,minutes:0});
-                }
             }
         },
 
+        // Variables (based on input)
+        locations : {
+            list: new Array(2).fill(null),
+            event: ''
+        },
+
+        // The vehicles that dispatch from the start location.
         A : {
             vehicles : new Array(3).fill(0),
             cargo : []
         },
+
+        // TODO currently not used.
+        // The vehicles that dispatch from the end location.
         B : {
             vehicles : new Array(3).fill(0),
             cargo : []
@@ -102,8 +67,27 @@ const storage = new Vuex.Store({
 
 
     },
-    getters: {},
-    mutations: {},
-    actions: {}
+
+    getters: {
+        locations: state => {
+            return state.locations.list;
+        },
+
+        /**
+         * Calculates the number of spots in the locations array that contain a value.
+         *
+         * @param state
+         * @param getters
+         * @returns {number}
+         */
+        currentNrLocations: (state, getters) => {
+            let nrLocations = 0;
+            getters.locations.forEach(element => { nrLocations += (element !== null); });
+            return nrLocations;
+        }
+    },
+
+    // Imported from the files mutations.js and actions.js.
+    mutations,
+    actions
 });
-export default storage;
