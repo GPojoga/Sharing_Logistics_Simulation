@@ -13,7 +13,6 @@
 <script>
     import JourneyInput from "./JourneyInput";
 
-
     export default {
         name: "VehicleInput",
         components: {JourneyInput},
@@ -61,9 +60,9 @@
     }
 
     .vehicle {
-        margin: 10px 10px;
+        margin: 0;
+        border: 2px solid #007feb;
         border-radius: 5px;
-        background-color: #f1f9ff;
         padding: 10px 15px;
     }
 
@@ -77,11 +76,11 @@
     }
 
     .unselected:hover {
-        background-color: #e1f0ff;
+        background-color: #f1f9ff;
         cursor: pointer;
     }
 
     .selected {
-        background-color: #c7d5e3;
+        background-color: #d8efff;
     }
 </style>

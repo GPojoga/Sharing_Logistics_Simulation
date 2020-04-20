@@ -6,7 +6,7 @@
       </button>
     </div>
     <div class = "content">
-      <VehicleInput :locations-valid="validLocations" @journeyChange="setValidLocations"/>
+      <FleetInput :locations-valid="validLocations" @journeyChange="setValidLocations"/>
       <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>
       <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
       <div>
@@ -28,12 +28,12 @@
 import VehicleSelector from "./VehicleSelector";
 import ProductInput from "./ProductInput";
 import CalculateRate from "./CalculateRate";
-import VehicleInput from "./VehicleInput";
+import FleetInput from "./FleetInput";
 
 export default {
   name: 'ControlPanel',
   components: {
-    VehicleInput,
+    FleetInput,
     CalculateRate,
     VehicleSelector,
     ProductInput
