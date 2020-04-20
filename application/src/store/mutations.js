@@ -22,8 +22,8 @@ export const mutations = {
      * }
      */
     setRoute(state, payload) {
-        this.distance = payload.dist;
-        this.time = payload.time;
+        state.route.distance = payload.dist;
+        state.route.time = payload.time;
         state.route.__ob__.dep.notify();
     },
 
