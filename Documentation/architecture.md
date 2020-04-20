@@ -24,20 +24,18 @@ Under supervision of Alex Tutea
 ## Introduction
 <!-- A brief introduction to the product, highlighting the specifics that influence the architecture and design choices.-->
 
-The product will be a web application that is simulating the effect that sharing 
+The product will be a web application that is simulating the effect that sharing
 space for goods would have. The application's main goal is to determine if it
 would be a worthwhile idea to set up a platform on which companies or truck owners
 could offer empty space to transport other people's goods.
 
-The user can set multiple parameters for the simulation: 
+The user can set multiple parameters for the simulation:
 
-1. the start and end locations,
-2. the number of trucks for each of three predefined types, and
-3. the types of goods, which each have a volume, a weight and a quantity.
+1. the locations A and B as well as their radius,
+2. the number of trucks for each of three predefined types,
+3. the types of goods, which each have volume, weight, quantity as well as pick-up and delivery locations.
 
-To simplify the simulation in first instance, our client only needed to be able to enter
-the start and end location of a trip. In the future, this may be extended to include 
-locations in between those points.
+The user has to input the location A and B and specify their radius. Afterwards, the pick-up location of every product must be within the radius of any of these points. The delivery location must be imputed analogously. This approach is necessary for the shared logistics model, where a truck picks up as many products as possible around a given point and then delivers them within the radius of the other one.
 
 The three metrics that will show the result of the simulation are
 
@@ -98,20 +96,20 @@ The exact file structure and explanations of what the responsibility of each fil
     ├── main.js                         # renders and mounts the app
     ├── App.vue                         # the root of the app
     ├── components
-    │   ├── CalculateRate.vue           # combines all input after the calculate rate button has been pressed and 
+    │   ├── CalculateRate.vue           # combines all input after the calculate rate button has been pressed and
     │   │                                 stores this information
     │   ├── ControlPanel.vue            # the panel on the left of the screen that handles the input
     │   ├── JourneyInput.vue            # input component for the starting and final destinations
     │   ├── LocationInput.vue           # base input component for locations
-    │   ├── Map.vue
+    │   ├── Map.vue                     # displays the map and its components
     │   ├── ProductInput.vue            # input component for the goods
     │   ├── SelectorCheckBox.vue        # base input component for a checkbox
     │   ├── VehicleSelector.vue         # input component for all vehicle types
     │   └── VehicleSelectorEntry.vue    # input component for 1 vehicle type
     ├── router                          
-        └── index.js                    # contains the references to the two pages of the application
+    │   └── index.js                    # contains the references to the two pages of the application
     ├── store
-        └── index.js                    # stores information that multiple parts of the application need access to
+    │   └── index.js                    # stores information that multiple parts of │the application need access to
     └── views                           # the pages of the application
         ├── Home.vue                    # contains the input panel and the map
         └── OutputPage.vue              # displays the simulated results
@@ -162,7 +160,7 @@ most popular front-end Javascript frameworks, Angular, React and Vue.js. These f
 allow Javascript code to be structured into components.
 
 Since is Vue.js is said to have the lowest learning curve out of
-the three frameworks, we decided to go with Vue.js. Our TA also recommended this and on 
+the three frameworks, we decided to go with Vue.js. Our TA also recommended this and on
 Stackshare.io it can be seen that Vue.js has the highest approval ratings.
 
 Some other advantages of Vue.js are that it
@@ -199,8 +197,8 @@ We created the architecture together and then divided the components. When
 two components needed to be connected, the two team members worked on it together. Moreover,
 if anyone needed help, we of course helped our team mate with their part.
 
-The division was as follows: Antonin created the VehicleSelector, Bjar created the ProductInput, Gheorghe 
-created the Map and the store, Lorenzo created the ControlPanelOutput and Lonneke created 
+The division was as follows: Antonin created the VehicleSelector, Bjar created the ProductInput, Gheorghe
+created the Map and the store, Lorenzo created the ControlPanelOutput and Lonneke created
 the JourneyInput.
 
 ## Change log
@@ -209,6 +207,7 @@ the JourneyInput.
 | Who | When | What |
 | --- | --- | --- |
 | Lonneke | 11-3-2020 | First draft of the architecture document.
-| Lonneke | 24-3-2020 | Updated technologies and added introduction, file structure and image of architecture. 
+| Lonneke | 24-3-2020 | Updated technologies and added introduction, file structure and image of architecture.
 | Lonneke | 4-4-2020  | Added why we chose technologies and blackbox description in introduction.
 | Gheorghe| 6-4-2020  | Added the plugins necessary for the map
+| Gheorghe| 20-4-2020 | Updated the introduction and the application architecture   |
