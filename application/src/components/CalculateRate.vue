@@ -85,7 +85,7 @@
 <style scoped>
     .calcRate {
         margin: 25px;
-        text-align: right;
+        text-align: center;
         color: #007FEB;
         font-family: "Arial", Arial, sans-serif;
         font-weight: bold;

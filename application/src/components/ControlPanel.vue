@@ -9,7 +9,16 @@
       <JourneyInput :date-valid="validDate" :locations-valid="validLocations" @dateChange="setValidDate" @journeyChange="setValidLocations"/>
       <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>
       <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
-      <CalculateRate @calculateRate="calculateRate"/>
+      <div>
+        <div class="settingContainer">
+          <router-link to="/settings">
+            Settings
+          </router-link>
+        </div>
+        <div class="calculateContainer">
+          <CalculateRate @calculateRate="calculateRate"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -200,6 +209,22 @@ export default {
 
   button::-moz-focus-inner {
     border: 0;
+  }
+
+  .settingContainer {
+    width : 50%;
+    height : 90px;
+    margin : 0;
+    float : left;
+    vertical-align: center;
+    line-height: 90px;
+  }
+
+  .calculateContainer {
+    width : 50%;
+    height : 90px;
+    margin : 0;
+    float : right;
   }
 
   /* Scrollbar layout */

@@ -1,8 +1,9 @@
 <template>
-    <div>
+    <div id="background">
         <p id="title">
             Constants
         </p>
+        <br>
         <div id="box">
             <div id="names">
                 <div v-for="(constant, index) in globalConstants" class="constantName" :key="'name'+index">
@@ -39,6 +40,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="navbar">
+            <router-link to="/">
+                Home
+            </router-link>
         </div>
     </div>
 </template>
@@ -101,9 +107,9 @@
                                 index: 2,
                                 name : "Empty Fuel Consumption",
                                 min : 0,
-                                max : 99999,
+                                max : 10,
                                 error : function (value) {
-                                    return !(0 <= value && value <= 99999);
+                                    return !(0 <= value && value <= 10);
                                 },
                                 default : this.$store.state.truckTypes[0].consumption0,
                             },
@@ -111,9 +117,9 @@
                                 index: 3,
                                 name : "Full Fuel Consumption",
                                 min : 0,
-                                max : 99999,
+                                max : 10,
                                 error : function (value) {
-                                    return !(0 <= value && value <= 99999);
+                                    return !(0 <= value && value <= 10);
                                 },
                                 default : this.$store.state.truckTypes[0].consumption1,
                             },
@@ -147,9 +153,9 @@
                                 index: 2,
                                 name : "Empty Fuel Consumption",
                                 min : 0,
-                                max : 99999,
+                                max : 10,
                                 error : function (value) {
-                                    return !(0 <= value && value <= 99999);
+                                    return !(0 <= value && value <= 10);
                                 },
                                 default : this.$store.state.truckTypes[1].consumption0,
                             },
@@ -157,9 +163,9 @@
                                 index: 3,
                                 name : "Full Fuel Consumption",
                                 min : 0,
-                                max : 99999,
+                                max : 10,
                                 error : function (value) {
-                                    return !(0 <= value && value <= 99999);
+                                    return !(0 <= value && value <= 10);
                                 },
                                 default : this.$store.state.truckTypes[1].consumption1,
                             },
@@ -193,9 +199,9 @@
                                 index: 2,
                                 name : "Empty Fuel Consumption",
                                 min : 0,
-                                max : 99999,
+                                max : 10,
                                 error : function (value) {
-                                    return !(0 <= value && value <= 99999);
+                                    return !(0 <= value && value <= 10);
                                 },
                                 default : this.$store.state.truckTypes[2].consumption0,
                             },
@@ -203,9 +209,9 @@
                                 index: 3,
                                 name : "Full Fuel Consumption",
                                 min : 0,
-                                max : 99999,
+                                max : 10,
                                 error : function (value) {
-                                    return !(0 <= value && value <= 99999);
+                                    return !(0 <= value && value <= 10);
                                 },
                                 default : this.$store.state.truckTypes[2].consumption1,
                             },
@@ -218,11 +224,21 @@
 </script>
 
 <style scoped>
+    /* Style the background of the page */
+    #background {
+        background-color : white;
+        overflow : hidden;
+    }
+
+    /* Style the heading of the page */
     #title {
         font-size: 40px;
         text-align: center;
+        margin : 0;
+        height : 100%;
     }
 
+    /* Style the container containing the constants */
     #box {
         border-radius: 10px;
         background-color: #f1f9ff;
@@ -233,6 +249,7 @@
         overflow: auto;
     }
 
+    /* Style the left column of the container */
     #names {
         width: 40%;
         height: 100%;
@@ -241,27 +258,25 @@
         padding: 2.5%;
     }
 
+    /* Style an entry of the name column */
     .constantName {
         width: 100%;
         height: 30px;
         text-align: left;
     }
 
+    /* Style the text in the entry of the name column, making sure there is so padding */
     .constantText {
         margin: 0;
     }
 
-    .constantField {
-        width: 100%;
-        height: 30px;
-        text-align: center;
-    }
-
+    /* Style the text of less important constants */
     .constantSubText {
         font-size: small;
         margin: 0;
     }
 
+    /* Style the right column of the container of fields */
     #fields {
         width: 40%;
         height: 100%;
@@ -270,4 +285,29 @@
         padding: 2.5%;
     }
 
+    /* Style an entry of the constant field */
+    .constantField {
+        width: 100%;
+        height: 30px;
+        text-align: center;
+    }
+
+    /* Style the return home link container */
+    .navbar {
+        height: 30px;
+        text-align: center;
+        vertical-align: center;
+        padding-top: 20px;
+    }
+
+    /* Style the link itself */
+    a {
+        text-decoration: none;
+        color: #FFF;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        background: #007feb;
+        padding: 8px 12px;
+    }
 </style>
