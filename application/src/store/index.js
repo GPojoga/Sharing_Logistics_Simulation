@@ -55,13 +55,6 @@ export default new Vuex.Store({
         A : {
             vehicles : new Array(3).fill(0),
             cargo : []
-        },
-
-        // TODO currently not used.
-        // The vehicles that dispatch from the end location.
-        B : {
-            vehicles : new Array(3).fill(0),
-            cargo : []
         }
     },
 
