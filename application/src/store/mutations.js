@@ -11,30 +11,50 @@
  *      }
  */
 export const mutations = {
+    // Route mutations
     /**
      * Changes the distance and time that the route between the given points will take.
      *
      * @param state
-     * @param payload {
+     * @param payload, has type {
      *     distance: Float,
      *     time: Object
      * }
      */
     setRoute(state, payload) {
-        this.distance = payload.dist;
-        this.time = payload.time;
+        state.route.distance = payload.dist;
+        state.route.time = payload.time;
         state.route.__ob__.dep.notify();
     },
 
-    removeLocation(state, index) {
+    // Location mutations
+    /**
+     * Overwrites the location at the given index of the locations array by null.
+     * @param state
+     * @param index
+     */
+    eraseLocation(state, index) {
         state.locations.list[index] = null;
+        state.locations.__ob__.dep.notify();
+    },
+
+    /**
+     * Actually removes the location at the given index of the locations array and therefore resizes it.
+     * @param state
+     * @param payload, has type {
+     *     index: Integer,
+     *     deleteCount: Integer
+     * }
+     */
+    removeLocation(state, payload) {
+        state.locations.list.splice(payload.index,payload.deleteCount);
         state.locations.__ob__.dep.notify();
     },
 
     /**
      *
      * @param state
-     * @param payload: {
+     * @param payload, has type {
      *     newList: Object,
      *     index: Integer
      * }
@@ -82,10 +102,8 @@ export const mutations = {
             locations.list[i] = newList[i];
         }
         if (changed) {
-            const event = currentNrLocations !== newLocations ?
+            locations.event = currentNrLocations !== newLocations ?
                 'locationListUpdate' : 'locationUpdate';
-            // locations.currentNrLocations = newLocations;
-            locations.event = event;
             locations.__ob__.dep.notify();
         }
 
@@ -93,6 +111,37 @@ export const mutations = {
             state.route.distance = 0;
             state.route.time = {hours: 0, minutes: 0};
         }
+    },
+
+    /**
+     * Resizes the locations array. If it is too long, the values at the end will be deleted.
+     * @param state
+     * @param newSize
+     */
+    resizeLocations(state, newSize) {
+        const arr = state.locations.list;
+
+        while (newSize > arr.length) {
+            arr.push(null);
+        }
+        while (newSize < arr.length) {
+            arr.pop();
+        }
+    },
+
+    // Cargo mutations
+    addProduct(state) {
+        state.A.cargo.push({
+            quantity: "",
+            weight: "",
+            volume: "",
+            from: null,
+            to: null
+        });
+    },
+
+    removeProduct(state, index) {
+        state.A.cargo.splice(index, 1); // Removes one element starting from specified index of array.
     }
 };
 

@@ -50,6 +50,7 @@
         },
         watch:{
            locations: function() {
+               console.log('watcher map');
                if (this.locations.event === 'locationListUpdate'){  // A location was added/removed
                    this.routingMachine.setWaypoints(this.$store.getters.locations);
                }
@@ -67,7 +68,7 @@
             routingMachine.addTo(this.$refs.map.mapObject);
             routingMachine._container.style.display="None"; // the directions box is hidden
             //when the route is found, time and distance from the storage is updated
-            routingMachine.on('routesfound',function(e){
+            routingMachine.on('routesfound', function(e) {
                 let summary = e.routes[0].summary;
                 let dist =  parseFloat((summary.totalDistance / 1000).toFixed(2));
                 let time = {

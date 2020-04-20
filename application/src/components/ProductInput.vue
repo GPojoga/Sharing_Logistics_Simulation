@@ -7,13 +7,13 @@
             </p>
         </div>
 
-        <div class="labels">
-            <label>Quantity</label>
-            <label>Weight</label>
-            <label>Volume</label>
-        </div>
-
         <div class="form-row" v-for="(product, index) in cargo" :key="index">
+            <p> Product {{index + 1}} </p>
+            <div class="labels">
+                <label>Quantity</label>
+                <label>Weight</label>
+                <label>Volume</label>
+            </div>
             <div class="form-labels">
                 <input v-model="product.quantity" :name="`cargo[${index}][quantity]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="#" @input="setUpdate">
                 <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="kg" @input="setUpdate">
@@ -21,6 +21,8 @@
 
                 <button @click="removeProduct(index)" type="button" class="button circle cross" style="background-color: #f1f9ff;"  @input="setUpdate"></button>
             </div>
+            <LocationInput v-model="product.from" :index="2*(index+1)" location-input-label="From" @input="$emit('journeyChange')"/>
+            <LocationInput v-model="product.to" :index="2*(index+1)+1" location-input-label="To" @input="$emit('journeyChange')"/>
         </div>
 
         <div class="form-add">
@@ -30,36 +32,34 @@
     </div>
 </template>
 
-<script>
 
+<script>
+    import LocationInput from "./LocationInput";
     export default {
         name: "ProductInput",
-        data: () => ({
-            cargo: [
-                {
-                    quantity: "",
-                    weight: "",
-                    volume: ""
-                }
-            ]
-        }),
-        mounted() {
-            this.$store.state.A.cargo = this.cargo;
-        },
-        props : {
+        components: { LocationInput },
+        props: {
+            locationsValid : Boolean,
+            dateValid : Boolean,
             productsValid : Boolean,
+        },
+
+        mounted() {
+            this.addProduct();
+        },
+
+        computed: {
+            cargo() {
+                return this.$store.state.A.cargo;
+            }
         },
 
         methods: {
             addProduct() {
-                this.cargo.push({
-                    quantity: "",
-                    weight: "",
-                    volume: ""
-                });
+                this.$store.dispatch('addProduct');
             },
             removeProduct(index) {
-                this.cargo.splice(index, 1);
+                this.$store.dispatch('removeProduct', index);
                 this.setUpdate();
             },
             setUpdate(){
