@@ -34,7 +34,7 @@
 
 
 <script>
-    import LocationInput from "./LocationInput";
+    import LocationInput from "./baseComponents/LocationInput";
     export default {
         name: "ProductInput",
         components: { LocationInput },

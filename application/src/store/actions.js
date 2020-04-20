@@ -73,6 +73,7 @@ export const actions = {
         }); // Remove 'from' and 'to' locations.
         // Ensure that the array's size stays correct. This call shouldn't do anything.
         context.commit('resizeLocations', context.getters.maxNrLocations);
+        console.log(context.state.locations);
     }
 };
 

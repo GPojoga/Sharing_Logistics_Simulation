@@ -50,7 +50,6 @@
         },
         watch:{
            locations: function() {
-               console.log('watcher map');
                if (this.locations.event === 'locationListUpdate'){  // A location was added/removed
                    this.routingMachine.setWaypoints(this.$store.getters.locations);
                }
@@ -81,16 +80,15 @@
                 });
             });
             // when the waypoints are changed the locations list from the storage is updated
-            routingMachine.on('waypointschanged',function(){
+            routingMachine.on('waypointschanged', function() {
                 self.$store.dispatch('setLocations', routingMachine.getWaypoints().map(x => x.latLng) );
             });
             this.routingMachine = routingMachine;
         },
-
         computed: {
             locations: {
                 get() {
-                    return this.$store.state.locations; // shortcut
+                    return this.$store.state.locations;
                 }
             }
         },
