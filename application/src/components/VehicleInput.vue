@@ -7,15 +7,15 @@
             </div>
         </div>
         <div class="row">
-            <div v-for="(t,index) in truckTypes"
-                 :key="index"
+            <div v-for="(t,i) in truckTypes"
+                 :key="i"
                  class="imageTab"
-                 :class="{ selected: (selected === index), unselected: selected !== index }"
-                 @click="setSelected(index)">
+                 :class="{ selected: (vehicleType === i), unselected: (vehicleType !== i) }"
+                 @click="setSelected(i)">
                 <img :src="'assets/' + t.img" :alt="t.name" style="width:100%">
             </div>
         </div>
-        <JourneyInput :date-valid="true" :locations-valid="locationsValid" @journeyChange="this.$emit('journeyChange')"/>
+        <JourneyInput :index="index" :date-valid="true" :locations-valid="locationsValid" @journeyChange="this.$emit('journeyChange')"/>
     </div>
 </template>
 
@@ -29,22 +29,32 @@
             locationsValid : Boolean,
             index : Number
         },
-        data() {
-            return {
-                selected: -1,
-            }
-        },
         methods: {
+            /**
+             * Sets the vehicle type in the store.
+             * @param i
+             */
             setSelected(i) {
-                this.selected = i;
+                this.$store.commit('setVehicleType', {index: this.index, type: i});
             },
             removeVehicle() {
                 this.$store.dispatch('removeVehicle', this.index);
             }
         },
         computed: {
+            /**
+             * This list of truck types and their values.
+             * @returns Array
+             */
             truckTypes() {
                 return this.$store.state.truckTypes;
+            },
+            /**
+             * The vehicle type that this vehicle has in the store.
+             * @returns Number
+             */
+            vehicleType() {
+                return this.$store.state.A.vehicles[this.index].indexTruckType;
             }
         }
     }
@@ -60,7 +70,6 @@
         float: left;
         text-align: left;
         color: #007FEB;
-        font-family: "Arial", Arial, sans-serif;
         font-weight: bold;
         font-size: 100%;
     }
@@ -81,27 +90,16 @@
         display: inline-block;
     }
 
-    .unselected:hover {
-        background-color: #f1f9ff;
-        cursor: pointer;
-    }
-
-    .selected {
-        background-color: #d8efff;
-    }
-
     /* Button to remove this vehicle */
     .remove {
         float: right;
     }
 
     .button {
-        background-color: #f1f9ff;;
-        text-align: left;
+        background-color: #f1f9ff;
         border: none;
         color: white;
         padding: 15px 10px;
-        text-align: center;
         text-decoration: none;
         display: inline-block;
         font-size: 16px;

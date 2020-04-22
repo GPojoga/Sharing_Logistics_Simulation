@@ -1,16 +1,17 @@
 <template>
     <div class="fleetInput">
         <VehicleInput
-                v-for="(vehicle,index) in fleet"
+                v-for="(_,index) in fleet"
                 :key="index"
                 :index="index"
                 :locations-valid="locationsValid"
-                @journeyChange="this.$emit('journeyChange')"/>
+                @journeyChange="$emit('journeyChange')"/>
 
         <div class="add">
             <button @click="addVehicle" type="button" class="button circle plus"></button>
             Add vehicle
         </div>
+        <div style="clear: both;"></div> <!-- Makes sure the previous float doesn't overlap with the next element -->
     </div>
 </template>
 
@@ -42,7 +43,7 @@
 <style scoped>
     /* Holder for FleetInput */
     .fleetInput {
-        margin: 0px;
+        margin: 0;
         padding: 10px;
     }
 
@@ -52,13 +53,16 @@
     }
 
     /* Button to add new vehicles */
+    .add {
+        float: left;
+        font-weight: bold;
+    }
+
     .button{
         background-color: #1187EC;
-        text-align: left;
         border: none;
         color: white;
         padding: 15px 10px;
-        text-align: center;
         text-decoration: none;
         display: inline-block;
         font-size: 16px;

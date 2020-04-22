@@ -47,11 +47,11 @@
                         @input="setUpdate"></button>
             </div>
             <LocationInput v-model="product.from"
-                           :index="2*(index+1)"
+                           :index="2*(index)+baseLocationsIndex"
                            location-input-label="From"
                            @input="$emit('journeyChange')"/>
             <LocationInput v-model="product.to"
-                           :index="2*(index+1)+1"
+                           :index="2*(index)+1+baseLocationsIndex"
                            location-input-label="To"
                            @input="$emit('journeyChange')"/>
         </div>
@@ -65,7 +65,7 @@
 
 
 <script>
-    import LocationInput from "./baseComponents/LocationInput";
+    import LocationInput from "./LocationInput";
     export default {
         name: "ProductInput",
         components: { LocationInput },
@@ -82,6 +82,10 @@
         computed: {
             cargo() {
                 return this.$store.state.A.cargo;
+            },
+            // The index in the locations array of the first product
+            baseLocationsIndex() {
+                return this.$store.getters.nrVehicleLocations;
             }
         },
 
@@ -117,14 +121,6 @@
         padding: 15px;
         border: 2px solid #007feb;
         border-radius: 5px;
-    }
-
-    .product-title{
-        text-align: left;
-        color: #007FEB;
-        font-family: "Arial", Arial, sans-serif;
-        font-weight: bold;
-        font-size: 100%;
     }
 
     .button{

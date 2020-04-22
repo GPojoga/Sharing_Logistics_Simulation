@@ -57,15 +57,30 @@ export default new Vuex.Store({
             event: ''
         },
 
-        // The vehicles that dispatch from the start location.
         A : {
+            // The vehicles that dispatch from the start location.
             vehicles : new Array(0).fill(null),
+
+            // The goods that need to be delivered by these vehicles.
             cargo : []
         }
     },
 
     // The store's version of computed(), in a way.
     getters: {
+        /**
+         * Returns an array with the number of trucks that are available of each type.
+         * @param state
+         * @returns {any[]}
+         */
+        trucksByType: state => {
+            let arr = new Array(state.truckTypes.length).fill(0);
+            state.A.vehicles.forEach( v => {
+                arr[v.indexTruckType]++;
+            });
+            return arr;
+        },
+
         /**
          * The maximum number of locations that can be contained in the locations array.
          * It is equal to the general 'from' and 'to' locations of the trucks (2*number of trucks),
@@ -74,8 +89,17 @@ export default new Vuex.Store({
          * @param state
          * @returns {number}
          */
-        maxNrLocations: state => {
-            return 2*state.A.vehicles.length + 2*state.A.cargo.length;
+        maxNrLocations: (state, getters) => {
+            return getters.nrVehicleLocations + 2*state.A.cargo.length;
+        },
+
+        /**
+         * The number of locations of the vehicles in the locations array.
+         * @param state
+         * @returns {number}
+         */
+        nrVehicleLocations: state => {
+            return 2*state.A.vehicles.length;
         },
 
         locations: state => {

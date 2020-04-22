@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import InputNumberBox from "../components/baseComponents/InputNumberBox";
+    import InputNumberBox from "../components/InputNumberBox";
     export default {
         name: "App",
         components: {InputNumberBox},

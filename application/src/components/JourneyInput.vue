@@ -6,14 +6,14 @@
                 Fields FROM and TO must not be empty!
             </p>
         </div>
-        <LocationInput id="from0" v-model="from" :index="0" location-input-label="From" @input="$emit('journeyChange')"/>
-        <LocationInput id="to1" v-model="to" :index="1" location-input-label="To" @input="$emit('journeyChange')"/>
+        <LocationInput class="from" v-model="from" :index="2*index" location-input-label="From" @input="$emit('journeyChange')"/>
+        <LocationInput class="to" v-model="to" :index="2*index + 1" location-input-label="To" @input="$emit('journeyChange')"/>
         <p>Distance : {{route.distance}} km | Time : {{route.time.hours}} h {{route.time.minutes}} m</p>
     </div>
 </template>
 
 <script>
-    import LocationInput from "./baseComponents/LocationInput";
+    import LocationInput from "./LocationInput";
 
 
     export default {
@@ -22,6 +22,7 @@
         props: {
             locationsValid : Boolean,
             dateValid : Boolean,
+            index: Number
         },
         data() {
             return {
@@ -43,7 +44,7 @@
         overflow: auto;
     }
 
-    #to1 {
+    .to {
         margin-top: 10px;
     }
 

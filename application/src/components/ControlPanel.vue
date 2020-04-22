@@ -7,7 +7,6 @@
     </div>
     <div class = "content">
       <FleetInput :locations-valid="validLocations" @journeyChange="setValidLocations"/>
-<!--      <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>-->
       <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
       <div>
         <div class="settingContainer">
