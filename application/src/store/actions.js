@@ -55,6 +55,10 @@ export const actions = {
     },
 
     // Cargo actions
+    /**
+     *
+     * @param context
+     */
     addProduct(context) {
         context.commit('addProduct'); // This method indirectly changes the value of maxNrLocations.
         context.commit('resizeLocations', context.getters.maxNrLocations);
@@ -73,7 +77,21 @@ export const actions = {
         }); // Remove 'from' and 'to' locations.
         // Ensure that the array's size stays correct. This call shouldn't do anything.
         context.commit('resizeLocations', context.getters.maxNrLocations);
-        console.log(context.state.locations);
+    },
+
+    // Vehicle actions
+    addVehicle(context) {
+        context.commit('addVehicle');
+        context.commit('resizeLocations', context.getters.maxNrLocations);
+    },
+
+    removeVehicle(context, index) {
+        context.commit('removeVehicle', index);
+        context.commit('removeLocation', {
+            index: 2*index,
+            deleteCount: 2
+        }); // Remove 'from' and 'to' locations of this vehicle
+        context.commit('resizeLocations', context.getters.maxNrLocations);
     }
 };
 

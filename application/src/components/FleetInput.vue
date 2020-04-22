@@ -1,6 +1,11 @@
 <template>
     <div class="fleetInput">
-        <VehicleInput :locations-valid="locationsValid" @journeyChange="this.$emit('journeyChange')"/>
+        <VehicleInput
+                v-for="(vehicle,index) in fleet"
+                :key="index"
+                :index="index"
+                :locations-valid="locationsValid"
+                @journeyChange="this.$emit('journeyChange')"/>
 
         <div class="add">
             <button @click="addVehicle" type="button" class="button circle plus"></button>
@@ -18,9 +23,17 @@
         props: {
             locationsValid : Boolean
         },
+        mounted() {
+            this.addVehicle();
+        },
         methods: {
             addVehicle() {
-
+                this.$store.dispatch('addVehicle');
+            }
+        },
+        computed: {
+            fleet() {
+                return this.$store.state.A.vehicles;
             }
         }
     }
@@ -31,6 +44,11 @@
     .fleetInput {
         margin: 0px;
         padding: 10px;
+    }
+
+    /* Add space between the vehicle input tabs */
+    .fleetInput > div {
+        margin-bottom: 10px;
     }
 
     /* Button to add new vehicles */
@@ -70,6 +88,7 @@
         right:0;
         bottom:0;
     }
+
     /* Plus in circle */
     .circle.plus:before,
     .circle.plus:after {
@@ -88,17 +107,5 @@
     .circle.plus:after{
         margin: auto 8px;
         height: 2px;
-    }
-
-    /* Cross in circle */
-    .circle.cross:after,
-    .circle.cross:before{
-        background: #007feb;
-        margin: auto 8px;
-        height: 2px;
-        transform:rotateZ(45deg);
-    }
-    .circle.cross:after{
-        transform:rotateZ(-45deg);
     }
 </style>

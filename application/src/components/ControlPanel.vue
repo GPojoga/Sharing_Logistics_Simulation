@@ -7,7 +7,7 @@
     </div>
     <div class = "content">
       <FleetInput :locations-valid="validLocations" @journeyChange="setValidLocations"/>
-      <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>
+<!--      <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>-->
       <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
       <div>
         <div class="settingContainer">
@@ -24,8 +24,6 @@
 </template>
 
 <script>
-
-import VehicleSelector from "./VehicleSelector";
 import ProductInput from "./ProductInput";
 import CalculateRate from "./CalculateRate";
 import FleetInput from "./FleetInput";
@@ -35,7 +33,6 @@ export default {
   components: {
     FleetInput,
     CalculateRate,
-    VehicleSelector,
     ProductInput
   },
   data() {

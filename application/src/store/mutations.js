@@ -142,6 +142,17 @@ export const mutations = {
 
     removeProduct(state, index) {
         state.A.cargo.splice(index, 1); // Removes one element starting from specified index of array.
+    },
+
+    // Vehicle mutations
+    addVehicle(state) {
+        state.A.vehicles.push({
+            indexTruckType: null
+        });
+    },
+
+    removeVehicle(state, index) {
+        state.A.vehicles.splice(index, 1); // Removes one element starting from specified index of array.
     }
 };
 
