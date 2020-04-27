@@ -1,15 +1,15 @@
 <!--
-The goal of this document is to allow you to present the architecture of what you have already but also what you are aiming at.
-(e.g. if you plan to use Angular on the front-end, but didn’t start using it yet, do mention this).
-One of the goals of this document is to make sure that the SE Staff has a good overview of what everybody is doing so we can offer you the best advice :)
+    The goal of this document is to allow you to present the architecture of what you have already but also what you are aiming at.
+    (e.g. if you plan to use Angular on the front-end, but didn’t start using it yet, do mention this).
+    One of the goals of this document is to make sure that the SE Staff has a good overview of what everybody is doing so we can offer you the best advice :)
 -->
 
 
 
 # Architecture document
 <!--
-A nice cover:...will make the us happy.
-Add the project title, the client, the team names, TA name and the document version.
+    A nice cover:...will make the us happy.
+    Add the project title, the client, the team names, TA name and the document version.
 -->
 
 **Sharing Logistics Simulation**
@@ -30,7 +30,7 @@ Under supervision of Alex Tutea
 
 ## Introduction
 <!--
-A brief introduction to the product, highlighting the specifics that influence the architecture and design choices.
+    A brief introduction to the product, highlighting the specifics that influence the architecture and design choices.
 -->
 
 The product will be a web application that is simulating the effect that sharing space for goods would have.
@@ -54,9 +54,9 @@ The three metrics that will show the result of the simulation are:
 
 ## Architectural overview
 <!--
-Architectural overview: What components are there and what are their functions?
-How are components connected/communicating?
-If a more general principle or a paradigm is applied that is worth mentioning, mention it.
+    Architectural overview: What components are there and what are their functions?
+    How are components connected/communicating?
+    If a more general principle or a paradigm is applied that is worth mentioning, mention it.
 -->
 
 The project does not need a persistent database, because all simulated data will be calculated on the spot every time.
@@ -85,7 +85,7 @@ For our project, the view is composed of the following Vue components:
 The root component of the view is called App.vue.
 This App.vue file is linked to by a file called main.js, which first renders the app and then mounts it.
 
-The top-level components are the two views, or web pages, called Home.vue and OutputPage.vue.
+The top-level components are the three views, or web pages, called Home.vue, OutputPage.vue and SettingsPage.vue.
 
 The Home view consists of two high-level components, ControlPanel.vue and Map.vue.
 In the ControlPanel the user can enter their input and choose values for the given parameters that will determine the simulation.
@@ -95,44 +95,48 @@ These high-level components use the middle-level components JourneyInput, Produc
 These middle-level components, on their turn, may use the base components: LocationInput and SelectorCheckBox.
 
 The exact file structure and explanations of what the responsibility of each file is, can be found below.
-
 ````
 ├── public
-│   └── index.html
+│   ├── favicon.png                     # the icon used of the webapp
+│   └── index.html
 └── src
     ├── main.js                         # renders and mounts the app
     ├── App.vue                         # the root of the app
     ├── components
-    │   ├── CalculateRate.vue           # combines all input after the calculate rate button has been pressed and
+    │   ├── CalculateRate.vue           # combines all input after the calculate rate button has been pressed and
     │   │                                 stores this information
-    │   ├── ControlPanel.vue            # the panel on the left of the screen that handles the input
-    │   ├── JourneyInput.vue            # input component for the starting and final destinations
-    │   ├── LocationInput.vue           # base input component for locations
-    │   ├── Map.vue                     # displays the map and its components
-    │   ├── ProductInput.vue            # input component for the goods
-    │   ├── SelectorCheckBox.vue        # base input component for a checkbox
-    │   ├── VehicleSelector.vue         # input component for all vehicle types
-    │   └── VehicleSelectorEntry.vue    # input component for 1 vehicle type
-    ├── router                          
-    │   └── index.js                    # contains the references to the two pages of the application
+    │   ├── ControlPanel.vue            # the panel on the left of the screen that handles the input
+    │   ├── InputNumberBox.vue          # base input component for numbers
+    │   ├── JourneyInput.vue            # input component for the starting and final destinations
+    │   ├── LocationInput.vue           # base input component for locations
+    │   ├── Map.vue                     # displays the map and its components
+    │   ├── ProductInput.vue            # input component for the goods
+    │   ├── SelectorCheckBox.vue        # base input component for a checkbox
+    │   ├── VehicleSelector.vue         # input component for all vehicle types
+    │   └── VehicleSelectorEntry.vue    # input component for 1 vehicle type
+    ├── router
+    │   └── index.js                    # contains the references to the three pages of the application
     ├── store
-    │   └── index.js                    # stores information that multiple parts of │the application need access to
+    │   ├── actions.js                  # alters the state of the application by performing mutations
+    │   ├── index.js                    # stores information that multiple parts of the application need access to
+    │   └── mutations.js                # changes the information of the applications
     └── views                           # the pages of the application
         ├── Home.vue                    # contains the input panel and the map
-        └── OutputPage.vue              # displays the simulated results
+        ├── OutputPage.vue              # displays the simulated results
+        └── SettingsPage.vue            # contains constants that can be changed
 ````
 
 Note that each element of the view can access the application's store.
 
 Since Vue is meant to create Single Page Applications, we added a router to the project.
-What this router essentially does is mounting one of the two views (Home or OutputPage) to App.vue.
+What this router essentially does is mounting one of the three views (Home, OutputPage or SettingsPage) to App.vue.
 
 
 ## Technology Stack
 <!--
-Technology Stack: What programming languages are being used?
-What technologies are being used (Frameworks, libraries, platform, peripherals)?
-If different components have different technologies, present them individually.
+    Technology Stack: What programming languages are being used?
+    What technologies are being used (Frameworks, libraries, platform, peripherals)?
+    If different components have different technologies, present them individually.
 -->
 
 The following is a list of used technologies and frameworks:
@@ -199,8 +203,8 @@ It allows us to connect to OpenStreetMap, a free wiki world map.
 
 ## Team organization
 <!--
-Team Organization: What teams are there and what are their responsibilities?
-Are the team responsibilities focused on different components?
+    Team Organization: What teams are there and what are their responsibilities?
+    Are the team responsibilities focused on different components?
 -->
 
 There is one team in our project.
@@ -218,14 +222,14 @@ Lonneke created the JourneyInput.
 
 ## Change log
 <!--
-Change Log: Descriptive list of changes made to the document tagged with date and author.
+    Change Log: Descriptive list of changes made to the document tagged with date and author.
 -->
 
-| Who     | When       | What
-| ------- | ---------- | -----
-| Lonneke | 11-03-2020 | First draft of the architecture document.
-| Lonneke | 24-03-2020 | Updated technologies and added introduction, file structure and image of architecture.
-| Lonneke | 04-04-2020 | Added why we chose technologies and blackbox description in introduction.
-| Gheorghe| 06-04-2020 | Added the plugins necessary for the map
-| Gheorghe| 20-04-2020 | Updated the introduction and the application architecture
-| Antonin | 26-04-2020 | ...
+| Who      | When       | What
+| -------- | ---------- | -----
+| Lonneke  | 11-03-2020 | First draft of the architecture document.
+| Lonneke  | 24-03-2020 | Updated technologies and added introduction, file structure and image of architecture.
+| Lonneke  | 04-04-2020 | Added why we chose technologies and blackbox description in introduction.
+| Gheorghe | 06-04-2020 | Added the plugins necessary for the map
+| Gheorghe | 20-04-2020 | Updated the introduction and the application architecture
+| Antonin  | 26-04-2020 | Updated the file structure and application architecture
