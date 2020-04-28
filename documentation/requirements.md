@@ -39,11 +39,10 @@ As a user of this applet I want to ...
 ### Important User Stories
 As a user of this applet I want to ...  
 - be able to change points A & B as well as their radius.
-- be able to change the quantity of vehicles which make the back and fourth journey so that I can observe the difference this makes to the comparison.
-- be able to change the distribution of vehicles making the back and fourth journey so that I can observe the difference this makes to the comparison.
+- be able to change the number of vehicles of a specific type which make the back and fourth journey so that I can observe the difference this makes to the comparison.
 - have 3 types of vehicles (all different sizes) so that I can change between the 3 which is relevant for the previous step.
 - be able to change the weight of the goods that need to be transported so that I can see what effects this has on both systems of transportation.
-- be able to change the size of the the goods that need to be transported so that I can see what effect this has on the transportation of these goods under both systems.
+- be able to change the size of the goods that need to be transported so that I can see what effect this has on the transportation of these goods under both systems.
 - be able to specify the pick-up and delivery location of every product within the range of the points A & B so that I can see what effect this has on the transportation of these goods under both systems.
 
 ### Useful User Stories
@@ -62,6 +61,24 @@ As a user of this applet I want to ...
 - be able not to change certain parameters and have the simulation use a default value for this parameter so that I can quickly start simulating.
 - have the simulation always give the same outcomes when I run it with the same parameters so that I only have to run the simulation once.
 
+## Traceability Matrix
+| **Requirement** | **Files Affected** | **Test** | **Passed**
+|----------------|------------|--------|---------|
+| Be able to compare the CO2 emission of the two methods    |   |   |   |
+| Be able to compare the time difference of the two methods|   |   |   |
+| Be able to change the points A & B|   |   |   |
+| Be able to change the radius of the points A & B |   |   |   |
+| Be able to change the number of vehicles of a specific type  |   |   |   |
+| Have 3 predefined vehicle types |   |   |   |
+| Be able to change the weight of the products |   |   |   |
+| Be able to change the size of a product |   |   |   |
+| Be able to specify the pick-up location of a product   |   |   |   |
+| Be able to specify the delivery location of a product   |   |   |   |
+| Be able to change the points A & B using a digital map   |   |   |   |
+| Be able to visualize the current location of a truck   |   |   |   |
+| Be able to visualize the CO2 emission of a specific truck  |   |   |   |
+
+
 ## Customer meetings
 | **When**  | **What**
 |:---------:|----------
@@ -76,4 +93,4 @@ As a user of this applet I want to ...
 | Antonin Thioux | 23rd Feb. | The document.     | Created the document, added sections: introduction, user wishes, customer meetings, changelog.
 | Bjar Karim 	| 22nd Mar.	| Customer meetings.  | Added the new meeting (email) with the customer.
 | Bjar Karim   | 6th  Apr. | Customer meetings.  | Added the new meeting (email) with the customer and updated the user stories.
-| Gheorghe Pojoga   | 20th Apr.  | Important user stories. Non functional requirements. Customer meetings   | Added a new important user story. Removed one non-functional requirement and added a new one. Added a new client meeting (video chat).   |
+| Gheorghe Pojoga   | 20th Apr.  | Important user stories. Non functional requirements. Customer meetings. Traceability matrix.   | Added a new important user story.  Combined two important user stories. Removed one non-functional requirement and added a new one. Added a new client meeting (video chat). Created the sketch of the Traceability Matrix.   |
