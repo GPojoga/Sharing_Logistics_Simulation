@@ -90,6 +90,15 @@
         display: inline-block;
     }
 
+    .selected {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);
+        background-color: #f1f9ff;
+    }
+
+    .unselected:hover {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);
+    }
+
     /* Button to remove this vehicle */
     .remove {
         float: right;
