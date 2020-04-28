@@ -63,7 +63,9 @@
       }
     },
     mounted() {
+      console.log('Find traditional');
       this.findTraditional();
+      console.log('Find sharing');
       this.findSharing();
     },
     methods : {
@@ -196,7 +198,7 @@
       findSharing() {
         let dis = this.$store.state.route.distance;
         let goods = this.$store.state.A.cargo.map(a => Object.assign({}, a));
-        let trucks = this.$store.state.A.vehicles.slice();
+        let trucks = this.$store.getters.trucksByType.slice();
 
         // TODO: change this so it supports goods being sent from both locations
         let good = this.getAverageGood(goods);
@@ -212,7 +214,7 @@
             this.sharing.emission += this.$store.state.emissionBurnt * dis * fuel_rate;
           }
 
-          trucks = this.$store.state.A.vehicles.slice();
+          trucks = this.$store.getters.trucksByType.slice();
           this.sharing.time += 2 * dis / this.$store.state.averageSpeed;
         }
 

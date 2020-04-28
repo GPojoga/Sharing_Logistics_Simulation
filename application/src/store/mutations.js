@@ -4,10 +4,10 @@
  * They can be used by calling
  *      this.$store.commit('mutationName', payload)
  *
- * Payload should contain one or multiple parameter values. For example:
+ * Payload should be one variable. It can consist of multiple parameter values. For example:
  *      payload = {
  *          index: i,
- *          newList, latLng
+ *          newList: latLng
  *      }
  */
 export const mutations = {
@@ -142,6 +142,29 @@ export const mutations = {
 
     removeProduct(state, index) {
         state.A.cargo.splice(index, 1); // Removes one element starting from specified index of array.
+    },
+
+    // Vehicle mutations
+    addVehicle(state) {
+        state.A.vehicles.push({
+            indexTruckType: null
+        });
+    },
+
+    removeVehicle(state, index) {
+        state.A.vehicles.splice(index, 1); // Removes one element starting from specified index of array.
+    },
+
+    /**
+     *
+     * @param state
+     * @param payload has type {
+     *     index: Number,
+     *     type: Number
+     * }
+     */
+    setVehicleType(state, payload) {
+        state.A.vehicles[payload.index].indexTruckType = payload.type;
     }
 };
 

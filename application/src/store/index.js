@@ -15,24 +15,30 @@ export default new Vuex.Store({
         truckTypes : [
             {
                 key : "Light",
+                name: "Light-duty van",
                 volume : 8.925,
                 maxPayload : 4700,
                 consumption0 : 0.2374,
-                consumption1 : 0.3616
+                consumption1 : 0.3616,
+                img: 'light_duty_van.svg',
             },
             {
                 key : "Heavy",
+                name: "Heavy-duty van",
                 volume : 91.223,
                 maxPayload : 32018,
                 consumption0 : 0.2374,
-                consumption1 : 0.3616
+                consumption1 : 0.3616,
+                img: 'heavy_duty_van.svg'
             },
             {
                 key : "Train",
+                name: "Train truck",
                 volume : 115.0,
                 maxPayload : 35300,
                 consumption0 : 0.2374,
-                consumption1 : 0.3616
+                consumption1 : 0.3616,
+                img: 'train_truck.svg'
             }
         ],
 
@@ -51,24 +57,49 @@ export default new Vuex.Store({
             event: ''
         },
 
-        // The vehicles that dispatch from the start location.
         A : {
-            vehicles : new Array(3).fill(0),
+            // The vehicles that dispatch from the start location.
+            vehicles : new Array(0).fill(null),
+
+            // The goods that need to be delivered by these vehicles.
             cargo : []
         }
     },
 
-    // The store's computed properties, in a way.
+    // The store's version of computed(), in a way.
     getters: {
         /**
+         * Returns an array with the number of trucks that are available of each type.
+         * @param state
+         * @returns {any[]}
+         */
+        trucksByType: state => {
+            let arr = new Array(state.truckTypes.length).fill(0);
+            state.A.vehicles.forEach( v => {
+                arr[v.indexTruckType]++;
+            });
+            return arr;
+        },
+
+        /**
          * The maximum number of locations that can be contained in the locations array.
-         * It is equal to the general 'from' and 'to' locations of the trucks (2),
-         * plus the 'from' and 'to' locations of each product (2*number of products): 2 + 2*state.A.cargo.length;
+         * It is equal to the general 'from' and 'to' locations of the trucks (2*number of trucks),
+         * plus the 'from' and 'to' locations of each product (2*number of products):
+         *      2*state.A.vehicles.length + 2*state.A.cargo.length;
          * @param state
          * @returns {number}
          */
-        maxNrLocations: state => {
-            return 2 + 2*state.A.cargo.length;
+        maxNrLocations: (state, getters) => {
+            return getters.nrVehicleLocations + 2*state.A.cargo.length;
+        },
+
+        /**
+         * The number of locations of the vehicles in the locations array.
+         * @param state
+         * @returns {number}
+         */
+        nrVehicleLocations: state => {
+            return 2*state.A.vehicles.length;
         },
 
         locations: state => {
