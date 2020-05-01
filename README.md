@@ -2,7 +2,8 @@
 ## Getting Started
 ### About
 The goal of the project is to produce a webapp that is able to offer preliminary insight about the viability of a sharing logistics transportation model.
-This project is initiative was undertaken by Astone Shi, while the webapp itself was developed by 5 students of the University of Groningen in 2020.
+The webapp achieves this by simulating the a sharing logistics against a more traditional method of transportation.
+This project is initiative undertaken by Astone Shi, while the webapp itself was developed by 5 students of the University of Groningen in 2020.
 
 ### File structure
 This project has been split into 4 folders from the git repository root folder, these are:
