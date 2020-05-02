@@ -36,6 +36,29 @@ export default new Vuex.Store({
             }
         ],
 
+        debugListProducts : [
+            {
+                quantity: 1,
+                weight: 1,
+                volume: 1,
+                from: [1,1],
+                to: [1,2]
+            },
+            {
+                quantity: 1,
+                weight: 1,
+                volume: 1,
+                from: [3,1],
+                to: [1,3]
+            },
+            {
+                quantity: 1,
+                weight: 1,
+                volume: 1,
+                from: [2,3],
+                to: [2,2]
+            }],
+
         // Variables (computed)
         route : {
             distance: 0, //default value of 186.6795 km (distance between Groningen and Amsterdam).

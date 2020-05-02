@@ -1,7 +1,6 @@
 
 import store from "../store/index.js";
-import {TraditionalRouter} from "./TraditionalRouter";
-import {SharedRouter} from "./SharedRouter";
+import {euclideanDistance} from "@/classes/euclideanDistance";
 
 export class Truck{
 
@@ -39,11 +38,18 @@ export class Truck{
     nrDeliveredProducts = 0;
 
     /**
-     * method of simulation (SharedRouter|TraditionalRouter). Default - TraditionalRouter
-     * @type {object}
+     * Number of products cached inside truck
+     * @type {number}
      * @private
      */
-    __router = null;
+    __cacheSize = 10;
+
+    /**
+     * List of nearest products. Cleared when a new route is assigned.
+     * @type {*[]}
+     * @private
+     */
+    __cache = [];
 
     /**
      *
@@ -51,10 +57,9 @@ export class Truck{
      * @param method simulation method ("Traditional" | "Shared")
      * @param location initial location of the truck
      */
-    constructor(type,method,location) {
+    constructor(type,location) {
         this.location = location;
         this.__setProperties(type);
-        this.__selectRouter(method);
     }
 
     /**
@@ -74,36 +79,62 @@ export class Truck{
         }
     }
 
-    /**
-     * This function assigns to the __simulation field the function of the
-     * specified simulation method. If the given method is neither "Shared" nor "Traditional",
-     * the default method is assumed i.e., "Traditional".
-     * @param method method of transportation
-     * @private
+    /** DEBUG VERSION (wrong list of products)
+     * This function returns the nth preferred product of the truck.
+     * The most preferred product (0th), will require the smallest amount of fuel to pick up.
+     * @param n nth preferred product
      */
-    __selectRouter(method){
-        switch (method) {
-            case "Traditional" :
-                this.__router = new TraditionalRouter(this);
-                break;
-            case "Shared" :
-                this.__router = new SharedRouter(this);
-                break;
-            default :
-                console.error("Truck : Undefined simulation method (default : traditional simulation)");
-                this.__router = new TraditionalRouter(this);
+    getPreferredProduct(n){
+        if(this.__cache.length === 0){
+            this.__updateCache();
+        }
+
+        if(n >= store.state.debugListProducts.length){
+            console.error("Invalid index of the Preferred Product");
+            return ;
+        }
+
+        if(this.__cacheSize > n){
+            return this.__cache[n];
+        } else {
+            let list = store.state.debugListProducts.slice();
+            return list.sort((a,b) => this.__compareFuelConsumption(a.from,b.from))[n];
         }
     }
 
-    /**
-     * This function activates the truck
+    /**     DEBUG VERSION (remaining distance from the current route is not considered)
+     *
+     *  This function computes the amount of fuel necessary to reach the given location.
+     *  The result is computed using the amount of fuel necessary to finish the current route (if any),
+     *  and the fuel consumed to arrive (empty) at the location.
+     * @param location
+     * @returns {number} the amount of fuel
      */
-    start(){
-        let route = this.__router.generateRoute();
-        console.log(route);
-        // while(route !== null){
-        //     //
-        // }
+    fuelToReach(location){
+        let emptyDistance = euclideanDistance(this.location,location);
+        return emptyDistance * this.properties.consumption0;
+    }
+
+    /**
+     *  Stores in the cached the nth most preferred products.
+     *  n = this.__cacheSize
+     * @private
+     */
+    __updateCache(){
+        let list = store.state.debugListProducts.slice();
+        list.sort((a,b) => this.__compareFuelConsumption(a.from,b.from));
+        this.__cache = list.slice(0,this.__cacheSize);
+    }
+
+    /**
+     *
+     * @param a location a
+     * @param b location b
+     * @returns {number} if the fuel necessary to reach a > fuel necessary to reach b then 1 else -1
+     * @private
+     */
+    __compareFuelConsumption(a,b){
+        return this.fuelToReach(a) > this.fuelToReach(b) ? 1 : -1;
     }
 
 }
