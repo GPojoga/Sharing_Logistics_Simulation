@@ -64,21 +64,42 @@ As a user of this applet I want to ...
 ## Traceability Matrix
 | **Requirement** | **Files Affected** | **Test** | **Passed**
 |----------------|------------|--------|---------|
-| Be able to compare the CO2 emission of the two methods    |   |   |   |
-| Be able to compare the time difference of the two methods|   |   |   |
-| Be able to change the points A & B|   |   |   |
+| Be able to compare the CO2 emission of the two methods    | Group 0 - 4 src/components/JourneyInput.vue; src/components/Map.vue;   |   |   |
+| Be able to compare the time difference of the two methods| Group 0 - 4 src/components/JourneyInput.vue; src/components/Map.vue;  |   |   |
+| Be able to change the points A & B| Group 0; src/components/Map.vue; Group 4  |   |   |
 | Be able to change the radius of the points A & B |   |   |   |
-| Be able to change the number of vehicles of a specific type  |   |   |   |
-| Have 3 predefined vehicle types |   |   |   |
-| Be able to change the weight of the products |   |   |   |
-| Be able to change the size of a product |   |   |   |
-| Be able to specify the pick-up location of a product   |   |   |   |
-| Be able to specify the delivery location of a product   |   |   |   |
-| Be able to change the points A & B using a digital map   |   |   |   |
+| Be able to change the number of vehicles of a specific type  | Group 0; Group 2; Group 4  |   |   |
+| Have 3 predefined vehicle types | src/components/VehicleSelector.vue;   |   |   |
+| Be able to change the weight of the products | Group 0; src/components/ProductInput.vue   |   |   |
+| Be able to change the size of a product | Group 0; src/components/ProductInput.vue  |   |   |
+| Be able to specify the pick-up location of a product   | Group 0; Group 3  |   |   |
+| Be able to specify the delivery location of a product   | Group 0; Group 3  |   |   |
+| Be able to change the points A & B using a digital map   | Group 0; Group 4; src/components/Map.vue  |   |   |
 | Be able to visualize the current location of a truck   |   |   |   |
 | Be able to visualize the CO2 emission of a specific truck  |   |   |   |
 
-
+Some requirements have a significant number of affected files. For this reason, we defined the following groups :
+- Group 0 
+    - public/index.html 
+    - src/main.js 
+    - src/App.vue 
+    - src/views/Home.vue
+    - src/components/ControlPanel.vue
+- Group 1
+    - src/components/CalculateRate.vue 
+    - src/views/OutputPage.vue
+- Group 2
+    - src/components/VehicleSelector.vue
+    - src/components/VehicleSelectorEntry.vue
+    - src/components/SelectorCheckBox.vue
+- Group 3
+    - src/components/ProductInput.vue
+    - src/components/LocationInput.vue
+- Group 4
+    - sr/store/actions.js
+    - src/store/index.js 
+    - src/store/mutations.js
+    
 ## Customer meetings
 | **When**  | **What**
 |:---------:|----------
