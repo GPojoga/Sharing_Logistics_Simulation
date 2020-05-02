@@ -9,6 +9,14 @@
       <JourneyInput :date-valid="validDate" :locations-valid="validLocations" @dateChange="setValidDate" @journeyChange="setValidLocations"/>
       <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>
       <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
+      <div class="invalid-feedback">
+        <span v-if="!$v.volume.required">Volume is required!</span>
+        <span v-if="!$v.volume.minVolume">The minimum volume of a product must be {{$v.volume.$params.minVolume}}</span>
+        <span v-if="!$v.volume.maxVolume">The maximum volume of a product must be {{$v.volume.$params.maxVolume}}</span>
+        <span v-if="!$v.weight.required">Weight is required!</span>
+        <span v-if="!$v.weight.minWeight">The minimum weight of a product must be {{$v.weight.$params.minWeight}}</span>
+        <span v-if="!$v.weight.maxWeight">The maximum weight of a product must be {{$v.weight.$params.minWeight}}</span>
+      </div>
       <div>
         <div class="settingContainer">
           <router-link to="/settings">
@@ -29,6 +37,7 @@ import VehicleSelector from "./VehicleSelector";
 import JourneyInput from "./JourneyInput";
 import ProductInput from "./ProductInput";
 import CalculateRate from "./CalculateRate";
+import {maxVolume, maxWeight, minVolume, minWeight, required} from "vuelidate/lib/validators";
 
 export default {
   name: 'ControlPanel',
@@ -47,6 +56,18 @@ export default {
       validVehicles: true,
       validVehiclesFields: [true, true, true],
       validProducts : true
+    }
+  },
+  validations: {
+    volume: {
+      required,
+      minVolume: minVolume(0),
+      maxVolume: maxVolume(8, 925),
+    },
+    weight: {
+      required,
+      minWeight: minWeight(0),
+      maxWeight: maxWeight(4700),
     }
   },
   methods: {

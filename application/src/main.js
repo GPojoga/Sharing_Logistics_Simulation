@@ -3,6 +3,10 @@ import App from './App.vue'
 import 'leaflet/dist/leaflet.css';
 import store from './store';
 import router from './router'
+import Vuelidate from "vuelidate/src";
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+Vue.use(Vuelidate)
 
 Vue.config.productionTip = false;
 

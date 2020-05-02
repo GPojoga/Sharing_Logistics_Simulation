@@ -35,7 +35,8 @@
 
 <script>
     import LocationInput from "./LocationInput";
-    export default {
+
+        export  default {
         name: "ProductInput",
         components: { LocationInput },
         props: {
@@ -43,6 +44,7 @@
             dateValid : Boolean,
             productsValid : Boolean,
         },
+
 
         mounted() {
             this.addProduct();
