@@ -69,7 +69,6 @@
 <style scoped>
     /* Style the background of the vehicle selector component */
     #vehicleSelectorBackground {
-        background-color: white;
         margin: 5%;
         display: block;
         text-align: left;

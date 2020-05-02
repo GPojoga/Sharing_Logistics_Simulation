@@ -5,7 +5,7 @@
             <input type="text" :list="suggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
         </label>
         <div class="optionList" :id="suggestions" v-if="displayPossibilities && possibilities != null">
-            <p class="option" v-for="(p, index) in possibilities" :id="index" :key="index" @click="selectLocation(p)">
+            <p class="option" v-for="(p, i) in possibilities" :id="i" :key="i" @click="selectLocation(p)">
                 {{ p.label }}
             </p>
         </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="product-info">
-        <div>
-            <p id="errorMessage" v-if="!productsValid">
+        <div v-if="!productsValid">
+            <p id="errorMessage">
                 Invalid input, make sure that all product's fields are be filled in.
                 As well as: 0kg &lt; Weight &lt; 4700 and: 0 &lt; Volume &lt; 8.925 for all products.
             </p>
@@ -15,14 +15,45 @@
                 <label>Volume</label>
             </div>
             <div class="form-labels">
-                <input v-model="product.quantity" :name="`cargo[${index}][quantity]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="#" @input="setUpdate">
-                <input v-model="product.weight" :name="`cargo[${index}][weight]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="kg" @input="setUpdate">
-                <input v-model="product.volume" :name="`cargo[${index}][volume]`" type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-input" placeholder="m^3" @input="setUpdate">
+                <input v-model="product.quantity"
+                       :name="`cargo[${index}][quantity]`"
+                       type="number"
+                       min="0"
+                       oninput="this.value = Math.abs(this.value)"
+                       class="form-input"
+                       placeholder="#"
+                       @input="setUpdate">
+                <input v-model="product.weight"
+                       :name="`cargo[${index}][weight]`"
+                       type="number"
+                       min="0"
+                       oninput="this.value = Math.abs(this.value)"
+                       class="form-input"
+                       placeholder="kg"
+                       @input="setUpdate">
+                <input v-model="product.volume"
+                       :name="`cargo[${index}][volume]`"
+                       type="number"
+                       min="0"
+                       oninput="this.value = Math.abs(this.value)"
+                       class="form-input"
+                       placeholder="m^3"
+                       @input="setUpdate">
 
-                <button @click="removeProduct(index)" type="button" class="button circle cross" style="background-color: #f1f9ff;"  @input="setUpdate"></button>
+                <button @click="removeProduct(index)"
+                        type="button"
+                        class="button circle cross"
+                        style="background-color: #f1f9ff;"
+                        @input="setUpdate"></button>
             </div>
-            <LocationInput v-model="product.from" :index="2*(index+1)" location-input-label="From" @input="$emit('journeyChange')"/>
-            <LocationInput v-model="product.to" :index="2*(index+1)+1" location-input-label="To" @input="$emit('journeyChange')"/>
+            <LocationInput v-model="product.from"
+                           :index="2*(index)+baseLocationsIndex"
+                           location-input-label="From"
+                           @input="$emit('journeyChange')"/>
+            <LocationInput v-model="product.to"
+                           :index="2*(index)+1+baseLocationsIndex"
+                           location-input-label="To"
+                           @input="$emit('journeyChange')"/>
         </div>
 
         <div class="form-add">
@@ -51,6 +82,10 @@
         computed: {
             cargo() {
                 return this.$store.state.A.cargo;
+            },
+            // The index in the locations array of the first product
+            baseLocationsIndex() {
+                return this.$store.getters.nrVehicleLocations;
             }
         },
 
@@ -73,7 +108,7 @@
 
 <style scoped>
     .product-info {
-        margin: 25px;
+        padding: 10px;
         text-align: left;
         color: #007FEB;
         font-family: "Arial", Arial, sans-serif;
@@ -81,16 +116,11 @@
         font-size: 100%;
     }
 
-    .product-info > div {
-        margin-top: 8px;
-    }
-
-    .product-title{
-        text-align: left;
-        color: #007FEB;
-        font-family: "Arial", Arial, sans-serif;
-        font-weight: bold;
-        font-size: 100%;
+    .product-info > .form-row {
+        margin-bottom: 8px;
+        padding: 15px;
+        border: 2px solid #007feb;
+        border-radius: 5px;
     }
 
     .button{

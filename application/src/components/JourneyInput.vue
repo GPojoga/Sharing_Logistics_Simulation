@@ -6,8 +6,8 @@
                 Fields FROM and TO must not be empty!
             </p>
         </div>
-        <LocationInput v-model="from" :index="0" location-input-label="From" @input="$emit('journeyChange')"/>
-        <LocationInput v-model="to" :index="1" location-input-label="To" @input="$emit('journeyChange')"/>
+        <LocationInput class="from" v-model="from" :index="2*index" location-input-label="From"/>
+        <LocationInput class="to" v-model="to" :index="2*index + 1" location-input-label="To"/>
         <p>Distance : {{route.distance}} km | Time : {{route.time.hours}} h {{route.time.minutes}} m</p>
     </div>
 </template>
@@ -22,6 +22,7 @@
         props: {
             locationsValid : Boolean,
             dateValid : Boolean,
+            index: Number
         },
         data() {
             return {
@@ -39,20 +40,12 @@
 
 <style scoped>
     .journey {
-        margin: 0 25px;
         text-align: left;
         overflow: auto;
     }
 
-    .journey > div {
-        margin-top: 20px;
-    }
-
-    .two-way {
-        float: right;
-        height: 60px;
-        width: 50%;
-        font-size: 16px !important;
+    .to {
+        margin-top: 10px;
     }
 
     /* Style the text in the error message */
