@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <Map/>
         <ControlPanel/>
     </div>
@@ -10,29 +10,10 @@
     import Map from "@/components/Map";
 
     export default {
-        name: 'App',
+        name: 'Home',
         components: {
             ControlPanel,
             Map,
-        },
-        mounted(){
-            let locations = this.$store.getters.locations;
-            for(let i = 0;i < locations.length;i++){
-                locations[i] = null;
-            }
-            let route = this.$store.state.route;
-            route.distance = route.time.hours = route.time.minutes = 0;
         }
     }
 </script>
-
-<style>
-    #app {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        width: 100%;
-        height: 100%;
-    }
-</style>

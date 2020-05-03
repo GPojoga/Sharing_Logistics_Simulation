@@ -41,6 +41,7 @@
                 </div>
             </div>
         </div>
+
         <div class="navbar">
             <router-link to="/">
                 Home
@@ -52,8 +53,10 @@
 <script>
     import InputNumberBox from "../components/InputNumberBox";
     export default {
-        name: "App",
-        components: {InputNumberBox},
+        name: "SettingsPage",
+        components: {
+            InputNumberBox
+        },
         methods : {
             /**
              * This method updates the constant in the $store.state at every valid change in the given field.
@@ -67,6 +70,12 @@
                     this.$store.state.averageSpeed = value;
                 }
             },
+            /**
+             * This function updates the truck variables in the store.
+             * @param value The value that should replace the previous value in the store.
+             * @param truckId The id of the truck in the store that in being changed.
+             * @param index The index of the variable that is being changed.
+             */
             updateTruck : function (value, truckId, index) {
                 if (index === 0){
                     this.$store.state.truckTypes[truckId].volume = value;
@@ -81,6 +90,7 @@
         },
         data : function () {
             return {
+                // A list of global variables that can be changed through the settings page
                 globalConstants : [
                     {
                         index : 0,
@@ -103,10 +113,13 @@
                         default : this.$store.state.averageSpeed,
                     }
                 ],
+
+                // A list of truck variables that can be changed through the settings page
                 trucks : [
                     {
                         title : "Light Duty Van",
                         number : 0,
+                        // A list of variables that can be changed for the Light-Duty Van
                         constants : [
                             {
                                 index : 0,
@@ -154,6 +167,7 @@
                     {
                         title : "Heavy Duty Truck",
                         number : 1,
+                        // A list of variables that can be changed for the Heavy-Duty Truck
                         constants : [
                             {
                                 index : 0,
@@ -201,6 +215,7 @@
                     {
                         title : "Train Truck",
                         number : 2,
+                        // A list of variables that can be changed for the Train Truck
                         constants : [
                             {
                                 index : 0,
