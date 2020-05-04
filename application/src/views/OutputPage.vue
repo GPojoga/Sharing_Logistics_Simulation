@@ -45,8 +45,6 @@
 </template>
 
 <script>
-  import {Truck} from '../classes/Truck.js';
-
   export default {
     name: 'App',
     components: {},
@@ -65,10 +63,6 @@
       }
     },
     mounted() {
-      let truck = new Truck("Heavy","Traditional",{lat: 50.98609893339354,
-                                                                       lng: 20.302734375000004});
-      truck.start();
-
       this.findTraditional();
       this.findSharing();
     },

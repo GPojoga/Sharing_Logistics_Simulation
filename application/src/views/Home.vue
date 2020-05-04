@@ -9,6 +9,8 @@
     import ControlPanel from "@/components/ControlPanel";
     import Map from "@/components/Map";
 
+    import {Router} from '../classes/Router.js';
+
     export default {
         name: 'App',
         components: {
@@ -22,6 +24,15 @@
             }
             let route = this.$store.state.route;
             route.distance = route.time.hours = route.time.minutes = 0;
+
+            //Router testing ==============
+            let router = new Router();
+            router.getRoute([{lat : 53.2153888, lng : 6.5619295},{lat : 53.2107713, lng : 6.6027063}]);
+
+            //=============================
+
+
+
         }
     }
 </script>
