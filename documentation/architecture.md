@@ -37,9 +37,9 @@ The product will be a web application that is simulating the effect that sharing
 The application's main goal is to determine if it would be a worthwhile idea to set up a platform on which companies or truck owners could offer empty space to transport other people's goods.
 
 The user can set multiple parameters for the simulation:
-1. The locations A and B as well as their radius,
+1. The initial location of the trucks,
 2. The number of trucks for each of three predefined types,
-3. The types of goods, which each have volume, weight, quantity as well as pick-up and delivery locations.
+3. The parameters for every product i.e.,  volume, weight, quantity as well as pick-up and delivery locations.
 
 The user has to input the location A and B and specify their radius.
 Afterwards, the pick-up location of every product must be within the radius of any of these points.
@@ -233,3 +233,4 @@ Lonneke created the JourneyInput.
 | Gheorghe | 06-04-2020 | Added the plugins necessary for the map
 | Gheorghe | 20-04-2020 | Updated the introduction and the application architecture
 | Antonin  | 26-04-2020 | Updated the file structure and application architecture
+| Gheorghe | 04-05-2020   | Updated the introduction   |
