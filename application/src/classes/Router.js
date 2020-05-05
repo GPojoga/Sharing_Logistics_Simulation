@@ -6,11 +6,9 @@ export class Router{
     __profile = 'driving/';
     __url = String;
 
-    __alternatives = 'alternatives=false';
-    __steps = 'steps=true';
     __geometries = 'geometries=geojson';
-    __overview = 'overview=false';
-    __annotations = 'annotations=true';
+    __overview = 'overview=full';
+    __annotations = 'annotations=speed';
     __options = String;
 
 
@@ -19,13 +17,50 @@ export class Router{
         this.__options = this.__computeOptions();
     }
 
-    async getRoute(waypoints){
-        let request = this.__computeRequest(waypoints);
+    getRoute(start,end){
+        let request = this.__computeRequest([start,end]);
 
-        console.log("Request : " + request);
-        let result = await fetch(request);
-        let json = await result.json();
-        console.log(json);
+        return fetch(request)
+            .then(response => response.json())
+            .then(data => this.__unpackResponse(data))
+            .catch(x => console.error(x));
+    }
+
+    __unpackResponse(json){
+        return {
+            start : this.__unpackCoordinate(json.waypoints[0].location),
+            end : this.__unpackCoordinate(json.waypoints[1].location),
+            distance : json.routes[0].distance,
+            duration : json.routes[0].duration,
+            route : this.__unpackRoute(json.routes[0])
+        }
+    }
+
+    __unpackRoute(rawRoute){
+        let coordinates = rawRoute.geometry.coordinates.map(this.__unpackCoordinate);
+        let speed = rawRoute.legs[0].annotation.speed;
+        let route = new Array(coordinates.length);
+
+        for(let i = 0; i < speed.length;i++){
+            route[i] = {
+                coordinates : coordinates[i],
+                speed : speed[i]
+            }
+        }
+
+        route[route.length - 1] = {
+            coordinates : coordinates[coordinates.length - 1],
+            speed : 0
+        };
+
+        return route;
+    }
+
+    __unpackCoordinate(coordinate){
+        return {
+            lng : coordinate[0],
+            lat : coordinate[1]
+        }
     }
 
     __computeRequest(waypoints){
@@ -38,9 +73,7 @@ export class Router{
     }
 
     __computeOptions(){
-        return '?' + this.__alternatives + '&' +
-                this.__steps + '&' +
-                this.__geometries + '&' +
+        return '?' + this.__geometries + '&' +
                 this.__overview + '&' +
                 this.__annotations;
     }

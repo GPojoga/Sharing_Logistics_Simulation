@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        map : Object,
         // Constants
         fuelPrice : 1.45,
         emissionBurnt : 2.67,

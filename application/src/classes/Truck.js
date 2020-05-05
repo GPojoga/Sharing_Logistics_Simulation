@@ -1,8 +1,10 @@
 
 import store from "../store/index.js";
-import {euclideanDistance} from "@/classes/euclideanDistance";
+import {Observable} from "@/classes/Observable";
+import {TruckView} from "@/classes/TruckView";
+import {Router} from "@/classes/Router";
 
-export class Truck{
+export class Truck extends Observable{
 
     /**
      * properties of the truck
@@ -15,6 +17,11 @@ export class Truck{
      * @type {{lng: Number, lat: Number}}
      */
     location = {
+        lat: Number,
+        lng: Number,
+    };
+
+    initialLocation = {
         lat: Number,
         lng: Number,
     };
@@ -37,29 +44,82 @@ export class Truck{
      */
     nrDeliveredProducts = 0;
 
-    /**
-     * Number of products cached inside truck
-     * @type {number}
-     * @private
-     */
-    __cacheSize = 10;
+    routes = [];
 
-    /**
-     * List of nearest products. Cleared when a new route is assigned.
-     * @type {*[]}
-     * @private
-     */
-    __cache = [];
+    router = Object;
+
+    isMoving = Boolean;
 
     /**
      *
      * @param type truck type ("Light"|"Heavy"|"Train")
-     * @param method simulation method ("Traditional" | "Shared")
      * @param location initial location of the truck
+     * @param mapObj the map on which the truck is visualized
      */
-    constructor(type,location) {
+    constructor(type,location,mapObj) {
+        super();
+        this.initialLocation = location;
         this.location = location;
         this.__setProperties(type);
+        this.addListener(new TruckView(this,mapObj));
+        this.router = new Router();
+        this.isMoving = false;
+    }
+
+    goHome(){
+        this.goTo(this.initialLocation);
+    }
+
+    goTo(location){
+        let waiter = {
+            start : Object,
+            end : location,
+        };
+
+        if(this.routes.length === 0 ){
+            waiter.start = this.location;
+        } else {
+            waiter.start = this.routes[this.routes.length - 1].end;
+        }
+
+        this.routes.push(waiter);
+        this.router.getRoute(waiter.start,location).then(route => {
+            Object.assign(waiter,route);
+            this.__start();
+        });
+    }
+
+    __start(){
+        if(!this.isMoving && this.routes.length > 0 && this.routes[0].route !== undefined){
+            this.followRoute();
+        }
+    }
+
+    followRoute(){
+        let routeData = this.routes.shift();
+        let route = routeData.route;
+        this.isMoving = true;
+        this.__followRoute(route,0);
+    }
+
+    __followRoute(route,index){
+        let self = this;
+        setTimeout(
+            function(){
+                if(index < route.length){
+                    self.__setLocation(route[index].coordinates);
+                    self.__followRoute(route,index + 1);
+                }else{
+                    console.log("Finished the route");
+                    self.isMoving = false;
+                    self.__start();
+                }
+            },100);
+    }
+
+    __setLocation(location){
+        this.location = location;
+        this.notify();
     }
 
     /**
@@ -78,63 +138,4 @@ export class Truck{
             this.properties = store.state.truckTypes.find(x => x.key === "Train");
         }
     }
-
-    /** DEBUG VERSION (wrong list of products)
-     * This function returns the nth preferred product of the truck.
-     * The most preferred product (0th), will require the smallest amount of fuel to pick up.
-     * @param n nth preferred product
-     */
-    getPreferredProduct(n){
-        if(this.__cache.length === 0){
-            this.__updateCache();
-        }
-
-        if(n >= store.state.debugListProducts.length){
-            console.error("Invalid index of the Preferred Product");
-            return ;
-        }
-
-        if(this.__cacheSize > n){
-            return this.__cache[n];
-        } else {
-            let list = store.state.debugListProducts.slice();
-            return list.sort((a,b) => this.__compareFuelConsumption(a.from,b.from))[n];
-        }
-    }
-
-    /**     DEBUG VERSION (remaining distance from the current route is not considered)
-     *
-     *  This function computes the amount of fuel necessary to reach the given location.
-     *  The result is computed using the amount of fuel necessary to finish the current route (if any),
-     *  and the fuel consumed to arrive (empty) at the location.
-     * @param location
-     * @returns {number} the amount of fuel
-     */
-    fuelToReach(location){
-        let emptyDistance = euclideanDistance(this.location,location);
-        return emptyDistance * this.properties.consumption0;
-    }
-
-    /**
-     *  Stores in the cached the nth most preferred products.
-     *  n = this.__cacheSize
-     * @private
-     */
-    __updateCache(){
-        let list = store.state.debugListProducts.slice();
-        list.sort((a,b) => this.__compareFuelConsumption(a.from,b.from));
-        this.__cache = list.slice(0,this.__cacheSize);
-    }
-
-    /**
-     *
-     * @param a location a
-     * @param b location b
-     * @returns {number} if the fuel necessary to reach a > fuel necessary to reach b then 1 else -1
-     * @private
-     */
-    __compareFuelConsumption(a,b){
-        return this.fuelToReach(a) > this.fuelToReach(b) ? 1 : -1;
-    }
-
 }

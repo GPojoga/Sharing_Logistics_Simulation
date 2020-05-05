@@ -1,17 +1,16 @@
-import store from "../store/index.js";
-import {Router} from "./Router";
+// import store from "../store/index.js";
+
 /**
  * This class performs the routing of a traditional logistic
  * network for a single truck
  */
-export class TraditionalRouter extends Router{
+export class TraditionalRouter{
 
     trucks = [];
 
     __preferredProducts = [];
 
     constructor (trucks) {
-        super();
         this.trucks = trucks.slice();
     }
 
