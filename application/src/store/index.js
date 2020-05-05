@@ -2,45 +2,75 @@ import Vue from "vue";
 import Vuex from "vuex";
 import mutations from "./mutations";
 import actions from "./actions";
+import getters from "./getters.js";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        // Constants
-        fuelPrice : 1.45,
-        emissionBurnt : 2.67,
-        averageSpeed : 100,
-        numberTrucks : 3,
+        // Global Variables:
+        emissionRate : 2.67,  // The amount of emission released for a liter of petrol.
+        maxSpeed : 100,       // The max speed a truck can traveling in km/h
+
+        // TruckType Variables:
         truckTypes : [
             {
                 key : "Light",
                 name: "Light-duty van",
-                volume : 8.925,
-                maxPayload : 4700,
-                consumption0 : 0.2374,
-                consumption1 : 0.3616,
                 img: 'light_duty_van.svg',
+                volume : 8.925,             // The volume of goods the truck can transport m^3.
+                maxPayload : 4700,          // The max weight of goods the truck can transport kg.
+                consumptionEmpty : 0.2374,  // The fuel consumption when the truck is empty L/km.
+                consumptionFull : 0.3616    // The fuel consumption when the truck is full L/km.
             },
             {
                 key : "Heavy",
                 name: "Heavy-duty van",
-                volume : 91.223,
-                maxPayload : 32018,
-                consumption0 : 0.2374,
-                consumption1 : 0.3616,
-                img: 'heavy_duty_van.svg'
+                img: 'heavy_duty_van.svg',
+                volume : 91.223,            // The volume of goods the truck can transport m^3.
+                maxPayload : 32018,         // The max weight of goods the truck can transport kg.
+                consumptionEmpty : 0.2374,  // The fuel consumption when the truck is empty L/km.
+                consumptionFull : 0.3616    // The fuel consumption when the truck is full L/km.
             },
             {
                 key : "Train",
                 name: "Train truck",
-                volume : 115.0,
-                maxPayload : 35300,
-                consumption0 : 0.2374,
-                consumption1 : 0.3616,
-                img: 'train_truck.svg'
+                img: 'train_truck.svg',
+                volume : 115.0,             // The volume of goods the truck can transport m^3.
+                maxPayload : 35300,         // The fuel consumption when the truck is empty L/km.
+                consumptionEmpty : 0.2374,  // The fuel consumption when the truck is empty L/km.
+                consumptionFull : 0.3616    // The fuel consumption when the truck is full L/km.
             }
         ],
+
+        // Input Variables:
+        // An array of inputted truck objects
+        trucks : [
+            // Default a single truck with no info.
+            {
+                type : null,          // The type of truck inputted from truckTypes
+                quantity : 1,         // The quantity of trucks inputted, default 1
+                startLocation : null  // The location the truck(s) start at.
+            }
+        ],
+        // An array of inputted good objects
+        goods : [
+            // Default a single good with no info.
+            {
+                quantity : null,
+                weight : null,           // The weight of the good kg
+                volume : null,           // The volume of the good m^3
+                pickupLocation : null,   // The location the good needs to be pickup
+                deliveryLocation : null  // The location the good needs to be delivered
+            }
+        ],
+
+
+
+        fuelPrice : 1.45,
+        emissionBurnt : 2.67,
+        averageSpeed : 100,
+        numberTrucks : 3,
 
         // Variables (computed)
         route : {
@@ -66,61 +96,8 @@ export default new Vuex.Store({
         }
     },
 
-    // The store's version of computed(), in a way.
-    getters: {
-        /**
-         * Returns an array with the number of trucks that are available of each type.
-         * @param state
-         * @returns {any[]}
-         */
-        trucksByType: state => {
-            let arr = new Array(state.truckTypes.length).fill(0);
-            state.A.vehicles.forEach( v => {
-                arr[v.indexTruckType]++;
-            });
-            return arr;
-        },
-
-        /**
-         * The maximum number of locations that can be contained in the locations array.
-         * It is equal to the general 'from' and 'to' locations of the trucks (2*number of trucks),
-         * plus the 'from' and 'to' locations of each product (2*number of products):
-         *      2*state.A.vehicles.length + 2*state.A.cargo.length;
-         * @param state
-         * @returns {number}
-         */
-        maxNrLocations: (state, getters) => {
-            return getters.nrVehicleLocations + 2*state.A.cargo.length;
-        },
-
-        /**
-         * The number of locations of the vehicles in the locations array.
-         * @param state
-         * @returns {number}
-         */
-        nrVehicleLocations: state => {
-            return 2*state.A.vehicles.length;
-        },
-
-        locations: state => {
-            return state.locations.list;
-        },
-
-        /**
-         * Calculates the number of spots in the locations array that contain a value.
-         *
-         * @param state
-         * @param getters
-         * @returns {number}
-         */
-        currentNrLocations: (state, getters) => {
-            let nrLocations = 0;
-            getters.locations.forEach(element => { nrLocations += (element !== null); });
-            return nrLocations;
-        }
-    },
-
-    // Imported from the files mutations.js and actions.js.
+    // Imported from the files getters.js, mutations.js and actions.js.
+    getters,
     mutations,
     actions
 });
