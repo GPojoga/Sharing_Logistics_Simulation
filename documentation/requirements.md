@@ -58,33 +58,66 @@ The non-functional requirements are constraints on the system or development pro
 
 ### Critical User Stories - must haves
 As a user of this applet I want to ...  
-1. (C1) be able to accurately and easily compare the CO2 emission (=energy) of two methods of transport so that I can inform my opinion of which method is better.
-2. (C2) be able to accurately and easily compare the time difference of two methods of transport so that I can inform my opinion of which method is better.
+1. [x] (C1) be able to compare the two methods of transport based on certain parameters so that I can inform my opinion of which method is better.
+   - [x] (C1.1) be able to compare the two methods based on the CO2 emission (= energy).
+   - [x] (C1.2) be able to compare the two methods based on the total distance travelled.
+   - [x] (C1.3) be able to compare the two methods based on the number of trucks used so that I get an indication of additional costs, such as paying truck drivers.
+3. [x] (C3) be able to input at least one truck starting from a given location.
+4. [x] (C4) be able to input the quantity of a good/product.
 
 ### Important User Stories - should haves
 As a user of this applet I want to ...  
-1. (I1) be able to change points A & B as well as their radius.
-2. (I2) be able to change the number of vehicles of a specific type which make the back and fourth journey so that I can observe the difference this makes to the comparison.
-3. (I3) have 3 types of vehicles (all different sizes) so that I can change between the 3 which is relevant for the previous step.
-4. (I4) be able to change the weight of the goods that need to be transported so that I can see what effects this has on both systems of transportation.
-5. (I5) be able to change the size of the goods that need to be transported so that I can see what effect this has on the transportation of these goods under both systems.
-6. (I6) be able to specify the pick-up and delivery location of every product within the range of the points A & B so that I can see what effect this has on the transportation of these goods under both systems.
+1. [x] (I1) be able to input a single starting location for all trucks so that the path and distance travelled by the truck can be realistically simulated.
+2. [x] (I2) have three types of vehicles with different sizes so that I can easily vary between the three.
+   - [x] (I2.1) be able to change the number of vehicles of each type so that I can observe the difference this makes to the comparison.
+3. [x] (I3) be able to vary some parameters of the goods so that I can make the simulation more realistic.
+   - [x] (I3.1) be able to change the weight of the goods that need to be transported so that I can see what effects this has on both systems of transportation.
+   - [x] (I3.2) be able to change the size of the goods that need to be transported so that I can see what effect this has on the transportation of these goods under both systems.
+   - [x] (I3.3) be able to specify the pick-up and delivery location of every product so that I can see what effect this has on the transportation of these goods under both systems.
 
 ### Useful User Stories - could haves
 As a user of this applet I want to ...  
-1. (U1) be able to change the points A & B using google maps or any other digital map so that I can change the points easily.
-2. (U2) have an animation of a truck moving with numbers next to it for CO2 emissions (=energy) so that I can have a very visual representation of the problem.
+1. [x] (U1) be able to change the starting locations of trucks and pickup and delivery locations of goods using a digital map so that I can change the locations easily by clicking.
+2. [x] (U2) be able to add trucks one by one and set different parameters so that I can have more control over the trucks that are inputted.
+   - [x] (U2.1) be able to input a different starting location for each truck.
+   - [x] (U2.2) be able to set the type of truck for each truck.
+   - [x] (U2.3) be able to set the quantity of each truck that is inputted.
+3. [x] (U3) be able to (but not obliged to) vary some parameters that are used in the background of the simulation (emission burnt factor, average speed of the trucks and for each type of truck the max volume, max payload, empty fuel consumption and full fuel consumption)
+such that I can adapt these values to maybe more realistic ones and see the influence that varying these values has.
+4. [ ] (U4) be able to run the simulation over time so that I can more realistically see how the trucks and goods are transported over time.
+   - [ ] (U4.1) have an animation of a truck moving so that I can have a visual representation of the problem.
+
+
+<!-- should these be added?
+
+- goods should be within **the range** of the points A & B
+- be able to change the starting locations of the trucks as well as **their radius**.
+- add numbers next to the trucks for CO2 emissions (=energy)
+-->
+
+
+
+
+
+
+
+
+
 
 ### Unused User Stories - won't haves
 As a user of this applet I want to ...  
-1. (W1) be able to add point C where that is part of the **sharing logistics** which allows vehicles to move goods in different ways so that the simulation is more accurate.
+1. [ ] (W1) be able to add point C where that is part of the **sharing logistics** which allows vehicles to move goods in different ways so that the simulation is more accurate.
 
 ### Non functional User Stories
 As a user of this applet I want to ...  
-1. (N1) have a effective interface to look at where information is organized in an effective manner so I have easy access it.
-2. (N2) have the simulation as realistic as possible.
-3. (N3) be able not to change certain parameters and have the simulation use a default value for this parameter so that I can quickly start simulating.
-4. (N4) have the simulation always give the same outcomes when I run it with the same parameters so that I only have to run the simulation once.
+1. [ ] (N1) have an effective interface to look at where information is organized in an effective manner so I have easy access to it.
+   - [ ] (N1.1) view the results on a separate output page from which I can easily go back to the input page.
+   - [ ] (N1.2) see the map and the input panel on the same page of the web application.
+   - [ ] (N1.1) have different images for each inputted truck.
+   - [ ] (N1.2) have different colors for the routes that trucks travel.
+2. [ ] (N2) have the simulation be as realistic as possible.
+3. [ ] (N3) be able **not** to change certain parameters and have the simulation use a default value for this parameter so that I can quickly start simulating.
+4. [ ] (N4) have the simulation always give the same outcomes when I run it with the same parameters so that I only have to run the simulation once.
 
 ## Traceability Matrix
 | **Requirement** | **Files Affected** | **Test** | **Passed**
@@ -124,6 +157,6 @@ our GitHub repository.
 | Bjar Karim   | 6th  Apr. | Customer meetings.  | Added the new meeting (email) with the customer and updated the user stories.
 | Gheorghe Pojoga   | 20th Apr.  | Important user stories. Non functional requirements. Customer meetings. Traceability matrix.   | Added a new important user story.  Combined two important user stories. Removed one non-functional requirement and added a new one. Added a new client meeting (video chat). Created the sketch of the Traceability Matrix.   |
 | Lonneke Pulles | 7th May | User Stories | Processed teacher's feedback: added IDs to user stories, MoSCoW naming, explanation of used terms; goal of client formulated more precisely.
-
+| Lonneke Pulles | 8th May | User Stories | Added checkboxes to requirements. Split and combined some requirements into, and added, subrequirements. Added input of a truck and a good to critical user stories (C3, C4). Added user story varying multiple background parameters (U3). Added user story to be able to run simulation over time (U4). Changed 'points A & B' to a single start location for trucks.
 
 
