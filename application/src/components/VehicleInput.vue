@@ -1,7 +1,7 @@
 <template>
     <div class="vehicle">
         <div class="header">
-            <span>Vehicle</span>
+            <span>Vehicle {{ index + 1 }}</span>
             <div class="remove">
                 <button @click="removeVehicle" type="button" class="button circle cross"></button>
             </div>
@@ -15,16 +15,17 @@
                 <img :src="'assets/' + t.img" :alt="t.name" style="width:100%">
             </div>
         </div>
-        <JourneyInput :index="index" :date-valid="true" :locations-valid="locationsValid" @journeyChange="this.$emit('journeyChange')"/>
+        <LocationInput :index="index" :date-valid="true" locationInputLabel="Currently at"/>
+        <p>Distance : {{route.distance}} km | Time : {{route.time.hours}} h {{route.time.minutes}} m</p>
     </div>
 </template>
 
 <script>
-    import JourneyInput from "./JourneyInput";
+    import LocationInput from "./LocationInput";
 
     export default {
         name: "VehicleInput",
-        components: {JourneyInput},
+        components: {LocationInput},
         props: {
             locationsValid : Boolean,
             index : Number
@@ -55,6 +56,9 @@
              */
             vehicleType() {
                 return this.$store.state.A.vehicles[this.index].indexTruckType;
+            },
+            route() {
+                return this.$store.state.route;
             }
         }
     }
@@ -92,7 +96,9 @@
 
     .selected {
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);
-        background-color: #f1f9ff;
+        border: 2px solid #007feb;
+        margin: 3px;
+        /*background-color: #f1f9ff;*/
     }
 
     .unselected:hover {
