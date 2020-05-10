@@ -4,41 +4,18 @@
             Constants
         </p>
         <br>
+
         <div id="box">
-            <div id="names">
-                <div v-for="(constant, index) in globalConstants" class="constantName" :key="'name'+index">
-                    <p class="constantText">
-                        {{constant.name}}
+            <br>
+            <SettingsGlobalVariables />
+
+            <div v-for="type in truckTypes" :key="type.name">
+                <div class="truckName">
+                    <p class="truckText">
+                        {{type.name}}
                     </p>
                 </div>
-
-                <div v-for="truck in trucks" :key="'name'+truck.title">
-                    <div class="constantName">
-                        <p class="constantText">
-                            {{truck.title}}
-                        </p>
-                    </div>
-                    <div class="constantName" v-for="(constant, index) in truck.constants" :key="'name'+truck.title+index">
-                        <p class="constantSubText">
-                            {{constant.name}}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="fields">
-                <div v-for="(c, index) in globalConstants" class="constantField" :key="'globalBox'+index">
-                    <InputNumberBox :default="c.default" :error="c.error" :min="c.min" :max="c.max" @change="updateGlobal($event, index)"/>
-                </div>
-
-                <div v-for="(truck, number) in trucks" :key="'truckBox'+number">
-                    <div class="constantField">
-                        <br>
-                    </div>
-                    <div class="constantField" v-for="(c, index) in truck.constants" :key="'truckBox'+number+index">
-                        <InputNumberBox :default="c.default" :error="c.error" :min="c.min" :max="c.max" @change="updateTruck($event, number, index)"/>
-                    </div>
-                </div>
+                <SettingsTruckVariables :index="truckTypes.indexOf(type)" />
             </div>
         </div>
 
@@ -51,217 +28,18 @@
 </template>
 
 <script>
-    import InputNumberBox from "../components/InputNumberBox";
+    import SettingsGlobalVariables from "@/components/SettingsGlobalVariables";
+    import SettingsTruckVariables from "@/components/SettingsTruckVariables";
     export default {
         name: "SettingsPage",
         components: {
-            InputNumberBox
+            SettingsGlobalVariables,
+            SettingsTruckVariables
         },
-        methods : {
-            /**
-             * This method updates the constant in the $store.state at every valid change in the given field.
-             * @param value The value the constant has been changed too.
-             * @param index The index representing the constant that was changed.
-             */
-            updateGlobal : function (value, index) {
-                if (index === 0){
-                    this.$store.state.emissionBurnt = value;
-                } else if (index === 1) {
-                    this.$store.state.averageSpeed = value;
-                }
+        computed: {
+            truckTypes : function() {
+                return this.$store.getters.truckTypes;
             },
-            /**
-             * This function updates the truck variables in the store.
-             * @param value The value that should replace the previous value in the store.
-             * @param truckId The id of the truck in the store that in being changed.
-             * @param index The index of the variable that is being changed.
-             */
-            updateTruck : function (value, truckId, index) {
-                if (index === 0){
-                    this.$store.state.truckTypes[truckId].volume = value;
-                } else if (index === 1) {
-                    this.$store.state.truckTypes[truckId].maxPayload = value;
-                } else if (index === 2) {
-                    this.$store.state.truckTypes[truckId].consumption0 = value;
-                } else if (index === 3) {
-                    this.$store.state.truckTypes[truckId].consumption1 = value;
-                }
-            }
-        },
-        data : function () {
-            return {
-                // A list of global variables that can be changed through the settings page
-                globalConstants : [
-                    {
-                        index : 0,
-                        name : "Emission Burnt Factor",
-                        min : 0,
-                        max : 100,
-                        error : function (value) {
-                            return !(0 <= value && value <= 100);
-                        },
-                        default : this.$store.state.emissionBurnt,
-                    },
-                    {
-                        index : 1,
-                        name : "Average Speed",
-                        min : 0,
-                        max : 1000,
-                        error : function (value) {
-                            return !(0 < value && value <= 1000)
-                        },
-                        default : this.$store.state.averageSpeed,
-                    }
-                ],
-
-                // A list of truck variables that can be changed through the settings page
-                trucks : [
-                    {
-                        title : "Light Duty Van",
-                        number : 0,
-                        // A list of variables that can be changed for the Light-Duty Van
-                        constants : [
-                            {
-                                index : 0,
-                                name : "Max Volume",
-                                min : 0,
-                                max : 999,
-                                error : function (value) {
-                                    return !(0 < value && value <= 999);
-                                },
-                                default : this.$store.state.truckTypes[0].volume,
-                            },
-                            {
-                                index: 1,
-                                name: "Max Payload",
-                                min : 0,
-                                max : 99999,
-                                error : function (value) {
-                                    return !(0 < value && value <= 99999);
-                                },
-                                default : this.$store.state.truckTypes[0].maxPayload,
-
-                            },
-                            {
-                                index: 2,
-                                name : "Empty Fuel Consumption",
-                                min : 0,
-                                max : 10,
-                                error : function (value) {
-                                    return !(0 <= value && value <= 10);
-                                },
-                                default : this.$store.state.truckTypes[0].consumption0,
-                            },
-                            {
-                                index: 3,
-                                name : "Full Fuel Consumption",
-                                min : 0,
-                                max : 10,
-                                error : function (value) {
-                                    return !(0 <= value && value <= 10);
-                                },
-                                default : this.$store.state.truckTypes[0].consumption1,
-                            },
-                        ]
-                    },
-                    {
-                        title : "Heavy Duty Truck",
-                        number : 1,
-                        // A list of variables that can be changed for the Heavy-Duty Truck
-                        constants : [
-                            {
-                                index : 0,
-                                name : "Max Volume",
-                                min : 0,
-                                max : 999,
-                                error : function (value) {
-                                    return !(0 < value && value <= 999);
-                                },
-                                default : this.$store.state.truckTypes[1].volume,
-                            },
-                            {
-                                index: 1,
-                                name: "Max Payload",
-                                min : 0,
-                                max : 99999,
-                                error : function (value) {
-                                    return !(0 < value && value <= 99999);
-                                },
-                                default : this.$store.state.truckTypes[1].maxPayload,
-
-                            },
-                            {
-                                index: 2,
-                                name : "Empty Fuel Consumption",
-                                min : 0,
-                                max : 10,
-                                error : function (value) {
-                                    return !(0 <= value && value <= 10);
-                                },
-                                default : this.$store.state.truckTypes[1].consumption0,
-                            },
-                            {
-                                index: 3,
-                                name : "Full Fuel Consumption",
-                                min : 0,
-                                max : 10,
-                                error : function (value) {
-                                    return !(0 <= value && value <= 10);
-                                },
-                                default : this.$store.state.truckTypes[1].consumption1,
-                            },
-                        ]
-                    },
-                    {
-                        title : "Train Truck",
-                        number : 2,
-                        // A list of variables that can be changed for the Train Truck
-                        constants : [
-                            {
-                                index : 0,
-                                name : "Max Volume",
-                                min : 0,
-                                max : 999,
-                                error : function (value) {
-                                    return !(0 < value && value <= 999);
-                                },
-                                default : this.$store.state.truckTypes[2].volume,
-                            },
-                            {
-                                index: 1,
-                                name: "Max Payload",
-                                min : 0,
-                                max : 99999,
-                                error : function (value) {
-                                    return !(0 < value && value <= 99999);
-                                },
-                                default : this.$store.state.truckTypes[2].maxPayload,
-
-                            },
-                            {
-                                index: 2,
-                                name : "Empty Fuel Consumption",
-                                min : 0,
-                                max : 10,
-                                error : function (value) {
-                                    return !(0 <= value && value <= 10);
-                                },
-                                default : this.$store.state.truckTypes[2].consumption0,
-                            },
-                            {
-                                index: 3,
-                                name : "Full Fuel Consumption",
-                                min : 0,
-                                max : 10,
-                                error : function (value) {
-                                    return !(0 <= value && value <= 10);
-                                },
-                                default : this.$store.state.truckTypes[2].consumption1,
-                            },
-                        ]
-                    }
-                ],
-            }
         }
     }
 </script>
@@ -292,47 +70,19 @@
         overflow: auto;
     }
 
-    /* Style the left column of the container */
-    #names {
-        width: 40%;
-        height: 100%;
+    /* Style an entry of the name column */
+    .truckName {
+        width: 80%;
+        height: 30px;
+
         float: left;
         text-align: left;
-        padding: 2.5%;
+        padding-left: 5%;
     }
 
-    /* Style an entry of the name column */
-    .constantName {
-        width: 100%;
-        height: 30px;
-        text-align: left;
-    }
-
-    /* Style the text in the entry of the name column, making sure there is so padding */
-    .constantText {
-        margin: 0;
-    }
-
-    /* Style the text of less important constants */
-    .constantSubText {
-        font-size: small;
-        margin: 0;
-    }
-
-    /* Style the right column of the container of fields */
-    #fields {
-        width: 40%;
-        height: 100%;
-        float: right;
-        text-align: left;
-        padding: 2.5%;
-    }
-
-    /* Style an entry of the constant field */
-    .constantField {
-        width: 100%;
-        height: 30px;
-        text-align: center;
+    /* Stylize the entry text so that there is no padding. */
+    .truckText {
+        margin : 0;
     }
 
     /* Style the return home link container */

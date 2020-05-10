@@ -14,51 +14,24 @@ export const mutations = {
      * This is the setter function of the max speed of all trucks.
      * @param state The current state that should be changed.
      * @param value The value the max speed should be set too.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
     setMaxSpeed(state, {value}) {
-        if (value === "") {
-            return [false, "Field can't be empty"];
-        }
-        let number = Number(value);
-        if (isNaN(number)) {
-            return [false, "Must be a number"];
-        }
-        if (1000 < number || number < 0) {
-            return [false, "Must be between 0 and 1000 km/h"];
-        }
-        if (number === 0) {
-            return [false, "Must not be 0"];
-        }
-        state.maxSpeed = number;
-        return [true, ""];
+        let check = state.checkNumber(value, 0, 1000, false);
+        state.maxSpeed.error = check[0];
+        state.maxSpeed.message = check[1];
+        state.maxSpeed.value = value;
     },
 
     /**
      * This is the setter function of the emission rate of all trucks.
      * @param state The current state that should be changed.
      * @param value The value the emission rate should be set too.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
-    setEmissionRate(state, {value}){
-        if (value === "") {
-            return [false, "Field can't be empty"];
-        }
-        let number = Number(value);
-        if (isNaN(number)) {
-            return [false, "Must be a number"];
-        }
-        if (100 < number || number < 0) {
-            return [false, "Must be between 0 and 100 CO2*kg/L"];
-        }
-        state.maxSpeed = number;
-        return [true, ""];
+    setEmissionRate(state, {value}) {
+        let check = state.checkNumber(value, 0, 100, true);
+        state.emissionRate.error = check[0];
+        state.emissionRate.message = check[1];
+        state.emissionRate.value = value;
     },
 
     /**
@@ -66,27 +39,12 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param value The value the volume of the truck type should be replaced with.
      * @param index The index of the truck type that should be changed.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
     setVolume(state, {value, index}){
-        if (value === "") {
-            return [false, "Field can't be empty"];
-        }
-        let number = Number(value);
-        if (isNaN(number)) {
-            return [false, "Must be a number"];
-        }
-        if (999 < number || number < 0) {
-            return [false, "Must be between 0 and 999 m^3"];
-        }
-        if (number === 0) {
-            return [false, "Must not be 0"];
-        }
-        state.truckTypes[index].volume = number;
-        return [true, ""];
+        let check = state.checkNumber(value, 0, 999, false);
+        state.truckTypes[index].volume.error = check[0];
+        state.truckTypes[index].volume.message = check[1];
+        state.truckTypes[index].volume.value = value;
     },
 
     /**
@@ -94,27 +52,12 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param value The value the max payload of the truck type should be replaced with.
      * @param index The index of the truck type that should be changed.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
     setMaxPayload(state, {value, index}){
-        if (value === "") {
-            return [false, "Field can't be empty"];
-        }
-        let number = Number(value);
-        if (isNaN(number)) {
-            return [false, "Must be a number"];
-        }
-        if (9999 < number || number < 0) {
-            return [false, "Must be between 0 and 9999 m^3"];
-        }
-        if (number === 0) {
-            return [false, "Must not be 0"];
-        }
-        state.truckTypes[index].maxPayload = number;
-        return [true, ""];
+        let check = state.checkNumber(value, 0, 9999, false);
+        state.truckTypes[index].maxPayload.error = check[0];
+        state.truckTypes[index].maxPayload.message = check[1];
+        state.truckTypes[index].maxPayload.value = value;
     },
 
     /**
@@ -122,24 +65,12 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param value The value the empty consumption of the truck type should be replaced with.
      * @param index The index of the truck type that should be changed.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
     setConsumptionEmpty(state, {value, index}){
-        if (value === "") {
-            return [false, "Field can't be empty"];
-        }
-        let number = Number(value);
-        if (isNaN(number)) {
-            return [false, "Must be a number"];
-        }
-        if (10 < number || number < 0) {
-            return [false, "Must be between 0 and 10 CO2 kg/L"];
-        }
-        state.truckTypes[index].consumptionEmpty = number;
-        return [true, ""];
+        let check = state.checkNumber(value, 0, 10, true);
+        state.truckTypes[index].consumptionEmpty.error = check[0];
+        state.truckTypes[index].consumptionEmpty.message = check[1];
+        state.truckTypes[index].consumptionEmpty.value = value;
     },
 
     /**
@@ -147,24 +78,12 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param value The value the full consumption of the truck type should be replaced with.
      * @param index The index of the truck type that should be changed.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
     setConsumptionFull(state, {value, index}){
-        if (value === "") {
-            return [false, "Field can't be empty"];
-        }
-        let number = Number(value);
-        if (isNaN(number)) {
-            return [false, "Must be a number"];
-        }
-        if (10 < number || number < 0) {
-            return [false, "Must be between 0 and 10 CO2 kg/L"];
-        }
-        state.truckTypes[index].consumptionFull = number;
-        return [true, ""];
+        let check = state.checkNumber(value, 0, 10, true);
+        state.truckTypes[index].consumptionFull.error = check[0];
+        state.truckTypes[index].consumptionFull.message = check[1];
+        state.truckTypes[index].consumptionFull.value = value;
     },
 
     /**
@@ -196,15 +115,10 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param value The value the quantity of the good should be set too.
      * @param index The index of the good that should be changed.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
     setGoodQuantity(state, {value, index}){
         // TODO: Add checking the quantity here.
         state.goods[index].quantity = value;
-        return [true, ""];
     },
 
     /**
@@ -212,15 +126,10 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param value The value the quantity of the good should be set too.
      * @param index The index of the good that should be changed.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
     setGoodWeight(state, {value, index}){
         // TODO: Add checking the weight here.
         state.goods[index].weight = value;
-        return [true, ""];
     },
 
     /**
@@ -228,15 +137,10 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param value The value the volume of the good should be set too.
      * @param index The index of the good that should be changed.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
-    setGoodVolume(state, {value}){
+    setGoodVolume(state, {value, index}){
         // TODO: Add checking the volume here.
         state.goods[index].volume = value;
-        return [true, ""];
     },
 
     /**
@@ -244,15 +148,10 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param pickup The object the pickup location of the good should be set too.
      * @param index The index of the good that should be changed.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
     setGoodPickupLocation(state, {pickup, index}){
         // TODO: Add checking the location here.
         state.goods[index].pickupLocation = pickup;
-        return [true, ""];
     },
 
     /**
@@ -260,15 +159,10 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param delivery The object the delivery location of the good should be set too.
      * @param index The index of the good that should be changed.
-     * @returns Array has type {
-     *     0 Boolean: A boolean stating if the setting was successful.
-     *     1 String: A corresponding error message.
-     * }
      */
     setGoodDeliveryLocation(state, {delivery, index}){
         // TODO: Add checking the value here.
-        state.goods[index].deliveryLocation = value;
-        return [true, ""];
+        state.goods[index].deliveryLocation = delivery;
     },
 
     /**
@@ -325,6 +219,8 @@ export const mutations = {
         // TODO: add checking the location here.
         state.trucks[index].startLocation = startingLocation;
     },
+
+
 
     // Route mutations
     /**

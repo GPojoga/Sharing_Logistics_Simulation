@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <input id="numberBox" :class="valid ? 'valid' : 'invalid'" type="number" v-model="lastInput" v-on:input="processInput">
+    <div :title="info">
+        <input id="numberBox" :class="isValid ? 'valid' : 'invalid'" type="text" v-model="lastInput" v-on:input="processInput"/>
         <label for="numberBox"/>
     </div>
 </template>
@@ -9,52 +9,36 @@
     export default {
         name: "InputNumberBox",
         props: {
-            default: Number,
-            error: Function,
-            min: Number,
-            max: Number,
+            field: Object,
+            forward: Object,
+            setter: String
         },
         data: function() {
             return {
                 lastInput : 0,
-                value : 0,
-                valid : true,
-
             }
         },
         mounted() {
-            // Set the value to the give default.
-            this.value = this.default;
-            this.lastInput = String(this.value);
+            // Set the value to the give what is in the state.
+            this.lastInput = this.field.value;
+        },
+        computed: {
+            isValid : function () {
+                return !(this.field.error);
+            },
+            info : function () {
+                return this.field.message;
+            }
         },
         methods: {
             /**
-             * This method processes the input everytime it is updated.
+             * This method processes the input every time it is updated.
              */
             processInput : function (){
-                this.value = Number(this.lastInput);
-                this.valid = ("".localeCompare(this.lastInput) !== 0);
-                if (this.valid) {
-                    this.boundInput();
-                    if (this.error(this.value)){
-                        this.valid = false;
-                    } else {
-                        this.$emit("change", this.value);
-                    }
-                }
-            },
+                let payload = this.forward;
+                payload.value = this.lastInput;
 
-            /**
-             * This method bounds between the given min and max of this field.
-             */
-            boundInput : function (){
-                if (this.value > this.max){
-                    this.value = this.max;
-                    this.lastInput = String(this.value);
-                } else if (this.value < this.min){
-                    this.value = this.min;
-                    this.lastInput = String(this.value);
-                }
+                this.$store.commit(this.setter, payload);
             }
         }
     }
