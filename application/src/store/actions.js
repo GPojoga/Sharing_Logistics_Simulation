@@ -89,8 +89,8 @@ export const actions = {
     removeVehicle(context, index) {
         context.commit('removeVehicle', index);
         context.commit('removeLocation', {
-            index: 2*index,
-            deleteCount: 2
+            index: index,
+            deleteCount: 1
         }); // Remove 'from' and 'to' locations of this vehicle
         context.commit('resizeLocations', context.getters.maxNrLocations);
     }

@@ -174,6 +174,11 @@
         cursor: pointer;
     }
 
+    .location {
+        text-align: left;
+        margin-top: 10px;
+    }
+
     .location > ::placeholder{
         color: #b0bfcd
     }

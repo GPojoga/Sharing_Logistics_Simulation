@@ -8,12 +8,11 @@
         </div>
         <LocationInput class="from" v-model="from" :index="2*index" location-input-label="From"/>
         <LocationInput class="to" v-model="to" :index="2*index + 1" location-input-label="To"/>
-        <p>Distance : {{route.distance}} km | Time : {{route.time.hours}} h {{route.time.minutes}} m</p>
     </div>
 </template>
 
 <script>
-    import LocationInput from "./LocationInput";
+    import LocationInput from "../LocationInput";
 
 
     export default {

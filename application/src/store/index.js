@@ -99,7 +99,7 @@ export default new Vuex.Store({
          * @returns {number}
          */
         nrVehicleLocations: state => {
-            return 2*state.A.vehicles.length;
+            return state.A.vehicles.length;
         },
 
         locations: state => {
