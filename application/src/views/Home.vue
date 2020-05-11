@@ -11,7 +11,7 @@
 
     import SimplifiedMap from "@/components/SimplifiedMap";
 
-    import {Truck} from '../classes/Truck';
+    // import {Truck} from '../classes/Truck';
 
     export default {
         name: 'App',
@@ -29,44 +29,44 @@
 
             //Router testing ==============
 
-            let locationA = {
-                lng : 6.5619295,
-                lat : 53.2153888
-            };
-
-            let locationB = {
-                lat : 53.197305,
-                lng : 6.665607
-            };
-
-            let locationC = {
-                lat : 53.213924,
-                lng : 6.501276
-            };
-
-            let locationD = {
-                lat : 53.238140,
-                lng : 6.537277
-            };
-
-            let truckA = new Truck("Light",locationA,this.$store.state.map);
-            let truckB = new Truck("Heavy",locationB,this.$store.state.map);
-            let truckC = new Truck("Train",locationC,this.$store.state.map);
-
-            truckA.goTo(locationB);
-            truckA.goTo(locationC);
-            truckA.goTo(locationD);
-            truckA.goHome();
-
-            truckB.goTo(locationA);
-            truckB.goTo(locationC);
-            truckB.goTo(locationD);
-            truckB.goHome();
-
-            truckC.goTo(locationA);
-            truckC.goTo(locationB);
-            truckC.goTo(locationD);
-            truckC.goHome();
+            // let locationA = {
+            //     lng : 6.5619295,
+            //     lat : 53.2153888
+            // };
+            //
+            // let locationB = {
+            //     lat : 53.197305,
+            //     lng : 6.665607
+            // };
+            //
+            // let locationC = {
+            //     lat : 53.213924,
+            //     lng : 6.501276
+            // };
+            //
+            // let locationD = {
+            //     lat : 53.238140,
+            //     lng : 6.537277
+            // };
+            //
+            // let truckA = new Truck("Light",locationA,this.$store.state.map);
+            // let truckB = new Truck("Heavy",locationB,this.$store.state.map);
+            // let truckC = new Truck("Train",locationC,this.$store.state.map);
+            //
+            // truckA.goTo(locationB);
+            // truckA.goTo(locationC);
+            // truckA.goTo(locationD);
+            // truckA.goHome();
+            //
+            // truckB.goTo(locationA);
+            // truckB.goTo(locationC);
+            // truckB.goTo(locationD);
+            // truckB.goHome();
+            //
+            // truckC.goTo(locationA);
+            // truckC.goTo(locationB);
+            // truckC.goTo(locationD);
+            // truckC.goHome();
 
             //=============================
         }
