@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        map : Object,
         // Constants
         fuelPrice : 1.45,
         emissionBurnt : 2.67,
@@ -41,6 +42,29 @@ export default new Vuex.Store({
                 img: 'train_truck.svg'
             }
         ],
+
+        debugListProducts : [
+            {
+                quantity: 1,
+                weight: 1,
+                volume: 1,
+                from: [1,1],
+                to: [1,2]
+            },
+            {
+                quantity: 1,
+                weight: 1,
+                volume: 1,
+                from: [3,1],
+                to: [1,3]
+            },
+            {
+                quantity: 1,
+                weight: 1,
+                volume: 1,
+                from: [2,3],
+                to: [2,2]
+            }],
 
         // Variables (computed)
         route : {
