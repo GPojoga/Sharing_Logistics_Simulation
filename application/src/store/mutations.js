@@ -146,23 +146,23 @@ export const mutations = {
     /**
      * This is the setter function of the pickup location of a good at a certain index in goods.
      * @param state The current state that should be changed.
-     * @param pickup The object the pickup location of the good should be set too.
+     * @param location The object the pickup location of the good should be set too.
      * @param index The index of the good that should be changed.
      */
-    setGoodPickupLocation(state, {pickup, index}){
+    setGoodPickupLocation(state, {location, index}){
         // TODO: Add checking the location here.
-        state.goods[index].pickupLocation = pickup;
+        state.goods[index].pickupLocation = location;
     },
 
     /**
      * This is the setter function of the delivery location of a good at a certain index in goods.
      * @param state The current state that should be changed.
-     * @param delivery The object the delivery location of the good should be set too.
+     * @param location The object the delivery location of the good should be set too.
      * @param index The index of the good that should be changed.
      */
-    setGoodDeliveryLocation(state, {delivery, index}){
+    setGoodDeliveryLocation(state, {location, index}){
         // TODO: Add checking the value here.
-        state.goods[index].deliveryLocation = delivery;
+        state.goods[index].deliveryLocation = location;
     },
 
     /**
@@ -212,12 +212,12 @@ export const mutations = {
     /**
      * This function sets the starting location of a truck at a certain index in the array of trucks in the state.
      * @param state The current state that should be changed.
-     * @param startingLocation The new starting location.
+     * @param location The new starting location.
      * @param index The index of the truck that should be changed.
      */
-    setTruckStartingLocation(state, {startingLocation, index}){
+    setTruckStartingLocation(state, {location, index}){
         // TODO: add checking the location here.
-        state.trucks[index].startLocation = startingLocation;
+        state.trucks[index].startLocation = location;
     },
 
 

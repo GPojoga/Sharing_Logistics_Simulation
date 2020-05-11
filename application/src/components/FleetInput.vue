@@ -1,15 +1,10 @@
 <template>
     <div class="fleetInput">
-        <VehicleInput
-                v-for="(_,index) in fleet"
-                :key="index"
-                :index="index"
-                :locations-valid="locationsValid"
-                @journeyChange="$emit('journeyChange')"/>
+        <VehicleInput v-for="(_,index) in fleet" :key="index" :index="index"/>
 
         <div class="add">
-            <button @click="addVehicle" type="button" class="button circle plus"></button>
-            Add vehicle
+            <button @click="addVehicle" type="button" class="button circle plus"/>
+            <p> Add vehicle </p>
         </div>
         <div style="clear: both;"></div> <!-- Makes sure the previous float doesn't overlap with the next element -->
     </div>
@@ -21,20 +16,20 @@
     export default {
         name: "FleetInput",
         components: {VehicleInput},
-        props: {
-            locationsValid : Boolean
-        },
-        mounted() {
-            this.addVehicle();
-        },
         methods: {
+            /**
+             * This method add a new truck to the list of trucks in the state.
+             */
             addVehicle() {
-                this.$store.dispatch('addVehicle');
+                this.$store.commit('addNewTruck');
             }
         },
         computed: {
+            /**
+             * @returns Array of trucks in the store.
+             */
             fleet() {
-                return this.$store.state.A.vehicles;
+                return this.$store.getters.trucks;
             }
         }
     }

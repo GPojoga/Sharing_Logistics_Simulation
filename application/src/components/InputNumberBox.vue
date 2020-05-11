@@ -1,7 +1,8 @@
 <template>
     <div :title="info">
-        <input id="numberBox" :class="isValid ? 'valid' : 'invalid'" type="text" v-model="lastInput" v-on:input="processInput"/>
-        <label for="numberBox"/>
+        <label>
+            <input class="numberBox" :class="isValid ? 'valid' : 'invalid'" type="text" v-model="lastInput" v-on:input="processInput"/>
+        </label>
     </div>
 </template>
 
@@ -46,7 +47,7 @@
 
 <style scoped>
     /* Draw input box */
-    #numberBox {
+    .numberBox {
         background: #ffffff;
         width: 50%;
         height: 16px;
@@ -75,12 +76,12 @@
      }
 
     /* Remove online around input box when selected */
-    #numberBox:focus, input:focus{
+    .numberBox:focus, input:focus{
         outline: none;
     }
 
     /* Remove the scrollbar that appears when the input box is selected */
-    #numberBox::-webkit-outer-spin-button, #numberBox::-webkit-inner-spin-button {
+    .numberBox::-webkit-outer-spin-button, #numberBox::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
     }

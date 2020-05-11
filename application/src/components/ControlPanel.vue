@@ -6,7 +6,7 @@
       </button>
     </div>
     <div class = "content">
-      <FleetInput :locations-valid="validLocations" @journeyChange="setValidLocations"/>
+      <FleetInput/>
       <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
       <div>
         <div class="settingContainer">

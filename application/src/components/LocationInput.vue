@@ -1,10 +1,10 @@
 <template>
     <div class="location">
         <label>
-            {{ locationInputLabel }}
-            <input type="text" :list="suggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
+            {{ label }}
+            <input type="text" :list="idSuggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
         </label>
-        <div class="optionList" :id="suggestions" v-if="displayPossibilities && possibilities != null">
+        <div class="optionList" :id="idSuggestions" v-if="displayPossibilities && possibilities != null">
             <p class="option" v-for="(p, i) in possibilities" :id="i" :key="i" @click="selectLocation(p)">
                 {{ p.label }}
             </p>
@@ -42,27 +42,30 @@
     export default {
         name: "LocationInput",
         props: {
-            locationInputLabel: String,
-            value: Object,
-            index: Number // The index this location will have in the store's state.locations.list array.
+            location: Object,  // This is the object that the input is altering.
+            label: String,     // This is the label displayed with the location input.
+            setter: String,    // This is the setter the input should call when it gets a new location.
+            forward: Object,   // This is the data to be forwarded to the setter.
         },
         data() {
             return {
-                enteredText: null,
-                selected: null,
-                possibilities: null,
-                displayPossibilities: false
+                enteredText: null,           // The text inputted by the user.
+                selected: null,              // The location currently selected.
+                possibilities: null,         // A list of possible locations based on the currently inputted text.
+                displayPossibilities: false  // A boolean keeping track of if the possibilities should be shown.
             }
         },
         watch: {
             location: function() {
-                if (this.location !== null) { // There is a location
+                if (this.location !== null) {
+                    // There is a location already
                     this.reverseGeocode(this.location.lat, this.location.lng).then(
                         lc => {
                             this.enteredText = lc;
                         }
                     );
-                } else { // the location is empty (and most likely deleted)
+                } else {
+                    // The location is empty
                     this.enteredText = '';
                 }
             }
@@ -72,9 +75,9 @@
              * This function performs the reverse geo-coding. If it is possible to identify
              * the location using the coordinates, then the name of the location is returned.
              * Otherwise, a string of the form '[<lat>,<lon>]' is returned.
-             * @param lat latitude
-             * @param lon longitude
-             * @returns {Promise<string|*>}
+             * @param lat latitude coordinates of the location.
+             * @param lon longitude coordinates of the location.
+             * @returns {Promise<string|*>} Promises to return a String representation of the coordinates.
              */
             async reverseGeocode(lat,lon){
                 let url = 'https://nominatim.openstreetmap.org/reverse?format=json';
@@ -83,9 +86,8 @@
                 let json = await result.json();
                 if (json.display_name !== undefined) {
                     return json.display_name;
-                } else {
-                    return '[' + lat +',' + lon + ']';
                 }
+                return '[' + lat +',' + lon + ']';
             },
             /**
              * This function is called every time the user inputs a new character. It queries
@@ -101,50 +103,36 @@
                         }
                     );
                 } else {
-                    this.displayPossibilities = false;
                     this.possibilities = null;
                     this.selectLocation(null);
                 }
             },
             /**
              * This function deactivates the suggestions box, and selects the one the user clicked on.
-             * @param p
+             * @param pickedLocation The location picked by the user.
              */
-            selectLocation(p) {
+            selectLocation(pickedLocation) {
                 this.displayPossibilities = false;
-                this.selected = p;
-                if (p !== null){
-                    this.enteredText = p.label;
-                }
+                this.selected = pickedLocation;
+                if (pickedLocation !== null) { this.enteredText = pickedLocation.label; }
                 this.addToStore();
-                this.$emit('input', this.selected);
             },
             /**
              * This function adds the selected location to the store.
              */
             addToStore() {
-                if (this.selected === null) {
-                    this.$store.commit('eraseLocation', this.index);
-                } else {
-                    this.$store.commit('eraseLocation', this.index);
-                    let latlng = L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
-                    this.$store.dispatch('setLocationByIndex', {
-                        newList: latlng,
-                        index: this.index
-                    });
-                }
+                let payload = this.forward;
+                // Add the inputted location to the payload.
+                payload.location = (this.selected === null) ? null : L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
+                this.$store.commit(this.setter, payload);
             }
         },
-
         computed: {
-            // List of suggested locations based on the text the user inputted
-            suggestions() {
-                return 'suggestions' + this.value;
-            },
-
-            // The location corresponding to this LocationInput.
-            location() {
-                return this.$store.state.locations.list[this.index];
+            /**
+             * @returns {string} Id computed for the suggestions list.
+             */
+            idSuggestions() {
+                return 'suggestions' + this.label + this.setter + JSON.stringify(this.forward);
             }
         }
     }

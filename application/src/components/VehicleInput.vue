@@ -7,16 +7,16 @@
             </div>
         </div>
         <div class="row">
-            <div v-for="(t,i) in truckTypes"
-                 :key="i"
+            <div v-for="type in truckTypes"
+                 :key="type.key"
                  class="imageTab"
-                 :class="{ selected: (vehicleType === i), unselected: (vehicleType !== i) }"
-                 @click="setSelected(i)">
-                <img :src="'assets/' + t.img" :alt="t.name" style="width:100%">
+                 :class="{ selected: (truck.type === type), unselected: (truck.type !== type) }"
+                 @click="setSelected(type)">
+                <img :src="'assets/' + type.img" :alt="type.name" style="width:100%">
             </div>
         </div>
-        <LocationInput :index="index" :date-valid="true" locationInputLabel="Currently at"/>
-        <p>Distance : {{route.distance}} km | Time : {{route.time.hours}} h {{route.time.minutes}} m</p>
+
+        <LocationInput :location="truck.startLocation" label="Currently at" setter="setTruckStartingLocation" :forward="{index : this.index}"/>
     </div>
 </template>
 
@@ -27,39 +27,38 @@
         name: "VehicleInput",
         components: {LocationInput},
         props: {
-            locationsValid : Boolean,
             index : Number
         },
         methods: {
             /**
              * Sets the vehicle type in the store.
-             * @param i
+             * @param type The truck type that was selected.
              */
-            setSelected(i) {
-                this.$store.commit('setVehicleType', {index: this.index, type: i});
+            setSelected(type) {
+                let payload = {index: this.index, type: type};
+                this.$store.commit('setTruckType', payload);
             },
+            /**
+             * This method removes this vehicle from the store.
+             */
             removeVehicle() {
-                this.$store.dispatch('removeVehicle', this.index);
+                let payload = {index: this.index};
+                this.$store.commit('removeTruck', payload);
             }
         },
         computed: {
             /**
-             * This list of truck types and their values.
-             * @returns Array
+             * @returns Array This list of truck types and their values.
              */
             truckTypes() {
-                return this.$store.state.truckTypes;
+                return this.$store.getters.truckTypes;
             },
             /**
-             * The vehicle type that this vehicle has in the store.
-             * @returns Number
+             * @returns The truck in the store represented by this component.
              */
-            vehicleType() {
-                return this.$store.state.A.vehicles[this.index].indexTruckType;
+            truck() {
+                return this.$store.getters.trucks[this.index];
             },
-            route() {
-                return this.$store.state.route;
-            }
         }
     }
 </script>
