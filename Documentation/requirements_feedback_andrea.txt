@@ -1,6 +1,0 @@
-- requirements more precise:
-  - not 'better', but 'less costly'
-- give IDs to user stories?
-- some use cases missing
-- use case of the system
-- use 'must', 'should', 'shall' -> language for requirement documents
