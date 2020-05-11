@@ -122,7 +122,6 @@ export default new Vuex.Store({
             }
             return [false, ""];
         }
-
     },
 
     // Imported from the files getters.js, mutations.js and actions.js.
