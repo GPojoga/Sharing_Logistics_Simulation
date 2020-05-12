@@ -80,7 +80,7 @@ export const mutations = {
      * @param index The index of the truck type that should be changed.
      */
     setConsumptionFull(state, {value, index}){
-        let check = state.checkNumber(value, 0, 10, true);
+        let check = state.checkNumber(value, 0, 20, true);
         state.truckTypes[index].consumptionFull.error = check[0];
         state.truckTypes[index].consumptionFull.message = check[1];
         state.truckTypes[index].consumptionFull.value = value;
@@ -92,9 +92,9 @@ export const mutations = {
      */
     addNewGood(state) {
         let good = {
-            quantity : null,
-            weight : null,
-            volume : null,
+            quantity : {value: null, error: true, message:"Field can't be empty"},
+            weight : {value: null, error: true, message:"Field can't be empty"},
+            volume : {value: null, error: true, message:"Field can't be empty"},
             pickupLocation : null,
             deliveryLocation : null
         };
@@ -117,8 +117,10 @@ export const mutations = {
      * @param index The index of the good that should be changed.
      */
     setGoodQuantity(state, {value, index}){
-        // TODO: Add checking the quantity here.
-        state.goods[index].quantity = value;
+        let check = state.checkNumber(value, 0, 99, false);
+        state.goods[index].quantity.error = check[0];
+        state.goods[index].quantity.message = check[1];
+        state.goods[index].quantity.value = value;
     },
 
     /**
@@ -128,8 +130,10 @@ export const mutations = {
      * @param index The index of the good that should be changed.
      */
     setGoodWeight(state, {value, index}){
-        // TODO: Add checking the weight here.
-        state.goods[index].weight = value;
+        let check = state.checkNumber(value, 0, 4700, false);
+        state.goods[index].weight.error = check[0];
+        state.goods[index].weight.message = check[1];
+        state.goods[index].weight.value = value;
     },
 
     /**
@@ -139,8 +143,10 @@ export const mutations = {
      * @param index The index of the good that should be changed.
      */
     setGoodVolume(state, {value, index}){
-        // TODO: Add checking the volume here.
-        state.goods[index].volume = value;
+        let check = state.checkNumber(value, 0, 8.925, false);
+        state.goods[index].volume.error = check[0];
+        state.goods[index].volume.message = check[1];
+        state.goods[index].volume.value = value;
     },
 
     /**

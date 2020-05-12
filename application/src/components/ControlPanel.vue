@@ -7,7 +7,7 @@
     </div>
     <div class = "content">
       <FleetInput/>
-      <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
+      <CargoInput :products-valid="validProducts" @productChange="setValidProducts"/>
       <div>
         <div class="settingContainer">
           <router-link to="/settings">
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import ProductInput from "./ProductInput";
+import CargoInput from "./CargoInput";
 import CalculateRate from "./CalculateRate";
 import FleetInput from "./FleetInput";
 
@@ -32,7 +32,7 @@ export default {
   components: {
     FleetInput,
     CalculateRate,
-    ProductInput
+    CargoInput
   },
   data() {
     return {

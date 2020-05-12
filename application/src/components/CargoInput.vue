@@ -1,56 +1,48 @@
 <template>
-    <div class="fleetInput">
-        <VehicleInput v-for="(_,index) in fleet" :key="index" :index="index"/>
-
-        <div class="add">
-            <button @click="addVehicle" type="button" class="button circle plus"/>
-            Add vehicle
+    <div class="product-info">
+        <div v-for="(product, index) in cargo" :key="index">
+            <CargoProductInput :product="product" :index="index"/>
         </div>
-        <div style="clear: both;"></div> <!-- Makes sure the previous float doesn't overlap with the next element -->
+
+        <div>
+            <button @click="addProduct" type="button" class="button circle plus"/>
+            Add product
+        </div>
     </div>
 </template>
 
-<script>
-    import VehicleInput from "./VehicleInput";
 
+<script>
+    import CargoProductInput from "./CargoProductInput";
     export default {
-        name: "FleetInput",
-        components: {VehicleInput},
+        name: "ProductInput",
+        components: {CargoProductInput},
+        computed: {
+            cargo() {
+                return this.$store.getters.goods;
+            },
+        },
         methods: {
             /**
-             * This method add a new truck to the list of trucks in the state.
+             * This method add a new good to the list of goods in the store.
              */
-            addVehicle() {
-                this.$store.commit('addNewTruck');
-            }
-        },
-        computed: {
-            /**
-             * @returns Array of trucks in the store.
-             */
-            fleet() {
-                return this.$store.getters.trucks;
-            }
+            addProduct() {
+                this.$store.commit('addNewGood');
+            },
         }
     }
 </script>
 
+
+
 <style scoped>
-    /* Holder for FleetInput */
-    .fleetInput {
-        margin: 0;
+    .product-info {
         padding: 10px;
-    }
-
-    /* Add space between the vehicle input tabs */
-    .fleetInput > div {
-        margin-bottom: 10px;
-    }
-
-    /* Button to add new vehicles */
-    .add {
-        float: left;
+        text-align: left;
+        color: #007FEB;
+        font-family: "Arial", Arial, sans-serif;
         font-weight: bold;
+        font-size: 100%;
     }
 
     .button{
@@ -58,6 +50,7 @@
         border: none;
         color: white;
         padding: 15px 10px;
+        text-align: center;
         text-decoration: none;
         display: inline-block;
         font-size: 16px;
@@ -87,7 +80,6 @@
         right:0;
         bottom:0;
     }
-
     /* Plus in circle */
     .circle.plus:before,
     .circle.plus:after {
@@ -106,5 +98,17 @@
     .circle.plus:after{
         margin: auto 8px;
         height: 2px;
+    }
+
+    /* Cross in circle */
+    .circle.cross:after,
+    .circle.cross:before{
+        background: #007feb;
+        margin: auto 8px;
+        height: 2px;
+        transform:rotateZ(45deg);
+    }
+    .circle.cross:after{
+        transform:rotateZ(-45deg);
     }
 </style>

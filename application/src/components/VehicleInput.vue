@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <LocationInput :location="truck.startLocation" label="Currently at" setter="setTruckStartingLocation" :forward="{index : this.index}"/>
+        <LocationInput :location="truck.startLocation" label="Currently at" :setter="'setTruckStartingLocation'" :forward="{index : this.index}"/>
     </div>
 </template>
 

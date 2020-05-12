@@ -57,9 +57,9 @@ export default new Vuex.Store({
         goods : [
             // Default a single good with no info.
             {
-                quantity : null,
-                weight : null,           // The weight of the good kg
-                volume : null,           // The volume of the good m^3
+                quantity : {value: null, error: true, message:"Field can't be empty"},  //The quantity of the good
+                weight : {value: null, error: true, message:"Field can't be empty"},    // The weight of the good kg
+                volume : {value: null, error: true, message:"Field can't be empty"},    // The volume of the good m^3
                 pickupLocation : null,   // The location the good needs to be pickup
                 deliveryLocation : null  // The location the good needs to be delivered
             }
