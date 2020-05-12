@@ -8,6 +8,32 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        // Simulation objects
+        map : Object,
+        debugListProducts : [
+            {
+                quantity: 1,
+                weight: 1,
+                volume: 1,
+                from: [1,1],
+                to: [1,2]
+            },
+            {
+                quantity: 1,
+                weight: 1,
+                volume: 1,
+                from: [3,1],
+                to: [1,3]
+            },
+            {
+                quantity: 1,
+                weight: 1,
+                volume: 1,
+                from: [2,3],
+                to: [2,2]
+            }
+        ],
+
         // Global Variables:
         emissionRate : { value : "2.67", error : false, message : "" },  // The amount of emission released for a liter of petrol.
         maxSpeed : { value : "100", error : false, message : ""},        // The max speed a truck can traveling in km/h
@@ -43,6 +69,7 @@ export default new Vuex.Store({
             }
         ],
 
+
         // Input Variables:
         // An array of inputted truck objects
         trucks : [
@@ -67,6 +94,7 @@ export default new Vuex.Store({
 
 
 
+        // Old state below...
         fuelPrice : 1.45,
         emissionBurnt : 2.67,
         averageSpeed : 100,
