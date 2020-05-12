@@ -7,7 +7,7 @@
                 </p>
             </div>
             <div class="variableField">
-                <InputNumberBox :field="variable.field" :forward="forward" :setter="variable.setter"/>
+                <InputNumberBox :field="variable.field" :forward="forward" :setter="variable.setter" :placeholder="variable.unit"/>
             </div>
         </div>
     </div>
@@ -28,21 +28,25 @@
                 return [
                     {
                         name : "Max Volume",
+                        unit : "m^3",
                         field : this.$store.getters.truckTypes[this.index].volume,
                         setter : "setVolume"
                     },
                     {
                         name : "Max Payload",
+                        unit : "kg",
                         field : this.$store.getters.truckTypes[this.index].maxPayload,
                         setter : "setMaxPayload"
                     },
                     {
                         name : "Empty Fuel Consumption",
+                        unit : "L/km",
                         field : this.$store.getters.truckTypes[this.index].consumptionEmpty,
                         setter : "setConsumptionEmpty"
                     },
                     {
                         name : "Full Fuel Consumption",
+                        unit : "L/km",
                         field : this.$store.getters.truckTypes[this.index].consumptionFull,
                         setter : "setConsumptionFull",
                     },

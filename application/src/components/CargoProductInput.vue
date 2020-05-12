@@ -11,10 +11,10 @@
 
         <div class="numberFields">
             <div class="column" v-for="input in inputs" :key="input.name">
-                <p class="fieldText">
+                <p class="fieldText" :class="{error: input.field.error}">
                     {{input.name}}
                 </p>
-                <InputNumberBox :field="input.field" :forward="input.forward" :setter="input.setter"/>
+                <InputNumberBox :field="input.field" :forward="input.forward" :setter="input.setter" :placeholder="input.unit"/>
             </div>
         </div>
 
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    import LocationInput from "./LocationInput";
+    import LocationInput from "./InputLocation";
     import InputNumberBox from "./InputNumberBox";
 
     export default {
@@ -42,18 +42,21 @@
                 return [
                     {
                         name: "Quantity",
+                        unit: "#",
                         setter: "setGoodQuantity",
                         field: this.product.quantity,
                         forward: {index: this.index}
                     },
                     {
                         name: "Weight",
+                        unit: "kg",
                         setter: "setGoodWeight",
                         field: this.product.weight,
                         forward: {index: this.index}
                     },
                     {
                         name: "Volume",
+                        unit: "m^3",
                         setter: "setGoodVolume",
                         field: this.product.volume,
                         forward: {index: this.index}
@@ -88,7 +91,7 @@
     }
 
     .good {
-        margin: 0;
+        margin-bottom: 10px;
         border: 2px solid #007feb;
         border-radius: 5px;
         padding: 10px 15px;
@@ -96,6 +99,10 @@
 
     .numberFields {
         column-count: 3;
+    }
+
+    .error {
+        color: red;
     }
 
     .column {

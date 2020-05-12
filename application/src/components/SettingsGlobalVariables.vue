@@ -7,7 +7,7 @@
                 </p>
             </div>
             <div class="variableField">
-                <InputNumberBox :field="variable.field" :forward="{}" :setter="variable.setter"/>
+                <InputNumberBox :field="variable.field" :forward="{}" :setter="variable.setter" :placeholder="variable.unit"/>
             </div>
         </div>
     </div>
@@ -25,11 +25,13 @@
                 return [
                     {
                         name: "Emission Burnt Rate",
+                        unit: "kg/L (CO2)",
                         field: this.$store.getters.emissionRate,
                         setter: "setEmissionRate"
                     },
                     {
                         name: "Max Speed",
+                        unit: "km/h",
                         field: this.$store.getters.maxSpeed,
                         setter: "setMaxSpeed"
                     }

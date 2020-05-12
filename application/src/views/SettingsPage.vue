@@ -62,8 +62,8 @@
     /* Style the container containing the constants */
     #box {
         border-radius: 10px;
-        background-color: #f1f9ff;
-        height: 450px;
+        border: 2px solid #007feb;
+        background-color: white;
         width: 600px;
         margin-left: auto;
         margin-right: auto;

@@ -1,7 +1,12 @@
 <template>
     <div :title="info">
         <label>
-            <input class="numberBox" :class="isValid ? 'valid' : 'invalid'" type="text" v-model="lastInput" v-on:input="processInput"/>
+            <input class="numberBox"
+                   :class="isValid ? 'valid' : 'invalid'"
+                   type="text"
+                   v-model="lastInput"
+                   :placeholder="placeholder"
+                   v-on:input="processInput"/>
         </label>
     </div>
 </template>
@@ -12,7 +17,8 @@
         props: {
             field: Object,
             forward: Object,
-            setter: String
+            setter: String,
+            placeholder: String,
         },
         data: function() {
             return {
@@ -29,6 +35,13 @@
             },
             info : function () {
                 return this.field.message;
+            },
+            classes : function () {
+                return {
+                    'numberBox': true,
+                    'valid': this.isValid(),
+                    'invalid': !this.isValid(),
+                }
             }
         },
         methods: {
@@ -48,9 +61,6 @@
 <style scoped>
     /* Draw input box */
     .numberBox {
-        background: #ffffff;
-        width: 50%;
-        height: 16px;
         border-radius: 4px;
 
         /* Remove the scroll bar in Firefox */
@@ -61,18 +71,23 @@
         font-family: "Arial", Arial, sans-serif;
         font-weight: bold;
         font-size: 90%;
+
+        width: 100%;
+        height: 17px;
     }
 
     /* Change the font when the input is valid */
     .valid {
+        background: #f1f9ff;
         border: 3px solid #1187EC;
         color: #007FEB;
     }
 
     /* Change the font when the input is invalid */
     .invalid {
-         border: 3px solid #ec2720;
-         color: #eb0203;
+        background: #fff5fa;
+        border: 3px solid #fb2223;
+         color: #fc3131;
      }
 
     /* Remove online around input box when selected */
@@ -84,5 +99,16 @@
     .numberBox::-webkit-outer-spin-button, #numberBox::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
+    }
+
+    /* Style the placeholder text */
+    ::placeholder {
+        color: red;
+        opacity: 1;
+    }
+
+    /* Internet Explorer 10-11 & Microsoft Edge */
+    :-ms-input-placeholder {
+        color: red;
     }
 </style>

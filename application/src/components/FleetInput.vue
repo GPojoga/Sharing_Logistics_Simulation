@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import VehicleInput from "./VehicleInput";
+    import VehicleInput from "./FleetVehicleInput";
 
     export default {
         name: "FleetInput",
