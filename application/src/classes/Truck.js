@@ -7,7 +7,13 @@ import {Router} from "@/classes/Router";
 export default class Truck extends Observable{
 
     /**
-     * properties of the truck
+     * {
+     *  type: Truck type,
+     *  volume : The volume of goods the truck can transport m^3.
+     *  maxPayload : The max weight of goods the truck can transport kg.
+     *  consumptionEmpty : the fuel consumed when empty l/km
+     *  consumptionPerKg : the fuel consumed for transporting l/(kg*km)
+     * }
      * @type {null,object}
      */
     properties = null;
@@ -50,43 +56,57 @@ export default class Truck extends Observable{
     nrDeliveredProducts = 0;
 
     /**
-     * Current routes of this truck
-     * [{
-     *     start : start location
-     *     end : end location
-     *     distance : distance
-     *     duration : time necessary for this route
-     *     route : [{
-     *       coordinates : start location of this route segment
-     *       speed : the average speed on this segment
-     *     }]
-     *     type : "pickup"|"delivery"
-     *     product : the product that is picked up | delivered
-     *     truckSpace : { at the end of the route
-     *         weight : the weight of the products
-     *         volume : the volume of the products
-     *     }
-     * }]
-     * @type {*[]}
-     */
-    routes = [];
-
-    /**
      * an instance of Router. It is liable for computing a route
      * @type {Router}
      */
     router = new Router();
 
     /**
-     * current state of the truck
-     * @type {boolean}
+     * [{
+     *     location : {
+     *         lat : latitude,
+     *         lng : longitude
+     *     }
+     *     type : "pickUp" | "delivery"
+     *     product : {
+     *         quantity : number of products of the same type
+     *         volume : the volume of the product
+     *         weight : the weight of the product
+     *     }
+     *
+     * }]
      */
-    isMoving = false;
+    plan = [];
+
+    transportedWeight = 0;
+
+    transportedVolume = 0;
+
+    /**
+     * {
+     *     start : starting location
+     *     end : ending location
+     *     distance : route distance
+     *     duration : route duration
+     *     route : [{
+     *         coordinates : beginning of the segment
+     *         speed : average speed on this segment
+     *     }]
+     * }
+     * @type {ObjectConstructor}
+     * @private
+     */
+    _currentRoute = Object;
 
     /**
      * updates per second
      */
     _tickRate = 30;
+
+    /**
+     * the state of the truck : moving | not moving
+     */
+    isMoving = false;
 
     /**
      *
@@ -99,67 +119,92 @@ export default class Truck extends Observable{
         super();
         this.initialLocation = location;
         this.location = location;
-        this.__setProperties(type);
-        this.addListener(new TruckView(this,mapObj));
         this._tickRate = tickRate;
+        this._setProperties(type);
+        this.addListener(new TruckView(this,mapObj));
     }
 
-    assignProduct(product){
-
+    /**
+     * assign this truck to the given product
+     * @param product
+     */
+    assignToProduct(product){
+        this._addProduct(product);
+        this._start();
     }
 
-    goHome(){
-        this.goTo(this.initialLocation);
+    /**
+     * assign this truck to the product
+     * @param product the product to be transported
+     */
+    // eslint-disable-next-line no-unused-vars
+    _addProduct(product){
+        throw new Error("Cannot call an abstract method");
     }
 
-    goTo(location){
-        let waiter = {
-            start : Object,
-            end : location,
-        };
-
-        if(this.routes.length === 0 ){
-            waiter.start = this.location;
-        } else {
-            waiter.start = this.routes[this.routes.length - 1].end;
-        }
-
-        this.routes.push(waiter);
-        this.router.getRoute(waiter.start,location).then(route => {
-            Object.assign(waiter,route);
-            this.__start();
-        });
-    }
-
-    __start(){
-        if(!this.isMoving && this.routes.length > 0 && this.routes[0].route !== undefined){
-            this.followRoute();
+    /**
+     * start following the plan
+     * @private
+     */
+    _start(){
+        if(!this.isMoving && this.plan.length > 0){
+            this._goTo(this.plan.shift());
         }
     }
 
-    followRoute(){
-        let routeData = this.routes.shift();
-        let route = routeData.route;
+    /**
+     * fulfill the given order
+     * @param order
+     * @private
+     */
+    _goTo(order){
+        this._currentRoute = this.router.getRoute(this.location,order.location);
         this.isMoving = true;
-        this.__followRoute(route,0);
+        this._followRoute(0);
+        switch (order.type) {
+            case "pickUp":
+                this.transportedWeight += order.weight;
+                this.transportedVolume += order.volume;
+                break;
+            case "delivery":
+                this.transportedWeight -= order.weight;
+                this.transportedVolume -= order.volume;
+                this.nrDeliveredProducts += 1;
+                break;
+        }
     }
 
-    __followRoute(route,index){
-        let self = this;
-        setTimeout(
-            function(){
-                if(index < route.length){
-                    self.__setLocation(route[index].coordinates);
-                    self.__followRoute(route,index + 1);
-                }else{
-                    console.log("Finished the route");
-                    self.isMoving = false;
-                    self.__start();
-                }
-            },1000/this._tickRate);
+    /**
+     * follow the current route
+     * @private
+     */
+    _followRoute(index){
+        setTimeout(() => {
+            if(index < this._currentRoute.length){
+               this._followRoute(this._updateRouteProgress(index));
+            } else {
+                this.isMoving = false;
+                this._start();
+            }
+        },1000/this._tickRate);
     }
 
-    __setLocation(location){
+    /**
+     * update the position of the truck by following the route
+     * @param index the index of the last route segment that was visited
+     * @private
+     */
+    // eslint-disable-next-line no-unused-vars
+    _updateRouteProgress(index){
+
+    }
+
+    /**
+     * set the location of the truck and notify the observers
+     * @param location
+     * @private
+     */
+    _setLocation(location){
         this.location = location;
         this.notify();
     }
@@ -170,14 +215,35 @@ export default class Truck extends Observable{
      * Train type is set by default
      * @param type truck type
      * @private
+     * @return Object
      */
-    __setProperties(type){
+    _getProperties(type){
         let tType = store.state.truckTypes.find(x => x.key === type);
+        let props;
         if(tType !== undefined){
-            this.properties = tType;
+            props = tType;
         }else{
             console.error("Truck : Undefined truck type (default : Train)");
-            this.properties = store.state.truckTypes.find(x => x.key === "Train");
+            props = store.state.truckTypes.find(x => x.key === "Train");
+        }
+        return props;
+    }
+
+    /**
+     * This method retrieves the description of the truck from storage
+     * and sets the properties of the truck according to its type
+     * @param type truck type
+     * @private
+     */
+    _setProperties(type){
+        let props = this._getProperties(type);
+        this.properties = {
+            type : type,
+            volume : parseFloat(props.volume.value),
+            maxPayload : parseFloat(props.maxPayload.value),
+            consumptionEmpty : parseFloat(props.consumptionEmpty.value),
+            consumptionPerKg :
+                (props.consumptionFull.value - props.consumptionEmpty.value) / props.maxPayload.value,
         }
     }
 }

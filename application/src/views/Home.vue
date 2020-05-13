@@ -32,29 +32,24 @@
                 lat : 53.2153888
             };
 
-            let locationB = {
-                lat : 53.197305,
-                lng : 6.665607
-            };
+            // let locationB = {
+            //     lat : 53.197305,
+            //     lng : 6.665607
+            // };
+            //
+            // let locationC = {
+            //     lat : 53.213924,
+            //     lng : 6.501276
+            // };
+            //
+            // let locationD = {
+            //     lat : 53.238140,
+            //     lng : 6.537277
+            // };
 
-            let locationC = {
-                lat : 53.213924,
-                lng : 6.501276
-            };
-
-            let locationD = {
-                lat : 53.238140,
-                lng : 6.537277
-            };
-
-            let truckA = new Truck("Light",locationA,this.$store.state.map,1);
+            new Truck("Light",locationA,this.$store.state.map,1);
             // let truckB = new Truck("Heavy",locationB,this.$store.state.map);
             // let truckC = new Truck("Train",locationC,this.$store.state.map);
-
-            truckA.goTo(locationB);
-            truckA.goTo(locationC);
-            truckA.goTo(locationD);
-            truckA.goHome();
 
             // truckB.goTo(locationA);
             // truckB.goTo(locationC);

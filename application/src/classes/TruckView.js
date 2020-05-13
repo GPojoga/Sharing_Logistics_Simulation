@@ -17,7 +17,7 @@ export class TruckView{
     }
 
     __pickColor(truck){
-        switch(truck.properties.key){
+        switch(truck.properties.type){
             case "Light":
                 return 'blue';
             case "Heavy":
