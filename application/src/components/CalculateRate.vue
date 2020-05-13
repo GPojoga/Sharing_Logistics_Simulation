@@ -1,6 +1,11 @@
 <template>
     <div class="calcRate">
-        <button @click="calculateRate" type="button" class="calcRateButton">Calculate Rate</button>
+        <div>
+            <button @click="calculateTraditonal" type="button" class="calcRateButton">Traditional Rate</button>
+        </div>
+        <div>
+            <button @click="calculateSharing" type="button" class="calcRateButton">Sharing Rate</button>
+        </div>
     </div>
 </template>
 
@@ -17,62 +22,11 @@
 
 
         methods: {
-            calculateRate(){
-              this.$emit("calculateRate");
+            calculateTraditonal(){
+                this.$emit("calculateTraditional");
             },
-            getInput(){
-                alert("Position From = " + this.getPositionFrom() +
-                      "\nPosition To = "   + this.getPositionTo()   +
-                      "\nLight Duty Van = " + this.getVehicleA() +
-                      "\nHeavy Duty Van = " + this.getVehicleB() +
-                      "\nTrain Trucks = " + this.getVehicleC() +
-                      "\nTotal Quantity = " + this.getTotalQuantity() +
-                      "\nTotal Weight = " + this.getTotalWeight() +
-                      "\nTotal Volume = " + this.getTotalVolume() );
-            },
-
-            getPositionFrom() {
-                return JSON.stringify(this.$store.state.locations[0].pos, null, 2);
-            },
-
-            getPositionTo(){
-                return JSON.stringify(this.$store.state.locations[1].pos, null, 2);
-            },
-
-            getVehicleA() {
-                return this.$store.state.A.vehicles[0];
-            },
-
-            getVehicleB() {
-                return this.$store.state.A.vehicles[1];
-            },
-
-            getVehicleC() {
-                return this.$store.state.A.vehicles[2];
-            },
-
-            getTotalQuantity(){
-                let sum = 0;
-                for (let step = 0; step < this.$store.state.A.cargo.length; step++) {
-                    sum += Number(this.$store.state.A.cargo[step].quantity)
-                }
-                return sum;
-            },
-
-            getTotalWeight(){
-                let sum = 0;
-                for (let step = 0; step < this.$store.state.A.cargo.length; step++) {
-                    sum += Number(this.$store.state.A.cargo[step].weight)
-                }
-                return sum;
-            },
-
-            getTotalVolume(){
-                let sum = 0;
-                for (let step = 0; step < this.$store.state.A.cargo.length; step++) {
-                    sum += Number(this.$store.state.A.cargo[step].volume)
-                }
-                return sum;
+            calculateSharing(){
+                this.$emit("calculateSharing");
             }
 
         }
