@@ -45,54 +45,12 @@ export const getters = {
     },
 
     /**
-     * Returns an array with the number of trucks that are available of each type.
-     * @param state
-     * @returns {any[]}
+     * Getter of the map of the webapp.
+     * @param state The current state of the webapp.
+     * @returns {ObjectConstructor}  The map represented by a map object.
      */
-    trucksByType: state => {
-        let arr = new Array(state.truckTypes.length).fill(0);
-        state.A.vehicles.forEach( v => {
-            arr[v.indexTruckType]++;
-        });
-        return arr;
-    },
-
-    /**
-     * The maximum number of locations that can be contained in the locations array.
-     * It is equal to the general 'from' and 'to' locations of the trucks (2*number of trucks),
-     * plus the 'from' and 'to' locations of each product (2*number of products):
-     *      2*state.A.vehicles.length + 2*state.A.cargo.length;
-     * @param state
-     * @returns {number}
-     */
-    maxNrLocations: (state, getters) => {
-        return getters.nrVehicleLocations + 2*state.A.cargo.length;
-    },
-
-    /**
-     * The number of locations of the vehicles in the locations array.
-     * @param state
-     * @returns {number}
-     */
-    nrVehicleLocations: state => {
-        return 2*state.A.vehicles.length;
-    },
-
-    locations: state => {
-        return state.locations.list;
-    },
-
-    /**
-     * Calculates the number of spots in the locations array that contain a value.
-     *
-     * @param state
-     * @param getters
-     * @returns {number}
-     */
-    currentNrLocations: (state, getters) => {
-        let nrLocations = 0;
-        getters.locations.forEach(element => { nrLocations += (element !== null); });
-        return nrLocations;
+    map: state => {
+        return state.map;
     }
 };
 

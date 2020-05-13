@@ -92,37 +92,6 @@ export default new Vuex.Store({
             }
         ],
 
-
-
-        // Old state below...
-        fuelPrice : 1.45,
-        emissionBurnt : 2.67,
-        averageSpeed : 100,
-        numberTrucks : 3,
-
-        // Variables (computed)
-        route : {
-            distance: 0, //default value of 186.6795 km (distance between Groningen and Amsterdam).
-            time:{
-                hours: 0,
-                minutes: 0,
-            }
-        },
-
-        // Variables (based on input)
-        locations : {
-            list: new Array(2).fill(null),
-            event: ''
-        },
-
-        A : {
-            // The vehicles that dispatch from the start location.
-            vehicles : new Array(0).fill(null),
-
-            // The goods that need to be delivered by these vehicles.
-            cargo : []
-        },
-
         /**
          * This is a helper function to check if number fields are valid.
          * @param num The number being checked as a String.
