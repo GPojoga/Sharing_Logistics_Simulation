@@ -152,11 +152,11 @@ our GitHub repository.
 ## Change Log
 | **Who**        | **When**  | **Which Section** | **What**
 |----------------|:---------:|-------------------|----------
-| Antonin Thioux | 23rd Feb. | The document.     | Created the document, added sections: introduction, user wishes, customer meetings, changelog.
-| Bjar Karim 	| 22nd Mar.	| Customer meetings.  | Added the new meeting (email) with the customer.
-| Bjar Karim   | 6th  Apr. | Customer meetings.  | Added the new meeting (email) with the customer and updated the user stories.
-| Gheorghe Pojoga   | 20th Apr.  | Important user stories. Non functional requirements. Customer meetings. Traceability matrix.   | Added a new important user story.  Combined two important user stories. Removed one non-functional requirement and added a new one. Added a new client meeting (video chat). Created the sketch of the Traceability Matrix.   |
-| Lonneke Pulles | 7th May | User Stories | Processed teacher's feedback: added IDs to user stories, MoSCoW naming, explanation of used terms; goal of client formulated more precisely.
-| Lonneke Pulles | 8th May | User Stories | Added checkboxes to requirements. Split and combined some requirements into, and added, subrequirements. Added input of a truck and a good to critical user stories (C3, C4). Added user story varying multiple background parameters (U3). Added user story to be able to run simulation over time (U4). Changed 'points A & B' to a single start location for trucks.
-
+| Antonin Thioux | 23rd Feb. | The document.     | Created the document, added sections: introduction, user wishes, meeting log, changelog.
+| Bjar Karim 	| 22nd Mar.	| Meeting Log.  | Added the new meeting (email) with the customer.
+| Bjar Karim   | 6th  Apr. | Meeting Log.  | Added the new meeting (email) with the customer and updated the user stories.
+| Gheorghe Pojoga   | 20th Apr.  | Important user stories. Non functional requirements. Meeting Log. Traceability matrix.   | Added a new important user story.  Combined two important user stories. Removed one non-functional requirement and added a new one. Added a new client meeting (video chat). Created the sketch of the Traceability Matrix.   |
+| Lonneke Pulles | 7th May | User Stories | Processed Andrea's feedback: added IDs to user stories, MoSCoW naming, explanation of used terms; goal of client formulated more precisely.
+| Lonneke Pulles | 8th May | User Stories. Meeting log. | Added checkboxes to requirements. Split and combined some requirements into, and added, subrequirements. Added input of a truck and a good to critical user stories (C3, C4). Added user story varying multiple background parameters (U3). Added user story to be able to run simulation over time (U4). Changed 'points A & B' to a single start location for trucks.
+| Lonneke Pulles | Future/To do | User Stories. | Extract all 'be able to's. Add stakeholders. Add blackbox overview of system. Do spelling/grammar check. Change non-functional user stories to requirements and link them to terms like usability, security, etc. Add won't do non-functional 'security'.
 

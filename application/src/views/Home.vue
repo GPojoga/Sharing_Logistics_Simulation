@@ -16,12 +16,13 @@
             SimplifiedMap,
         },
         mounted(){
-            let locations = this.$store.getters.locations;
-            for(let i = 0;i < locations.length;i++){
-                locations[i] = null;
-            }
-            let route = this.$store.state.route;
-            route.distance = route.time.hours = route.time.minutes = 0;
+            // let locations = this.$store.getters.locations;
+            // console.log(locations);
+            // for(let i = 0;i < locations.length;i++){
+            //     locations[i] = null;
+            // }
+            // let route = this.$store.state.route;
+            // route.distance = route.time.hours = route.time.minutes = 0;
 
             /* Router testing: TODO: Remove this commented code.
 

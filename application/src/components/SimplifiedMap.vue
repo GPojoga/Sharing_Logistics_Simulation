@@ -49,7 +49,7 @@
 
         mounted () {
             // Relay the map the the store of the webapp.
-            this.$store.commit("setMap", {map: this.$ref.map.mapObject});
+            this.$store.commit("setMap", {map: this.$refs.map.mapObject});
         },
     }
 </script>
