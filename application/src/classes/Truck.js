@@ -4,6 +4,10 @@ import {Observable} from "@/classes/Observable";
 import {TruckView} from "@/classes/TruckView";
 import {Router} from "@/classes/Router";
 
+/**
+ * this is the abstract class for truck
+ * it must not be instantiated
+ */
 export default class Truck extends Observable{
 
     /**
@@ -26,7 +30,6 @@ export default class Truck extends Observable{
         lat: Number,
         lng: Number,
     };
-
 
     /**
      * initial location
@@ -67,7 +70,7 @@ export default class Truck extends Observable{
      *         lat : latitude,
      *         lng : longitude
      *     }
-     *     type : "pickUp" | "delivery"
+     *     type : "pickUp" | "delivery" | "home"
      *     product : {
      *         quantity : number of products of the same type
      *         volume : the volume of the product
@@ -122,6 +125,18 @@ export default class Truck extends Observable{
         this._tickRate = tickRate;
         this._setProperties(type);
         this.addListener(new TruckView(this,mapObj));
+    }
+
+    /**
+     * send the truck home
+     */
+    sendHome(){
+        this.plan.push({
+            location : this.initialLocation,
+            type : "home",
+            product : null
+        });
+        this._start();
     }
 
     /**
