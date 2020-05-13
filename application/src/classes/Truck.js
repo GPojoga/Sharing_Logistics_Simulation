@@ -2,7 +2,8 @@
 import store from "../store/index.js";
 import {Observable} from "@/classes/Observable";
 import {TruckView} from "@/classes/TruckView";
-import {Router} from "@/classes/Router";
+import Router from "@/classes/Router";
+import euclidDist from "@/classes/EuclidDist";
 
 /**
  * this is the abstract class for truck
@@ -46,11 +47,6 @@ export default class Truck extends Observable{
      */
     fuelConsumed = 0;
 
-    /**
-     * The sum of delivery time for all products transported by this truck
-     * @type {number}
-     */
-    totalDeliveryTime = 0;
 
     /**
      * total number of delivered products by this truck
@@ -93,13 +89,13 @@ export default class Truck extends Observable{
      *     duration : route duration
      *     route : [{
      *         coordinates : beginning of the segment
-     *         speed : average speed on this segment
+     *         duration : time necessary to pass this segment in seconds
+     *         distance : distance of this segment in meters
      *     }]
      * }
-     * @type {ObjectConstructor}
      * @private
      */
-    _currentRoute = Object;
+    _currentRoute;
 
     /**
      * updates per second
@@ -163,29 +159,23 @@ export default class Truck extends Observable{
      */
     _start(){
         if(!this.isMoving && this.plan.length > 0){
-            this._goTo(this.plan.shift());
-        }
-    }
-
-    /**
-     * fulfill the given order
-     * @param order
-     * @private
-     */
-    _goTo(order){
-        this._currentRoute = this.router.getRoute(this.location,order.location);
-        this.isMoving = true;
-        this._followRoute(0);
-        switch (order.type) {
-            case "pickUp":
-                this.transportedWeight += order.weight;
-                this.transportedVolume += order.volume;
-                break;
-            case "delivery":
-                this.transportedWeight -= order.weight;
-                this.transportedVolume -= order.volume;
-                this.nrDeliveredProducts += 1;
-                break;
+            this.isMoving = true;
+            let order = this.plan.shift();
+            this.router.getRoute(this.location,order.location).then( route => {
+                this._currentRoute = route;
+                this._followRoute(0);
+                switch (order.type) {
+                    case "pickUp":
+                        this.transportedWeight += order.weight;
+                        this.transportedVolume += order.volume;
+                        break;
+                    case "delivery":
+                        this.transportedWeight -= order.weight;
+                        this.transportedVolume -= order.volume;
+                        this.nrDeliveredProducts += 1;
+                        break;
+                }
+            });
         }
     }
 
@@ -195,7 +185,7 @@ export default class Truck extends Observable{
      */
     _followRoute(index){
         setTimeout(() => {
-            if(index < this._currentRoute.length){
+            if(index < this._currentRoute.length - 1){
                this._followRoute(this._updateRouteProgress(index));
             } else {
                 this.isMoving = false;
@@ -209,9 +199,52 @@ export default class Truck extends Observable{
      * @param index the index of the last route segment that was visited
      * @private
      */
-    // eslint-disable-next-line no-unused-vars
     _updateRouteProgress(index){
+        let distance = 0;
+        let time = 1/this._tickRate;
+        let route = this._currentRoute.route;
+        let begin = route[index].coordinates;
+        let ratio = euclidDist(begin,this.location) / euclidDist(begin,route[index + 1].coordinates);
+        let timeSegment =  (1 - ratio) * route[index].duration;
+        let distanceSegment = (1 - ratio) * route[index].distance;
 
+        while(time > timeSegment){
+            if(timeSegment === 0){
+                this.fuelConsumed += this._computeFuelConsumed(distance);
+                this._setLocation(route[index].coordinates);
+                return index;
+            }
+            index += 1;
+            distance += distanceSegment;
+            time -= timeSegment;
+            distanceSegment = route[index].distance;
+            timeSegment = route[index].duration;
+        }
+
+        ratio = time / timeSegment;
+        distance += ratio * distanceSegment;
+
+        this.fuelConsumed += this._computeFuelConsumed(distance);
+
+        this._setLocation({
+            lat : (route[index + 1].coordinates.lat - route[index].coordinates.lat) * ratio +
+                    route[index].coordinates.lat,
+            lng : (route[index + 1].coordinates.lng - route[index].coordinates.lng) * ratio +
+                    route[index].coordinates.lng
+        });
+
+        return index;
+    }
+
+    /**
+     * fuel consumed by traveling the given distance with the current weight
+     * @param distance
+     * @return {number}
+     * @private
+     */
+    _computeFuelConsumed(distance){
+        return (distance / 1000) * (this.transportedWeight * this.properties.consumptionPerKg +
+            this.properties.consumptionEmpty);
     }
 
     /**

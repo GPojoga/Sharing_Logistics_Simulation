@@ -8,7 +8,8 @@
 <script>
     import ControlPanel from "@/components/ControlPanel";
     import SimplifiedMap from "@/components/SimplifiedMap";
-    import Truck from "@/classes/Truck";
+    // import Truck from "@/classes/Truck";
+    // import Router from "@/classes/Router";
 
     export default {
         name: 'Home',
@@ -27,10 +28,10 @@
 
             // Router testing: TODO: Remove this commented code.
 
-            let locationA = {
-                lng : 6.5619295,
-                lat : 53.2153888
-            };
+            // let locationA = {
+            //     lng : 6.5619295,
+            //     lat : 53.2153888
+            // };
 
             // let locationB = {
             //     lat : 53.197305,
@@ -47,7 +48,8 @@
             //     lng : 6.537277
             // };
 
-            new Truck("Light",locationA,this.$store.state.map,1);
+            // new Truck("Light",locationA,this.$store.state.map,1);
+
             // let truckB = new Truck("Heavy",locationB,this.$store.state.map);
             // let truckC = new Truck("Train",locationC,this.$store.state.map);
 

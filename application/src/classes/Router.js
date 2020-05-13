@@ -1,5 +1,5 @@
 
-export class Router{
+export default class Router{
 
     __routingMachine = 'http://router.project-osrm.org/route/';
     __version = 'v1/';
@@ -8,7 +8,7 @@ export class Router{
 
     __geometries = 'geometries=geojson';
     __overview = 'overview=full';
-    __annotations = 'annotations=speed';
+    __annotations = 'annotations=duration,distance';
     __options = String;
 
 
@@ -38,19 +38,22 @@ export class Router{
 
     __unpackRoute(rawRoute){
         let coordinates = rawRoute.geometry.coordinates.map(this.__unpackCoordinate);
-        let speed = rawRoute.legs[0].annotation.speed;
+        let duration = rawRoute.legs[0].annotation.duration;
+        let distance = rawRoute.legs[0].annotation.distance;
         let route = new Array(coordinates.length);
 
-        for(let i = 0; i < speed.length;i++){
+        for(let i = 0; i < duration.length;i++){
             route[i] = {
                 coordinates : coordinates[i],
-                speed : speed[i]
+                duration : duration[i],
+                distance : distance[i]
             }
         }
 
         route[route.length - 1] = {
             coordinates : coordinates[coordinates.length - 1],
-            speed : 0
+            duration : 0,
+            distance : 0
         };
 
         return route;
