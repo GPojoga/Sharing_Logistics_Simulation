@@ -8,6 +8,7 @@
 <script>
     import ControlPanel from "@/components/ControlPanel";
     import SimplifiedMap from "@/components/SimplifiedMap";
+    import Truck from "@/classes/Truck";
 
     export default {
         name: 'Home',
@@ -24,7 +25,7 @@
             // let route = this.$store.state.route;
             // route.distance = route.time.hours = route.time.minutes = 0;
 
-            /* Router testing: TODO: Remove this commented code.
+            // Router testing: TODO: Remove this commented code.
 
             let locationA = {
                 lng : 6.5619295,
@@ -46,25 +47,25 @@
                 lng : 6.537277
             };
 
-            let truckA = new Truck("Light",locationA,this.$store.state.map);
-            let truckB = new Truck("Heavy",locationB,this.$store.state.map);
-            let truckC = new Truck("Train",locationC,this.$store.state.map);
+            let truckA = new Truck("Light",locationA,this.$store.state.map,1);
+            // let truckB = new Truck("Heavy",locationB,this.$store.state.map);
+            // let truckC = new Truck("Train",locationC,this.$store.state.map);
 
             truckA.goTo(locationB);
             truckA.goTo(locationC);
             truckA.goTo(locationD);
             truckA.goHome();
 
-            truckB.goTo(locationA);
-            truckB.goTo(locationC);
-            truckB.goTo(locationD);
-            truckB.goHome();
+            // truckB.goTo(locationA);
+            // truckB.goTo(locationC);
+            // truckB.goTo(locationD);
+            // truckB.goHome();
+            //
+            // truckC.goTo(locationA);
+            // truckC.goTo(locationB);
+            // truckC.goTo(locationD);
+            // truckC.goHome();
 
-            truckC.goTo(locationA);
-            truckC.goTo(locationB);
-            truckC.goTo(locationD);
-            truckC.goHome();
-            */
         }
     }
 </script>

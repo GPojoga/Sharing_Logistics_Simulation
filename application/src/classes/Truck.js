@@ -4,7 +4,7 @@ import {Observable} from "@/classes/Observable";
 import {TruckView} from "@/classes/TruckView";
 import {Router} from "@/classes/Router";
 
-export class Truck extends Observable{
+export default class Truck extends Observable{
 
     /**
      * properties of the truck
@@ -13,7 +13,7 @@ export class Truck extends Observable{
     properties = null;
 
     /**
-     * truck location
+     * current location
      * @type {{lng: Number, lat: Number}}
      */
     location = {
@@ -21,6 +21,11 @@ export class Truck extends Observable{
         lng: Number,
     };
 
+
+    /**
+     * initial location
+     * @type {{lng: NumberConstructor, lat: NumberConstructor}}
+     */
     initialLocation = {
         lat: Number,
         lng: Number,
@@ -44,26 +49,63 @@ export class Truck extends Observable{
      */
     nrDeliveredProducts = 0;
 
+    /**
+     * Current routes of this truck
+     * [{
+     *     start : start location
+     *     end : end location
+     *     distance : distance
+     *     duration : time necessary for this route
+     *     route : [{
+     *       coordinates : start location of this route segment
+     *       speed : the average speed on this segment
+     *     }]
+     *     type : "pickup"|"delivery"
+     *     product : the product that is picked up | delivered
+     *     truckSpace : { at the end of the route
+     *         weight : the weight of the products
+     *         volume : the volume of the products
+     *     }
+     * }]
+     * @type {*[]}
+     */
     routes = [];
 
-    router = Object;
+    /**
+     * an instance of Router. It is liable for computing a route
+     * @type {Router}
+     */
+    router = new Router();
 
-    isMoving = Boolean;
+    /**
+     * current state of the truck
+     * @type {boolean}
+     */
+    isMoving = false;
+
+    /**
+     * updates per second
+     */
+    _tickRate = 30;
 
     /**
      *
      * @param type truck type ("Light"|"Heavy"|"Train")
      * @param location initial location of the truck
      * @param mapObj the map on which the truck is visualized
+     * @param tickRate updates per second
      */
-    constructor(type,location,mapObj) {
+    constructor(type,location,mapObj,tickRate) {
         super();
         this.initialLocation = location;
         this.location = location;
         this.__setProperties(type);
         this.addListener(new TruckView(this,mapObj));
-        this.router = new Router();
-        this.isMoving = false;
+        this._tickRate = tickRate;
+    }
+
+    assignProduct(product){
+
     }
 
     goHome(){
@@ -114,7 +156,7 @@ export class Truck extends Observable{
                     self.isMoving = false;
                     self.__start();
                 }
-            },100);
+            },1000/this._tickRate);
     }
 
     __setLocation(location){
