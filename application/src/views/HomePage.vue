@@ -6,25 +6,18 @@
 </template>
 
 <script>
-    import ControlPanel from "@/components/ControlPanel";
-    import SimplifiedMap from "@/components/SimplifiedMap";
+    import ControlPanel from "../components/ControlPanel";
+    import SimplifiedMap from "../components/SimplifiedMap";
     import TraditionalTruck from "@/classes/TraditionalTruck";
     import Product from "@/classes/Product";
 
     export default {
-        name: 'Home',
+        name: 'HomePage',
         components: {
             ControlPanel,
             SimplifiedMap,
         },
         mounted(){
-            // let locations = this.$store.getters.locations;
-            // console.log(locations);
-            // for(let i = 0;i < locations.length;i++){
-            //     locations[i] = null;
-            // }
-            // let route = this.$store.state.route;
-            // route.distance = route.time.hours = route.time.minutes = 0;
 
             // Router testing: TODO: Remove this commented code.
 
@@ -76,8 +69,6 @@
             // truckC.assignToProduct(productD);
             // truckC.assignToProduct(productA);
             // truckC.sendHome();
-
-
         }
     }
 </script>

@@ -24,7 +24,7 @@
     import LocationInput from "./InputLocation";
 
     export default {
-        name: "VehicleInput",
+        name: "FleetVehicleInput",
         components: {LocationInput},
         props: {
             index : Number
@@ -66,6 +66,7 @@
 <style scoped>
     .header {
         height: 40px;
+        width: 100%;
     }
 
     span {

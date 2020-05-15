@@ -79,6 +79,7 @@
 <style scoped>
     .header {
         height: 40px;
+        width: 100%;
     }
 
     span {
@@ -99,10 +100,6 @@
 
     .numberFields {
         column-count: 3;
-    }
-
-    .error {
-        color: red;
     }
 
     .column {
