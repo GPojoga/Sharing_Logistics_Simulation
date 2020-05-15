@@ -1,12 +1,15 @@
 
-import store from "../store/index.js";
-import {Observable} from "@/classes/Observable";
-import {TruckView} from "@/classes/TruckView";
-import Router from "@/classes/Router";
+import store from "../../store";
+import {Observable} from "./Observable";
+import {TruckView} from "./TruckView";
+import Router from "../Router";
 
 /**
  * this is the abstract class for truck
  * it must not be instantiated
+ *
+ * @class Truck
+ * @abstract
  */
 export default class Truck extends Observable{
 
@@ -51,7 +54,7 @@ export default class Truck extends Observable{
      * total number of delivered goods by this truck
      * @type {number}
      */
-    nrDeliveredgoods = 0;
+    nrDeliveredGoods = 0;
 
     /**
      * an instance of Router. It is liable for computing a route
@@ -118,6 +121,10 @@ export default class Truck extends Observable{
      */
     constructor(type,location,mapObj,tickRate) {
         super();
+        if (this.constructor === Truck) {
+            throw new Error('Can not instantiate abstract class Truck!');
+        }
+        console.log('truck type: ' + type);
         this.initialLocation = location;
         this.location = location;
         this._tickRate = tickRate;
@@ -206,7 +213,7 @@ export default class Truck extends Observable{
             case "delivery":
                 this.transportedWeight -= order.good.quantity * order.good.weight;
                 this.transportedVolume -= order.good.quantity * order.good.volume;
-                this.nrDeliveredgoods += 1;
+                this.nrDeliveredGoods += 1;
                 break;
         }
         this._start();
@@ -303,5 +310,17 @@ export default class Truck extends Observable{
             consumptionPerKg :
                 (props.consumptionFull.value - props.consumptionEmpty.value) / props.maxPayload.value,
         }
+    }
+
+    /**
+     * This method returns the expected extra cost to the truck if it wants to pickup and deliver the given good.
+     *
+     * @param good
+     * @returns number, where 0 <= number <= 10.
+     */
+    // eslint-disable-next-line no-unused-vars
+    getCostOfAddingGood(good) {
+        // TODO: filler random number
+        return Math.random() * 10;
     }
 }

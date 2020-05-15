@@ -13,14 +13,6 @@
 
     export default {
         name: "CalculateRate",
-
-        data: function () {
-            return {
-                info : this.$store.state
-            }
-        },
-
-
         methods: {
             calculateTraditional(){
                 this.$emit("calculateTraditional");

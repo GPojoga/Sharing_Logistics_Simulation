@@ -10,8 +10,8 @@
             <div v-for="type in truckTypes"
                  :key="type.key"
                  class="imageTab"
-                 :class="{ selected: (truck.type === type), unselected: (truck.type !== type) }"
-                 @click="setSelected(type)">
+                 :class="{ selected: (truck.type === type.key), unselected: (truck.type !== type.key) }"
+                 @click="setSelected(type.key)">
                 <img :src="'assets/' + type.img" :alt="type.name" style="width:100%">
             </div>
         </div>

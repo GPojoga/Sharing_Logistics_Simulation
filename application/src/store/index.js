@@ -10,7 +10,7 @@ export default new Vuex.Store({
     state: {
         // Simulation objects
         map : Object,
-        debugListProducts : [
+        debugListGoods : [
             {
                 quantity: 1,
                 weight: 1,

@@ -1,4 +1,4 @@
-import Truck from "@/classes/Truck"
+import Truck from "./Truck"
 
 export default class TraditionalTruck extends Truck{
 
@@ -6,32 +6,32 @@ export default class TraditionalTruck extends Truck{
         super(type,location,mapObj,tickRate);
     }
 
-    _addProduct(product) {
-        if(product === null){
+    _addGood(good) {
+        if(good === null){
             this.plan.push({
                 location : this.initialLocation,
                 type : "home",
-                product : null
+                good : null
             });
         } else {
             let pickUp = {
-                location : product.pickUp,
+                location : good.pickUp,
                 type : "pickUp",
-                product : {
-                    quantity : product.quantity,
-                    volume : product.volume,
-                    weight : product.weight
+                good : {
+                    quantity : good.quantity,
+                    volume : good.volume,
+                    weight : good.weight
                 }
             };
             this.plan.push(pickUp);
 
             let delivery = {
-              location : product.delivery,
+              location : good.delivery,
               type : "delivery",
-              product : {
-                  quantity : product.quantity,
-                  volume : product.volume,
-                  weight : product.weight
+              good : {
+                  quantity : good.quantity,
+                  volume : good.volume,
+                  weight : good.weight
               }
             };
             this.plan.push(delivery);

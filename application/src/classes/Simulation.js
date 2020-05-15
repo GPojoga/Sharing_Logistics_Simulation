@@ -1,24 +1,44 @@
-
-/* Calls FreightPlatform.js and stuff. This comment is a TODO.
-
-Two types of simulations:
-
-1. Shared: initialize sharedTruck
-2. Traditional: initialize traditionalTruck
-
- */
-
 import {FreightPlatform} from "./FreightPlatform";
 import {simulationType} from "./SimulationType";
-import SharedTruck from "./SharedTruck";
+import SharedTruck from "./trucks/SharedTruck";
 import Good from "./Good";
+import TraditionalTruck from "./trucks/TraditionalTruck";
 
+/**
+ * This comment is a TODO.
+ *
+ * @param type
+ * @param state
+ */
 export function simulate(type, state) {
+    // 1. Initialize goods into instances of Good.
+    let goodsList = [];
+    state.goods.forEach(good => {
+        goodsList.push(new Good(
+            good.quantity,          // quantity
+            good.weight,            // weight
+            good.volume,            // volume
+            good.pickupLocation,    // pickUp
+            good.deliveryLocation,  // delivery
+            state.map               // map object
+        ));
+    });
+
+    // 2. Initialize trucks into instances of the type of truck corresponding to the simulation type.
+    let trucksList = [];
+
     if (type === simulationType.SHARED) {
-        // 1. Initialize trucks of the given type.
-        let sharedTrucksList = [];
         state.trucks.forEach(truck => {
-            sharedTrucksList.push(new SharedTruck(
+            trucksList.push(new SharedTruck(
+                truck.type,             // type
+                truck.startLocation,    // location
+                state.map,              // map object
+                30                      // tick rate
+            ));
+        });
+    } else if (type === simulationType.TRADITIONAL) {
+        state.trucks.forEach(truck => {
+            trucksList.push(new TraditionalTruck(
                 truck.type,             // type
                 truck.startLocation,    // location
                 state.map,              // map object
@@ -26,29 +46,17 @@ export function simulate(type, state) {
             ));
         });
 
-        // 2. Initialize goods of the given type.
-        let goodsList = [];
-        state.goods.forEach(good => {
-            goodsList.push(new Good(
-                good.quantity,          // quantity
-                good.weight,            // weight
-                good.volume,            // volume
-                good.pickupLocation,    // pickUp
-                good.deliveryLocation   // delivery
-            ));
-        });
-
-        // 2. Create a freight platform manager.
-        let freightPlatform = new FreightPlatform(sharedTrucksList, state.goods);
-
-        // 3. Let all products choose a truck.
-        freightPlatform.distributeGoodsOverTrucks();
-
-        alert("Shared logistics simulation hasn't been implemented yet!");
-    } else if (type === simulationType.TRADITIONAL) {
-
-        alert("Traditional simulation hasn't been implemented yet!");
+        alert('Traditional simulation has not been fulled implemented yet.');
     } else {
-        console.err("simulate function got an unknown input value for the parameter 'type'");
+        console.err("Simulate function got an unknown input value for the parameter 'type'.");
     }
+
+    // 3. Create a freight platform manager.
+    let freightPlatform = new FreightPlatform(trucksList, goodsList);
+
+    // 4. Let all products choose a truck.
+    freightPlatform.distributeGoodsOverTrucks(); // TODO only sharing logistics method !!
+    console.log(this.__trucks);
+
+    // 5. TODO Actually run the simulation and store the results.
 }
