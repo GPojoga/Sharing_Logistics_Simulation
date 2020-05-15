@@ -40,21 +40,23 @@ export default class Router{
         let coordinates = rawRoute.geometry.coordinates.map(this.__unpackCoordinate);
         let duration = rawRoute.legs[0].annotation.duration;
         let distance = rawRoute.legs[0].annotation.distance;
-        let route = new Array(coordinates.length);
+        let route = [];
 
         for(let i = 0; i < duration.length;i++){
-            route[i] = {
+            route.push({
                 coordinates : coordinates[i],
                 duration : duration[i],
                 distance : distance[i]
-            }
+            });
         }
 
-        route[route.length - 1] = {
-            coordinates : coordinates[coordinates.length - 1],
-            duration : 0,
-            distance : 0
-        };
+        if(route[route.length - 1].distance !== 0){
+            route.push({
+                coordinates : coordinates[coordinates.length - 1],
+                duration : 0,
+                distance : 0
+            });
+        }
 
         return route;
     }

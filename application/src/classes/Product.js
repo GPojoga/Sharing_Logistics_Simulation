@@ -19,12 +19,14 @@ export default class Product{
      *
      * @type {ObjectConstructor}
      */
-    pickUpDelivery = Object;
+    pickUp = Object;
+    delivery = Object;
 
-    constructor(quantity,weight,volume,pickupDelivery){
+    constructor(quantity,weight,volume,pickUp, delivery){
         this.quantity = quantity;
         this.weight = weight;
         this.volume = volume;
-        this.pickUpDelivery = pickupDelivery;
+        this.pickUp = pickUp;
+        this.delivery = delivery;
     }
 }

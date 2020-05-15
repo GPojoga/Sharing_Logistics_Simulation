@@ -30,6 +30,8 @@ export class TruckView{
         }
     }
     update(eventSource){
+        // console.log("Received update");
+        // console.log("location = ",eventSource.location);
         this.view.setLatLng(eventSource.location);
     }
 

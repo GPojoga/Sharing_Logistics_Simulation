@@ -3,7 +3,6 @@ import store from "../store/index.js";
 import {Observable} from "@/classes/Observable";
 import {TruckView} from "@/classes/TruckView";
 import Router from "@/classes/Router";
-import euclidDist from "@/classes/EuclidDist";
 
 /**
  * this is the abstract class for truck
@@ -92,6 +91,9 @@ export default class Truck extends Observable{
      *         duration : time necessary to pass this segment in seconds
      *         distance : distance of this segment in meters
      *     }]
+     *     index : current route segment
+     *     distSegment : distance necessary to complete the current segment
+     *     timeSegment : time necessary to complete the current segment
      * }
      * @private
      */
@@ -159,22 +161,16 @@ export default class Truck extends Observable{
      */
     _start(){
         if(!this.isMoving && this.plan.length > 0){
+            console.log("Truck started");
             this.isMoving = true;
             let order = this.plan.shift();
             this.router.getRoute(this.location,order.location).then( route => {
-                this._currentRoute = route;
-                this._followRoute(0);
-                switch (order.type) {
-                    case "pickUp":
-                        this.transportedWeight += order.weight;
-                        this.transportedVolume += order.volume;
-                        break;
-                    case "delivery":
-                        this.transportedWeight -= order.weight;
-                        this.transportedVolume -= order.volume;
-                        this.nrDeliveredProducts += 1;
-                        break;
-                }
+                this._currentRoute = Object.assign(route,{
+                    index : 0,
+                    distSegment : route.route[0].distance,
+                    timeSegment : route.route[0].duration
+                });
+                this._followOrder(order);
             });
         }
     }
@@ -183,58 +179,71 @@ export default class Truck extends Observable{
      * follow the current route
      * @private
      */
-    _followRoute(index){
+    _followOrder(order){
         setTimeout(() => {
-            if(index < this._currentRoute.length - 1){
-               this._followRoute(this._updateRouteProgress(index));
+            if(this._currentRoute.index < this._currentRoute.route.length - 1){
+                this._updateRouteProgress();
+                this._followOrder(order);
             } else {
-                this.isMoving = false;
-                this._start();
+                this._completeOrder(order);
             }
         },1000/this._tickRate);
     }
 
     /**
-     * update the position of the truck by following the route
-     * @param index the index of the last route segment that was visited
+     * the actions to be take after the order was completed
+     * @param order the order that was finished
      * @private
      */
-    _updateRouteProgress(index){
+    _completeOrder(order){
+        console.log("Route finished");
+        this.isMoving = false;
+        switch (order.type) {
+            case "pickUp":
+                this.transportedWeight += order.product.quantity * order.product.weight;
+                this.transportedVolume += order.product.quantity * order.volume;
+                break;
+            case "delivery":
+                this.transportedWeight -= order.product.quantity * order.product.weight;
+                this.transportedVolume -= order.product.quantity * order.product.volume;
+                this.nrDeliveredProducts += 1;
+                break;
+        }
+        this._start();
+    }
+
+
+    /**
+     * update the position of the truck by following the route
+     * @private
+     */
+    _updateRouteProgress(){
         let distance = 0;
         let time = 1/this._tickRate;
         let route = this._currentRoute.route;
-        let begin = route[index].coordinates;
-        let ratio = euclidDist(begin,this.location) / euclidDist(begin,route[index + 1].coordinates);
-        let timeSegment =  (1 - ratio) * route[index].duration;
-        let distanceSegment = (1 - ratio) * route[index].distance;
-
-        // The truck arrives at one or more locations during this update.
-        while(time > timeSegment){
-            if(timeSegment === 0){
+        while(time > this._currentRoute.timeSegment){
+            if(route[this._currentRoute.index].duration === 0){
                 this.fuelConsumed += this._computeFuelConsumed(distance);
-                this._setLocation(route[index].coordinates);
-                return index;
+                this._setLocation(route[this._currentRoute.index].coordinates);
+                return ;
             }
-            index += 1;
-            distance += distanceSegment;
-            time -= timeSegment;
-            distanceSegment = route[index].distance;
-            timeSegment = route[index].duration;
+            this._currentRoute.index += 1;
+            distance += this._currentRoute.distSegment;
+            time -= this._currentRoute.timeSegment;
+            this._currentRoute.distSegment = route[this._currentRoute.index].distance;
+            this._currentRoute.timeSegment = route[this._currentRoute.index].duration;
         }
-
-        ratio = time / timeSegment;
-        distance += ratio * distanceSegment;
-
+        let ratio = time / this._currentRoute.timeSegment;
+        distance += ratio * this._currentRoute.distSegment;
         this.fuelConsumed += this._computeFuelConsumed(distance);
-
+        this._currentRoute.timeSegment -= time;
+        this._currentRoute.distSegment -= ratio * this._currentRoute.distSegment;
         this._setLocation({
-            lat : (route[index + 1].coordinates.lat - route[index].coordinates.lat) * ratio +
-                    route[index].coordinates.lat,
-            lng : (route[index + 1].coordinates.lng - route[index].coordinates.lng) * ratio +
-                    route[index].coordinates.lng
+            lat : ratio * (route[this._currentRoute.index + 1].coordinates.lat -
+                    this.location.lat) + this.location.lat,
+            lng : ratio * (route[this._currentRoute.index + 1].coordinates.lng -
+                    this.location.lng) + this.location.lng,
         });
-
-        return index;
     }
 
     /**
