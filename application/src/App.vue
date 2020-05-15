@@ -1,25 +1,14 @@
 <template>
   <div id="app">
-    <loading-page v-if="isLoading"/>
-    <router-view v-else/>
+    <router-view/>
   </div>
 </template>
 
 <script>
-  import LoadingPage from "./views/LoadingPage";
   export default {
     name: 'App',
-    components: {LoadingPage},
-    data() {
-      return {
-        isLoading: true
-      }
-    },
-    mounted(){
+    mounted() {
       // TODO : initialize the store data here.
-      setTimeout(() => {
-        this.isLoading = false
-      }, 0);
     }
   }
 </script>

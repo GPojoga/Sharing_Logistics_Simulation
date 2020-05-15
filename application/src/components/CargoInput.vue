@@ -13,7 +13,7 @@
 
 
 <script>
-    import CargoProductInput from "./CargoProductInput";
+    import CargoProductInput from "./CargoGoodInput";
     export default {
         name: "ProductInput",
         components: {CargoProductInput},

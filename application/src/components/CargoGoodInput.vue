@@ -2,7 +2,7 @@
     <div class="good">
         <div class="header">
             <span>
-                Product {{index + 1}}
+                Good {{index + 1}}
             </span>
             <div class="remove">
                 <button @click="removeProduct" type="button" class="button circle cross"/>

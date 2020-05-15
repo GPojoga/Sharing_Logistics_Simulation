@@ -9,7 +9,7 @@
     import ControlPanel from "../components/ControlPanel";
     import SimplifiedMap from "../components/SimplifiedMap";
     import TraditionalTruck from "@/classes/TraditionalTruck";
-    import Product from "@/classes/Product";
+    import Good from "@/classes/Good";
 
     export default {
         name: 'HomePage',
@@ -45,29 +45,29 @@
             // let truckB = new TraditionalTruck("Heavy",locationA,this.$store.getters.map,30);
             // let truckC = new TraditionalTruck("Train",locationC,this.$store.getters.map,30);
 
-            let productA = new Product(1,10,3,locationA,locationB);
-            let productB = new Product(1,10,3,locationC,locationD);
-            let productC = new Product(1,10,3,locationB,locationA);
-            let productD = new Product(1,10,3,locationB,locationD);
-            // let productE = new Product(1,10,3,locationC,locationB);
-            // let productF = new Product(1,10,3,locationB,locationD);
+            let goodA = new Good(1,10,3,locationA,locationB);
+            let goodB = new Good(1,10,3,locationC,locationD);
+            let goodC = new Good(1,10,3,locationB,locationA);
+            let goodD = new Good(1,10,3,locationB,locationD);
+            // let goodE = new Good(1,10,3,locationC,locationB);
+            // let goodF = new Good(1,10,3,locationB,locationD);
 
-            truckA.assignToProduct(productA);
-            truckA.assignToProduct(productB);
-            truckA.assignToProduct(productC);
-            truckA.assignToProduct(productD);
+            truckA.assignToGood(goodA);
+            truckA.assignToGood(goodB);
+            truckA.assignToGood(goodC);
+            truckA.assignToGood(goodD);
             truckA.sendHome();
 
-            // truckB.assignToProduct(productE);
-            // truckB.assignToProduct(productB);
-            // truckB.assignToProduct(productF);
-            // truckB.assignToProduct(productC);
+            // truckB.assignToGood(goodE);
+            // truckB.assignToGood(goodB);
+            // truckB.assignToGood(goodF);
+            // truckB.assignToGood(goodC);
             // truckB.sendHome();
             //
-            // truckC.assignToProduct(productC);
-            // truckC.assignToProduct(productB);
-            // truckC.assignToProduct(productD);
-            // truckC.assignToProduct(productA);
+            // truckC.assignToGood(goodC);
+            // truckC.assignToGood(goodB);
+            // truckC.assignToGood(goodD);
+            // truckC.assignToGood(goodA);
             // truckC.sendHome();
         }
     }

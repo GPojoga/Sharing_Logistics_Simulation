@@ -48,10 +48,10 @@ export default class Truck extends Observable{
 
 
     /**
-     * total number of delivered products by this truck
+     * total number of delivered goods by this truck
      * @type {number}
      */
-    nrDeliveredProducts = 0;
+    nrDeliveredgoods = 0;
 
     /**
      * an instance of Router. It is liable for computing a route
@@ -66,10 +66,10 @@ export default class Truck extends Observable{
      *         lng : longitude
      *     }
      *     type : "pickUp" | "delivery" | "home"
-     *     product : {
-     *         quantity : number of products of the same type
-     *         volume : the volume of the product
-     *         weight : the weight of the product
+     *     good : {
+     *         quantity : number of goods of the same type
+     *         volume : the volume of the good
+     *         weight : the weight of the good
      *     }
      *
      * }]
@@ -132,26 +132,26 @@ export default class Truck extends Observable{
         this.plan.push({
             location : this.initialLocation,
             type : "home",
-            product : null
+            good : null
         });
         this._start();
     }
 
     /**
-     * assign this truck to the given product
-     * @param product
+     * assign this truck to the given good
+     * @param good
      */
-    assignToProduct(product){
-        this._addProduct(product);
+    assignToGood(good){
+        this._addGood(good);
         this._start();
     }
 
     /**
-     * assign this truck to the product
-     * @param product the product to be transported
+     * assign this truck to the good
+     * @param good the good to be transported
      */
     // eslint-disable-next-line no-unused-vars
-    _addProduct(product){
+    _addGood(good){
         throw new Error("Cannot call an abstract method");
     }
 
@@ -200,13 +200,13 @@ export default class Truck extends Observable{
         this.isMoving = false;
         switch (order.type) {
             case "pickUp":
-                this.transportedWeight += order.product.quantity * order.product.weight;
-                this.transportedVolume += order.product.quantity * order.volume;
+                this.transportedWeight += order.good.quantity * order.good.weight;
+                this.transportedVolume += order.good.quantity * order.volume;
                 break;
             case "delivery":
-                this.transportedWeight -= order.product.quantity * order.product.weight;
-                this.transportedVolume -= order.product.quantity * order.product.volume;
-                this.nrDeliveredProducts += 1;
+                this.transportedWeight -= order.good.quantity * order.good.weight;
+                this.transportedVolume -= order.good.quantity * order.good.volume;
+                this.nrDeliveredgoods += 1;
                 break;
         }
         this._start();

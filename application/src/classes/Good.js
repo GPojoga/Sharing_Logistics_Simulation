@@ -1,5 +1,5 @@
 
-export default class Product{
+export default class Good{
 
     quantity = Number;
     weight = Number;
