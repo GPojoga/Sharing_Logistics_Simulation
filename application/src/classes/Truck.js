@@ -208,6 +208,7 @@ export default class Truck extends Observable{
         let timeSegment =  (1 - ratio) * route[index].duration;
         let distanceSegment = (1 - ratio) * route[index].distance;
 
+        // The truck arrives at one or more locations during this update.
         while(time > timeSegment){
             if(timeSegment === 0){
                 this.fuelConsumed += this._computeFuelConsumed(distance);
