@@ -7,7 +7,7 @@ export class Time {
 
     // Constant representing the default speed of the simulation.
     DEFAULT_SPEED = 1;
-    
+
     // Constant representing the number of frequency of time updates.
     UPDATE_RATE = 100;
 
@@ -35,8 +35,9 @@ export class Time {
      */
     run() {
         setTimeout( () => {
-                if (store.state.getters.isRunning) {
-                    if (this.isPaused) this.elapsedTime += this.playSpeed / this.UPDATE_RATE;
+                if (store.getters.isRunning) {
+                    if (!this.isPaused) this.elapsedTime += this.playSpeed / this.UPDATE_RATE;
+                    // recursion so that run is constantly being called.
                     this.run();
                 }
             },
@@ -54,6 +55,14 @@ export class Time {
     }
 
     /**
+     * This method is a getter of the the play speed of the simulation.
+     * @returns {number} The play-speed as a percentage of the default speed of the simulation.
+     */
+    getPlaySpeed(){
+        return this.playSpeed/this.DEFAULT_SPEED;
+    }
+
+    /**
      * This method checks if the simulation is currently running at the slowest possible setting.
      * @returns {boolean} True if the simulation is running at the slowest speed False otherwise.
      */
@@ -65,10 +74,10 @@ export class Time {
      * This method slows down the speed at which the simulation is run.
      */
     slowDown() {
-        if (!this.isSlowest()){
-            this.playSpeed /= 2;
-        }
+        if (!store.getters.isRunning) return;
+        if (!this.isSlowest()) this.playSpeed /= 2;
     }
+
 
     /**
      * This method checks if the simulation is currently running at the fastest possible setting.
@@ -82,15 +91,23 @@ export class Time {
      * This method speeds up the speed at which the simulation is run.
      */
     speedUp() {
-        if (!this.isFastest()){
-            this.playSpeed *= 2;
-        }
+        if (!store.getters.isRunning) return;
+        if (!this.isFastest()) this.playSpeed *= 2;
+    }
+
+
+    /**
+     * This method is the getter for the variable isPaused.
+     * @returns {*} A boolean determining whether the simulation is paused or not.
+     */
+    getIsPaused() {
+        return this.isPaused;
     }
 
     /**
      * This method pauses/plays the simulation.
      */
     togglePause() {
-        this.isPaused = !this.isPaused;
+        if (store.getters.isRunning) this.isPaused = !this.isPaused;
     }
 }

@@ -2,6 +2,7 @@
     <div id="app">
         <SimplifiedMap/>
         <ControlPanel/>
+        <TimeControl/>
     </div>
 </template>
 
@@ -9,6 +10,7 @@
     import ControlPanel from "@/components/ControlPanel";
     import SimplifiedMap from "@/components/SimplifiedMap";
     import TraditionalTruck from "@/classes/TraditionalTruck";
+    import TimeControl from "../components/TimeControl";
     import Product from "@/classes/Product";
 
     export default {
@@ -16,6 +18,7 @@
         components: {
             ControlPanel,
             SimplifiedMap,
+            TimeControl
         },
         mounted(){
             // let locations = this.$store.getters.locations;
@@ -64,6 +67,9 @@
             truckA.assignToProduct(productC);
             truckA.assignToProduct(productD);
             truckA.sendHome();
+
+            this.$store.state.isRunning = true;
+            this.$store.getters.time.run();
 
             // truckB.assignToProduct(productE);
             // truckB.assignToProduct(productB);

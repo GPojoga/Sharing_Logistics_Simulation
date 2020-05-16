@@ -3,13 +3,18 @@ import Vuex from "vuex";
 import mutations from "./mutations";
 import actions from "./actions";
 import getters from "./getters.js";
+import {Time} from "../classes/Time.js";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        // Boolean to keep track of if the simulation is running.
+        isRunning: false,
+
         // Simulation objects
         map : Object,
+        time: new Time(),
         debugListProducts : [
             {
                 quantity: 1,

@@ -105,6 +105,12 @@ export default class Truck extends Observable{
     _tickRate = 30;
 
     /**
+     * @type {number} The last time the truck was updated in simulation time.
+     * @private
+     */
+    _lastUpdate = 0;
+
+    /**
      * the state of the truck : moving | not moving
      */
     isMoving = false;
@@ -219,7 +225,8 @@ export default class Truck extends Observable{
      */
     _updateRouteProgress(){
         let distance = 0;
-        let time = 1/this._tickRate;
+        let time = store.getters.time.getTimePassed(this._lastUpdate);
+        this._lastUpdate += time;
         let route = this._currentRoute.route;
         while(time > this._currentRoute.timeSegment){
             if(route[this._currentRoute.index].duration === 0){
