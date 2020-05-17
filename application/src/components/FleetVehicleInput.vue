@@ -81,7 +81,7 @@
     .vehicle {
         margin: 0;
         border: solid rgba(0, 127, 235, 0.2);
-        border-width: 0 0 2px 0;
+        border-width: 0 0 1px 0;
         padding: 10px 15px 20px;
     }
 

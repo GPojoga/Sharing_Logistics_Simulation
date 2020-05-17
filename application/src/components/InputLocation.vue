@@ -49,10 +49,11 @@
         },
         data() {
             return {
-                enteredText: null,           // The text inputted by the user.
-                selected: null,              // The location currently selected.
-                possibilities: null,         // A list of possible locations based on the currently inputted text.
-                displayPossibilities: false  // A boolean keeping track of if the possibilities should be shown.
+                enteredText: null,                  // The text inputted by the user.
+                selected: null,                     // The location currently selected.
+                possibilities: null,                // A list of possible locations based on the currently inputted text.
+                displayPossibilities: false,        // A boolean keeping track of if the possibilities should be shown.
+                waitingToShowPossibilities: false
             }
         },
         watch: {
@@ -97,11 +98,22 @@
                 if (this.enteredText !== '') {
                     this.displayPossibilities = true;
 
-                    provider.search({ query: this.enteredText }).then(
-                        list => {
-                            this.possibilities = list.splice(0,5);
-                        }
-                    );
+                    if (this.waitingToShowPossibilities === false) {
+                        this.waitingToShowPossibilities = true;
+
+                        const self = this;
+
+                        setTimeout(function() {
+                            if (self.enteredText !== '') {
+                                provider.search({ query: self.enteredText }).then(
+                                    list => {
+                                        self.possibilities = list.splice(0,5);
+                                    }
+                                );
+                                self.waitingToShowPossibilities = false;
+                            }
+                        }, 1000);
+                    }
                 } else {
                     this.possibilities = null;
                     this.selectLocation(null);
