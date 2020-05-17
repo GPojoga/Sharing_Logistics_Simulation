@@ -1,6 +1,6 @@
 
 import store from "../../store";
-import {Observable} from "./Observable";
+import {Observable} from "../Observable";
 import {TruckView} from "./TruckView";
 import Router from "../Router";
 

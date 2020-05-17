@@ -145,13 +145,12 @@
         background-color: white;
         display: flex;
         flex-direction: column;
-        position: absolute;
+        position: relative;
         z-index: 1; /* Put on top of other elements */
         opacity: 1; /* Make not transparent */
 
         /* Set border of the list with suggestions for places */
-        border: solid #2284ff;
-        border-width: 2px;
+        border: 2px solid #2284ff;
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }

@@ -154,7 +154,8 @@ export default {
         const simType = (type === 'traditional')? simulationType.TRADITIONAL : simulationType.SHARED;
 
         simulate(simType,this.$store.state);
-        this.$router.push('output');
+        alert('simulation finished'); // TODO
+        // this.$router.push('output');
       }
     }
   }

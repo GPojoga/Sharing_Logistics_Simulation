@@ -1,7 +1,7 @@
 import {FreightPlatform} from "./FreightPlatform";
 import {simulationType} from "./SimulationType";
 import SharedTruck from "./trucks/SharedTruck";
-import Good from "./Good";
+import Good from "./goods/Good";
 import TraditionalTruck from "./trucks/TraditionalTruck";
 
 /**
@@ -12,6 +12,9 @@ import TraditionalTruck from "./trucks/TraditionalTruck";
  */
 export function simulate(type, state) {
     // 1. Initialize goods into instances of Good.
+    console.log('start simulation');
+
+    console.log(state.goods);
     let goodsList = [];
     state.goods.forEach(good => {
         goodsList.push(new Good(
@@ -27,6 +30,7 @@ export function simulate(type, state) {
     // 2. Initialize trucks into instances of the type of truck corresponding to the simulation type.
     let trucksList = [];
 
+    console.log(state.trucks);
     if (type === simulationType.SHARED) {
         state.trucks.forEach(truck => {
             trucksList.push(new SharedTruck(
@@ -56,7 +60,6 @@ export function simulate(type, state) {
 
     // 4. Let all products choose a truck.
     freightPlatform.distributeGoodsOverTrucks(); // TODO only sharing logistics method !!
-    console.log(this.__trucks);
 
     // 5. TODO Actually run the simulation and store the results.
 }

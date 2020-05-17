@@ -1,4 +1,4 @@
-import {Observable} from "./trucks/Observable";
+import {Observable} from "../Observable";
 import {GoodView} from "./GoodView";
 
 export default class Good extends Observable{
@@ -48,5 +48,9 @@ export default class Good extends Observable{
         });
 
         lowestCostTruck.assignToGood(this);
+        console.log('Good');
+        console.log(this);
+        console.log('assigned to');
+        console.log(lowestCostTruck);
     }
 }
