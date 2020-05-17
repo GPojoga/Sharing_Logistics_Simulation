@@ -164,12 +164,14 @@ export default {
 <style scoped>
   #controlPanel {
     background: rgb(255, 255, 255);
-    border: solid #007FEB;
-    height: 98%;
+    /*border: solid #007FEB;*/
+    /*border-width: 0 2px 0 0;*/
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    height: 100%;
     width: 400px;
     overflow: visible;
     position: absolute;
-    top: 0.5%;
+    /*top: 0.5%;*/
     left: 0;
     color: #007FEB;
     transition: left 0.5s;
@@ -245,7 +247,7 @@ export default {
   /* Scrollbar layout */
   /* width */
    ::-webkit-scrollbar {
-     width: 8px;
+     width: 6px;
    }
 
   /* Track */
