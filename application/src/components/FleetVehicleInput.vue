@@ -80,9 +80,10 @@
 
     .vehicle {
         margin: 0;
-        border: 2px solid #007feb;
+        /*border: 2px solid #007feb;*/
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
         border-radius: 5px;
-        padding: 10px 15px;
+        padding: 10px 15px 20px;
     }
 
     /* Selectable image tabs of the types of trucks */
