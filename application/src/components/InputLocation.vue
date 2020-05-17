@@ -9,6 +9,9 @@
                 {{ p.label }}
             </p>
         </div>
+        <div>
+            <button @click="activateGpsButton" type="button" >Gps</button>
+        </div>
     </div>
 </template>
 
@@ -125,6 +128,12 @@
                 // Add the inputted location to the payload.
                 payload.location = (this.selected === null) ? null : L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
                 this.$store.commit(this.setter, payload);
+            },
+
+            activateGpsButton(){
+                this.$store.state.tempForMap = true;
+                this.$store.state.tempForForward = this.forward;
+                this.$store.state.tempForSetter = this.setter;
             }
         },
         computed: {
