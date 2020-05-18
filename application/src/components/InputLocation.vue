@@ -10,7 +10,7 @@
             </p>
         </div>
         <div>
-            <button @click="activateGpsButton" type="button" >Gps</button>
+            <button @click="activateGpsButton" type="button" class="gpsContainer" >Gps</button>
         </div>
     </div>
 </template>
@@ -182,6 +182,19 @@
 
     .location > input::-webkit-calendar-picker-indicator {
         display: none;
+    }
+
+    .gpsContainer {
+        background-color: #007feb;
+        line-height: 10px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        padding: 15px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
     }
 
     input{
