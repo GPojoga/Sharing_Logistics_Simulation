@@ -97,6 +97,10 @@ export default new Vuex.Store({
             }
         ],
 
+        tempForMap : false,
+        tempForForward : null,
+        tempForSetter : null,
+
         /**
          * This is a helper function to check if number fields are valid.
          * @param num The number being checked as a String.
