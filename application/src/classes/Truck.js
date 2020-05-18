@@ -3,6 +3,7 @@ import store from "../store/index.js";
 import {Observable} from "@/classes/Observable";
 import {TruckView} from "@/classes/TruckView";
 import Router from "@/classes/Router";
+import euclidDist from "./EuclidDist";
 
 /**
  * this is the abstract class for truck
@@ -158,6 +159,49 @@ export default class Truck extends Observable{
      */
     // eslint-disable-next-line no-unused-vars
     _addProduct(product){
+        throw new Error("Cannot call an abstract method");
+    }
+
+    /**
+     * This method calculates the change in cost of adding a product at certain indexes in the plan.
+     * @param product The product that is being added.
+     * @param pickup The index in the plan where the truck should pick up the product.
+     * @param delivery The index in the plan where the truck should deliver the product.
+     * @returns {number} A number representing the change in cost.
+     */
+    getCost(product, pickup, delivery){
+        let detour;
+
+        // Leave the planned path to pickup product.
+        detour = euclidDist(this.plan[pickup - 1].location, product.pickUp);
+
+        if (pickup === delivery) {
+            // Case: Go straight to deliver added product.
+            detour += euclidDist(product.pickUp, product.delivery);
+            detour -= euclidDist(this.plan[pickup - 1].location, this.plan[delivery].location);
+        } else {
+            // Case: Go back to planned path after picking up.
+            detour += euclidDist(product.pickUp, this.plan[pickup].location);
+            detour -= euclidDist(this.plan[pickup - 1].location, this.plan[pickup].location);
+
+            // Leave the planned path to deliver the product.
+            detour += euclidDist(this.plan[delivery - 1].location, product.delivery);
+            if (delivery !== this.plan.length) detour -= euclidDist(this.plan[delivery - 1].location, this.plan[delivery]);
+        }
+
+        // Return to the planned path, if needed.
+        if (delivery !== this.plan.length) detour += euclidDist(product.delivery, this.plan[delivery].location);
+
+        return detour;  //As of now the cost is equal to the detour, this is overly simplistic, TODO change if possible.
+    }
+
+    /**
+     * This method finds the minimal cost of adding a product to the trucks plan.
+     * @param product The product that we should find the cost of adding.
+     * @returns {{delivery: number, cost: number, pickup: number}} Object containing the cost, pickup & delivery index.
+     */
+    // eslint-disable-next-line no-unused-vars
+    getLowestCost(product){
         throw new Error("Cannot call an abstract method");
     }
 
