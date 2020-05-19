@@ -179,54 +179,54 @@ export default class Truck extends Observable{
      * @param deliveryIndex
      */
     assignToGood(good,pickupIndex,deliveryIndex){
-        this._addGood(good,pickupIndex,deliveryIndex);;
+        this._addGood(good,pickupIndex,deliveryIndex);
         this._start();
     }
 
     /**
-     * assign this truck to the product
+     * assign this truck to the good
      * @param good the good to be transported
      * @param pickupIndex
      * @param deliveryIndex
      */
-    _addProduct(product,pickupIndex,deliveryIndex){
+    _addGood(good,pickupIndex,deliveryIndex){
         let pickUp = {
-            location: product.pickUp,
+            location: good.pickUp,
             type: "pickUp",
-            product: product,
+            good: good,
             expectedLoad : {
                 weight : this.plan.orders.length === 0 ?
-                            product.weight :
-                            this.plan.orders[pickupIndex - 1].expectedLoad.weight + product.weight,
+                            good.weight :
+                            this.plan.orders[pickupIndex - 1].expectedLoad.weight + good.weight,
                 volume : this.plan.orders.length === 0 ?
-                            product.volume :
-                            this.plan.orders[pickupIndex - 1].expectedLoad.volume + product.volume,
+                            good.volume :
+                            this.plan.orders[pickupIndex - 1].expectedLoad.volume + good.volume,
             }
         };
         this.plan.orders.splice(pickupIndex,0,pickUp);
 
         for(let i = pickupIndex + 1;i <= deliveryIndex;i++){
-            this.plan.orders[i].expectedLoad.weight += product.weight;
-            this.plan.orders[i].expectedLoad.volume += product.volume;
+            this.plan.orders[i].expectedLoad.weight += good.weight;
+            this.plan.orders[i].expectedLoad.volume += good.volume;
         }
 
         let delivery = {
-            location: product.delivery,
+            location: good.delivery,
             type: "delivery",
-            product: product,
+            good: good,
             expectedLoad: {
-                weight : this.plan.orders[deliveryIndex].expectedLoad.weight - product.weight,
-                volume : this.plan.orders[deliveryIndex].expectedLoad.volume - product.volume
+                weight : this.plan.orders[deliveryIndex].expectedLoad.weight - good.weight,
+                volume : this.plan.orders[deliveryIndex].expectedLoad.volume - good.volume
             }
         };
         this.plan.orders.splice(deliveryIndex + 1,0,delivery);
     }
 
     /**
-     * This method calculates the change in cost of adding a product at certain indexes in the plan.
-     * @param product The product that is being added.
-     * @param pickup The index in the plan where the truck should pick up the product.
-     * @param delivery The index in the plan where the truck should deliver the product.
+     * This method calculates the change in cost of adding a good at certain indexes in the plan.
+     * @param good The good that is being added.
+     * @param pickup The index in the plan where the truck should pick up the good.
+     * @param delivery The index in the plan where the truck should deliver the good.
      * This method calculates the change in cost of adding a good at certain indexes in the plan.
      * @param good The good that is being added.
      * @param pickup The index in the plan where the truck should pick up the good.
@@ -236,25 +236,25 @@ export default class Truck extends Observable{
     getCost(good, pickup, delivery){
         let detour;
 
-        // Leave the planned path to pickup product.
-        detour = euclidDist(this.plan.orders[pickup - 1].location, product.pickUp);
+        // Leave the planned path to pickup good.
+        detour = euclidDist(this.plan.orders[pickup - 1].location, good.pickUp);
 
         if (pickup === delivery) {
-            // Case: Go straight to deliver added product.
-            detour += euclidDist(product.pickUp, product.delivery);
+            // Case: Go straight to deliver added good.
+            detour += euclidDist(good.pickUp, good.delivery);
             if (delivery !== this.plan.orders.length) detour -= euclidDist(this.plan.orders[pickup - 1].location, this.plan.orders[delivery].location);
         } else {
             // Case: Go back to planned path after picking up.
-            detour += euclidDist(product.pickUp, this.plan.orders[pickup].location);
+            detour += euclidDist(good.pickUp, this.plan.orders[pickup].location);
             detour -= euclidDist(this.plan.orders[pickup - 1].location, this.plan.orders[pickup].location);
 
-            // Leave the planned path to deliver the product afterwards.
-            detour += euclidDist(this.plan.orders[delivery - 1].location, product.delivery);
+            // Leave the planned path to deliver the good afterwards.
+            detour += euclidDist(this.plan.orders[delivery - 1].location, good.delivery);
             if (delivery !== this.plan.orders.length) detour -= euclidDist(this.plan.orders[delivery - 1].location, this.plan.orders[delivery].location);
         }
 
         // Return to the planned path, if needed.
-        if (delivery !== this.plan.orders.length) detour += euclidDist(product.delivery, this.plan.orders[delivery].location);
+        if (delivery !== this.plan.orders.length) detour += euclidDist(good.delivery, this.plan.orders[delivery].location);
 
         return detour;  //As of now the cost is equal to the detour, this is overly simplistic, TODO change if possible.
     }
@@ -316,13 +316,13 @@ export default class Truck extends Observable{
         console.log("Route finished");
         switch (order.type) {
             case "pickUp":
-                this.currentLoad.weight += order.product.quantity * order.product.weight;
-                this.currentLoad.volume += order.product.quantity * order.volume;
+                this.currentLoad.weight += order.good.quantity * order.good.weight;
+                this.currentLoad.volume += order.good.quantity * order.volume;
                 break;
             case "delivery":
-                this.currentLoad.weight -= order.product.quantity * order.product.weight;
-                this.currentLoad.volume -= order.product.quantity * order.product.volume;
-                this.nrDeliveredProducts += 1;
+                this.currentLoad.weight -= order.good.quantity * order.good.weight;
+                this.currentLoad.volume -= order.good.quantity * order.good.volume;
+                this.nrDeliveredgoods += 1;
                 break;
         }
         this.isMoving = false;
