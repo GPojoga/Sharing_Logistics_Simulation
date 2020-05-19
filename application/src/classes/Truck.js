@@ -274,7 +274,7 @@ export default class Truck extends Observable{
         let route = this._currentRoute.route;
         while(time > this._currentRoute.timeSegment){
             if(route[this._currentRoute.index].duration === 0){
-                this.fuelConsumed += this._computeFuelConsumed(distance);
+                this.fuelConsumed += this._computeFuelConsumed(distance, this.transportedWeight);
                 this._setLocation(route[this._currentRoute.index].coordinates);
                 return ;
             }
@@ -286,7 +286,7 @@ export default class Truck extends Observable{
         }
         let ratio = time / this._currentRoute.timeSegment;
         distance += ratio * this._currentRoute.distSegment;
-        this.fuelConsumed += this._computeFuelConsumed(distance);
+        this.fuelConsumed += this._computeFuelConsumed(distance, this.transportedWeight);
         this._currentRoute.timeSegment -= time;
         this._currentRoute.distSegment -= ratio * this._currentRoute.distSegment;
         this._setLocation({
@@ -303,8 +303,8 @@ export default class Truck extends Observable{
      * @return {number}
      * @private
      */
-    _computeFuelConsumed(distance){
-        return (distance / 1000) * (this.transportedWeight * this.properties.consumptionPerKg +
+    _computeFuelConsumed(distance, weight){
+        return (distance / 1000) * (weight * this.properties.consumptionPerKg +
             this.properties.consumptionEmpty);
     }
 
