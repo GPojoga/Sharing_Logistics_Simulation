@@ -34,6 +34,20 @@ export default new Vuex.Store({
             }
         ],
 
+        // The results of the two types of simulations.
+        simulationResults : {
+            traditional : {
+                distance : 0,
+                numberOfTrucks : 0,
+                co2emissions : 0
+            },
+            shared : {
+                distance : 0,
+                numberOfTrucks : 0,
+                co2emissions : 0
+            }
+        },
+
         // Global Variables:
         emissionRate : { value : "2.67", error : false, message : "" },  // The amount of emission released for a liter of petrol.
         maxSpeed : { value : "100", error : false, message : ""},        // The max speed a truck can traveling in km/h

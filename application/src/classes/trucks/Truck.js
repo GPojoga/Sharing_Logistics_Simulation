@@ -132,6 +132,14 @@ export default class Truck extends Observable{
         this.addListener(new TruckView(this,mapObj));
     }
 
+    hasSpace() {
+        return new Error('Can not call abstract method hasSpace of Truck!');
+    }
+
+    isEmpty() {
+        return (this.plan === []);
+    }
+
     /**
      * send the truck home
      */

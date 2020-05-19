@@ -5,8 +5,13 @@ export default class SharedTruck extends Truck{
         super(type,location,mapObj,tickRate);
     }
 
+    hasSpace() {
+        // FIXME Truck class doesn't have a capacity field, so can't check if truck is full!!
+        return true;
+    }
+
     /**
-     * TODO simply copied from TraditionalTruck
+     * TODO simply copied from TraditionalTruck, for now.
      * @param good
      * @private
      */

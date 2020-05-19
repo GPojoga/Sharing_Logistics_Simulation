@@ -1,5 +1,6 @@
 import {Observable} from "../Observable";
 import {GoodView} from "./GoodView";
+import {simulationType} from "../SimulationType";
 
 export default class Good extends Observable{
 
@@ -34,16 +35,18 @@ export default class Good extends Observable{
         this.addListener(new GoodView(this, mapObj));
     }
 
-    chooseTruck(trucks) {
+    chooseTruck(trucks, simType) {
         let lowestCost = Number.MAX_VALUE;
         let lowestCostTruck = null;
 
         trucks.forEach(truck => {
-            const cost = truck.getCostOfAddingGood(this);
+            if (simType === simulationType.SHARED || (simType === simulationType.TRADITIONAL && truck.isEmpty())) {
+                const cost = truck.getCostOfAddingGood(this);
 
-            if (cost < lowestCost) {
-                lowestCost = cost;
-                lowestCostTruck = truck;
+                if (cost < lowestCost) {
+                    lowestCost = cost;
+                    lowestCostTruck = truck;
+                }
             }
         });
 

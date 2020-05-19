@@ -6,6 +6,10 @@ export default class TraditionalTruck extends Truck{
         super(type,location,mapObj,tickRate);
     }
 
+    hasSpace() {
+        return this.isEmpty();
+    }
+
     _addGood(good) {
         if(good === null){
             this.plan.push({

@@ -5,19 +5,15 @@ export class GoodView{
     view = Object;
 
     constructor(good,mapObject){
-        const lat = good.pickUp.lat;
-        const lon = good.pickUp.lon;
-        var svgElement = document.createElementNS("https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Package.svg/1200px-Package.svg.png", "svg");
-        svgElement.setAttribute('xmlns', "http://www.w3.org/2000/svg");
-        svgElement.setAttribute('viewBox', "0 0 200 200");
-        svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
-        var svgElementBounds = [ [lat +1, lon - 1], [ lat - 1, lon + 1 ] ];
-        this.view = L.svgOverlay(svgElement, svgElementBounds);
+        this.view = L.circleMarker(good.pickUp,{
+            radius : 5 * good.quantity,
+            color : 'yellow'
+        });
 
-        // this.view = L.circleMarker(good.pickUp,{
-        //     radius : 5 * good.quantity.value,
-        //     color : 'yellow'
-        // });
+        // const factor = 0.05/mapObject._zoom;
+        // var imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/f/fb/Package.svg',
+        //     imageBounds = [[good.pickUp.lat - factor, good.pickUp.lng - factor], [good.pickUp.lat + factor, good.pickUp.lng + factor]];
+        // L.imageOverlay(imageUrl, imageBounds).addTo(mapObject);
         this.view.addTo(mapObject);
     }
 

@@ -9,20 +9,20 @@
  */
 
 export class FreightPlatform {
-    __trucks;
-    __goods;
+    _trucks;
+    _goods;
 
     constructor(trucks, goods) {
-        this.__trucks = trucks;
-        this.__goods = goods;
+        this._trucks = trucks;
+        this._goods = goods;
     }
 
     /**
      * This method lets the goods choose a truck that will transport it, one by one.
      */
-    distributeGoodsOverTrucks() {
-        this.__goods.forEach(good => {
-            good.chooseTruck(this.__trucks);
+    distributeGoodsOverTrucks(simType) {
+        this._goods.forEach(good => {
+            good.chooseTruck(this._trucks, simType);
         });
     }
 }

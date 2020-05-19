@@ -19,6 +19,8 @@
             https://github.com/smeijer/leaflet-geosearch
        An example can be found at:
             https://smeijer.github.io/leaflet-geosearch/#openstreetmap
+
+       It is a wrapper around OpenStreetMap and Nominatim, which only allows 1 request per second!
     */
     import {OpenStreetMapProvider} from "leaflet-geosearch";
     import L from "leaflet";
