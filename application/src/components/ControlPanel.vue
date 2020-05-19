@@ -27,7 +27,7 @@
 import CargoInput from "./CargoInput";
 import CalculateRate from "./CalculateRate";
 import FleetInput from "./FleetInput";
-import {simulate} from "../classes/Simulation";
+import {Simulation} from "../classes/Simulation";
 import {simulationType} from '../classes/SimulationType';
 
 export default {
@@ -153,9 +153,9 @@ export default {
       if (this.checkInputs()){
         const simType = (type === 'traditional')? simulationType.TRADITIONAL : simulationType.SHARED;
 
-        simulate(simType,this.$store);
-        alert('simulation finished'); // TODO
-        // this.$router.push('output');
+        const simObj = new Simulation();
+        simObj.simulate(simType,this.$store);
+        // this.$router.push('output'); TODO
       }
     }
   }

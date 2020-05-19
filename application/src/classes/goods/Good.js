@@ -27,9 +27,9 @@ export default class Good extends Observable{
 
     constructor(quantity,weight,volume,pickUp, delivery, mapObj){
         super();
-        this.quantity = quantity;
-        this.weight = weight;
-        this.volume = volume;
+        this.quantity = quantity.value;
+        this.weight = weight.value;
+        this.volume = volume.value;
         this.pickUp = pickUp;
         this.delivery = delivery;
         this.addListener(new GoodView(this, mapObj));
@@ -41,7 +41,7 @@ export default class Good extends Observable{
 
         trucks.forEach(truck => {
             if (simType === simulationType.SHARED || (simType === simulationType.TRADITIONAL && truck.isEmpty())) {
-                const cost = truck.getCostOfAddingGood(this);
+                const cost = truck.getLowestCost(this);
 
                 if (cost < lowestCost) {
                     lowestCost = cost;
@@ -50,6 +50,7 @@ export default class Good extends Observable{
             }
         });
 
+        if (lowestCostTruck == null) return;
         lowestCostTruck.assignToGood(this);
         console.log('Good');
         console.log(this);

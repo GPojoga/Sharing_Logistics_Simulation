@@ -94,12 +94,12 @@
         position : fixed;
         bottom: 0;
         width: 100%;
-        height: 75px;
     }
 
     /* Style the background of the time settings. */
     #timeBackground {
         width: 200px;
+        height: 75px;
         margin: auto;
 
         background: white;

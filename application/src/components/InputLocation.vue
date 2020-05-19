@@ -1,16 +1,16 @@
 <template>
     <div class="location">
-        <label>
+        <label style="display: block;">
             {{ label }}
-            <input type="text" :list="idSuggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
         </label>
+        <input type="text" :list="idSuggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
         <div class="optionList" :id="idSuggestions" v-if="displayPossibilities && possibilities != null">
             <p class="option" v-for="(p, i) in possibilities" :id="i" :key="i" @click="selectLocation(p)">
                 {{ p.label }}
             </p>
         </div>
-        <div>
-            <button @click="activateGpsButton" type="button" class="gpsContainer" >Gps</button>
+        <div class="gpsContainer">
+            <button @click="activateGpsButton" type="button" class="gpsButton" :class="{ gpsOn: gpsActivated}"><i class="fas fa-map-marked-alt"></i></button>
         </div>
     </div>
 </template>
@@ -63,7 +63,7 @@
         },
         watch: {
             location: function() {
-                if (this.location !== null) {
+                if (this.location != null) {
                     // There is a location already
                     this.reverseGeocode(this.location.lat, this.location.lng).then(
                         lc => {
@@ -156,6 +156,9 @@
              */
             idSuggestions() {
                 return 'suggestions' + this.label + this.setter + JSON.stringify(this.forward);
+            },
+            gpsActivated() {
+                return this.$store.state.tempForMap && (this.$store.state.tempForForward === this.forward);
             }
         }
     }
@@ -164,7 +167,7 @@
 <style scoped>
     /* Contains all options for places */
     .optionList {
-        width: 85.5%;
+        width: 80%;
         background-color: white;
         display: flex;
         flex-direction: column;
@@ -197,24 +200,34 @@
         display: none;
     }
 
+    /* Gps button styling */
     .gpsContainer {
+        display: inline-block;
+    }
+
+    .gpsButton {
         background-color: #007feb;
         line-height: 10px;
         border: none;
         border-radius: 5px;
         color: white;
-        padding: 15px 10px;
+        padding: 10px 10px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
         font-size: 16px;
     }
 
+    .gpsOn {
+        background-color: grey;
+    }
+
     input{
         margin-top: 5px;
+        margin-right: 1%;
         padding-left: 10px;
         height: 30px;
-        width: 95%;
+        width: 80%;
         background-color: #f1f9ff;
         border: solid #2284ff;
         color: #007feb;

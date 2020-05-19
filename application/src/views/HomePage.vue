@@ -2,23 +2,23 @@
     <div id="app">
         <SimplifiedMap/>
         <ControlPanel/>
+        <TimeControl/>
     </div>
 </template>
 
 <script>
     import ControlPanel from "../components/ControlPanel";
     import SimplifiedMap from "../components/SimplifiedMap";
-    import {simulate} from "../classes/Simulation";
-    import {simulationType} from "../classes/SimulationType";
+    import TimeControl from "../components/TimeControl";
 
     export default {
         name: 'HomePage',
         components: {
             ControlPanel,
             SimplifiedMap,
+            TimeControl
         },
         mounted() {
-
             let locationA = {
                 lng : 6.5619295,
                 lat : 53.2153888
@@ -37,8 +37,6 @@
             this.$store.commit('setGoodQuantity', {value: 4, index: 0});
             this.$store.commit('setGoodWeight', {value: 1, index: 0});
             this.$store.commit('setGoodVolume', {value: 1, index: 0});
-
-            simulate(simulationType.SHARED, this.$store);
         }
     }
 </script>
