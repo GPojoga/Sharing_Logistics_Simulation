@@ -63,26 +63,7 @@
       }
     },
     mounted() {
-      this.findTraditional();
-      this.findSharing();
-    },
-    methods : {
-
-      /**
-       * This function simulates the traditional method of sending packages.
-       */
-      findTraditional() {
-        // TODO implement this function
-        alert("Traditional simulation is not implemented yet!");
-      },
-
-      /**
-       * This function simulates the sharing method of sending packages.
-       */
-      findSharing() {
-        // TODO implement this function
-        alert("Sharing simulation is not implemented yet!");
-      }
+      alert('Output of simulations is not connected to the output page yet!');
     }
   }
 </script>

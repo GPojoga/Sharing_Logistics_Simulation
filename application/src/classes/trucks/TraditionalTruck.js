@@ -1,9 +1,13 @@
-import Truck from "@/classes/Truck"
+import Truck from "./Truck"
 
 export default class TraditionalTruck extends Truck{
 
     constructor(type,location,mapObj,tickRate){
         super(type,location,mapObj,tickRate);
+    }
+
+    hasSpace() {
+        return this.isEmpty();
     }
 
     /**

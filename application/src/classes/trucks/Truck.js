@@ -1,13 +1,16 @@
 
-import store from "../store/index.js";
-import {Observable} from "@/classes/Observable";
-import {TruckView} from "@/classes/TruckView";
-import Router from "@/classes/Router";
-import euclidDist from "./EuclidDist";
+import {Observable} from "../Observable";
+import {TruckView} from "./TruckView";
+import Router from "../Router";
+import store from "../../store/index.js";
+import euclidDist from "../../util/EuclidDist";
 
 /**
  * this is the abstract class for truck
  * it must not be instantiated
+ *
+ * @class Truck
+ * @abstract
  */
 export default class Truck extends Observable{
 
@@ -49,10 +52,10 @@ export default class Truck extends Observable{
 
 
     /**
-     * total number of delivered products by this truck
+     * total number of delivered goods by this truck
      * @type {number}
      */
-    nrDeliveredProducts = 0;
+    nrDeliveredGoods = 0;
 
     /**
      * an instance of Router. It is liable for computing a route
@@ -67,8 +70,8 @@ export default class Truck extends Observable{
      *         lng : longitude
      *     }
      *     type : "pickUp" | "delivery" | "home"
-     *     product : see Product.js
-     *      expectedLoad : {
+     *     good : see Good.js
+     *     expectedLoad : {
      *        weight : weight of the transported goods after the order is completed
      *        volume : volume of the transported goods after the order is completed
      *      }
@@ -123,6 +126,8 @@ export default class Truck extends Observable{
      */
     isMoving = false;
 
+    finished = false;
+
     /**
      *
      * @param type truck type ("Light"|"Heavy"|"Train")
@@ -132,11 +137,27 @@ export default class Truck extends Observable{
      */
     constructor(type,location,mapObj,tickRate) {
         super();
+        if (this.constructor === Truck) {
+            throw new Error('Can not instantiate abstract class Truck!');
+        }
+        console.log('new truck of type: ' + type);
         this.initialLocation = location;
         this.location = location;
         this._tickRate = tickRate;
         this._setProperties(type);
         this.addListener(new TruckView(this,mapObj));
+    }
+
+    hasFinished() {
+        return this.finished;
+    }
+
+    hasSpace() {
+        return new Error('Can not call abstract method hasSpace of Truck!');
+    }
+
+    isEmpty() {
+        return (this.plan === []);
     }
 
     /**
@@ -146,25 +167,25 @@ export default class Truck extends Observable{
         this.plan.orders.push({
             location : this.initialLocation,
             type : "home",
-            product : null
+            good : null
         });
         this._start();
     }
 
     /**
-     * assign this truck to the given product
-     * @param product
+     * assign this truck to the given good
+     * @param good
      * @param pickupIndex
      * @param deliveryIndex
      */
-    addProduct(product,pickupIndex,deliveryIndex){
-        this._addProduct(product,pickupIndex,deliveryIndex);
+    assignToGood(good,pickupIndex,deliveryIndex){
+        this._addGood(good,pickupIndex,deliveryIndex);;
         this._start();
     }
 
     /**
      * assign this truck to the product
-     * @param product the product to be transported
+     * @param good the good to be transported
      * @param pickupIndex
      * @param deliveryIndex
      */
@@ -206,9 +227,13 @@ export default class Truck extends Observable{
      * @param product The product that is being added.
      * @param pickup The index in the plan where the truck should pick up the product.
      * @param delivery The index in the plan where the truck should deliver the product.
+     * This method calculates the change in cost of adding a good at certain indexes in the plan.
+     * @param good The good that is being added.
+     * @param pickup The index in the plan where the truck should pick up the good.
+     * @param delivery The index in the plan where the truck should deliver the good.
      * @returns {number} A number representing the change in cost.
      */
-    getCost(product, pickup, delivery){
+    getCost(good, pickup, delivery){
         let detour;
 
         // Leave the planned path to pickup product.
@@ -235,12 +260,12 @@ export default class Truck extends Observable{
     }
 
     /**
-     * This method finds the minimal cost of adding a product to the trucks plan.
-     * @param product The product that we should find the cost of adding.
+     * This method finds the minimal cost of adding a good to the trucks plan.
+     * @param good The good that we should find the cost of adding.
      * @returns {{delivery: number, cost: number, pickup: number}} Object containing the cost, pickup & delivery index.
      */
     // eslint-disable-next-line no-unused-vars
-    getLowestCost(product){
+    getLowestCost(good){
         throw new Error("Cannot call an abstract method");
     }
 
@@ -261,6 +286,9 @@ export default class Truck extends Observable{
                 });
                 this._followOrder(order);
             });
+        } else {
+            this.finished = true;
+            this.notifyHasFinishedListeners();
         }
     }
 

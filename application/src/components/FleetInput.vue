@@ -1,6 +1,6 @@
 <template>
     <div class="fleetInput">
-        <VehicleInput v-for="(_,index) in fleet" :key="index" :index="index"/>
+        <FleetVehicleInput v-for="(_,index) in fleet" :key="index" :index="index"/>
 
         <div class="add">
             <button @click="addVehicle" type="button" class="button circle plus"/>
@@ -11,11 +11,11 @@
 </template>
 
 <script>
-    import VehicleInput from "./FleetVehicleInput";
+    import FleetVehicleInput from "./FleetVehicleInput";
 
     export default {
         name: "FleetInput",
-        components: {VehicleInput},
+        components: {FleetVehicleInput},
         methods: {
             /**
              * This method add a new truck to the list of trucks in the state.

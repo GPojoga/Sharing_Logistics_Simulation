@@ -34,9 +34,10 @@
         data () {
             return {
                 url: mapLayoutUrl,
-                zoom: 5,
+                zoom: 15, // 5,
                 minZoom:2,
-                center: [47.368106, 14.197493], // Somewhere in the middle of Austria and therefore Europe
+                // center: [47.368106, 14.197493], // Somewhere in the middle of Austria and therefore Europe
+                center: [53.21617, 6.56067], // TODO used for testing/debugging simulation
                 maxBounds: [[-90, Infinity], //South, West
                            [90, -Infinity]],  //North, East
                 maxBoundsViscosity: 0.8, //If maxBounds is set, this option will control
@@ -85,7 +86,6 @@
 </script>
 
 <style scoped>
-
     .map{
         height: 100%;
         width: 100%;

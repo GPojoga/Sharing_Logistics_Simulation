@@ -1,22 +1,22 @@
 <template>
-    <div class="product-info">
-        <div v-for="(product, index) in cargo" :key="index">
-            <CargoProductInput :product="product" :index="index"/>
+    <div class="good-info">
+        <div v-for="(good, index) in cargo" :key="index">
+            <CargoGoodInput :good="good" :index="index"/>
         </div>
 
         <div>
-            <button @click="addProduct" type="button" class="button circle plus"/>
-            Add product
+            <button @click="addGood" type="button" class="button circle plus"/>
+            Add good
         </div>
     </div>
 </template>
 
 
 <script>
-    import CargoProductInput from "./CargoProductInput";
+    import CargoGoodInput from "./CargoGoodInput";
     export default {
-        name: "ProductInput",
-        components: {CargoProductInput},
+        name: "GoodInput",
+        components: {CargoGoodInput},
         computed: {
             cargo() {
                 return this.$store.getters.goods;
@@ -26,7 +26,7 @@
             /**
              * This method add a new good to the list of goods in the store.
              */
-            addProduct() {
+            addGood() {
                 this.$store.commit('addNewGood');
             },
         }
@@ -36,7 +36,7 @@
 
 
 <style scoped>
-    .product-info {
+    .good-info {
         padding: 10px;
         text-align: left;
         color: #007FEB;
@@ -98,17 +98,5 @@
     .circle.plus:after{
         margin: auto 8px;
         height: 2px;
-    }
-
-    /* Cross in circle */
-    .circle.cross:after,
-    .circle.cross:before{
-        background: #007feb;
-        margin: auto 8px;
-        height: 2px;
-        transform:rotateZ(45deg);
-    }
-    .circle.cross:after{
-        transform:rotateZ(-45deg);
     }
 </style>

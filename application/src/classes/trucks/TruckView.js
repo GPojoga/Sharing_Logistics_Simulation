@@ -25,10 +25,12 @@ export class TruckView{
             case "Train":
                 return 'black';
             default:
+                console.log(truck.properties.type);
                 console.error("Invalid truck type. Check the red truck !");
                 return 'red';
         }
     }
+
     update(eventSource){
         // console.log("Received update");
         // console.log("location = ",eventSource.location);
