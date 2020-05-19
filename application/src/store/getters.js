@@ -1,5 +1,23 @@
 export const getters = {
     /**
+     * Getter for whether or not the simulation is currently being run.
+     * @param state The current state of the webapp.
+     * @returns {boolean} True if the simulation is running and False otherwise.
+     */
+    isRunning: state => {
+        return state.isRunning;
+    },
+
+    /**
+     * Getter of the time of the simulation.
+     * @param state The current state of the webapp.
+     * @returns {Time} Time object controlling the passage of time in the simulation.
+     */
+    time: state => {
+        return state.time;
+    },
+
+    /**
      * Getter of the max speed of trucks variable.
      * @param state The current state of the webapp.
      * @returns {any} The max speed of trucks as a Number.

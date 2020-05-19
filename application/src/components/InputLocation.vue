@@ -9,6 +9,9 @@
                 {{ p.label }}
             </p>
         </div>
+        <div>
+            <button @click="activateGpsButton" type="button" class="gpsContainer" >Gps</button>
+        </div>
     </div>
 </template>
 
@@ -139,6 +142,12 @@
                 // Add the inputted location to the payload.
                 payload.location = (this.selected === null) ? null : L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
                 this.$store.commit(this.setter, payload);
+            },
+
+            activateGpsButton(){
+                this.$store.state.tempForMap = true;
+                this.$store.state.tempForForward = this.forward;
+                this.$store.state.tempForSetter = this.setter;
             }
         },
         computed: {
@@ -186,6 +195,19 @@
 
     .location > input::-webkit-calendar-picker-indicator {
         display: none;
+    }
+
+    .gpsContainer {
+        background-color: #007feb;
+        line-height: 10px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        padding: 15px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
     }
 
     input{

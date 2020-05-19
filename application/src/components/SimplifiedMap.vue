@@ -9,6 +9,7 @@
             :maxBounds="maxBounds"
             :maxBoundsViscosity="maxBoundsViscosity"
             :zoomAnimation="zoomAnimation"
+            @click="addLocation"
     >
         <l-tile-layer :url="url"/>
         <l-control-zoom position="bottomright"/>
@@ -52,6 +53,35 @@
             // Relay the map the the store of the webapp.
             this.$store.commit("setMap", {map: this.$refs.map.mapObject});
         },
+
+        methods: {
+            /**
+             * This function only adds a new location if the GPS button is pressed.
+             * @param event
+             */
+            addLocation(event){
+                if (this.$store.state.tempForMap) {
+                    if (!this.timeoutId) {
+                        this.timeoutId = setTimeout(() => {
+                            //Single click
+
+                            let payload = this.$store.state.tempForForward;
+                            payload.location = event.latlng;
+                            let setter = this.$store.state.tempForSetter;
+                            this.$store.commit(setter, payload);
+
+                            this.timeoutId = null;
+                        }, 400); //tolerance in ms
+                        this.$store.state.tempForMap = false;
+                    } else {
+                        //Multiple clicks
+                        clearTimeout(this.timeoutId);
+                        this.timeoutId = null;
+                        this.$store.state.tempForMap = false;
+                    }
+                }
+            }
+        }
     }
 </script>
 
