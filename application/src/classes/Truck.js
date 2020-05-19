@@ -178,15 +178,15 @@ export default class Truck extends Observable{
         if (pickup === delivery) {
             // Case: Go straight to deliver added product.
             detour += euclidDist(product.pickUp, product.delivery);
-            detour -= euclidDist(this.plan[pickup - 1].location, this.plan[delivery].location);
+            if (delivery !== this.plan.length) detour -= euclidDist(this.plan[pickup - 1].location, this.plan[delivery].location);
         } else {
             // Case: Go back to planned path after picking up.
             detour += euclidDist(product.pickUp, this.plan[pickup].location);
             detour -= euclidDist(this.plan[pickup - 1].location, this.plan[pickup].location);
 
-            // Leave the planned path to deliver the product.
+            // Leave the planned path to deliver the product afterwards.
             detour += euclidDist(this.plan[delivery - 1].location, product.delivery);
-            if (delivery !== this.plan.length) detour -= euclidDist(this.plan[delivery - 1].location, this.plan[delivery]);
+            if (delivery !== this.plan.length) detour -= euclidDist(this.plan[delivery - 1].location, this.plan[delivery].location);
         }
 
         // Return to the planned path, if needed.
