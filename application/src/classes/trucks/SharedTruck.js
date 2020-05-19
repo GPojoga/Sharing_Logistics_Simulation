@@ -29,7 +29,7 @@ export default class SharedTruck extends Truck{
      * Note: If the truck can't transport the good the returned cost is Infinity!
      */
     getLowestCost(good) {
-        let capacity = {payload : 0, volume : 0};  // Truck starts out empty.
+        let capacity = {payload: 0, volume: 0};  // Truck starts out empty.
 
         // Keeps track of the best place to added good for the lowest cost.
         let best = {cost: Infinity, pickup: 1, delivery: 1};
@@ -51,42 +51,5 @@ export default class SharedTruck extends Truck{
             this._updateCapacity(capacity, this.plan[pickup]);
         }
         return best;
-    }
-
-    /**
-     * TODO simply copied from TraditionalTruck, for now.
-     * @param good
-     * @private
-     */
-    _addGood(good) {
-        if(good === null){
-            this.plan.push({
-                location : this.initialLocation,
-                type : "home",
-                good : null
-            });
-        } else {
-            let pickUp = {
-                location : good.pickUp,
-                type : "pickUp",
-                good : {
-                    quantity : good.quantity,
-                    volume : good.volume,
-                    weight : good.weight
-                }
-            };
-            this.plan.push(pickUp);
-
-            let delivery = {
-                location : good.delivery,
-                type : "delivery",
-                good : {
-                    quantity : good.quantity,
-                    volume : good.volume,
-                    weight : good.weight
-                }
-            };
-            this.plan.push(delivery);
-        }
     }
 }

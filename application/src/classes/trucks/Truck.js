@@ -175,15 +175,6 @@ export default class Truck extends Observable{
     }
 
     /**
-     * assign this truck to the good
-     * @param good the good to be transported
-     */
-    // eslint-disable-next-line no-unused-vars
-    _addGood(good){
-        throw new Error("Cannot call an abstract method");
-    }
-
-    /**
      * This method calculates the change in cost of adding a good at certain indexes in the plan.
      * @param good The good that is being added.
      * @param pickup The index in the plan where the truck should pick up the good.
@@ -224,6 +215,42 @@ export default class Truck extends Observable{
     // eslint-disable-next-line no-unused-vars
     getLowestCost(good){
         throw new Error("Cannot call an abstract method");
+    }
+
+    /**
+     * assign this truck to the good
+     * @param good the good to be transported
+     */
+    _addGood(good) {
+        if(good === null){
+            this.plan.push({
+                location : this.initialLocation,
+                type : "home",
+                good : null
+            });
+        } else {
+            let pickUp = {
+                location : good.pickUp,
+                type : "pickUp",
+                good : {
+                    quantity : good.quantity,
+                    volume : good.volume,
+                    weight : good.weight
+                }
+            };
+            this.plan.push(pickUp);
+
+            let delivery = {
+                location : good.delivery,
+                type : "delivery",
+                good : {
+                    quantity : good.quantity,
+                    volume : good.volume,
+                    weight : good.weight
+                }
+            };
+            this.plan.push(delivery);
+        }
     }
 
     /**
