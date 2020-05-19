@@ -67,7 +67,7 @@
             // truckA.assignToProduct(productC);
             // truckA.assignToProduct(productD);
             // truckA.sendHome();
-            console.log("plan : ",truckA.plan);
+
             this.$store.state.isRunning = true;
             this.$store.getters.time.run();
 

@@ -68,7 +68,7 @@ export default class Truck extends Observable{
      *     }
      *     type : "pickUp" | "delivery" | "home"
      *     product : see Product.js
-     *      expectedLoad : {
+     *     expectedLoad : {
      *        weight : weight of the transported goods after the order is completed
      *        volume : volume of the transported goods after the order is completed
      *      }
@@ -347,6 +347,39 @@ export default class Truck extends Observable{
     _computeFuelConsumed(distance, weight){
         return (distance / 1000) * (weight * this.properties.consumptionPerKg +
             this.properties.consumptionEmpty);
+    }
+
+    computeExtraFuel(product,pickupIndex,deliveryIndex){
+        let weight = pickupIndex === 0 ? 0 : this.plan.orders[pickupIndex - 1].expectedLoad.weight;
+        let fuel = this._computeInitialExtraFuel(weight,pickupIndex,product.pickUp);
+        let location = product.pickUp;
+        weight += product.weight;
+
+        for(let i = pickupIndex;i < Math.min(this.plan.orders.length,deliveryIndex);i++){
+            let dist = euclidDist(location,this.plan.orders[pickupIndex].location);
+            fuel += this._computeFuelConsumed(dist,weight);
+            weight = this.plan.orders[pickupIndex].product.weight + product.weight;
+            location = this.plan.orders[pickupIndex].location;
+        }
+        let dist = euclidDist(location,product.delivery);
+        fuel += this._computeFuelConsumed(dist,weight);
+        weight -= product.weight;
+        let finalLocation = deliveryIndex >= this.plan.orders.length ?
+                                product.delivery :
+                                this.plan.orders[deliveryIndex].location;
+
+        dist = euclidDist(product.delivery,finalLocation);
+        fuel += this._computeFuelConsumed(dist,weight);
+
+        return fuel;
+    }
+
+    _computeInitialExtraFuel(initialWeight,pickupIndex,productPickUp){
+        let initLocation = pickupIndex === 0 ? this.initialLocation : this.plan.orders[pickupIndex - 1].location;
+        let weight = pickupIndex === 0 ? 0 : this.plan.orders[pickupIndex - 1].expectedLoad.weight;
+
+        let dist = euclidDist(initLocation,productPickUp);
+        return this._computeFuelConsumed(dist,weight);
     }
 
     /**
