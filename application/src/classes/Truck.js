@@ -143,7 +143,7 @@ export default class Truck extends Observable{
      * send the truck home
      */
     sendHome(){
-        this.plan.push({
+        this.plan.orders.push({
             location : this.initialLocation,
             type : "home",
             product : null
@@ -212,24 +212,24 @@ export default class Truck extends Observable{
         let detour;
 
         // Leave the planned path to pickup product.
-        detour = euclidDist(this.plan[pickup - 1].location, product.pickUp);
+        detour = euclidDist(this.plan.orders[pickup - 1].location, product.pickUp);
 
         if (pickup === delivery) {
             // Case: Go straight to deliver added product.
             detour += euclidDist(product.pickUp, product.delivery);
-            detour -= euclidDist(this.plan[pickup - 1].location, this.plan[delivery].location);
+            if (delivery !== this.plan.orders.length) detour -= euclidDist(this.plan.orders[pickup - 1].location, this.plan.orders[delivery].location);
         } else {
             // Case: Go back to planned path after picking up.
-            detour += euclidDist(product.pickUp, this.plan[pickup].location);
-            detour -= euclidDist(this.plan[pickup - 1].location, this.plan[pickup].location);
+            detour += euclidDist(product.pickUp, this.plan.orders[pickup].location);
+            detour -= euclidDist(this.plan.orders[pickup - 1].location, this.plan.orders[pickup].location);
 
-            // Leave the planned path to deliver the product.
-            detour += euclidDist(this.plan[delivery - 1].location, product.delivery);
-            if (delivery !== this.plan.length) detour -= euclidDist(this.plan[delivery - 1].location, this.plan[delivery]);
+            // Leave the planned path to deliver the product afterwards.
+            detour += euclidDist(this.plan.orders[delivery - 1].location, product.delivery);
+            if (delivery !== this.plan.orders.length) detour -= euclidDist(this.plan.orders[delivery - 1].location, this.plan.orders[delivery].location);
         }
 
         // Return to the planned path, if needed.
-        if (delivery !== this.plan.length) detour += euclidDist(product.delivery, this.plan[delivery].location);
+        if (delivery !== this.plan.orders.length) detour += euclidDist(product.delivery, this.plan.orders[delivery].location);
 
         return detour;  //As of now the cost is equal to the detour, this is overly simplistic, TODO change if possible.
     }
@@ -314,7 +314,7 @@ export default class Truck extends Observable{
         let route = this._currentRoute.route;
         while(time > this._currentRoute.timeSegment){
             if(route[this._currentRoute.index].duration === 0){
-                this.fuelConsumed += this._computeFuelConsumed(distance);
+                this.fuelConsumed += this._computeFuelConsumed(distance, this.transportedWeight);
                 this._setLocation(route[this._currentRoute.index].coordinates);
                 return ;
             }
@@ -326,7 +326,7 @@ export default class Truck extends Observable{
         }
         let ratio = time / this._currentRoute.timeSegment;
         distance += ratio * this._currentRoute.distSegment;
-        this.fuelConsumed += this._computeFuelConsumed(distance);
+        this.fuelConsumed += this._computeFuelConsumed(distance, this.transportedWeight);
         this._currentRoute.timeSegment -= time;
         this._currentRoute.distSegment -= ratio * this._currentRoute.distSegment;
         this._setLocation({
@@ -340,11 +340,12 @@ export default class Truck extends Observable{
     /**
      * fuel consumed by traveling the given distance with the current weight
      * @param distance
+     * @param weight
      * @return {number}
      * @private
      */
-    _computeFuelConsumed(distance){
-        return (distance / 1000) * (this.currentLoad.weight * this.properties.consumptionPerKg +
+    _computeFuelConsumed(distance, weight){
+        return (distance / 1000) * (weight * this.properties.consumptionPerKg +
             this.properties.consumptionEmpty);
     }
 
