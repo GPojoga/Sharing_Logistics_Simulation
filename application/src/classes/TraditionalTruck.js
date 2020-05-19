@@ -6,38 +6,6 @@ export default class TraditionalTruck extends Truck{
         super(type,location,mapObj,tickRate);
     }
 
-    _addProduct(product) {
-        if (product === null) {
-            this.plan.push({
-                location: this.initialLocation,
-                type: "home",
-                product: null
-            });
-        } else {
-            let pickUp = {
-                location: product.pickUp,
-                type: "pickUp",
-                product: {
-                    quantity: product.quantity,
-                    volume: product.volume,
-                    weight: product.weight
-                }
-            };
-            this.plan.push(pickUp);
-
-            let delivery = {
-                location: product.delivery,
-                type: "delivery",
-                product: {
-                    quantity: product.quantity,
-                    volume: product.volume,
-                    weight: product.weight
-                }
-            };
-            this.plan.push(delivery);
-        }
-    }
-
     /**
      * This method finds the minimal cost of adding a product to the trucks plan assuming traditional logistics.
      * @param product The product that we should find the lowest cost of adding.

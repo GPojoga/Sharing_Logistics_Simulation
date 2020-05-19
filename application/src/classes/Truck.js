@@ -60,26 +60,33 @@ export default class Truck extends Observable{
      */
     router = new Router();
 
-    /**
-     * [{
+    /**{
+     *  [{
      *     location : {
      *         lat : latitude,
      *         lng : longitude
      *     }
      *     type : "pickUp" | "delivery" | "home"
-     *     product : {
-     *         quantity : number of products of the same type
-     *         volume : the volume of the product
-     *         weight : the weight of the product
-     *     }
+     *     product : see Product.js
+     *      expectedLoad : {
+     *        weight : weight of the transported goods after the order is completed
+     *        volume : volume of the transported goods after the order is completed
+     *      }
+     *  }],
+     *  currentIndex : current plan item that is processed
      *
-     * }]
+     * }
      */
-    plan = [];
+    plan = {
+        orders : [],
+        currentIndex : 0
+    };
 
-    transportedWeight = 0;
 
-    transportedVolume = 0;
+    currentLoad = {
+        weight : 0,
+        volume : 0
+    };
 
     /**
      * {
@@ -147,19 +154,51 @@ export default class Truck extends Observable{
     /**
      * assign this truck to the given product
      * @param product
+     * @param pickupIndex
+     * @param deliveryIndex
      */
-    assignToProduct(product){
-        this._addProduct(product);
+    addProduct(product,pickupIndex,deliveryIndex){
+        this._addProduct(product,pickupIndex,deliveryIndex);
         this._start();
     }
 
     /**
      * assign this truck to the product
      * @param product the product to be transported
+     * @param pickupIndex
+     * @param deliveryIndex
      */
-    // eslint-disable-next-line no-unused-vars
-    _addProduct(product){
-        throw new Error("Cannot call an abstract method");
+    _addProduct(product,pickupIndex,deliveryIndex){
+        let pickUp = {
+            location: product.pickUp,
+            type: "pickUp",
+            product: product,
+            expectedLoad : {
+                weight : this.plan.orders.length === 0 ?
+                            product.weight :
+                            this.plan.orders[pickupIndex - 1].expectedLoad.weight + product.weight,
+                volume : this.plan.orders.length === 0 ?
+                            product.volume :
+                            this.plan.orders[pickupIndex - 1].expectedLoad.volume + product.volume,
+            }
+        };
+        this.plan.orders.splice(pickupIndex,0,pickUp);
+
+        for(let i = pickupIndex + 1;i <= deliveryIndex;i++){
+            this.plan.orders[i].expectedLoad.weight += product.weight;
+            this.plan.orders[i].expectedLoad.volume += product.volume;
+        }
+
+        let delivery = {
+            location: product.delivery,
+            type: "delivery",
+            product: product,
+            expectedLoad: {
+                weight : this.plan.orders[deliveryIndex].expectedLoad.weight - product.weight,
+                volume : this.plan.orders[deliveryIndex].expectedLoad.volume - product.volume
+            }
+        };
+        this.plan.orders.splice(deliveryIndex + 1,0,delivery);
     }
 
     /**
@@ -210,10 +249,10 @@ export default class Truck extends Observable{
      * @private
      */
     _start(){
-        if(!this.isMoving && this.plan.length > 0){
+        if(!this.isMoving && this.plan.currentIndex < this.plan.orders.length){
             console.log("Truck started");
             this.isMoving = true;
-            let order = this.plan.shift();
+            let order = this.plan.orders[this.plan.currentIndex];
             this.router.getRoute(this.location,order.location).then( route => {
                 this._currentRoute = Object.assign(route,{
                     index : 0,
@@ -247,18 +286,19 @@ export default class Truck extends Observable{
      */
     _completeOrder(order){
         console.log("Route finished");
-        this.isMoving = false;
         switch (order.type) {
             case "pickUp":
-                this.transportedWeight += order.product.quantity * order.product.weight;
-                this.transportedVolume += order.product.quantity * order.volume;
+                this.currentLoad.weight += order.product.quantity * order.product.weight;
+                this.currentLoad.volume += order.product.quantity * order.volume;
                 break;
             case "delivery":
-                this.transportedWeight -= order.product.quantity * order.product.weight;
-                this.transportedVolume -= order.product.quantity * order.product.volume;
+                this.currentLoad.weight -= order.product.quantity * order.product.weight;
+                this.currentLoad.volume -= order.product.quantity * order.product.volume;
                 this.nrDeliveredProducts += 1;
                 break;
         }
+        this.isMoving = false;
+        this.plan.currentIndex += 1;
         this._start();
     }
 
@@ -304,7 +344,7 @@ export default class Truck extends Observable{
      * @private
      */
     _computeFuelConsumed(distance){
-        return (distance / 1000) * (this.transportedWeight * this.properties.consumptionPerKg +
+        return (distance / 1000) * (this.currentLoad.weight * this.properties.consumptionPerKg +
             this.properties.consumptionEmpty);
     }
 

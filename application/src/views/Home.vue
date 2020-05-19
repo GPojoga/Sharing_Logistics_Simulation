@@ -57,17 +57,17 @@
 
             let productA = new Product(1,10,3,locationA,locationB);
             let productB = new Product(1,10,3,locationC,locationD);
-            let productC = new Product(1,10,3,locationB,locationA);
-            let productD = new Product(1,10,3,locationB,locationD);
+            // let productC = new Product(1,10,3,locationB,locationA);
+            // let productD = new Product(1,10,3,locationB,locationD);
             // let productE = new Product(1,10,3,locationC,locationB);
             // let productF = new Product(1,10,3,locationB,locationD);
 
-            truckA.assignToProduct(productA);
-            truckA.assignToProduct(productB);
-            truckA.assignToProduct(productC);
-            truckA.assignToProduct(productD);
-            truckA.sendHome();
-
+            truckA.addProduct(productA,0,0);
+            truckA.addProduct(productB,2,2);
+            // truckA.assignToProduct(productC);
+            // truckA.assignToProduct(productD);
+            // truckA.sendHome();
+            console.log("plan : ",truckA.plan);
             this.$store.state.isRunning = true;
             this.$store.getters.time.run();
 
