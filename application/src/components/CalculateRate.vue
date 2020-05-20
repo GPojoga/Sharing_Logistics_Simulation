@@ -1,9 +1,9 @@
 <template>
     <div class="calcRate">
-        <div>
-            <button @click="calculateTraditonal" type="button" class="calcRateButton">Traditional Rate</button>
+        <div class="simulationButton">
+            <button @click="calculateTraditional" type="button" class="calcRateButton">Traditional Rate</button>
         </div>
-        <div>
+        <div class="simulationButton">
             <button @click="calculateSharing" type="button" class="calcRateButton">Sharing Rate</button>
         </div>
     </div>
@@ -13,16 +13,8 @@
 
     export default {
         name: "CalculateRate",
-
-        data: function () {
-            return {
-                info : this.$store.state
-            }
-        },
-
-
         methods: {
-            calculateTraditonal(){
+            calculateTraditional(){
                 this.$emit("calculateTraditional");
             },
             calculateSharing(){
@@ -49,6 +41,7 @@
     .calcRateButton{
         background-color: #ff0000;
         line-height: 10px;
+        width: 150px;
         border: none;
         border-radius: 5px;
         color: white;
@@ -64,5 +57,8 @@
         cursor: pointer;
     }
 
+    .simulationButton {
+        margin: 5px;
+    }
 
 </style>

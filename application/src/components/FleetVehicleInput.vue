@@ -10,8 +10,8 @@
             <div v-for="type in truckTypes"
                  :key="type.key"
                  class="imageTab"
-                 :class="{ selected: (truck.type === type), unselected: (truck.type !== type) }"
-                 @click="setSelected(type)">
+                 :class="{ selected: (truck.type === type.key), unselected: (truck.type !== type.key) }"
+                 @click="setSelected(type.key)">
                 <img :src="'assets/' + type.img" :alt="type.name" style="width:100%">
             </div>
         </div>
@@ -24,7 +24,7 @@
     import LocationInput from "./InputLocation";
 
     export default {
-        name: "VehicleInput",
+        name: "FleetVehicleInput",
         components: {LocationInput},
         props: {
             index : Number
@@ -66,6 +66,7 @@
 <style scoped>
     .header {
         height: 40px;
+        width: 100%;
     }
 
     span {
@@ -79,9 +80,9 @@
 
     .vehicle {
         margin: 0;
-        border: 2px solid #007feb;
-        border-radius: 5px;
-        padding: 10px 15px;
+        border: solid rgba(0, 127, 235, 0.2);
+        border-width: 0 0 1px 0;
+        padding: 10px 15px 20px;
     }
 
     /* Selectable image tabs of the types of trucks */

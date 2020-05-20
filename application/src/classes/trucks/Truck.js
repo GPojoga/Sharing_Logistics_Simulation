@@ -1,13 +1,17 @@
 
-import store from "../store/index.js";
-import {Observable} from "@/classes/Observable";
-import {TruckView} from "@/classes/TruckView";
-import Router from "@/classes/Router";
-import euclidDist from "./EuclidDist";
+import {Observable} from "../Observable";
+import {TruckView} from "./TruckView";
+import Router from "../Router";
+import store from "../../store/index.js";
+import euclidDist from "../../util/EuclidDist";
+import haversine from "@/util/haversine";
 
 /**
  * this is the abstract class for truck
  * it must not be instantiated
+ *
+ * @class Truck
+ * @abstract
  */
 export default class Truck extends Observable{
 
@@ -49,10 +53,10 @@ export default class Truck extends Observable{
 
 
     /**
-     * total number of delivered products by this truck
+     * total number of delivered goods by this truck
      * @type {number}
      */
-    nrDeliveredProducts = 0;
+    nrDeliveredGoods = 0;
 
     /**
      * an instance of Router. It is liable for computing a route
@@ -67,7 +71,7 @@ export default class Truck extends Observable{
      *         lng : longitude
      *     }
      *     type : "pickUp" | "delivery" | "home"
-     *     product : see Product.js
+     *     good : see Good.js
      *     expectedLoad : {
      *        weight : weight of the transported goods after the order is completed
      *        volume : volume of the transported goods after the order is completed
@@ -123,6 +127,8 @@ export default class Truck extends Observable{
      */
     isMoving = false;
 
+    finished = false;
+
     /**
      *
      * @param type truck type ("Light"|"Heavy"|"Train")
@@ -132,11 +138,27 @@ export default class Truck extends Observable{
      */
     constructor(type,location,mapObj,tickRate) {
         super();
+        if (this.constructor === Truck) {
+            throw new Error('Can not instantiate abstract class Truck!');
+        }
+        console.log('new truck of type: ' + type);
         this.initialLocation = location;
         this.location = location;
         this._tickRate = tickRate;
         this._setProperties(type);
         this.addListener(new TruckView(this,mapObj));
+    }
+
+    hasFinished() {
+        return this.finished;
+    }
+
+    hasSpace() {
+        return new Error('Can not call abstract method hasSpace of Truck!');
+    }
+
+    isEmpty() {
+        return (this.plan.orders === []);
     }
 
     /**
@@ -146,101 +168,123 @@ export default class Truck extends Observable{
         this.plan.orders.push({
             location : this.initialLocation,
             type : "home",
-            product : null
+            good : null
         });
         this._start();
     }
 
     /**
-     * assign this truck to the given product
-     * @param product
+     * assign this truck to the given good
+     * @param good
      * @param pickupIndex
      * @param deliveryIndex
      */
-    addProduct(product,pickupIndex,deliveryIndex){
-        this._addProduct(product,pickupIndex,deliveryIndex);
+    assignToGood(good,pickupIndex,deliveryIndex){
+        this._addGood(good,pickupIndex,deliveryIndex);
         this._start();
     }
 
     /**
-     * assign this truck to the product
-     * @param product the product to be transported
+     * assign this truck to the good
+     * @param good the good to be transported
      * @param pickupIndex
      * @param deliveryIndex
      */
-    _addProduct(product,pickupIndex,deliveryIndex){
+    _addGood(good,pickupIndex,deliveryIndex){
         let pickUp = {
-            location: product.pickUp,
+            location: good.pickUp,
             type: "pickUp",
-            product: product,
+            good: good,
             expectedLoad : {
                 weight : this.plan.orders.length === 0 ?
-                            product.weight :
-                            this.plan.orders[pickupIndex - 1].expectedLoad.weight + product.weight,
+                            good.weight :
+                            this.plan.orders[pickupIndex - 1].expectedLoad.weight + good.weight,
                 volume : this.plan.orders.length === 0 ?
-                            product.volume :
-                            this.plan.orders[pickupIndex - 1].expectedLoad.volume + product.volume,
+                            good.volume :
+                            this.plan.orders[pickupIndex - 1].expectedLoad.volume + good.volume,
             }
         };
         this.plan.orders.splice(pickupIndex,0,pickUp);
 
         for(let i = pickupIndex + 1;i <= deliveryIndex;i++){
-            this.plan.orders[i].expectedLoad.weight += product.weight;
-            this.plan.orders[i].expectedLoad.volume += product.volume;
+            this.plan.orders[i].expectedLoad.weight += good.weight;
+            this.plan.orders[i].expectedLoad.volume += good.volume;
         }
 
         let delivery = {
-            location: product.delivery,
+            location: good.delivery,
             type: "delivery",
-            product: product,
+            good: good,
             expectedLoad: {
-                weight : this.plan.orders[deliveryIndex].expectedLoad.weight - product.weight,
-                volume : this.plan.orders[deliveryIndex].expectedLoad.volume - product.volume
+                weight : this.plan.orders[deliveryIndex].expectedLoad.weight - good.weight,
+                volume : this.plan.orders[deliveryIndex].expectedLoad.volume - good.volume
             }
         };
         this.plan.orders.splice(deliveryIndex + 1,0,delivery);
     }
 
     /**
-     * This method calculates the change in cost of adding a product at certain indexes in the plan.
-     * @param product The product that is being added.
-     * @param pickup The index in the plan where the truck should pick up the product.
-     * @param delivery The index in the plan where the truck should deliver the product.
+     * This method calculates the change in cost of adding a good at certain indexes in the plan.
+     * @param good The good that is being added.
+     * @param pickup The index in the plan where the truck should pick up the good.
+     * @param delivery The index in the plan where the truck should deliver the good.
      * @returns {number} A number representing the change in cost.
      */
-    getCost(product, pickup, delivery){
+    getCost(good, pickup, delivery){
         let detour;
 
-        // Leave the planned path to pickup product.
-        detour = euclidDist(this.plan.orders[pickup - 1].location, product.pickUp);
+        // Leave the planned path to pickup good.
+        detour = euclidDist(this.plan.orders[pickup - 1].location, good.pickUp);
 
         if (pickup === delivery) {
-            // Case: Go straight to deliver added product.
-            detour += euclidDist(product.pickUp, product.delivery);
+            // Case: Go straight to deliver added good.
+            detour += euclidDist(good.pickUp, good.delivery);
             if (delivery !== this.plan.orders.length) detour -= euclidDist(this.plan.orders[pickup - 1].location, this.plan.orders[delivery].location);
         } else {
             // Case: Go back to planned path after picking up.
-            detour += euclidDist(product.pickUp, this.plan.orders[pickup].location);
+            detour += euclidDist(good.pickUp, this.plan.orders[pickup].location);
             detour -= euclidDist(this.plan.orders[pickup - 1].location, this.plan.orders[pickup].location);
 
-            // Leave the planned path to deliver the product afterwards.
-            detour += euclidDist(this.plan.orders[delivery - 1].location, product.delivery);
+            // Leave the planned path to deliver the good afterwards.
+            detour += euclidDist(this.plan.orders[delivery - 1].location, good.delivery);
             if (delivery !== this.plan.orders.length) detour -= euclidDist(this.plan.orders[delivery - 1].location, this.plan.orders[delivery].location);
         }
 
         // Return to the planned path, if needed.
-        if (delivery !== this.plan.orders.length) detour += euclidDist(product.delivery, this.plan.orders[delivery].location);
+        if (delivery !== this.plan.orders.length) detour += euclidDist(good.delivery, this.plan.orders[delivery].location);
 
         return detour;  //As of now the cost is equal to the detour, this is overly simplistic, TODO change if possible.
     }
 
+    getCost2(good,pickupIndex,deliveryIndex){
+        let weight = pickupIndex === 0 ? 0 : this.plan[pickupIndex - 1].expectedLoad.weight;
+        let location = pickupIndex === 0 ? this.initialLocation : this.plan[pickupIndex - 1].location;
+        let dist = haversine(location,good.pickUp);
+        let fuel = this._computeFuelConsumed(dist,weight);
+        location = good.pickUp;
+        weight += good.weight;
+        for(let i = pickupIndex;i < deliveryIndex;i++){
+            dist = haversine(location,this.plan[i].location);
+            fuel += this._computeFuelConsumed(dist,weight);
+            weight = good.weight + this.plan[i].expectedLoad.weight;
+            location = this.plan[i].location;
+        }
+        dist = haversine(location,good.delivery);
+        fuel += this._computeFuelConsumed(weight,dist);
+        location = deliveryIndex >= this.plan.orders.length ? good.delivery : this.plan.orders[deliveryIndex].location;
+        dist = haversine(good.delivery,location);
+        weight -= good.weight;
+        fuel += this._computeFuelConsumed(dist,weight);
+        return fuel;
+    }
+
     /**
-     * This method finds the minimal cost of adding a product to the trucks plan.
-     * @param product The product that we should find the cost of adding.
+     * This method finds the minimal cost of adding a good to the trucks plan.
+     * @param good The good that we should find the cost of adding.
      * @returns {{delivery: number, cost: number, pickup: number}} Object containing the cost, pickup & delivery index.
      */
     // eslint-disable-next-line no-unused-vars
-    getLowestCost(product){
+    getLowestCost(good){
         throw new Error("Cannot call an abstract method");
     }
 
@@ -261,6 +305,9 @@ export default class Truck extends Observable{
                 });
                 this._followOrder(order);
             });
+        } else {
+            this.finished = true;
+            this.notifyHasFinishedListeners();
         }
     }
 
@@ -288,13 +335,13 @@ export default class Truck extends Observable{
         console.log("Route finished");
         switch (order.type) {
             case "pickUp":
-                this.currentLoad.weight += order.product.quantity * order.product.weight;
-                this.currentLoad.volume += order.product.quantity * order.volume;
+                this.currentLoad.weight += order.good.quantity * order.good.weight;
+                this.currentLoad.volume += order.good.quantity * order.volume;
                 break;
             case "delivery":
-                this.currentLoad.weight -= order.product.quantity * order.product.weight;
-                this.currentLoad.volume -= order.product.quantity * order.product.volume;
-                this.nrDeliveredProducts += 1;
+                this.currentLoad.weight -= order.good.quantity * order.good.weight;
+                this.currentLoad.volume -= order.good.quantity * order.good.volume;
+                this.nrDeliveredgoods += 1;
                 break;
         }
         this.isMoving = false;
@@ -314,7 +361,7 @@ export default class Truck extends Observable{
         let route = this._currentRoute.route;
         while(time > this._currentRoute.timeSegment){
             if(route[this._currentRoute.index].duration === 0){
-                this.fuelConsumed += this._computeFuelConsumed(distance, this.transportedWeight);
+                this.fuelConsumed += this._computeFuelConsumed(distance, this.currentLoad.weight);
                 this._setLocation(route[this._currentRoute.index].coordinates);
                 return ;
             }
@@ -326,7 +373,7 @@ export default class Truck extends Observable{
         }
         let ratio = time / this._currentRoute.timeSegment;
         distance += ratio * this._currentRoute.distSegment;
-        this.fuelConsumed += this._computeFuelConsumed(distance, this.transportedWeight);
+        this.fuelConsumed += this._computeFuelConsumed(distance, this.currentLoad.weight);
         this._currentRoute.timeSegment -= time;
         this._currentRoute.distSegment -= ratio * this._currentRoute.distSegment;
         this._setLocation({
@@ -347,39 +394,6 @@ export default class Truck extends Observable{
     _computeFuelConsumed(distance, weight){
         return (distance / 1000) * (weight * this.properties.consumptionPerKg +
             this.properties.consumptionEmpty);
-    }
-
-    computeExtraFuel(product,pickupIndex,deliveryIndex){
-        let weight = pickupIndex === 0 ? 0 : this.plan.orders[pickupIndex - 1].expectedLoad.weight;
-        let fuel = this._computeInitialExtraFuel(weight,pickupIndex,product.pickUp);
-        let location = product.pickUp;
-        weight += product.weight;
-
-        for(let i = pickupIndex;i < Math.min(this.plan.orders.length,deliveryIndex);i++){
-            let dist = euclidDist(location,this.plan.orders[pickupIndex].location);
-            fuel += this._computeFuelConsumed(dist,weight);
-            weight = this.plan.orders[pickupIndex].product.weight + product.weight;
-            location = this.plan.orders[pickupIndex].location;
-        }
-        let dist = euclidDist(location,product.delivery);
-        fuel += this._computeFuelConsumed(dist,weight);
-        weight -= product.weight;
-        let finalLocation = deliveryIndex >= this.plan.orders.length ?
-                                product.delivery :
-                                this.plan.orders[deliveryIndex].location;
-
-        dist = euclidDist(product.delivery,finalLocation);
-        fuel += this._computeFuelConsumed(dist,weight);
-
-        return fuel;
-    }
-
-    _computeInitialExtraFuel(initialWeight,pickupIndex,productPickUp){
-        let initLocation = pickupIndex === 0 ? this.initialLocation : this.plan.orders[pickupIndex - 1].location;
-        let weight = pickupIndex === 0 ? 0 : this.plan.orders[pickupIndex - 1].expectedLoad.weight;
-
-        let dist = euclidDist(initLocation,productPickUp);
-        return this._computeFuelConsumed(dist,weight);
     }
 
     /**

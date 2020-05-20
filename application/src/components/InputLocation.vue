@@ -1,16 +1,16 @@
 <template>
     <div class="location">
-        <label>
+        <label style="display: block;">
             {{ label }}
-            <input type="text" :list="idSuggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
         </label>
+        <input type="text" :list="idSuggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
         <div class="optionList" :id="idSuggestions" v-if="displayPossibilities && possibilities != null">
             <p class="option" v-for="(p, i) in possibilities" :id="i" :key="i" @click="selectLocation(p)">
                 {{ p.label }}
             </p>
         </div>
-        <div>
-            <button @click="activateGpsButton" type="button" class="gpsContainer" >Gps</button>
+        <div class="gpsContainer">
+            <button @click="activateGpsButton" type="button" class="gpsButton" :class="{ gpsOn: gpsActivated}"><i class="fas fa-map-marked-alt"></i></button>
         </div>
     </div>
 </template>
@@ -22,6 +22,8 @@
             https://github.com/smeijer/leaflet-geosearch
        An example can be found at:
             https://smeijer.github.io/leaflet-geosearch/#openstreetmap
+
+       It is a wrapper around OpenStreetMap and Nominatim, which only allows 1 request per second!
     */
     import {OpenStreetMapProvider} from "leaflet-geosearch";
     import L from "leaflet";
@@ -52,15 +54,16 @@
         },
         data() {
             return {
-                enteredText: null,           // The text inputted by the user.
-                selected: null,              // The location currently selected.
-                possibilities: null,         // A list of possible locations based on the currently inputted text.
-                displayPossibilities: false  // A boolean keeping track of if the possibilities should be shown.
+                enteredText: null,                  // The text inputted by the user.
+                selected: null,                     // The location currently selected.
+                possibilities: null,                // A list of possible locations based on the currently inputted text.
+                displayPossibilities: false,        // A boolean keeping track of if the possibilities should be shown.
+                waitingToShowPossibilities: false
             }
         },
         watch: {
             location: function() {
-                if (this.location !== null) {
+                if (this.location != null) {
                     // There is a location already
                     this.reverseGeocode(this.location.lat, this.location.lng).then(
                         lc => {
@@ -100,11 +103,22 @@
                 if (this.enteredText !== '') {
                     this.displayPossibilities = true;
 
-                    provider.search({ query: this.enteredText }).then(
-                        list => {
-                            this.possibilities = list.splice(0,5);
-                        }
-                    );
+                    if (this.waitingToShowPossibilities === false) {
+                        this.waitingToShowPossibilities = true;
+
+                        const self = this;
+
+                        setTimeout(function() {
+                            if (self.enteredText !== '') {
+                                provider.search({ query: self.enteredText }).then(
+                                    list => {
+                                        self.possibilities = list.splice(0,5);
+                                    }
+                                );
+                                self.waitingToShowPossibilities = false;
+                            }
+                        }, 1000);
+                    }
                 } else {
                     this.possibilities = null;
                     this.selectLocation(null);
@@ -142,6 +156,9 @@
              */
             idSuggestions() {
                 return 'suggestions' + this.label + this.setter + JSON.stringify(this.forward);
+            },
+            gpsActivated() {
+                return this.$store.state.tempForMap && (this.$store.state.tempForForward === this.forward);
             }
         }
     }
@@ -150,17 +167,16 @@
 <style scoped>
     /* Contains all options for places */
     .optionList {
-        width: 85.5%;
+        width: 80%;
         background-color: white;
         display: flex;
         flex-direction: column;
-        position: absolute;
+        position: relative;
         z-index: 1; /* Put on top of other elements */
         opacity: 1; /* Make not transparent */
 
         /* Set border of the list with suggestions for places */
-        border: solid #2284ff;
-        border-width: 2px;
+        border: 2px solid #2284ff;
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
@@ -184,24 +200,34 @@
         display: none;
     }
 
+    /* Gps button styling */
     .gpsContainer {
+        display: inline-block;
+    }
+
+    .gpsButton {
         background-color: #007feb;
         line-height: 10px;
         border: none;
         border-radius: 5px;
         color: white;
-        padding: 15px 10px;
+        padding: 10px 10px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
         font-size: 16px;
     }
 
+    .gpsOn {
+        background-color: grey;
+    }
+
     input{
         margin-top: 5px;
+        margin-right: 1%;
         padding-left: 10px;
         height: 30px;
-        width: 95%;
+        width: 80%;
         background-color: #f1f9ff;
         border: solid #2284ff;
         color: #007feb;

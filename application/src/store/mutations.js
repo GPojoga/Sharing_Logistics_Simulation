@@ -9,6 +9,8 @@
  *          newList: latLng
  *      }
  */
+import {simulationType} from "../classes/SimulationType";
+
 export const mutations = {
     /**
      * This is the setter function of the map of the webapp.
@@ -234,6 +236,14 @@ export const mutations = {
         // TODO: add checking the location here.
         state.trucks[index].startLocation = location;
     },
+
+    setSimulationResults(state, {type, results}) {
+        if (type === simulationType.TRADITIONAL) {
+            state.simulationResults.traditional = results;
+        } else if (type === simulationType.SHARED) {
+            state.simulationResults.shared = results;
+        }
+    }
 };
 
 export default mutations;
