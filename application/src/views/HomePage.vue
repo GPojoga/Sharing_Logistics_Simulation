@@ -24,8 +24,8 @@
                 lat : 53.2153888
             };
             let locationB = {
-                lat : 53.212664,
-                lng : 6.565231
+                lat : 55.687655,
+                lng : 37.611137
             };
 
             // this.$store.commit('addNewTruck');
@@ -37,7 +37,6 @@
             this.$store.commit('setGoodQuantity', {value: 4, index: 0});
             this.$store.commit('setGoodWeight', {value: 1, index: 0});
             this.$store.commit('setGoodVolume', {value: 1, index: 0});
-
         }
     }
 </script>

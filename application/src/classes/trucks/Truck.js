@@ -3,7 +3,6 @@ import {Observable} from "../Observable";
 import {TruckView} from "./TruckView";
 import Router from "../Router";
 import store from "../../store/index.js";
-import euclidDist from "../../util/EuclidDist";
 import haversine from "@/util/haversine";
 
 /**
@@ -226,56 +225,63 @@ export default class Truck extends Observable{
     /**
      * This method calculates the change in cost of adding a good at certain indexes in the plan.
      * @param good The good that is being added.
-     * @param pickup The index in the plan where the truck should pick up the good.
-     * @param delivery The index in the plan where the truck should deliver the good.
+     * @param pickupIndex The index in the plan where the truck should pick up the good.
+     * @param deliveryIndex The index in the plan where the truck should deliver the good.
      * @returns {number} A number representing the change in cost.
      */
-    getCost(good, pickup, delivery){
-        let detour;
-
-        // Leave the planned path to pickup good.
-        detour = euclidDist(this.plan.orders[pickup - 1].location, good.pickUp);
-
-        if (pickup === delivery) {
-            // Case: Go straight to deliver added good.
-            detour += euclidDist(good.pickUp, good.delivery);
-            if (delivery !== this.plan.orders.length) detour -= euclidDist(this.plan.orders[pickup - 1].location, this.plan.orders[delivery].location);
-        } else {
-            // Case: Go back to planned path after picking up.
-            detour += euclidDist(good.pickUp, this.plan.orders[pickup].location);
-            detour -= euclidDist(this.plan.orders[pickup - 1].location, this.plan.orders[pickup].location);
-
-            // Leave the planned path to deliver the good afterwards.
-            detour += euclidDist(this.plan.orders[delivery - 1].location, good.delivery);
-            if (delivery !== this.plan.orders.length) detour -= euclidDist(this.plan.orders[delivery - 1].location, this.plan.orders[delivery].location);
-        }
-
-        // Return to the planned path, if needed.
-        if (delivery !== this.plan.orders.length) detour += euclidDist(good.delivery, this.plan.orders[delivery].location);
-
-        return detour;  //As of now the cost is equal to the detour, this is overly simplistic, TODO change if possible.
-    }
-
-    getCost2(good,pickupIndex,deliveryIndex){
-        let weight = pickupIndex === 0 ? 0 : this.plan[pickupIndex - 1].expectedLoad.weight;
-        let location = pickupIndex === 0 ? this.initialLocation : this.plan[pickupIndex - 1].location;
+    getCost(good,pickupIndex,deliveryIndex){
+        let weight = pickupIndex === 0 ? 0 : this.plan.orders[pickupIndex - 1].expectedLoad.weight;
+        let location = pickupIndex === 0 ? this.initialLocation : this.plan.orders[pickupIndex - 1].location;
         let dist = haversine(location,good.pickUp);
         let fuel = this._computeFuelConsumed(dist,weight);
         location = good.pickUp;
-        weight += good.weight;
-        for(let i = pickupIndex;i < deliveryIndex;i++){
-            dist = haversine(location,this.plan[i].location);
-            fuel += this._computeFuelConsumed(dist,weight);
-            weight = good.weight + this.plan[i].expectedLoad.weight;
-            location = this.plan[i].location;
+        weight += good.quantity * good.weight;
+        if (pickupIndex < deliveryIndex){
+            fuel += this._computeFuelConsumed(haversine(location,this.plan.orders[pickupIndex].location),weight);
+            location = this.plan.orders[pickupIndex].location;
+        }
+        for(let i = pickupIndex + 1;i < deliveryIndex;i++){
+            dist = haversine(location,this.plan.orders[i].location);
+            fuel += weight * (dist/1000) * this.properties.consumptionPerKg;
+            weight = good.quantity * good.weight + this.plan.orders[i].expectedLoad.weight;
+            location = this.plan.orders[i].location;
         }
         dist = haversine(location,good.delivery);
-        fuel += this._computeFuelConsumed(weight,dist);
+        fuel += this._computeFuelConsumed(dist,weight);
         location = deliveryIndex >= this.plan.orders.length ? good.delivery : this.plan.orders[deliveryIndex].location;
         dist = haversine(good.delivery,location);
-        weight -= good.weight;
+        weight -= good.quantity * good.weight;
         fuel += this._computeFuelConsumed(dist,weight);
+        fuel -= this._savedCost(pickupIndex,deliveryIndex);
         return fuel;
+    }
+
+    /**
+     * This is a helper function for getCost
+     * @param pickupIndex
+     * @param deliveryIndex
+     * @return {number}
+     * @private
+     */
+    _savedCost(pickupIndex,deliveryIndex){
+        let weight = pickupIndex === 0 ? 0 : this.plan.orders[pickupIndex - 1].expectedLoad.weight;
+        let location = pickupIndex === 0 ? this.initialLocation : this.plan.orders[pickupIndex - 1].location;
+        let fuel = 0;
+
+        if (pickupIndex >= this.plan.orders.length){
+            return 0;
+        }
+        if (pickupIndex < deliveryIndex){
+            fuel += this._computeFuelConsumed(haversine(location,this.plan.orders[pickupIndex].location),weight);
+            location = this.plan.orders[deliveryIndex - 1].location;
+            weight = this.plan.orders[deliveryIndex - 1].expectedLoad.weight;
+        }
+        if (deliveryIndex >= this.plan.orders.length){
+            return fuel;
+        } else {
+            fuel += this._computeFuelConsumed(haversine(location,this.plan.orders[deliveryIndex].location),weight);
+            return fuel;
+        }
     }
 
     /**
