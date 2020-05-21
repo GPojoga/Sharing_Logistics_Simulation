@@ -257,7 +257,8 @@ export default class Truck extends Observable{
         weight -= good.quantity * good.weight;  // Update the weight after delivering the good.
 
         // Return to the planned path if needed.
-        if (deliveryIndex >= this.plan.orders.length) this._computeFuelConsumed(haversine(good.delivery, this.plan.orders[deliveryIndex]), weight);
+        if (deliveryIndex < this.plan.orders.length)
+            fuel += this._computeFuelConsumed(haversine(good.delivery, this.plan.orders[deliveryIndex]), weight);
 
         fuel -= this._savedCost(pickupIndex,deliveryIndex);
         return fuel;
@@ -342,6 +343,7 @@ export default class Truck extends Observable{
      */
     _completeOrder(order){
         console.log("Route finished");
+        console.log("truck plan = ",this.plan);
         switch (order.type) {
             case "pickUp":
                 this.currentLoad.weight += order.good.quantity * order.good.weight;
