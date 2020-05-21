@@ -43,6 +43,7 @@ export default class SharedTruck extends Truck{
                 if (cost < best.cost) best = {cost: cost, pickup: pickup, delivery: delivery};
             }
         }
+        console.log(best);
         return best;
     }
 }
