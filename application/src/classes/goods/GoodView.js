@@ -5,7 +5,6 @@ export class GoodView{
     view = Object;
 
     constructor(good,mapObject){
-        console.log(good);
         this.view = L.circleMarker(good.pickUp,{
             radius : 5 * good.quantity,
             color : 'yellow'

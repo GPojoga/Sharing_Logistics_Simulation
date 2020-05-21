@@ -39,7 +39,6 @@ export default class Good extends Observable{
         let lowestCostTruck = null;
         trucks.forEach(truck => {
             const cost = truck.getLowestCost(this);
-
             if (cost.cost < lowestCost.cost) {
                 lowestCost = cost;
                 lowestCostTruck = truck;

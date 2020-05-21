@@ -36,12 +36,14 @@ export default class SharedTruck extends Truck{
         for (let pickup = this.plan.currentIndex; pickup <= this.plan.orders.length; pickup += 1) {
             for (let delivery = pickup; delivery <= this.plan.orders.length; delivery += 1) {
                 // Exit inner loop if the truck can't carry to good anymore.
-                if (this.plan.orders[delivery].payload + good.weight * good.quantity > this.properties.maxPayload ||
-                    this.plan.orders[delivery].volume + good.volume * good.quantity > this.properties.volume) break;
+                if (delivery < this.plan.orders.length &&
+                    (this.plan.orders[delivery].payload + good.weight * good.quantity > this.properties.maxPayload ||
+                    this.plan.orders[delivery].volume + good.volume * good.quantity > this.properties.volume)) break;
 
                 let cost = this.getCost(good, pickup, delivery);
                 if (cost < best.cost) best = {cost: cost, pickup: pickup, delivery: delivery};
             }
+
         }
         return best;
     }
