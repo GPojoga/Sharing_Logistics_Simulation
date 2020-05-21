@@ -18,13 +18,15 @@ export default class TraditionalTruck extends Truck{
      */
     getLowestCost(product) {
         // Keeps track of the best place to added product for the lowest cost.
-        let best = {cost: Infinity, pickup: 1, delivery: 1};
+        let best = {cost: Infinity, pickup: 0, delivery: 0};
 
-        // Case the truck can't transport the product.
-        if (product.weight * product.quantity > this.properties.maxPayload || product.volume * product.quantity > this.properties.volume) return best;
+        // Case the truck can't transport the product, meaning it doesn't fit in the truck.
+        if (product.weight * product.quantity > this.properties.maxPayload ||
+            product.volume * product.quantity > this.properties.volume) return best;
 
-        // Loop over all pickup location. Note these appear in odd indexes.
-        for (let pickup = 1; pickup <= this.plan.length; pickup += 2) {
+        // Loop over all orders, that aren't delivery orders.
+        for (let pickup = this.plan.currentIndex; pickup <= this.plan.length; pickup++) {
+            if (this.plan.orders[pickup].type === "delivery") continue;
             let delivery = pickup;
             let cost = this.getCost(product, pickup, delivery);
             if (cost < best.cost) best = {cost: cost, pickup: pickup, delivery: delivery};

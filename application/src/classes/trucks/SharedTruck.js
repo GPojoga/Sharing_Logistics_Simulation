@@ -29,26 +29,19 @@ export default class SharedTruck extends Truck{
      * Note: If the truck can't transport the good the returned cost is Infinity!
      */
     getLowestCost(good) {
-        let capacity = {payload: 0, volume: 0};  // Truck starts out empty.
-
         // Keeps track of the best place to added good for the lowest cost.
-        let best = {cost: Infinity, pickup: 1, delivery: 1};
+        let best = {cost: Infinity, pickup: 0, delivery: 0};
 
-        // Loop over all possible pickup indices.
-        for (let pickup = 1; pickup <= this.plan.length; pickup += 1) {
-            let running_capacity = {payload: capacity.payload, volume: capacity.volume};
-
-            // Loop over all possible delivery indexes (pickup <= delivery).
-            for (let delivery = pickup; delivery <= this.plan.length; delivery += 1) {
+        // Loop over all possible indexes where the product can be picked-up and delivered.
+        for (let pickup = this.plan.currentIndex; pickup <= this.plan.orders.length; pickup += 1) {
+            for (let delivery = pickup; delivery <= this.plan.orders.length; delivery += 1) {
                 // Exit inner loop if the truck can't carry to good anymore.
-                if (running_capacity.payload + good.weight * good.quantity > this.properties.maxPayload) break;
-                if (running_capacity.volume + good.volume * good.quantity > this.properties.volume) break;
+                if (this.plan.orders[delivery].payload + good.weight * good.quantity > this.properties.maxPayload ||
+                    this.plan.orders[delivery].volume + good.volume * good.quantity > this.properties.volume) break;
 
                 let cost = this.getCost(good, pickup, delivery);
                 if (cost < best.cost) best = {cost: cost, pickup: pickup, delivery: delivery};
-                this._updateCapacity(running_capacity, this.plan[delivery])
             }
-            this._updateCapacity(capacity, this.plan[pickup]);
         }
         return best;
     }
