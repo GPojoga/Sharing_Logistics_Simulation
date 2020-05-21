@@ -16,20 +16,22 @@ export default class TraditionalTruck extends Truck{
      * @returns {{delivery: number, cost: number, pickup: number}} Object containing; cost, pickup and delivery indexes.
      * Note: If the truck can't transport the product the returned cost is Infinity!
      */
+    // eslint-disable-next-line no-unused-vars
     getLowestCost(product) {
-        // Keeps track of the best place to added product for the lowest cost.
-        let best = {cost: Infinity, pickup: 1, delivery: 1};
+        return {cost : 1,pickup : 0,delivery : 0};
+        // // Keeps track of the best place to added product for the lowest cost.
+        // let best = {cost: Infinity, pickup: 1, delivery: 1};
+        //
+        // // Case the truck can't transport the product.
+        // if (product.weight * product.quantity > this.properties.maxPayload || product.volume * product.quantity > this.properties.volume) return best;
+        //
+        // // Loop over all pickup location. Note these appear in odd indexes.
+        // for (let pickup = 1; pickup <= this.plan.length; pickup += 2) {
+        //     let delivery = pickup;
+        //     let cost = this.getCost(product, pickup, delivery);
+        //     if (cost < best.cost) best = {cost: cost, pickup: pickup, delivery: delivery};
+        // }
 
-        // Case the truck can't transport the product.
-        if (product.weight * product.quantity > this.properties.maxPayload || product.volume * product.quantity > this.properties.volume) return best;
-
-        // Loop over all pickup location. Note these appear in odd indexes.
-        for (let pickup = 1; pickup <= this.plan.length; pickup += 2) {
-            let delivery = pickup;
-            let cost = this.getCost(product, pickup, delivery);
-            if (cost < best.cost) best = {cost: cost, pickup: pickup, delivery: delivery};
-        }
-
-        return best;
+        // return best;
     }
 }
