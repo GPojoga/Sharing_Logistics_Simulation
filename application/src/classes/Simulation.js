@@ -58,7 +58,7 @@ export class Simulation {
                 this._trucksList.push(traditionalTruck);
             });
 
-            alert('Traditional simulation has not been fulled implemented yet.');
+            // alert('Traditional simulation has not been fulled implemented yet.');
         } else {
             console.err("Simulate function got an unknown input value for the parameter 'type'.");
         }
@@ -67,7 +67,7 @@ export class Simulation {
         let freightPlatform = new FreightPlatform(this._trucksList, this._goodsList);
 
         // 4. Let all goods choose a truck.
-        freightPlatform.distributeGoodsOverTrucks(simType);
+        freightPlatform.distributeGoodsOverTrucks();
 
         // 5. Start the simulation
         store.state.isRunning = true;

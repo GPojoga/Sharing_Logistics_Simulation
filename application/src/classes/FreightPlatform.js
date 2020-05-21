@@ -20,9 +20,9 @@ export class FreightPlatform {
     /**
      * This method lets the goods choose a truck that will transport it, one by one.
      */
-    distributeGoodsOverTrucks(simType) {
+    distributeGoodsOverTrucks() {
         this._goods.forEach(good => {
-            good.chooseTruck(this._trucks, simType);
+            good.chooseTruck(this._trucks);
         });
     }
 }
