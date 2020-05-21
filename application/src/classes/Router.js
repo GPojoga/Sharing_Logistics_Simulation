@@ -20,12 +20,28 @@ export default class Router{
     getRoute(start,end){
         let request = this.__computeRequest([start,end]);
 
-        return fetch(request)
+        return this._postRequest(request)
             .then(response => response.json())
             .then(data => this.__unpackResponse(data))
             .catch(x => console.error(x));
     }
 
+    _postRequest(request){
+        let self = this;
+        return fetch(request)
+            .then(response => {
+                if (response.status === 200){
+                    return response;
+                }else {
+                    console.warn("The OSRM response is not valid, trying again ...");
+                    return new Promise( function(resolve){
+                        setTimeout(function () {
+                            resolve(self._postRequest(request));
+                        } ,1000);
+                    });
+                }
+            });
+    }
     __unpackResponse(json){
         return {
             start : this.__unpackCoordinate(json.waypoints[0].location),

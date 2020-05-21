@@ -343,7 +343,6 @@ export default class Truck extends Observable{
      */
     _completeOrder(order){
         console.log("Route finished");
-        console.log("truck plan = ",this.plan);
         switch (order.type) {
             case "pickUp":
                 this.currentLoad.weight += order.good.quantity * order.good.weight;

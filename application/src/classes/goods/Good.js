@@ -45,8 +45,6 @@ export default class Good extends Observable{
                 lowestCostTruck = truck;
             }
         });
-
-        if (lowestCostTruck == null) return;
         lowestCostTruck.assignToGood(this,lowestCost.pickup,lowestCost.delivery);
     }
 }
