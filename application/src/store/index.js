@@ -15,29 +15,6 @@ export default new Vuex.Store({
         // Simulation objects
         map : Object,
         time: new Time(),
-        debugListGoods : [
-            {
-                quantity: 1,
-                weight: 1,
-                volume: 1,
-                from: [1,1],
-                to: [1,2]
-            },
-            {
-                quantity: 1,
-                weight: 1,
-                volume: 1,
-                from: [3,1],
-                to: [1,3]
-            },
-            {
-                quantity: 1,
-                weight: 1,
-                volume: 1,
-                from: [2,3],
-                to: [2,2]
-            }
-        ],
 
         // The results of the two types of simulations.
         simulationResults : {

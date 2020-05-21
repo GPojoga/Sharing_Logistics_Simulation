@@ -11,18 +11,6 @@ export default class SharedTruck extends Truck{
     }
 
     /**
-     * This method updates the capacity of a truck when it passes over a point in it's plan.
-     * @param capacity an object that represents the capacity of the truck.
-     * @param point a point in the plan of the truck, it should be; "home" | "pickUp" | "delivery".
-     * @private helper function to the function getLowestCost.
-     */
-    _updateCapacity(capacity, point) {
-        if (point.type === "home") return ;
-        capacity.payload += point.quantity * point.weight * (point.type === "pickUp") ? 1 : -1;
-        capacity.volume += point.quantity * point.volume * (point.type === "pickUp") ? 1 : -1;
-    }
-
-    /**
      * This method finds the minimal cost of adding a good to the trucks plan assuming traditional logistics.
      * @param good The good that we should find the lowest cost of adding.
      * @returns {{delivery: number, cost: number, pickup: number}} Object containing; cost, pickup and delivery indexes.

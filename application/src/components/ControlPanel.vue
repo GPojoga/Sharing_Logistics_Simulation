@@ -5,10 +5,11 @@
         <i class="fas fa-angle-left" id="collapseArrow"></i>
       </button>
     </div>
+    <SelectionBar :selected='"Manual"' />
     <div class = "content">
       <FleetInput/>
       <CargoInput :products-valid="validProducts" @productChange="setValidProducts"/>
-      <div>
+      <div id="footer">
         <div class="settingContainer">
           <router-link to="/settings">
             Settings
@@ -29,10 +30,12 @@ import CalculateRate from "./CalculateRate";
 import FleetInput from "./FleetInput";
 import {Simulation} from "../classes/Simulation";
 import {simulationType} from '../classes/SimulationType';
+import SelectionBar from "@/components/SelectionBar";
 
 export default {
   name: 'ControlPanel',
   components: {
+    SelectionBar,
     FleetInput,
     CalculateRate,
     CargoInput
@@ -182,6 +185,12 @@ export default {
     width: 100%;
     height: 100%;
     overflow:auto;
+  }
+
+  #footer{
+      position: absolute;
+      bottom: 0;
+
   }
 
   #collapseController{

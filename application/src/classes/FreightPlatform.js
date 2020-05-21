@@ -22,7 +22,20 @@ export class FreightPlatform {
      */
     distributeGoodsOverTrucks() {
         this._goods.forEach(good => {
-            good.chooseTruck(this._trucks);
+            this.chooseTruck(good,this._trucks);
         });
+    }
+
+    chooseTruck(good,trucks) {
+        let lowestCost = {cost : Number.MAX_VALUE};
+        let lowestCostTruck = null;
+        trucks.forEach(truck => {
+            const cost = truck.getLowestCost(good);
+            if (cost.cost < lowestCost.cost) {
+                lowestCost = cost;
+                lowestCostTruck = truck;
+            }
+        });
+        lowestCostTruck.assignToGood(good,lowestCost.pickup,lowestCost.delivery);
     }
 }

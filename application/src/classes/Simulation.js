@@ -66,12 +66,12 @@ export class Simulation {
         // 3. Create a freight platform manager.
         let freightPlatform = new FreightPlatform(this._trucksList, this._goodsList);
 
-        // 4. Let all goods choose a truck.
-        freightPlatform.distributeGoodsOverTrucks();
-
-        // 5. Start the simulation
+        // 4. Start the simulation.
         store.state.isRunning = true;
-        store.getters.time.run(); // TODO trucks already start earlier, in distributeGoodsOverTrucks
+        store.getters.time.run();
+
+        // 5. distribute the goods.
+        freightPlatform.distributeGoodsOverTrucks();
     }
 
     updateHasFinished() {

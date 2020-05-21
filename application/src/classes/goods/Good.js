@@ -34,16 +34,4 @@ export default class Good extends Observable{
         this.addListener(new GoodView(this, mapObj));
     }
 
-    chooseTruck(trucks) {
-        let lowestCost = {cost : Number.MAX_VALUE};
-        let lowestCostTruck = null;
-        trucks.forEach(truck => {
-            const cost = truck.getLowestCost(this);
-            if (cost.cost < lowestCost.cost) {
-                lowestCost = cost;
-                lowestCostTruck = truck;
-            }
-        });
-        lowestCostTruck.assignToGood(this,lowestCost.pickup,lowestCost.delivery);
-    }
 }
