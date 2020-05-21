@@ -31,7 +31,6 @@ export default class TraditionalTruck extends Truck{
             let cost = this.getCost(product, pickup, delivery);
             if (cost < best.cost) best = {cost: cost, pickup: pickup, delivery: delivery};
         }
-        console.log(best);
         return best;
     }
 }
