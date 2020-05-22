@@ -1,10 +1,10 @@
 <template>
     <div class="calcRate">
         <div class="simulationButton">
-            <button @click="calculateSharing" type="button" class="calcRateButton">Sharing Rate</button>
+            <button @click="calculateTraditional" type="button" class="calcRateButton">Traditional Rate</button>
         </div>
         <div class="simulationButton">
-            <button @click="calculateTraditional" type="button" class="calcRateButton">Traditional Rate</button>
+            <button @click="calculateSharing" type="button" class="calcRateButton">Shared Rate</button>
         </div>
     </div>
 </template>

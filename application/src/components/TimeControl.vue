@@ -93,7 +93,9 @@
     #footer {
         position : fixed;
         bottom: 0;
-        width: 100%;
+        right: 40%;
+        left: 40%;
+        width: 20%;
     }
 
     /* Style the background of the time settings. */
