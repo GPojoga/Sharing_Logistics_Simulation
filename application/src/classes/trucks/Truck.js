@@ -196,18 +196,18 @@ export default class Truck extends Observable{
             good: good,
             expectedLoad : {
                 weight : this.plan.orders.length === 0 ?
-                            good.weight :
-                            this.plan.orders[pickupIndex - 1].expectedLoad.weight + good.weight,
+                            good.weight * good.quantity:
+                            this.plan.orders[pickupIndex - 1].expectedLoad.weight + good.weight * good.quantity,
                 volume : this.plan.orders.length === 0 ?
-                            good.volume :
-                            this.plan.orders[pickupIndex - 1].expectedLoad.volume + good.volume,
+                            good.volume * good.quantity:
+                            this.plan.orders[pickupIndex - 1].expectedLoad.volume + good.volume * good.quantity,
             }
         };
         this.plan.orders.splice(pickupIndex,0,pickUp);
 
-        for(let i = pickupIndex + 1;i <= deliveryIndex;i++){
-            this.plan.orders[i].expectedLoad.weight += good.weight;
-            this.plan.orders[i].expectedLoad.volume += good.volume;
+        for(let i = pickupIndex + 1; i <= deliveryIndex; i++){
+            this.plan.orders[i].expectedLoad.weight += good.weight * good.quantity;
+            this.plan.orders[i].expectedLoad.volume += good.volume * good.quantity;
         }
 
         let delivery = {
@@ -215,8 +215,8 @@ export default class Truck extends Observable{
             type: "delivery",
             good: good,
             expectedLoad: {
-                weight : this.plan.orders[deliveryIndex].expectedLoad.weight - good.weight,
-                volume : this.plan.orders[deliveryIndex].expectedLoad.volume - good.volume
+                weight : this.plan.orders[deliveryIndex].expectedLoad.weight - good.weight * good.quantity,
+                volume : this.plan.orders[deliveryIndex].expectedLoad.volume - good.volume * good.quantity
             }
         };
         this.plan.orders.splice(deliveryIndex + 1,0,delivery);
@@ -258,7 +258,7 @@ export default class Truck extends Observable{
 
         // Return to the planned path if needed.
         if (deliveryIndex < this.plan.orders.length)
-            fuel += this._computeFuelConsumed(haversine(good.delivery, this.plan.orders[deliveryIndex]), weight);
+            fuel += this._computeFuelConsumed(haversine(good.delivery, this.plan.orders[deliveryIndex].location), weight);
 
         fuel -= this._savedCost(pickupIndex,deliveryIndex);
         return fuel;

@@ -25,7 +25,8 @@ export default class TraditionalTruck extends Truck{
             product.volume * product.quantity > this.properties.volume) return best;
 
         // Loop over all orders, that aren't delivery orders.
-        for (let pickup = this.plan.currentIndex; pickup <= this.plan.orders.length; pickup++) {
+        let lowestIndex = (this.plan.orders.length !== 0) ? this.plan.currentIndex + 1: 0;
+        for (let pickup = lowestIndex; pickup <= this.plan.orders.length; pickup++) {
             if (pickup < this.plan.length && this.plan.orders[pickup].type === "delivery") continue;
             let delivery = pickup;
             let cost = this.getCost(product, pickup, delivery);
