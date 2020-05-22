@@ -27,7 +27,7 @@ export class Observable{
         this._listeners.map(x => x.update(this));
     }
 
-    notifyHasFinishedListeners() {
-        this._listenersHasFinished.map(x => x.updateHasFinished());
+    notifyHasFinishedListeners(source) {
+        this._listenersHasFinished.map(x => x.updateHasFinished(source));
     }
 }

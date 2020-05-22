@@ -27,7 +27,6 @@
 import CargoInput from "./CargoInput";
 import CalculateRate from "./CalculateRate";
 import FleetInput from "./FleetInput";
-import {Simulation} from "../classes/Simulation";
 import {simulationType} from '../classes/SimulationType';
 
 export default {
@@ -152,10 +151,12 @@ export default {
     calculateRate(type) {
       if (this.checkInputs()){
         const simType = (type === 'traditional')? simulationType.TRADITIONAL : simulationType.SHARED;
-
-        const simObj = new Simulation();
-        simObj.simulate(simType,this.$store);
-        // this.$router.push('output'); TODO
+        this.$store.commit("setSimulation",{type : simType,store : this.$store});
+        if(simType === simulationType.TRADITIONAL){
+          this.$store.commit("startTraditionalSimulation");
+        }else{
+          this.$store.commit("startSharedSimulation");
+        }
       }
     }
   }

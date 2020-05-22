@@ -126,8 +126,7 @@ export default class Truck extends Observable{
      */
     isMoving = false;
 
-    finished = false;
-
+    disabled = false;
     /**
      *
      * @param type truck type ("Light"|"Heavy"|"Train")
@@ -148,16 +147,9 @@ export default class Truck extends Observable{
         this.addListener(new TruckView(this,mapObj));
     }
 
-    hasFinished() {
-        return this.finished;
-    }
-
-    hasSpace() {
-        return new Error('Can not call abstract method hasSpace of Truck!');
-    }
-
-    isEmpty() {
-        return (this.plan.orders === []);
+    disable(){
+        this.disabled = true;
+        this.notify();
     }
 
     /**
@@ -315,9 +307,6 @@ export default class Truck extends Observable{
                 });
                 this._followOrder(order);
             });
-        } else {
-            this.finished = true;
-            this.notifyHasFinishedListeners();
         }
     }
 
@@ -353,6 +342,8 @@ export default class Truck extends Observable{
                 this.currentLoad.volume -= order.good.quantity * order.good.volume;
                 this.nrDeliveredgoods += 1;
                 break;
+            case "home":
+                this.notifyHasFinishedListeners(this);
         }
         this.isMoving = false;
         this.plan.currentIndex += 1;

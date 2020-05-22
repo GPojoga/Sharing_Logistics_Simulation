@@ -23,6 +23,7 @@ export default class Good extends Observable{
      */
     pickUp = Object;
     delivery = Object;
+    disabled = false;
 
     constructor(quantity,weight,volume,pickUp, delivery, mapObj){
         super();
@@ -45,5 +46,10 @@ export default class Good extends Observable{
             }
         });
         lowestCostTruck.assignToGood(this,lowestCost.pickup,lowestCost.delivery);
+    }
+
+    disable(){
+       this.disabled = true;
+       this.notify();
     }
 }

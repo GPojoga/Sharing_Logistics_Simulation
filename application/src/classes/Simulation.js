@@ -3,7 +3,7 @@ import {simulationType} from "./SimulationType";
 import SharedTruck from "./trucks/SharedTruck";
 import Good from "./goods/Good";
 import TraditionalTruck from "./trucks/TraditionalTruck";
-
+import TruckTracker from "@/classes/TruckTracker";
 /**
  * This comment is a TODO.
  *
@@ -15,16 +15,55 @@ export class Simulation {
     _goodsList = [];
     _store = null;
     _simType = null;
+    _truckTracker = Object;
+    _running = false;
 
-    simulate(simType, store){
+    constructor(simType,store) {
         this._simType = simType;
         this._store = store;
+    }
 
-        // 1. Initialize goods into instances of Good.
+    simulate(){
+        (new FreightPlatform(this._trucksList, this._goodsList)).distributeGoodsOverTrucks();
+        this.sendTrucksHome();
+    }
+
+    start(){
         console.log('start simulation');
+        this.reset();
+        this._running = true;
+        this._store.state.isRunning = true;
+        this._store.getters.time.run();
+        this.simulate();
+    }
 
+    stop(){
+        if(this._running){
+            this._running = false;
+            this._store.state.isRunning = false;
+            this._disableGoods();
+            this._disableTrucks();
+        }
+    }
+
+    reset(){
+        this.stop();
+        this._goodsList = this.initializeGoods(this._store);
+        this._trucksList = this.initializeTrucks(this._simType,this._store);
+        this._truckTracker = new TruckTracker(this._trucksList);
+    }
+
+    _disableGoods(){
+        this._goodsList.forEach(good => good.disable());
+    }
+
+    _disableTrucks(){
+        this._trucksList.forEach(truck => truck.disable());
+    }
+    initializeGoods(store){
+        let goods = [];
         store.state.goods.forEach(good => {
-            this._goodsList.push(new Good(
+            goods.push(new Good(
                 good.quantity,          // quantity
                 good.weight,            // weight
                 good.volume,            // volume
@@ -33,51 +72,58 @@ export class Simulation {
                 store.state.map               // map object
             ));
         });
-
-        // 2. Initialize trucks into instances of the type of truck corresponding to the simulation type.
-        if (simType === simulationType.SHARED) {
-            store.state.trucks.forEach(truck => {
-                const sharedTruck = new SharedTruck(
-                    truck.type,             // type
-                    truck.startLocation,    // location
-                    store.state.map,        // map object
-                    30                      // tick rate
-                );
-                sharedTruck.addListenerHasFinished(this);
-                this._trucksList.push(sharedTruck);
-            });
-        } else if (simType === simulationType.TRADITIONAL) {
-            store.state.trucks.forEach(truck => {
-                const traditionalTruck = new TraditionalTruck(
-                    truck.type,             // type
-                    truck.startLocation,    // location
-                    store.state.map,        // map object
-                    30                      // tick rate
-                );
-                traditionalTruck.addListenerHasFinished(this);
-                this._trucksList.push(traditionalTruck);
-            });
-
-            // alert('Traditional simulation has not been fulled implemented yet.');
-        } else {
-            console.err("Simulate function got an unknown input value for the parameter 'type'.");
-        }
-
-        // 3. Create a freight platform manager.
-        let freightPlatform = new FreightPlatform(this._trucksList, this._goodsList);
-
-        // 4. Let all goods choose a truck.
-        freightPlatform.distributeGoodsOverTrucks();
-
-        // 5. Start the simulation
-        store.state.isRunning = true;
-        store.getters.time.run(); // TODO trucks already start earlier, in distributeGoodsOverTrucks
+        return goods;
     }
 
-    updateHasFinished() {
-        this._trucksList = this._trucksList.filter(truck => !truck.hasFinished()); // TODO nicely remove elements, also from map
+    initializeTrucks(simType,store){
+        switch(simType){
+            case simulationType.SHARED :
+                return this._initializeSharedTrucks(store);
+            case simulationType.TRADITIONAL :
+                    return this._initializeTraditionalTrucks(store);
+            default :
+                console.err("Unknown simulation type. Traditional simulation is used by default.");
+                return this._initializeTraditionalTrucks(store);
+        }
+    }
 
-        if (this._trucksList === []) {
+    _initializeSharedTrucks(store){
+        let trucks = [];
+        store.state.trucks.forEach(truck => {
+            const sharedTruck = new SharedTruck(
+                truck.type,             // type
+                truck.startLocation,    // location
+                store.state.map,        // map object
+                30                      // tick rate
+            );
+            sharedTruck.addListenerHasFinished(this);
+            trucks.push(sharedTruck);
+        });
+        return trucks;
+    }
+
+    _initializeTraditionalTrucks(store){
+        let trucks = [];
+        store.state.trucks.forEach(truck => {
+            const traditionalTruck = new TraditionalTruck(
+                truck.type,             // type
+                truck.startLocation,    // location
+                store.state.map,        // map object
+                30                      // tick rate
+            );
+            traditionalTruck.addListenerHasFinished(this);
+            trucks.push(traditionalTruck);
+        });
+        return trucks;
+    }
+
+    sendTrucksHome(){
+        this._trucksList.forEach(truck => truck.sendHome());
+    }
+
+    updateHasFinished(source) {
+        this._truckTracker.completed(source);
+        if(this._goodsList.length === 0 && this._truckTracker.finished){
             this.finish();
         }
     }

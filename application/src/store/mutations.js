@@ -10,6 +10,7 @@
  *      }
  */
 import {simulationType} from "../classes/SimulationType";
+import {Simulation} from "@/classes/Simulation";
 
 export const mutations = {
     /**
@@ -58,6 +59,39 @@ export const mutations = {
         state.truckTypes[index].volume.value = value;
     },
 
+    setSimulation(state,{type : simType,store : store}){
+        if(simType === simulationType.TRADITIONAL){
+            if(state.traditionalSimulation === null){
+                state.traditionalSimulation = new Simulation(simType,store);
+            }
+        } else {
+            if(state.sharedSimulation === null){
+                state.sharedSimulation = new Simulation(simType,store);
+            }
+        }
+    },
+
+    startTraditionalSimulation(state){
+        if(state.traditionalSimulation === null){
+            throw new Error("Traditional simulation was not set");
+        }
+        if (state.sharedSimulation !== null){
+            state.sharedSimulation.stop();
+        }
+        state.time.reset();
+        state.traditionalSimulation.start();
+    },
+
+    startSharedSimulation(state){
+        if(state.sharedSimulation === null){
+            throw new Error("Shared simulation was not set");
+        }
+        if(state.traditionalSimulation !== null){
+            state.traditionalSimulation.stop();
+        }
+        state.time.reset();
+        state.sharedSimulation.start();
+    },
     /**
      * This function sets the max payload of a truck type at a certain index.
      * @param state The current state that should be changed.

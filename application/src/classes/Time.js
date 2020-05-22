@@ -45,6 +45,10 @@ export class Time {
         );
     }
 
+    reset(){
+        this.elapsedTime = 0;
+    }
+
     /**
      * This method gets the time passed since a certain moment in the simulation.
      * @param time The point in time which should be compared to the new time.

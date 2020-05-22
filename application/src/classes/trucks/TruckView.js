@@ -32,9 +32,18 @@ export class TruckView{
     }
 
     update(eventSource){
-        // console.log("Received update");
-        // console.log("location = ",eventSource.location);
-        this.view.setLatLng(eventSource.location);
+        try{
+            if(eventSource.disabled){
+                this.view.remove();
+            }else{
+                this.view.setLatLng(eventSource.location);
+            }
+        }catch (e) {
+            console.err("impossible to set truck location");
+            console.log("truck location : ",eventSource.location);
+            console.log("truck route : ",eventSource._currentRoute);
+            throw new Error("Check the truck location and route");
+        }
     }
 
 }

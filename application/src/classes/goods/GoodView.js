@@ -18,9 +18,11 @@ export class GoodView{
     }
 
     update(eventSource){
-        // console.log("Received update");
-        // console.log("location = ",eventSource.location);
-        this.view.setLatLng(eventSource.location);
+        if(eventSource.disabled){
+            this.view.remove();
+        }else{
+            this.view.setLatLng(eventSource.location);
+        }
     }
 
 }
