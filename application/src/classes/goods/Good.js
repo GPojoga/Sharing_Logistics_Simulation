@@ -25,7 +25,16 @@ export default class Good extends Observable{
     delivery = Object;
     disabled = false;
 
-    constructor(quantity,weight,volume,pickUp, delivery, mapObj){
+    /**
+     * An array of best insertions for each available truck in the simulation.
+     */
+    trucksInserts = Array;
+    /**
+     * This insertion with the lowest cost from all the truck insertions.
+     */
+    bestInsert = Object;
+
+    constructor(quantity, weight, volume, pickUp, delivery, mapObj){
         super();
         this.quantity = quantity.value;
         this.weight = weight.value;
@@ -35,17 +44,38 @@ export default class Good extends Observable{
         this.addListener(new GoodView(this, mapObj));
     }
 
-    chooseTruck(trucks) {
-        let lowestCost = {cost : Number.MAX_VALUE};
-        let lowestCostTruck = null;
-        trucks.forEach(truck => {
-            const cost = truck.getLowestCost(this);
-            if (cost.cost < lowestCost.cost) {
-                lowestCost = cost;
-                lowestCostTruck = truck;
-            }
-        });
-        lowestCostTruck.assignToGood(this,lowestCost.pickup,lowestCost.delivery);
+    /**
+     * This method initializes the cheapest insertions for each truck and as well as the overall cheapest insertion.
+     * @param trucks The array of trucks of the simulation.
+     */
+    giveTruckList(trucks) {
+        this.trucksInserts = new Array(trucks.length);
+        this.bestInsert = {cost: Infinity, pickup: null, delivery: null, truckIndex: null};
+        for (let i = 0; i < this.trucksInserts.length; i++){
+            let insert = trucks[i].getLowestCost(this);
+            insert.truckIndex = i;
+            this.trucksInserts[i] = insert;
+            if (this.bestInsert.cost > insert.cost) this.bestInsert = insert;
+        }
+    }
+
+    /**
+     * This method updates the cheapest insertion of a truck in the trucksInserts array.
+     * @param truck The truck that's insertion needs to be updated.
+     * @param index The index of the truck that should be updated.
+     */
+    updateTruck(truck, index) {
+        let insert = truck.getLowestCost(this);
+        insert.truckIndex = index;
+        this.trucksInserts[index] = insert;
+        if (this.bestInsert.cost > insert.cost) this.bestInsert = insert;
+    }
+
+    /**
+     * @returns {ObjectConstructor} This method returns the best insertion for this product.
+     */
+    getBestInsert() {
+        return this.bestInsert;
     }
 
     disable(){

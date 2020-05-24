@@ -69,7 +69,7 @@ export class Simulation {
                 good.volume,            // volume
                 good.pickupLocation,    // pickUp
                 good.deliveryLocation,  // delivery
-                store.state.map               // map object
+                store.state.map         // map object
             ));
         });
         return goods;
