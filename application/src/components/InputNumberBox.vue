@@ -6,6 +6,7 @@
                    type="text"
                    v-model="lastInput"
                    :placeholder="placeholder"
+                   :disabled='isDisabled'
                    v-on:input="processInput"/>
         </label>
     </div>
@@ -23,6 +24,7 @@
         data: function() {
             return {
                 lastInput : 0,
+                terms: false,
             }
         },
         mounted() {
@@ -42,6 +44,13 @@
                     'valid': this.isValid(),
                     'invalid': !this.isValid(),
                 }
+            },
+            isDisabled: function () {
+                if(event) {
+                    console.log("press");
+                    return !this.terms;
+                }
+                return this.terms;
             }
         },
         methods: {
