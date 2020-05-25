@@ -187,10 +187,10 @@ export default class Truck extends Observable{
             type: "pickUp",
             good: good,
             expectedLoad : {
-                weight : this.plan.orders.length === 0 ?
+                weight : pickupIndex === 0 ?
                             good.weight * good.quantity:
                             this.plan.orders[pickupIndex - 1].expectedLoad.weight + good.weight * good.quantity,
-                volume : this.plan.orders.length === 0 ?
+                volume : pickupIndex === 0 ?
                             good.volume * good.quantity:
                             this.plan.orders[pickupIndex - 1].expectedLoad.volume + good.volume * good.quantity,
             }
