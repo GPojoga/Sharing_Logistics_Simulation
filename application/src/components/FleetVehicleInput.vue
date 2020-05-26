@@ -15,7 +15,12 @@
                 <img :src="'assets/' + type.img" :alt="type.name" style="width:100%">
             </div>
         </div>
-
+        <div class="numberVehicles">
+            Number of vehicles:
+            <label>
+                <input class="inputNumbers" type="number" v-model="lastInput" min="1" oninput="this.value = Math.abs(this.value)" v-on:input="setTruckQuantity(lastInput)" >
+            </label>
+        </div>
         <LocationInput :location="truck.startLocation" label="Currently at" :setter="'setTruckStartingLocation'" :forward="{index : this.index}"/>
     </div>
 </template>
@@ -28,6 +33,11 @@
         components: {LocationInput},
         props: {
             index : Number
+        },
+        data: function() {
+            return {
+                lastInput : 1,
+            }
         },
         methods: {
             /**
@@ -44,6 +54,15 @@
             removeVehicle() {
                 let payload = {index: this.index};
                 this.$store.commit('removeTruck', payload);
+            },
+
+            /**
+             * Sets the vehicle quantity in the store.
+             * @param quantity The quantity of trucks
+             */
+            setTruckQuantity(quantity) {
+                let payload = {index: this.index, quantity: quantity};
+                this.$store.commit('setTruckQuantity', payload);
             }
         },
         computed: {
@@ -64,6 +83,26 @@
 </script>
 
 <style scoped>
+
+    .inputNumbers {
+        border-radius: 4px;
+
+        /* Remove the scroll bar in Firefox */
+        -moz-appearance: textfield;
+
+        /* Change the text; font, size, ect... */
+        text-align: center;
+        font-family: "Arial", Arial, sans-serif;
+        font-weight: bold;
+        font-size: 90%;
+
+        width: 25%;
+        height: 17px;
+        background: #f1f9ff;
+        border: 3px solid #1187EC;
+        color: #007FEB;
+    }
+
     .header {
         height: 40px;
         width: 100%;
