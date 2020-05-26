@@ -134,14 +134,15 @@
     }
 
     .selected {
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);
-        border: 2px solid #007feb;
-        margin: 3px;
+        /*box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);*/
+        border: 0.5px solid #007feb;
+        margin: 4.5px;
         /*background-color: #f1f9ff;*/
     }
 
     .unselected:hover {
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);
+        /*box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);*/
+        transform: scale(1.1);
     }
 
     /* Button to remove this vehicle */

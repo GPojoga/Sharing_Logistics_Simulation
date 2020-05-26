@@ -59,15 +59,39 @@ export const mutations = {
         state.truckTypes[index].volume.value = value;
     },
 
-    setSimulation(state,{type : simType,store : store}){
+    /**
+     * Creates a Simulation instance and stores it in traditionalSimulation or sharedSimulation in the store's state.
+     * @param state
+     * @param simType
+     * @param store
+     * @param router
+     */
+    setSimulation(state,{type : simType,store : store,router : router}){
         if(simType === simulationType.TRADITIONAL){
             if(state.traditionalSimulation === null){
-                state.traditionalSimulation = new Simulation(simType,store);
+                state.traditionalSimulation = new Simulation(simType,store,router);
             }
         } else {
             if(state.sharedSimulation === null){
-                state.sharedSimulation = new Simulation(simType,store);
+                state.sharedSimulation = new Simulation(simType,store,router);
             }
+        }
+    },
+
+    /**
+     * Sets the results of the given simulation type with the given results.
+     * @param state
+     * @param type
+     * @param results
+     */
+    setSimulationResults(state, {type, results}) {
+        console.log('setSimulationResults');
+        console.log(type);
+        console.log(results);
+        if (type === simulationType.TRADITIONAL) {
+            state.simulationResults.traditional = results;
+        } else if (type === simulationType.SHARED) {
+            state.simulationResults.shared = results;
         }
     },
 
@@ -269,14 +293,6 @@ export const mutations = {
     setTruckStartingLocation(state, {location, index}){
         // TODO: add checking the location here.
         state.trucks[index].startLocation = location;
-    },
-
-    setSimulationResults(state, {type, results}) {
-        if (type === simulationType.TRADITIONAL) {
-            state.simulationResults.traditional = results;
-        } else if (type === simulationType.SHARED) {
-            state.simulationResults.shared = results;
-        }
     }
 };
 

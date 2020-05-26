@@ -11,10 +11,10 @@ export default class TraditionalTruck extends Truck{
     }
 
     /**
-     * This method finds the minimal cost of adding a product to the trucks plan assuming traditional logistics.
-     * @param product The product that we should find the lowest cost of adding.
+     * This method finds the minimal cost of adding a good to the trucks plan assuming traditional logistics.
+     * @param good The good that we should find the lowest cost of adding.
      * @returns {{delivery: number, cost: number, pickup: number}} Object containing; cost, pickup and delivery indexes.
-     * Note: If the truck can't transport the product the returned cost is Infinity!
+     * Note: If the truck can't transport the good the returned cost is Infinity!
      */
     getLowestCost(product) {
         // Keeps track of the best place to added product for the lowest cost.

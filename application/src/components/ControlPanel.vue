@@ -9,11 +9,11 @@
       <FleetInput/>
       <CargoInput :products-valid="validProducts" @productChange="setValidProducts"/>
       <div>
-        <div class="settingContainer">
+        <basic-button>
           <router-link to="/settings">
             Settings
           </router-link>
-        </div>
+        </basic-button>
         <div class="calculateContainer">
           <CalculateRate @calculateTraditional="calculateRate('traditional')"
                          @calculateSharing="calculateRate('shared')"/>
@@ -28,10 +28,12 @@ import CargoInput from "./CargoInput";
 import CalculateRate from "./CalculateRate";
 import FleetInput from "./FleetInput";
 import {simulationType} from '../classes/SimulationType';
+import BasicButton from "./BasicButton";
 
 export default {
   name: 'ControlPanel',
   components: {
+    BasicButton,
     FleetInput,
     CalculateRate,
     CargoInput
@@ -151,7 +153,7 @@ export default {
     calculateRate(type) {
       if (this.checkInputs()){
         const simType = (type === 'traditional')? simulationType.TRADITIONAL : simulationType.SHARED;
-        this.$store.commit("setSimulation",{type : simType,store : this.$store});
+        this.$store.commit("setSimulation",{type : simType,store : this.$store,router : this.$router});
         if(simType === simulationType.TRADITIONAL){
           this.$store.commit("startTraditionalSimulation");
         }else{
@@ -231,11 +233,11 @@ export default {
   a {
     text-decoration: none;
     color: #FFF;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    background: #007feb;
-    padding: 8px 12px;
+    /*-webkit-border-radius: 4px;*/
+    /*-moz-border-radius: 4px;*/
+    /*border-radius: 4px;*/
+    /*background: #007feb;*/
+    /*padding: 8px 12px;*/
   }
 
   /* Style the container for the calc button */

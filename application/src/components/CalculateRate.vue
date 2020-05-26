@@ -10,9 +10,10 @@
 </template>
 
 <script>
-
+    // import BasicButton from "./BasicButton";
     export default {
         name: "CalculateRate",
+        // components: {BasicButton},
         methods: {
             calculateTraditional(){
                 this.$emit("calculateTraditional");
@@ -39,22 +40,9 @@
     }
 
     .calcRateButton{
-        background-color: #ff0000;
-        line-height: 10px;
         width: 150px;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        padding: 15px 10px;
-        text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 16px;
-    }
-
-    .calcRateButton:hover{
-        box-shadow: 0 3px 8px 2px rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-        cursor: pointer;
     }
 
     .simulationButton {

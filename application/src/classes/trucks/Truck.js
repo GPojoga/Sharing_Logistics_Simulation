@@ -340,7 +340,7 @@ export default class Truck extends Observable{
             case "delivery":
                 this.currentLoad.weight -= order.good.quantity * order.good.weight;
                 this.currentLoad.volume -= order.good.quantity * order.good.volume;
-                this.nrDeliveredgoods += 1;
+                this.nrDeliveredGoods += 1;
                 break;
             case "home":
                 this.notifyHasFinishedListeners(this);

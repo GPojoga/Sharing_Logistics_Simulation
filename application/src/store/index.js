@@ -21,12 +21,14 @@ export default new Vuex.Store({
             traditional : {
                 distance : 0,
                 numberOfTrucks : 0,
-                co2emissions : 0
+                co2emissions : 0,
+                fuelConsumed : 0
             },
             shared : {
                 distance : 0,
                 numberOfTrucks : 0,
-                co2emissions : 0
+                co2emissions : 0,
+                fuelConsumed : 0
             }
         },
 

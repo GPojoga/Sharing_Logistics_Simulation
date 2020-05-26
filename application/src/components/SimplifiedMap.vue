@@ -1,8 +1,8 @@
 <template>
-    <l-map  class="map" ref="map"
+    <l-map  class="map selectorCursor" ref="map"
             :options="{
-                        zoomControl:false
-                      }"
+                    zoomControl:false
+                  }"
             :zoom="zoom"
             :minZoom="minZoom"
             :center="center"
@@ -14,7 +14,6 @@
         <l-tile-layer :url="url"/>
         <l-control-zoom position="bottomright"/>
     </l-map>
-
 </template>
 
 <script>
@@ -92,5 +91,9 @@
         position: absolute;
         background: #f7f7ff;
         z-index: 0;
+    }
+
+    .selectorCursor {
+        cursor: crosshair;
     }
 </style>
