@@ -13,6 +13,8 @@
 </template>
 
 <script>
+    import { bus } from '../main';
+
     export default {
         name: "InputNumberBox",
         props: {
@@ -26,6 +28,9 @@
                 lastInput : 0,
                 terms: false,
             }
+        },
+        created(event, callback) {
+            bus.$on('sendMessageToInputComponent', callback);
         },
         mounted() {
             // Set the value to the give what is in the state.
@@ -45,12 +50,9 @@
                     'invalid': !this.isValid(),
                 }
             },
+
             isDisabled: function () {
-                if(event) {
-                    console.log("press");
-                    return !this.terms;
-                }
-                return this.terms;
+                return !this.terms;
             }
         },
         methods: {

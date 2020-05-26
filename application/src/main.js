@@ -4,6 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import store from './store';
 import router from './router'
 
+export const bus = new Vue();
+
 Vue.config.productionTip = false;
 
 // eslint-disable-next-line

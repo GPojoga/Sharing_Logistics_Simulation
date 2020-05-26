@@ -4,12 +4,14 @@
             <button @click="calculateTraditional" type="button" class="calcRateButton">Traditional Rate</button>
         </div>
         <div class="simulationButton">
-            <button @click="calculateSharing" type="button" class="calcRateButton">Sharing Rate</button>
+            <button @click="calculateSharing" v-on:click='sendMessageToInputComponent' type="button" class="calcRateButton">Sharing Rate</button>
         </div>
     </div>
 </template>
 
 <script>
+
+    import { bus } from '../main';
 
     export default {
         name: "CalculateRate",
@@ -19,8 +21,10 @@
             },
             calculateSharing(){
                 this.$emit("calculateSharing");
-            }
-
+            },
+            sendMessageToInputComponent() {
+                bus.$emit('sendMessageToInputComponent');
+            },
         }
     }
 
