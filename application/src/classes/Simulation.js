@@ -17,12 +17,10 @@ export class Simulation {
     _simType = null;
     _truckTracker = Object;
     _running = false;
-    _router = null;
 
-    constructor(simType,store,router) {
+    constructor(simType,store) {
         this._simType = simType;
         this._store = store;
-        this._router = router;
     }
 
     simulate(){
@@ -146,6 +144,5 @@ export class Simulation {
         };
 
         this._store.commit('setSimulationResults', {type : this._simType, results : results});
-        this._router.push('output');
     }
 }

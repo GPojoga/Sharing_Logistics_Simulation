@@ -72,7 +72,7 @@ export default {
     calculateRate(type) {
       if (this.checkInputs()){
         const simType = (type === 'traditional')? simulationType.TRADITIONAL : simulationType.SHARED;
-        this.$store.commit("setSimulation",{type : simType,store : this.$store,router : this.$router});
+        this.$store.commit("setSimulation",{type : simType,store : this.$store});
         if(simType === simulationType.TRADITIONAL){
           this.$store.commit("startTraditionalSimulation");
         }else{
@@ -156,12 +156,15 @@ export default {
   a {
     text-decoration: none;
     color: #FFF;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
   }
 
   /* Style the container for the calc button */
   .calculateContainer {
     width : 50%;
-    height : 90px;
+    height : 120px;
     margin : 0;
     float : right;
     display: inline-block;

@@ -46,10 +46,11 @@
 
     .solid {
         background-color: #007feb;
+        color: white;
     }
 
     .solid:hover {
-        background-color: #c3ddff;
+        background-color: #74b3ff;
         border-color: #c3ddff;
     }
 

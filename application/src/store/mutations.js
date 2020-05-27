@@ -66,14 +66,14 @@ export const mutations = {
      * @param store
      * @param router
      */
-    setSimulation(state,{type : simType,store : store,router : router}){
+    setSimulation(state,{type : simType,store : store}){
         if(simType === simulationType.TRADITIONAL){
             if(state.traditionalSimulation === null){
-                state.traditionalSimulation = new Simulation(simType,store,router);
+                state.traditionalSimulation = new Simulation(simType,store);
             }
         } else {
             if(state.sharedSimulation === null){
-                state.sharedSimulation = new Simulation(simType,store,router);
+                state.sharedSimulation = new Simulation(simType,store);
             }
         }
     },

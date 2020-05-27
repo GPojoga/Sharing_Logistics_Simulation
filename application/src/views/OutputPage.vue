@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="navbar">
-      <router-link to="/">Home</router-link>
+      <basic-button layout="solid">
+        <router-link to="/">Home</router-link>
+      </basic-button>
     </div>
 
     <div id="main">
@@ -65,9 +67,10 @@
 </template>
 
 <script>
+  import BasicButton from "../components/BasicButton";
   export default {
     name: 'OutputPage',
-    components: {},
+    components: {BasicButton},
     methods: {
       printTime(seconds) {
         seconds = Math.round(seconds);
@@ -83,7 +86,6 @@
     },
     computed: {
       sharing() {
-        console.log(this.$store.state.simulationResults.shared);
         return this.$store.state.simulationResults.shared;
       },
       traditional() {
@@ -106,10 +108,6 @@
   a {
     text-decoration: none;
     color: #FFF;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    background: #007feb;
     padding: 8px 12px;
   }
 

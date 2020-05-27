@@ -1,10 +1,15 @@
 <template>
     <div class="calcRate">
         <div class="simulationButton">
-            <basic-button @click="calculateTraditional" type="button" class="calcRateButton">Traditional Rate</basic-button>
+            <basic-button @click="calculateTraditional" type="button" class="calcRateButton">Simulate traditional method</basic-button>
         </div>
         <div class="simulationButton">
-            <basic-button @click="calculateSharing" type="button" class="calcRateButton">Shared Rate</basic-button>
+            <basic-button @click="calculateSharing" type="button" class="calcRateButton">Simulate shared method</basic-button>
+        </div>
+        <div class="simulationButton">
+            <basic-button layout="solid" type="button" class="calcRateButton" @click="showOutput">
+                Show results
+            </basic-button>
         </div>
     </div>
 </template>
@@ -22,8 +27,10 @@
             },
             calculateSharing(){
                 this.$emit("calculateSharing");
+            },
+            showOutput(){
+                this.$router.push('output');
             }
-
         }
     }
 

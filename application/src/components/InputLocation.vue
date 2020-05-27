@@ -4,13 +4,13 @@
             {{ label }}
         </label>
         <basic-input type="text" v-model="enteredText" v-on:input="updatePossibilities"/>
+        <div class="gpsContainer">
+            <basic-button @click="activateGpsButton" type="button" layout="solid" class="gpsButton" :class="{ gpsOn: gpsActivated}"><i class="fas fa-map-marked-alt"></i></basic-button>
+        </div>
         <div class="optionList" :id="idSuggestions" v-if="displayPossibilities && possibilities != null">
             <p class="option" v-for="(p, i) in possibilities" :id="i" :key="i" @click="selectLocation(p)">
                 {{ p.label }}
             </p>
-        </div>
-        <div class="gpsContainer">
-            <basic-button @click="activateGpsButton" type="button" class="gpsButton" :class="{ gpsOn: gpsActivated}"><i class="fas fa-map-marked-alt"></i></basic-button>
         </div>
     </div>
 </template>
@@ -170,7 +170,7 @@
 <style scoped>
     /* Contains all options for places */
     .optionList {
-        width: 85%;
+        width: 88%;
         background-color: white;
         display: flex;
         flex-direction: column;
@@ -179,7 +179,7 @@
         opacity: 1; /* Make not transparent */
 
         /* Set border of the list with suggestions for places */
-        border: 2px solid #2284ff;
+        border: 0.5px solid #2284ff;
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
