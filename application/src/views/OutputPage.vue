@@ -11,20 +11,20 @@
       <div id="newWayPanel" class="panel">
         <div class="innerPanel">
           <div class="outputElement">
-            <h2>Transportation time</h2>
-            <p class="output">{{Math.round(sharing.distance)}} h</p>
+            <h2>Total distance</h2>
+            <p class="output">{{Math.round(sharing.distance)}} m</p>
           </div>
           <div class="outputElement">
             <h2>Number of vehicles used</h2>
             <p class="output">{{sharing.numberOfTrucks}}</p>
           </div>
           <div class="outputElement">
-            <h2>CO<sup>2</sup> emissions</h2>
-            <p class="output">{{Math.round(sharing.co2emissions)}} kg</p>
+            <h2>CO<sub>2</sub> emissions</h2>
+            <p class="output">{{sharing.co2emissions.toFixed(1)}} kg</p>
           </div>
           <div class="outputElement">
             <h2>Fuel consumed</h2>
-            <p class="output">{{sharing.fuelConsumed.toFixed(4)}} L??????????????????</p>
+            <p class="output">{{sharing.fuelConsumed.toFixed(2)}} L</p>
           </div>
         </div>
       </div>
@@ -35,20 +35,20 @@
       <div id="oldWayPanel" class="panel">
         <div class="innerPanel">
           <div class="outputElement">
-            <h2>Transportation time</h2>
-            <p class="output">{{Math.round(traditional.distance)}} h</p>
+            <h2>Total distance</h2>
+            <p class="output">{{Math.round(traditional.distance)}} m</p>
           </div>
           <div class="outputElement">
             <h2>Number of vehicles used</h2>
             <p class="output">{{traditional.numberOfTrucks}}</p>
           </div>
           <div class="outputElement">
-            <h2>CO<sup>2</sup>  emissions</h2>
-            <p class="output">{{Math.round(traditional.co2emissions)}} kg</p>
+            <h2>CO<sub>2</sub>  emissions</h2>
+            <p class="output">{{traditional.co2emissions.toFixed(1)}} kg</p>
           </div>
           <div class="outputElement">
             <h2>Fuel consumed</h2>
-            <p class="output">{{traditional.fuelConsumed.toFixed(4)}} L??????????????????</p>
+            <p class="output">{{traditional.fuelConsumed.toFixed(2)}} L</p>
           </div>
         </div>
       </div>
@@ -62,7 +62,6 @@
     components: {},
     computed: {
       sharing() {
-        console.log(this.$store.state.simulationResults);
         return this.$store.state.simulationResults.shared;
       },
       traditional() {

@@ -50,6 +50,17 @@ export default class Truck extends Observable{
      */
     fuelConsumed = 0;
 
+    /**
+     * total distance travelled
+     * @type {number}
+     */
+    distanceTravelled = 0;
+
+    /**
+     * the number of co2 emissions, calculated based on the fuel consumed
+     * @type {number}
+     */
+    co2emissions = 0;
 
     /**
      * total number of delivered goods by this truck
@@ -139,7 +150,6 @@ export default class Truck extends Observable{
         if (this.constructor === Truck) {
             throw new Error('Can not instantiate abstract class Truck!');
         }
-        console.log('new truck of type: ' + type);
         this.initialLocation = location;
         this.location = location;
         this._tickRate = tickRate;
@@ -296,7 +306,6 @@ export default class Truck extends Observable{
      */
     _start(){
         if(!this.isMoving && this.plan.currentIndex < this.plan.orders.length){
-            console.log("Truck started");
             this.isMoving = true;
             let order = this.plan.orders[this.plan.currentIndex];
             this.router.getRoute(this.location,order.location).then( route => {
@@ -331,18 +340,20 @@ export default class Truck extends Observable{
      * @private
      */
     _completeOrder(order){
-        console.log("Route finished");
         switch (order.type) {
             case "pickUp":
+                console.log("Truck picked up good");
                 this.currentLoad.weight += order.good.quantity * order.good.weight;
                 this.currentLoad.volume += order.good.quantity * order.volume;
                 break;
             case "delivery":
+                console.log("Truck delivered good");
                 this.currentLoad.weight -= order.good.quantity * order.good.weight;
                 this.currentLoad.volume -= order.good.quantity * order.good.volume;
                 this.nrDeliveredGoods += 1;
                 break;
             case "home":
+                console.log("Truck finished route and arrived at home");
                 this.notifyHasFinishedListeners(this);
         }
         this.isMoving = false;
@@ -398,11 +409,13 @@ export default class Truck extends Observable{
     }
 
     /**
-     * set the location of the truck and notify the observers
+     * set the new location of the truck and notify the observers. Calculate the difference between the current location
+     * and the new one and add to distanceTravelled.
      * @param location
      * @private
      */
     _setLocation(location){
+        this.distanceTravelled += haversine(this.location, location);
         this.location = location;
         this.notify();
     }

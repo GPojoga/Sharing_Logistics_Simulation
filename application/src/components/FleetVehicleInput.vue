@@ -16,9 +16,9 @@
             </div>
         </div>
         <div class="numberVehicles">
-            Number of vehicles:
             <label>
-                <input class="inputNumbers" type="number" v-model="lastInput" min="1" oninput="this.value = Math.abs(this.value)" v-on:input="setTruckQuantity(lastInput)" >
+                Number of vehicles
+                <input class="inputNumbers" type="number" v-model="lastInput" min="1" oninput="this.value = Math.abs(this.value)" v-on:input="setTruckQuantity(lastInput)" />
             </label>
         </div>
         <LocationInput :location="truck.startLocation" label="Currently at" :setter="'setTruckStartingLocation'" :forward="{index : this.index}"/>
