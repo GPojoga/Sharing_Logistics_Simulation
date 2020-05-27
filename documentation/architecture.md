@@ -97,33 +97,72 @@ These middle-level components, on their turn, may use the base components: Locat
 The exact file structure and explanations of what the responsibility of each file is, can be found below.
 ````
 ├── public
+│   ├── assets
+│   │   ├── credits
+│   │   ├── heavy_duty_van.svg          # diagram of heavy duty van used in the webapp
+│   │   ├── light_duty_van.svg          # diagram of light duty van used in the webapp
+│   │   └── train_truck.svg             # diagram of train truck used in the webapp
 │   ├── favicon.png                     # the icon used of the webapp
 │   └── index.html
 └── src
     ├── main.js                         # renders and mounts the app
     ├── App.vue                         # the root of the app
+    ├── classes                         # folder containing all classes use in the simulation
+    │   ├── FreightPlatform.js          # The class that distributes the goods among the trucks
+    │   ├── goods
+    │   │   ├── Good.js                 # The class representing a good in the simulation
+    │   │   └── GoodView.js             # The class responsible for drawing the good on the map.
+    │   ├── Observable.js               # A class that other objects can observe. 
+    │   ├── Router.js                   # The class used for routing trucks.
+    │   ├── Simulation.js               # The class containing the simulation.
+    │   ├── SimulationType.js           # The class defining the different simulation types.
+    │   ├── Time.js                     # The class responsible for the passage of time during the simulation.
+    │   ├── trucks
+    │   │   ├── SharedTruck.js          # The class containing the logic for how a truck operates in a sharing logistics simulation.
+    │   │   ├── TraditionalTruck.js     # The class containing the logic for how a truck operates in a traditional simulation.
+    │   │   ├── Truck.js                # The class representing a truck in the simulation.
+    │   │   └── TruckView.js            # The class responsible for drawing the truck on the map.
+    │   ├── TruckTracker.js             # This class keeps track of which trucks are done with there delivering all goods.
+    │   └── unusedClasses               # This is a directory contains classes that aren't used anymore.
+    │       ├── SharedRouter.js
+    │       └── TraditionalRouter.js
     ├── components
-    │   ├── CalculateRate.vue           # combines all input after the calculate rate button has been pressed and
-    │   │                                 stores this information
+    │   ├── CalculateRate.vue           # input button to run the simulation
+    │   ├── CargoGoodInput.vue          # input component for a single good
+    │   ├── CargoInput.vue              # input component for all the goods
     │   ├── ControlPanel.vue            # the panel on the left of the screen that handles the input
+    │   ├── FleetInput.vue              # input component for all vehicle types 
+    │   ├── FleetVehicleInput.vue       # input component for 1 vehicle type
+    │   ├── InputLocation.vue           # base input component for locations
     │   ├── InputNumberBox.vue          # base input component for numbers
-    │   ├── JourneyInput.vue            # input component for the starting and final destinations
-    │   ├── LocationInput.vue           # base input component for locations
-    │   ├── Map.vue                     # displays the map and its components
-    │   ├── ProductInput.vue            # input component for the goods
-    │   ├── SelectorCheckBox.vue        # base input component for a checkbox
-    │   ├── VehicleSelector.vue         # input component for all vehicle types
-    │   └── VehicleSelectorEntry.vue    # input component for 1 vehicle type
+    │   ├── RoundButton.vue             # base input for a round button
+    │   ├── SettingsGlobalVariables.vue # input for changing a global variable for the simulation
+    │   ├── SettingsTruckVariables.vue  # input for changing a variable of a certain truck type
+    │   ├── SimplifiedMap.vue           # displays the map and its components
+    │   ├── TimeControl.vue             # displays the time of the simulation
+    │   └── unusedComponents            # components that are no longer used
+    │       ├── DateInput.vue
+    │       ├── JourneyInput.vue
+    │       ├── Map.vue
+    │       ├── SelectorCheckBox.vue
+    │       ├── VehicleSelectorEntry.vue
+    │       └── VehicleSelector.vue
     ├── router
-    │   └── index.js                    # contains the references to the three pages of the application
+    │   └── index.js                    # contains the references to the pages of the application
     ├── store
     │   ├── actions.js                  # alters the state of the application by performing mutations
+    │   ├── getters.js                  # contains all the getters to get the information of the application
     │   ├── index.js                    # stores information that multiple parts of the application need access to
     │   └── mutations.js                # changes the information of the applications
-    └── views                           # the pages of the application
-        ├── Home.vue                    # contains the input panel and the map
+    ├── util
+    │   ├── EuclidDist.js               # A utility function to distance between two coordinates on a flat plane.
+    │   └── haversine.js                # A utility function to calculated the real distance between two coordinates.
+    └── views
+        ├── HomePage.vue                # contains the input panel and the map
         ├── OutputPage.vue              # displays the simulated results
-        └── SettingsPage.vue            # contains constants that can be changed
+        ├── SettingsPage.vue            # contains constants that can be changed
+        ├── SharingPage.vue
+        └── TraditionalPage.vue
 ````
 
 Note that each element of the view can access the application's store.
@@ -227,10 +266,11 @@ Lonneke created the JourneyInput.
 
 | Who      | When       | What
 | -------- | ---------- | -----
-| Lonneke  | 11-03-2020 | First draft of the architecture document.
-| Lonneke  | 24-03-2020 | Updated technologies and added introduction, file structure and image of architecture.
-| Lonneke  | 04-04-2020 | Added why we chose technologies and blackbox description in introduction.
+| Lonneke  | 11-03-2020 | First draft of the architecture document
+| Lonneke  | 24-03-2020 | Updated technologies and added introduction, file structure and image of architecture
+| Lonneke  | 04-04-2020 | Added why we chose technologies and blackbox description in introduction
 | Gheorghe | 06-04-2020 | Added the plugins necessary for the map
 | Gheorghe | 20-04-2020 | Updated the introduction and the application architecture
 | Antonin  | 26-04-2020 | Updated the file structure and application architecture
-| Gheorghe | 04-05-2020   | Updated the introduction   |
+| Gheorghe | 04-05-2020 | Updated the introduction
+| Antonin  | 26-05-2020 | Updated the file structure and hierarchy diagram added class structure. <!--TODO-->
