@@ -85,8 +85,6 @@ export const mutations = {
      * @param results
      */
     setSimulationResults(state, {type, results}) {
-        console.log('setSimulationResults');
-        console.log(type);
         console.log(results);
         if (type === simulationType.TRADITIONAL) {
             state.simulationResults.traditional = results;

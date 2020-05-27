@@ -105,24 +105,27 @@ export default {
 
   #collapseController{
     opacity: 0.9;
-    width: 10%;
-    height: 10%;
+    width: 23px;
+    height: 48px;
     position: absolute;
-    right:-15%;
-    top:5%;
+    left: 100%;
+    top: 8px;
   }
 
   #collapseButton{
+    z-index: -1;
     width: 100%;
     height: 100%;
     border: solid #f6f6f6;
-    position: absolute;
     background-color: #f6f6f6;
-    border-radius: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 10px 5px 20px rgba(0, 0, 0, 0.3);
   }
 
   #collapseArrow{
-    font-size: 300%;
+    font-size: 200%;
     color: #007FEB;
     transition: transform 0.5s;
   }
@@ -153,11 +156,6 @@ export default {
   a {
     text-decoration: none;
     color: #FFF;
-    /*-webkit-border-radius: 4px;*/
-    /*-moz-border-radius: 4px;*/
-    /*border-radius: 4px;*/
-    /*background: #007feb;*/
-    /*padding: 8px 12px;*/
   }
 
   /* Style the container for the calc button */

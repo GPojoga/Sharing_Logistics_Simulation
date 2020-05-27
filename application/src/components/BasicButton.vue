@@ -26,6 +26,8 @@
         background-color: white;
         border: 0.5px solid #007feb;
         border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
         /*padding: 15px 10px;*/
         text-align: center;
     }

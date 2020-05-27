@@ -141,7 +141,8 @@ export class Simulation {
             }, 0),
             numberOfTrucks : this._trucksList.filter(truck => truck.nrDeliveredGoods > 0).length, // Not necessarily equal to the length of the trucks array! Some trucks may be left unused.
             fuelConsumed : totalFuelConsumed,
-            co2emissions : totalFuelConsumed * 2.67 // Based on the emissions burnt/liter = 2,67 kg CO2 / ltr
+            co2emissions : totalFuelConsumed * 2.67, // Based on emissions burnt/liter = 2,67 kg CO2 / ltr
+            time : this._store.getters.time.elapsedTime
         };
 
         this._store.commit('setSimulationResults', {type : this._simType, results : results});

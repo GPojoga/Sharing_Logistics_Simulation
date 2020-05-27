@@ -11,6 +11,10 @@
       <div id="newWayPanel" class="panel">
         <div class="innerPanel">
           <div class="outputElement">
+            <h2>Trucks finished after</h2>
+            <p class="output">{{sharing.time === 0? "Simulation hasn't run yet!" : printTime(sharing.time)}}</p>
+          </div>
+          <div class="outputElement">
             <h2>Total distance</h2>
             <p class="output">{{Math.round(sharing.distance)}} m</p>
           </div>
@@ -34,6 +38,10 @@
       </div>
       <div id="oldWayPanel" class="panel">
         <div class="innerPanel">
+          <div class="outputElement">
+            <h2>Trucks finished after</h2>
+            <p class="output">{{traditional.time === 0? "Simulation hasn't run yet!" : printTime(traditional.time)}}</p>
+          </div>
           <div class="outputElement">
             <h2>Total distance</h2>
             <p class="output">{{Math.round(traditional.distance)}} m</p>
@@ -60,8 +68,22 @@
   export default {
     name: 'OutputPage',
     components: {},
+    methods: {
+      printTime(seconds) {
+        seconds = Math.round(seconds);
+
+        const hours = Math.floor(seconds / 3600);
+        seconds = seconds - hours*3600;
+
+        const minutes = Math.floor(seconds / 60);
+        seconds = seconds - minutes*60;
+
+        return hours + ' h ' + minutes + ' m ' + seconds + ' s';
+      }
+    },
     computed: {
       sharing() {
+        console.log(this.$store.state.simulationResults.shared);
         return this.$store.state.simulationResults.shared;
       },
       traditional() {
