@@ -8,8 +8,8 @@
     <div class = "content">
       <FleetInput/>
       <CargoInput :products-valid="validProducts" @productChange="setValidProducts"/>
-      <div>
-        <basic-button>
+      <div class="buttonsContainer">
+        <basic-button layout="solid" class="settingContainer">
           <router-link to="/settings">
             Settings
           </router-link>
@@ -60,94 +60,13 @@ export default {
       collapseArrow.style.transform = this.controlPanelLeftPos === 0 ?
               "rotate(0)" : "rotate(180deg)";
     },
-    /**
-     * This function checks if the journey input is correct
-     * @returns {boolean} true if input is within constraints false otherwise.
-     */
-    // checkJourneyInput() {
-    //   let isCorrect = (this.$store.state.locations.list[0] !== null) && (this.$store.state.locations.list[1] !== null);
-    //   this.validLocations = isCorrect;
-    //   return isCorrect;
-    // },
     setValidLocations() {
       this.validLocations = true;
     },
-    /**
-     * This function checks if the input date is correct.
-     * @returns {boolean} true if input is within constraints false otherwise.
-     */
-    // checkDateInput() {
-    //   let isCorrect = true;
-    //   if (this.$store.state.departureDate === ""){
-    //     isCorrect = false;
-    //     this.validDate = false;
-    //   }
-    //   return isCorrect;
-    // },
-    // setValidDate() {
-    //   this.validDate = true;
-    // },
-    // /**
-    //  * This function checks if the input vehicle is correct.
-    //  * @returns {boolean} true if input is within constraints false otherwise.
-    //  */
-    // checkVehicleInput() {
-    //   let isCorrect = true;
-    //   let vehicles = this.$store.state.A.vehicles;
-    //   let sum = 0;
-    //   for (let i = 0; i < vehicles.length; i++) {
-    //     sum += vehicles[i];
-    //     if (vehicles[i] < 0){
-    //       isCorrect = false;
-    //       this.validVehiclesFields[i] = false;
-    //     }
-    //   }
-    //   if (sum === 0){
-    //     isCorrect = false;
-    //     this.validVehicles = false;
-    //   }
-    //   return isCorrect;
-    // },
-    // setValidVehicles() {
-    //   this.validVehicles = true;
-    //   this.validVehiclesFields[0] = true;
-    //   this.validVehiclesFields[1] = true;
-    //   this.validVehiclesFields[2] = true;
-    // },
-    // /**
-    //  * This function checks if the input products is correct.
-    //  * @returns {boolean} true if input is within constraints false otherwise.
-    //  */
-    // checkProductsInput() {
-    //   let isCorrect = true;
-    //   let maxWeight = this.$store.state.truckTypes[0].maxPayload;
-    //   let maxVolume = this.$store.state.truckTypes[0].volume;
-    //   let products = this.$store.state.A.cargo;
-    //   for (let i = 0; i < products.length; i++){
-    //     if (products[i].quantity === "" || products[i].quantity < 0) {
-    //       isCorrect = false;
-    //       this.validProducts = false;
-    //     }
-    //     if (products[i].weight === "" || products[i].weight < 1 || products[i].weight > maxWeight) {
-    //       isCorrect = false;
-    //       this.validProducts = false;
-    //     }
-    //     if (products[i].volume === "" || products[i].volume < 1 || products[i].volume > maxVolume) {
-    //       isCorrect = false;
-    //       this.validProducts = false;
-    //     }
-    //   }
-    //   return isCorrect;
-    // },
     setValidProducts() {
       this.validProducts = true;
     },
     checkInputs() {
-      // let isCorrect = true;
-      // isCorrect = this.checkJourneyInput() && isCorrect;
-      // isCorrect = this.checkDateInput() && isCorrect;
-      // isCorrect  = this.checkProductsInput() && isCorrect;
-      // return this.checkVehicleInput() && isCorrect;
       return true;
     },
     calculateRate(type) {
@@ -168,14 +87,11 @@ export default {
 <style scoped>
   #controlPanel {
     background: rgb(255, 255, 255);
-    /*border: solid #007FEB;*/
-    /*border-width: 0 2px 0 0;*/
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     height: 100%;
     width: 400px;
     overflow: visible;
     position: absolute;
-    /*top: 0.5%;*/
     left: 0;
     color: #007FEB;
     transition: left 0.5s;
@@ -219,14 +135,18 @@ export default {
     border: 0;
   }
 
+  /* Style the container containing the settingContainer and calculateContainer */
+  .buttonsContainer {
+    padding: 10px;
+    height: 80px;
+  }
+
   /* Style the container of the link to settings */
   .settingContainer {
-    width : 50%;
-    height : 90px;
     margin : 0;
+    width: 30%;
     float : left;
-    vertical-align: center;
-    line-height: 90px;
+    display: inline-block;
   }
 
   /* Style the link itself */
@@ -246,6 +166,7 @@ export default {
     height : 90px;
     margin : 0;
     float : right;
+    display: inline-block;
   }
 
   /* Scrollbar layout */

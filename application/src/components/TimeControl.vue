@@ -8,13 +8,13 @@
             </div>
             <div id="buttonContainer">
                 <div class="buttonBox">
-                    <round-button text="➖" :is-disable="!isRunning || !canDecrease" @pressed="decrease"/>
+                    <basic-round-button content="minus" :is-disable="!isRunning || !canDecrease" @click="decrease"/>
                 </div>
                 <div class="buttonBox">
-                    <round-button :text="isPaused ? '▶' : '⏸'" :is-disable="!isRunning" @pressed="playPause"/>
+                    <basic-round-button :content="isPaused ? 'play' : 'pause'" :is-disable="!isRunning" @click="playPause"/>
                 </div>
                 <div class="buttonBox">
-                    <round-button text="➕" :is-disable="!isRunning || !canIncrease" @pressed="increase"/>
+                    <basic-round-button content="plus" :is-disable="!isRunning || !canIncrease" @click="increase"/>
                 </div>
             </div>
         </div>
@@ -22,10 +22,10 @@
 </template>
 
 <script>
-    import RoundButton from "./RoundButton";
+    import BasicRoundButton from "./BasicRoundButton";
     export default {
         name: "TimeControl",
-        components: {RoundButton},
+        components: {BasicRoundButton},
         computed: {
             canIncrease: function () {
                 return !this.$store.getters.time.isFastest();
@@ -103,9 +103,11 @@
         width: 200px;
         height: 75px;
         margin: auto;
+        padding: 10px;
 
         background: white;
-        border: 5px #007feb solid;
+        border: 1px #007feb solid;
+        box-shadow: 2px 10px 10px 4px rgba(0, 0, 0, 0.3);
         border-radius: 10px;
     }
 

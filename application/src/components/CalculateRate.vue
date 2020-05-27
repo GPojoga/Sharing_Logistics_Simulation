@@ -1,18 +1,20 @@
 <template>
     <div class="calcRate">
         <div class="simulationButton">
-            <button @click="calculateTraditional" type="button" class="calcRateButton">Traditional Rate</button>
+            <basic-button @click="calculateTraditional" type="button" class="calcRateButton">Traditional Rate</basic-button>
         </div>
         <div class="simulationButton">
-            <button @click="calculateSharing" type="button" class="calcRateButton">Shared Rate</button>
+            <basic-button @click="calculateSharing" type="button" class="calcRateButton">Shared Rate</basic-button>
         </div>
     </div>
 </template>
 
 <script>
     // import BasicButton from "./BasicButton";
+    import BasicButton from "./BasicButton";
     export default {
         name: "CalculateRate",
+        components: {BasicButton},
         // components: {BasicButton},
         methods: {
             calculateTraditional(){
@@ -30,23 +32,14 @@
 
 
 <style scoped>
-    .calcRate {
-        margin: 25px;
-        text-align: center;
-        color: #007FEB;
-        font-family: "Arial", Arial, sans-serif;
-        font-weight: bold;
-        font-size: 100%;
-    }
-
     .calcRateButton{
-        width: 150px;
+        width: 100%;
         text-decoration: none;
         display: inline-block;
     }
 
     .simulationButton {
-        margin: 5px;
+        margin-bottom: 5px;
     }
 
 </style>

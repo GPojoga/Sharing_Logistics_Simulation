@@ -47,7 +47,8 @@
     }
 
     .solid:hover {
-        background-color: grey;
+        background-color: #c3ddff;
+        border-color: #c3ddff;
     }
 
     .solid:focus {
