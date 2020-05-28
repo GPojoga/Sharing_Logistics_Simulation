@@ -39,7 +39,7 @@ export class TruckView{
                 this.view.setLatLng(eventSource.location);
             }
         }catch (e) {
-            console.err("impossible to set truck location");
+            console.log("impossible to set truck location");
             console.log("truck location : ",eventSource.location);
             console.log("truck route : ",eventSource._currentRoute);
             throw new Error("Check the truck location and route");

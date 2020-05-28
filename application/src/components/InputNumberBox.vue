@@ -1,7 +1,7 @@
 <template>
     <div :title="info">
         <label>
-            <input class="numberBox"
+            <basic-input class="numberBox"
                    :class="isValid ? 'valid' : 'invalid'"
                    type="text"
                    v-model="lastInput"
@@ -12,8 +12,10 @@
 </template>
 
 <script>
+    import BasicInput from "./BasicInput";
     export default {
         name: "InputNumberBox",
+        components: {BasicInput},
         props: {
             field: Object,
             forward: Object,
@@ -61,32 +63,28 @@
 <style scoped>
     /* Draw input box */
     .numberBox {
-        border-radius: 4px;
 
         /* Remove the scroll bar in Firefox */
         -moz-appearance: textfield;
 
         /* Change the text; font, size, ect... */
         text-align: center;
-        font-family: "Arial", Arial, sans-serif;
-        font-weight: bold;
         font-size: 90%;
 
         width: 100%;
-        height: 17px;
     }
 
     /* Change the font when the input is valid */
     .valid {
         background: #f1f9ff;
-        border: 3px solid #1187EC;
+        border-color: #1187EC;
         color: #007FEB;
     }
 
     /* Change the font when the input is invalid */
     .invalid {
         background: #fff5fa;
-        border: 3px solid #fb2223;
+        border-color: #fb2223;
          color: #fc3131;
      }
 
