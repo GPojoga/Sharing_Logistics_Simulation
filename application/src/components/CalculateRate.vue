@@ -15,7 +15,6 @@
 </template>
 
 <script>
-    // import BasicButton from "./BasicButton";
     import BasicButton from "./BasicButton";
     export default {
         name: "CalculateRate",

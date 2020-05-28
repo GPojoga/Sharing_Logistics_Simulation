@@ -116,9 +116,9 @@ export default {
     z-index: -1;
     width: 100%;
     height: 100%;
-    border: solid #f6f6f6;
-    background-color: #f6f6f6;
-    border-radius: 5px;
+    border: 0;
+    background-color: white;
+    border-radius: 2px;
     cursor: pointer;
     padding: 0;
     box-shadow: 10px 5px 20px rgba(0, 0, 0, 0.3);

@@ -22,8 +22,9 @@
     .basicButton {
         /*line-height: 10px;*/
         height: 33px;
-        color: #007feb;
         background-color: white;
+        color: #007feb;
+        font-family: Avenir, Helvetica, Arial, sans-serif;
         border: 0.5px solid #007feb;
         border-radius: 5px;
         -webkit-border-radius: 5px;
