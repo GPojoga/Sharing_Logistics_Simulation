@@ -9,13 +9,35 @@ export class TruckView{
     constructor(truck,mapObject){
         this.mapObject = mapObject;
         this.truck = truck;
+        /*
         this.view = L.circleMarker(truck.location,{
             radius : 5,
             color : this.__pickColor(truck)
         });
+         */
+        this.view = L.marker(truck.location,{
+            iconUrl : this.__pickTruckType(),
+            iconSize: [38, 95],
+            iconAnchor: [22, 94],
+            popupAnchor: [-3, -76]
+        });
         this.view.addTo(mapObject);
     }
 
+    __pickTruckType(truck){
+        switch(truck.properties.type){
+            case "Light":
+                return 'assets/light_duty_van.svg';
+            case "Heavy":
+                return 'assets/heavy_duty_van.svg';
+            case "Train":
+                return 'assets/train_truck.svg';
+            default:
+                console.log(truck.properties.type);
+                console.error("Invalid truck type. Check the red truck !");
+                return 'red';
+        }
+    }
     __pickColor(truck){
         switch(truck.properties.type){
             case "Light":
