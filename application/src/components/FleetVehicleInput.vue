@@ -16,9 +16,9 @@
             </div>
         </div>
         <div class="numberVehicles">
-            Number of vehicles:
             <label>
-                <input class="inputNumbers" type="number" v-model="lastInput" min="1" oninput="this.value = Math.abs(this.value)" v-on:input="setTruckQuantity(lastInput)" >
+                Number of vehicles
+                <basic-input class="inputNumbers" type="number" v-model="lastInput" min="1" oninput="this.value = Math.abs(this.value)" v-on:input="setTruckQuantity(lastInput)" />
             </label>
         </div>
         <LocationInput :location="truck.startLocation" label="Currently at" :setter="'setTruckStartingLocation'" :forward="{index : this.index}"/>
@@ -27,10 +27,11 @@
 
 <script>
     import LocationInput from "./InputLocation";
+    import BasicInput from "./BasicInput";
 
     export default {
         name: "FleetVehicleInput",
-        components: {LocationInput},
+        components: {BasicInput, LocationInput},
         props: {
             index : Number
         },
@@ -83,9 +84,21 @@
 </script>
 
 <style scoped>
+    .numberVehicles {
+        text-align: left;
+        height: 35px;
+        font-weight: bold;
+    }
+
+    /* Remove the scrollbar that appears when the input box is selected */
+    .inputNumbers::-webkit-outer-spin-button, .inputNumbers::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
     .inputNumbers {
-        border-radius: 4px;
+        float: right;
+        margin-top: 0;
 
         /* Remove the scroll bar in Firefox */
         -moz-appearance: textfield;
@@ -97,10 +110,6 @@
         font-size: 90%;
 
         width: 25%;
-        height: 17px;
-        background: #f1f9ff;
-        border: 3px solid #1187EC;
-        color: #007FEB;
     }
 
     .header {
@@ -134,14 +143,15 @@
     }
 
     .selected {
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);
-        border: 2px solid #007feb;
-        margin: 3px;
+        /*box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);*/
+        border: 0.5px solid #007feb;
+        margin: 4.5px;
         /*background-color: #f1f9ff;*/
     }
 
     .unselected:hover {
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);
+        /*box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24);*/
+        transform: scale(1.1);
     }
 
     /* Button to remove this vehicle */

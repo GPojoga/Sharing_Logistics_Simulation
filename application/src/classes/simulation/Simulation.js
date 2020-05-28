@@ -135,18 +135,20 @@ export class Simulation {
     }
 
     finish(){
+        const totalFuelConsumed = this._trucksList.reduce((total,nextTruck) => {
+            return total + nextTruck.fuelConsumed;
+        }, 0);
+
         const results = {
-            distance : 'not implemented yet',
-            numberOfTrucks : this._trucksList.filter(truck => truck.nrDeliveredGoods > 0).length, // Not necessarily equal to the length of the trucks array! Some trucks may be left unused.
-            fuelConsumed : this._trucksList.reduce((total,nextTruck) => {
-                return total + nextTruck.fuelConsumed;
+            distance : this._trucksList.reduce((total,nextTruck) => {
+                return total + nextTruck.distanceTravelled;
             }, 0),
-            co2emissions : 'not implemented yet'
+            numberOfTrucks : this._trucksList.filter(truck => truck.nrDeliveredGoods > 0).length, // Not necessarily equal to the length of the trucks array! Some trucks may be left unused.
+            fuelConsumed : totalFuelConsumed,
+            co2emissions : totalFuelConsumed * 2.67, // Based on emissions burnt/liter = 2,67 kg CO2 / ltr
+            time : this._store.getters.time.elapsedTime
         };
 
-        console.log(results);
-
-        const sim = this._simType;
-        this._store.commit('setSimulationResults', {sim, results});
+        this._store.commit('setSimulationResults', {type : this._simType, results : results});
     }
 }

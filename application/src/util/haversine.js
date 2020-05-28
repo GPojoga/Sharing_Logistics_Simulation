@@ -12,5 +12,5 @@ export default function haversine(a,b){
         Math.pow(Math.sin(deltaLng/2),2);
     const c = 2 * Math.asin(Math.sqrt(d));
 
-    return R * c; //metres
+    return R * c; // in meters
 }

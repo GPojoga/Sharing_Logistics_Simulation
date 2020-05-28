@@ -3,14 +3,14 @@
         <label style="display: block;">
             {{ label }}
         </label>
-        <input type="text" :list="idSuggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
+        <basic-input type="text" v-model="enteredText" v-on:input="updatePossibilities"/>
+        <div class="gpsContainer">
+            <basic-button @click="activateGpsButton" type="button" layout="solid" class="gpsButton" :class="{ gpsOn: gpsActivated}"><i class="fas fa-map-marked-alt"></i></basic-button>
+        </div>
         <div class="optionList" :id="idSuggestions" v-if="displayPossibilities && possibilities != null">
             <p class="option" v-for="(p, i) in possibilities" :id="i" :key="i" @click="selectLocation(p)">
                 {{ p.label }}
             </p>
-        </div>
-        <div class="gpsContainer">
-            <button @click="activateGpsButton" type="button" class="gpsButton" :class="{ gpsOn: gpsActivated}"><i class="fas fa-map-marked-alt"></i></button>
         </div>
     </div>
 </template>
@@ -27,6 +27,8 @@
     */
     import {OpenStreetMapProvider} from "leaflet-geosearch";
     import L from "leaflet";
+    import BasicInput from "./BasicInput";
+    import BasicButton from "./BasicButton";
 
     const provider = new OpenStreetMapProvider();
 
@@ -46,6 +48,7 @@
 
     export default {
         name: "LocationInput",
+        components: {BasicButton, BasicInput},
         props: {
             location: Object,  // This is the object that the input is altering.
             label: String,     // This is the label displayed with the location input.
@@ -167,7 +170,7 @@
 <style scoped>
     /* Contains all options for places */
     .optionList {
-        width: 80%;
+        width: 88%;
         background-color: white;
         display: flex;
         flex-direction: column;
@@ -176,7 +179,7 @@
         opacity: 1; /* Make not transparent */
 
         /* Set border of the list with suggestions for places */
-        border: 2px solid #2284ff;
+        border: 0.5px solid #2284ff;
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
@@ -200,6 +203,11 @@
         display: none;
     }
 
+    .location > input {
+        width: 85%;
+        padding-left: 10px;
+    }
+
     /* Gps button styling */
     .gpsContainer {
         display: inline-block;
@@ -215,25 +223,10 @@
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 16px;
     }
 
     .gpsOn {
         background-color: grey;
-    }
-
-    input{
-        margin-top: 5px;
-        margin-right: 1%;
-        padding-left: 10px;
-        height: 30px;
-        width: 80%;
-        background-color: #f1f9ff;
-        border: solid #2284ff;
-        color: #007feb;
-        font-weight: bold;
-        font-size: medium;
-        border-radius: 5px;
     }
 
     label {

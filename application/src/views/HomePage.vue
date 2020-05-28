@@ -17,26 +17,6 @@
             ControlPanel,
             SimplifiedMap,
             TimeControl
-        },
-        mounted() {
-            let locationA = {
-                lng : 6.5619295,
-                lat : 53.2153888
-            };
-            let locationB = {
-                lat : 55.687655,
-                lng : 37.611137
-            };
-
-            // this.$store.commit('addNewTruck');
-            this.$store.commit('setTruckStartingLocation', {value: locationB, index: 0});
-
-            // this.$store.commit('addNewGood');
-            this.$store.commit('setGoodPickupLocation', {value: locationA, index: 0});
-            this.$store.commit('setGoodDeliveryLocation', {value: locationB, index: 0});
-            this.$store.commit('setGoodQuantity', {value: 4, index: 0});
-            this.$store.commit('setGoodWeight', {value: 1, index: 0});
-            this.$store.commit('setGoodVolume', {value: 1, index: 0});
         }
     }
 </script>

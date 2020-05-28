@@ -39,10 +39,7 @@
     .good-info {
         padding: 10px;
         text-align: left;
-        color: #007FEB;
-        font-family: "Arial", Arial, sans-serif;
         font-weight: bold;
-        font-size: 100%;
     }
 
     .button{

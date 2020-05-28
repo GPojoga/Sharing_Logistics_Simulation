@@ -1,26 +1,35 @@
 <template>
     <div class="calcRate">
         <div class="simulationButton">
-            <button @click="calculateTraditional" type="button" class="calcRateButton">Traditional Rate</button>
+            <basic-button @click="calculateTraditional" type="button" class="calcRateButton">Simulate traditional method</basic-button>
         </div>
         <div class="simulationButton">
-            <button @click="calculateSharing" type="button" class="calcRateButton">Shared Rate</button>
+            <basic-button @click="calculateSharing" type="button" class="calcRateButton">Simulate shared method</basic-button>
+        </div>
+        <div class="simulationButton">
+            <basic-button layout="solid" type="button" class="calcRateButton" @click="showOutput">
+                Show results
+            </basic-button>
         </div>
     </div>
 </template>
 
 <script>
-
+    import BasicButton from "./BasicButton";
     export default {
         name: "CalculateRate",
+        components: {BasicButton},
+        // components: {BasicButton},
         methods: {
             calculateTraditional(){
                 this.$emit("calculateTraditional");
             },
             calculateSharing(){
                 this.$emit("calculateSharing");
+            },
+            showOutput(){
+                this.$router.push('output');
             }
-
         }
     }
 
@@ -29,36 +38,14 @@
 
 
 <style scoped>
-    .calcRate {
-        margin: 25px;
-        text-align: center;
-        color: #007FEB;
-        font-family: "Arial", Arial, sans-serif;
-        font-weight: bold;
-        font-size: 100%;
-    }
-
     .calcRateButton{
-        background-color: #ff0000;
-        line-height: 10px;
-        width: 150px;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        padding: 15px 10px;
-        text-align: center;
+        width: 100%;
         text-decoration: none;
         display: inline-block;
-        font-size: 16px;
-    }
-
-    .calcRateButton:hover{
-        box-shadow: 0 3px 8px 2px rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-        cursor: pointer;
     }
 
     .simulationButton {
-        margin: 5px;
+        margin-bottom: 5px;
     }
 
 </style>

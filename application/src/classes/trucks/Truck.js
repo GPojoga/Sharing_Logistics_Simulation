@@ -52,6 +52,18 @@ export default class Truck extends Observable{
     fuelConsumed = 0;
 
     /**
+     * total distance travelled
+     * @type {number}
+     */
+    distanceTravelled = 0;
+
+    /**
+     * the number of co2 emissions, calculated based on the fuel consumed
+     * @type {number}
+     */
+    co2emissions = 0;
+
+    /**
      * total number of delivered goods by this truck
      * @type {number}
      */
@@ -112,7 +124,6 @@ export default class Truck extends Observable{
         if (this.constructor === Truck) {
             throw new Error('Can not instantiate abstract class Truck!');
         }
-        console.log('new truck of type: ' + type);
         this.initialLocation = location;
         this.location = location;
         this._tickRate = tickRate;
@@ -190,18 +201,20 @@ export default class Truck extends Observable{
      * @private
      */
     _completeOrder(order){
-        console.log("Route finished");
         switch (order.type) {
             case "pickUp":
+                console.log("Truck picked up good");
                 this.currentLoad.weight += order.good.quantity * order.good.weight;
                 this.currentLoad.volume += order.good.quantity * order.volume;
                 break;
             case "delivery":
+                console.log("Truck delivered good");
                 this.currentLoad.weight -= order.good.quantity * order.good.weight;
                 this.currentLoad.volume -= order.good.quantity * order.good.volume;
-                this.nrDeliveredgoods += 1;
+                this.nrDeliveredGoods += 1;
                 break;
             case "home":
+                console.log("Truck finished route and arrived at home");
                 this.notifyHasFinishedListeners(this);
         }
         this.isMoving = false;
@@ -229,6 +242,7 @@ export default class Truck extends Observable{
         let distance = 0;
         while(time > this.route.timeSegment){
             if(route[this.route.index].duration === 0){
+                this.distanceTravelled += distance;
                 this.fuelConsumed += this.computeFuelConsumed(distance, this.currentLoad.weight);
                 this._setLocation(route[this.route.index].coordinates);
                 return ;
@@ -244,6 +258,7 @@ export default class Truck extends Observable{
         this.fuelConsumed += this.computeFuelConsumed(distance, this.currentLoad.weight);
         this.route.timeSegment -= time;
         this.route.distSegment -= ratio * this.route.distSegment;
+        this.distanceTravelled += distance;
         this._setLocation({
             lat : ratio * (route[this.route.index + 1].coordinates.lat -
                 this.location.lat) + this.location.lat,
@@ -265,7 +280,8 @@ export default class Truck extends Observable{
     }
 
     /**
-     * set the location of the truck and notify the observers
+     * set the new location of the truck and notify the observers. Calculate the difference between the current location
+     * and the new one and add to distanceTravelled.
      * @param location
      * @private
      */
