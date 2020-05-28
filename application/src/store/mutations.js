@@ -9,8 +9,8 @@
  *          newList: latLng
  *      }
  */
-import {simulationType} from "../classes/SimulationType";
-import {Simulation} from "@/classes/Simulation";
+import {simulationType} from "../classes/simulation/SimulationType";
+import {Simulation} from "@/classes/simulation/Simulation";
 
 export const mutations = {
     /**

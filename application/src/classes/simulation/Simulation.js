@@ -1,9 +1,9 @@
 import {FreightPlatform} from "./FreightPlatform";
 import {simulationType} from "./SimulationType";
-import SharedTruck from "./trucks/SharedTruck";
-import Good from "./goods/Good";
-import TraditionalTruck from "./trucks/TraditionalTruck";
-import TruckTracker from "@/classes/TruckTracker";
+import SharedTruck from "../trucks/SharedTruck";
+import Good from "../goods/Good";
+import TraditionalTruck from "../trucks/TraditionalTruck";
+import TruckTracker from "@/classes/simulation/TruckTracker";
 /**
  * This comment is a TODO.
  *
@@ -17,6 +17,7 @@ export class Simulation {
     _simType = null;
     _truckTracker = Object;
     _running = false;
+    _freightPlatform = Object;
 
     constructor(simType,store) {
         this._simType = simType;
@@ -24,7 +25,8 @@ export class Simulation {
     }
 
     simulate(){
-        (new FreightPlatform(this._trucksList, this._goodsList)).distributeGoodsOverTrucks();
+        this._freightPlatform = new FreightPlatform(this._trucksList, this._goodsList);
+        this._freightPlatform.distributeGoodsOverTrucks();
         this.sendTrucksHome();
     }
 
@@ -41,8 +43,10 @@ export class Simulation {
         if(this._running){
             this._running = false;
             this._store.state.isRunning = false;
+            console.log("Goods : ",JSON.parse(JSON.stringify(this._goodsList)));
             this._disableGoods();
             this._disableTrucks();
+            console.log("Simulation : disabled everything");
         }
     }
 
@@ -55,11 +59,13 @@ export class Simulation {
 
     _disableGoods(){
         this._goodsList.forEach(good => good.disable());
+        this._freightPlatform.getProcessedGoods().forEach(good => good.disable());
     }
 
     _disableTrucks(){
         this._trucksList.forEach(truck => truck.disable());
     }
+
     initializeGoods(store){
         let goods = [];
         store.state.goods.forEach(good => {

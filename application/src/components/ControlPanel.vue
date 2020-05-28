@@ -27,7 +27,7 @@
 import CargoInput from "./CargoInput";
 import CalculateRate from "./CalculateRate";
 import FleetInput from "./FleetInput";
-import {simulationType} from '../classes/SimulationType';
+import {simulationType} from '../classes/simulation/SimulationType';
 
 export default {
   name: 'ControlPanel',

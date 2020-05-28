@@ -1,9 +1,10 @@
 
-import {Observable} from "../Observable";
-import {TruckView} from "./TruckView";
-import Router from "../Router";
+import {Observable} from "../util/Observable";
+import {TruckView} from "../view/TruckView";
 import store from "../../store/index.js";
-import haversine from "@/util/haversine";
+import PlanManager from "@/classes/trucks/PlanManager";
+import UpdateMessage from "@/classes/util/UpdateMessage";
+import TruckPropertyHandler from "@/classes/trucks/TruckPropertyHandler";
 
 /**
  * this is the abstract class for truck
@@ -50,41 +51,11 @@ export default class Truck extends Observable{
      */
     fuelConsumed = 0;
 
-
     /**
      * total number of delivered goods by this truck
      * @type {number}
      */
     nrDeliveredGoods = 0;
-
-    /**
-     * an instance of Router. It is liable for computing a route
-     * @type {Router}
-     */
-    router = new Router();
-
-    /**{
-     *  [{
-     *     location : {
-     *         lat : latitude,
-     *         lng : longitude
-     *     }
-     *     type : "pickUp" | "delivery" | "home"
-     *     good : see Good.js
-     *     expectedLoad : {
-     *        weight : weight of the transported goods after the order is completed
-     *        volume : volume of the transported goods after the order is completed
-     *      }
-     *  }],
-     *  currentIndex : current plan item that is processed
-     *
-     * }
-     */
-    plan = {
-        orders : [],
-        currentIndex : 0
-    };
-
 
     currentLoad = {
         weight : 0,
@@ -108,7 +79,7 @@ export default class Truck extends Observable{
      * }
      * @private
      */
-    _currentRoute;
+    route;
 
     /**
      * updates per second
@@ -127,6 +98,8 @@ export default class Truck extends Observable{
     isMoving = false;
 
     disabled = false;
+
+    planManager = Object;
     /**
      *
      * @param type truck type ("Light"|"Heavy"|"Train")
@@ -143,25 +116,23 @@ export default class Truck extends Observable{
         this.initialLocation = location;
         this.location = location;
         this._tickRate = tickRate;
-        this._setProperties(type);
+        this.planManager = new PlanManager(this);
+        this.properties = TruckPropertyHandler.getProperties(type);
         this.addListener(new TruckView(this,mapObj));
+        this.addListener(this.planManager);
     }
 
     disable(){
         this.disabled = true;
-        this.notify();
+        console.log("Truck : disabled");
+        this.notify(UpdateMessage.Disabled);
     }
 
     /**
      * send the truck home
      */
-    sendHome(){
-        this.plan.orders.push({
-            location : this.initialLocation,
-            type : "home",
-            good : null
-        });
-        this._start();
+    sendHome() {
+        this.planManager.goHome();
     }
 
     /**
@@ -171,47 +142,7 @@ export default class Truck extends Observable{
      * @param deliveryIndex
      */
     assignToGood(good,pickupIndex,deliveryIndex){
-        this._addGood(good,pickupIndex,deliveryIndex);
-        this._start();
-    }
-
-    /**
-     * assign this truck to the good
-     * @param good the good to be transported
-     * @param pickupIndex
-     * @param deliveryIndex
-     */
-    _addGood(good,pickupIndex,deliveryIndex){
-        let pickUp = {
-            location: good.pickUp,
-            type: "pickUp",
-            good: good,
-            expectedLoad : {
-                weight : pickupIndex === 0 ?
-                            good.weight * good.quantity:
-                            this.plan.orders[pickupIndex - 1].expectedLoad.weight + good.weight * good.quantity,
-                volume : pickupIndex === 0 ?
-                            good.volume * good.quantity:
-                            this.plan.orders[pickupIndex - 1].expectedLoad.volume + good.volume * good.quantity,
-            }
-        };
-        this.plan.orders.splice(pickupIndex,0,pickUp);
-
-        for(let i = pickupIndex + 1; i <= deliveryIndex; i++){
-            this.plan.orders[i].expectedLoad.weight += good.weight * good.quantity;
-            this.plan.orders[i].expectedLoad.volume += good.volume * good.quantity;
-        }
-
-        let delivery = {
-            location: good.delivery,
-            type: "delivery",
-            good: good,
-            expectedLoad: {
-                weight : this.plan.orders[deliveryIndex].expectedLoad.weight - good.weight * good.quantity,
-                volume : this.plan.orders[deliveryIndex].expectedLoad.volume - good.volume * good.quantity
-            }
-        };
-        this.plan.orders.splice(deliveryIndex + 1,0,delivery);
+        this.planManager.addGood(good,pickupIndex,deliveryIndex);
     }
 
     /**
@@ -222,62 +153,7 @@ export default class Truck extends Observable{
      * @returns {number} A number representing the change in cost.
      */
     getCost(good,pickupIndex,deliveryIndex){
-        // Get initial weight and location right before pickup location.
-        let weight = pickupIndex === 0 ? 0 : this.plan.orders[pickupIndex - 1].expectedLoad.weight;
-        let location = pickupIndex === 0 ? this.initialLocation : this.plan.orders[pickupIndex - 1].location;
-
-        // Fuel used to get to the pickup location.
-        let fuel = this._computeFuelConsumed(haversine(location,good.pickUp) ,weight);
-        location = good.pickUp;  // Update location and weight.
-        weight += good.quantity * good.weight;
-
-        if (pickupIndex < deliveryIndex){  // If the truck returns to the planned path after pickup.
-            fuel += this._computeFuelConsumed(haversine(location,this.plan.orders[pickupIndex].location),weight);
-            location = this.plan.orders[pickupIndex].location;
-        }
-
-        for(let i = pickupIndex + 1;i < deliveryIndex;i++){
-            // Increase cost of transport due to increase in weight caused by the good.
-            let distance = haversine(location,this.plan.orders[i].location)/1000;
-            fuel += good.quantity * good.weight * distance * this.properties.consumptionPerKg;
-            weight = good.quantity * good.weight + this.plan.orders[i].expectedLoad.weight;
-            location = this.plan.orders[i].location;  // Update location and weight
-        }
-
-        // Fuel used to get the delivery location.
-        fuel += this._computeFuelConsumed(haversine(location,good.delivery),weight);
-        weight -= good.quantity * good.weight;  // Update the weight after delivering the good.
-
-        // Return to the planned path if needed.
-        if (deliveryIndex < this.plan.orders.length)
-            fuel += this._computeFuelConsumed(haversine(good.delivery, this.plan.orders[deliveryIndex].location), weight);
-
-        fuel -= this._savedCost(pickupIndex,deliveryIndex);
-        return fuel;
-    }
-
-    /**
-     * This method finds the fuel used in the parts of the plan that are no longer travelled.
-     * @param pickupIndex The index where the pickup order should be added in the plan.
-     * @param deliveryIndex The index where the delivery order should be added in the plan.
-     * @return {number} The fuel saved by taking a detour through pickup index and delivery index.
-     * @private This is a helper function to getCost()
-     */
-    _savedCost(pickupIndex,deliveryIndex){
-        // Get initial the payload weight and location of the truck.
-        let weight = pickupIndex === 0 ? 0 : this.plan.orders[pickupIndex - 1].expectedLoad.weight;
-        let location = pickupIndex === 0 ? this.initialLocation : this.plan.orders[pickupIndex - 1].location;
-        let fuel = 0;
-
-        if (pickupIndex < deliveryIndex){
-            fuel += this._computeFuelConsumed(haversine(location,this.plan.orders[pickupIndex].location),weight);
-            location = this.plan.orders[deliveryIndex - 1].location;
-            weight = this.plan.orders[deliveryIndex - 1].expectedLoad.weight;
-        }
-        if (deliveryIndex < this.plan.orders.length){
-            fuel += this._computeFuelConsumed(haversine(location,this.plan.orders[deliveryIndex].location),weight);
-        }
-        return fuel;
+        return this.planManager.getCost(good,pickupIndex,deliveryIndex);
     }
 
     /**
@@ -291,34 +167,17 @@ export default class Truck extends Observable{
     }
 
     /**
-     * start following the plan
-     * @private
-     */
-    _start(){
-        if(!this.isMoving && this.plan.currentIndex < this.plan.orders.length){
-            console.log("Truck started");
-            this.isMoving = true;
-            let order = this.plan.orders[this.plan.currentIndex];
-            this.router.getRoute(this.location,order.location).then( route => {
-                this._currentRoute = Object.assign(route,{
-                    index : 0,
-                    distSegment : route.route[0].distance,
-                    timeSegment : route.route[0].duration
-                });
-                this._followOrder(order);
-            });
-        }
-    }
-
-    /**
      * follow the current route
      * @private
      */
-    _followOrder(order){
+    followOrder(order){
+        if (this.disabled){
+            return;
+        }
         setTimeout(() => {
-            if(this._currentRoute.index < this._currentRoute.route.length - 1){
+            if(this.route.index < this.route.route.length - 1){
                 this._updateRouteProgress();
-                this._followOrder(order);
+                this.followOrder(order);
             } else {
                 this._completeOrder(order);
             }
@@ -346,8 +205,7 @@ export default class Truck extends Observable{
                 this.notifyHasFinishedListeners(this);
         }
         this.isMoving = false;
-        this.plan.currentIndex += 1;
-        this._start();
+        this.notify(UpdateMessage.Finished);
     }
 
 
@@ -356,32 +214,41 @@ export default class Truck extends Observable{
      * @private
      */
     _updateRouteProgress(){
-        let distance = 0;
         let time = store.getters.time.getTimePassed(this._lastUpdate);
         this._lastUpdate += time;
-        let route = this._currentRoute.route;
-        while(time > this._currentRoute.timeSegment){
-            if(route[this._currentRoute.index].duration === 0){
-                this.fuelConsumed += this._computeFuelConsumed(distance, this.currentLoad.weight);
-                this._setLocation(route[this._currentRoute.index].coordinates);
+        this._updateRouteProgressHelper(this.route.route,time);
+    }
+
+    /**
+     * this is a helper function for _updateRouteProgress()
+     * @param route the route to be followed
+     * @param time the time interval in during which the truck was not updated
+     * @private
+     */
+    _updateRouteProgressHelper(route,time){
+        let distance = 0;
+        while(time > this.route.timeSegment){
+            if(route[this.route.index].duration === 0){
+                this.fuelConsumed += this.computeFuelConsumed(distance, this.currentLoad.weight);
+                this._setLocation(route[this.route.index].coordinates);
                 return ;
             }
-            this._currentRoute.index += 1;
-            distance += this._currentRoute.distSegment;
-            time -= this._currentRoute.timeSegment;
-            this._currentRoute.distSegment = route[this._currentRoute.index].distance;
-            this._currentRoute.timeSegment = route[this._currentRoute.index].duration;
+            this.route.index += 1;
+            distance += this.route.distSegment;
+            time -= this.route.timeSegment;
+            this.route.distSegment = route[this.route.index].distance;
+            this.route.timeSegment = route[this.route.index].duration;
         }
-        let ratio = time / this._currentRoute.timeSegment;
-        distance += ratio * this._currentRoute.distSegment;
-        this.fuelConsumed += this._computeFuelConsumed(distance, this.currentLoad.weight);
-        this._currentRoute.timeSegment -= time;
-        this._currentRoute.distSegment -= ratio * this._currentRoute.distSegment;
+        let ratio = time / this.route.timeSegment;
+        distance += ratio * this.route.distSegment;
+        this.fuelConsumed += this.computeFuelConsumed(distance, this.currentLoad.weight);
+        this.route.timeSegment -= time;
+        this.route.distSegment -= ratio * this.route.distSegment;
         this._setLocation({
-            lat : ratio * (route[this._currentRoute.index + 1].coordinates.lat -
-                    this.location.lat) + this.location.lat,
-            lng : ratio * (route[this._currentRoute.index + 1].coordinates.lng -
-                    this.location.lng) + this.location.lng,
+            lat : ratio * (route[this.route.index + 1].coordinates.lat -
+                this.location.lat) + this.location.lat,
+            lng : ratio * (route[this.route.index + 1].coordinates.lng -
+                this.location.lng) + this.location.lng,
         });
     }
 
@@ -392,7 +259,7 @@ export default class Truck extends Observable{
      * @return {number}
      * @private
      */
-    _computeFuelConsumed(distance, weight){
+    computeFuelConsumed(distance, weight){
         return (distance / 1000) * (weight * this.properties.consumptionPerKg +
             this.properties.consumptionEmpty);
     }
@@ -404,44 +271,6 @@ export default class Truck extends Observable{
      */
     _setLocation(location){
         this.location = location;
-        this.notify();
-    }
-
-    /**
-     * This function retrieves the properties of the given truck type
-     * from the store. If the type does not exist in the store, the
-     * Train type is set by default
-     * @param type truck type
-     * @private
-     * @return Object
-     */
-    _getProperties(type){
-        let tType = store.state.truckTypes.find(x => x.key === type);
-        let props;
-        if(tType !== undefined){
-            props = tType;
-        }else{
-            console.error("Truck : Undefined truck type (default : Train)");
-            props = store.state.truckTypes.find(x => x.key === "Train");
-        }
-        return props;
-    }
-
-    /**
-     * This method retrieves the description of the truck from storage
-     * and sets the properties of the truck according to its type
-     * @param type truck type
-     * @private
-     */
-    _setProperties(type){
-        let props = this._getProperties(type);
-        this.properties = {
-            type : type,
-            volume : parseFloat(props.volume.value),
-            maxPayload : parseFloat(props.maxPayload.value),
-            consumptionEmpty : parseFloat(props.consumptionEmpty.value),
-            consumptionPerKg :
-                (props.consumptionFull.value - props.consumptionEmpty.value) / props.maxPayload.value,
-        }
+        this.notify(UpdateMessage.Relocated);
     }
 }

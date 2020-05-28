@@ -23,8 +23,8 @@ export class Observable{
         return this._listeners;
     }
 
-    notify(){
-        this._listeners.map(x => x.update(this));
+    notify(message){
+        this._listeners.map(x => x.update(this,message));
     }
 
     notifyHasFinishedListeners(source) {

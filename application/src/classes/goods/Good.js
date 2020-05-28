@@ -1,5 +1,6 @@
-import {Observable} from "../Observable";
-import {GoodView} from "./GoodView";
+import {Observable} from "../util/Observable";
+import {GoodView} from "../view/GoodView";
+import UpdateMessage from "@/classes/util/UpdateMessage";
 
 export default class Good extends Observable{
 
@@ -103,6 +104,7 @@ export default class Good extends Observable{
 
     disable(){
        this.disabled = true;
-       this.notify();
+       console.log("Good : disabled");
+       this.notify(UpdateMessage.Disabled);
     }
 }

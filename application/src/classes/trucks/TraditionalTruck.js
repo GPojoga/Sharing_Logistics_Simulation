@@ -6,10 +6,6 @@ export default class TraditionalTruck extends Truck{
         super(type,location,mapObj,tickRate);
     }
 
-    hasSpace() {
-        return this.isEmpty();
-    }
-
     /**
      * This method finds the minimal cost of adding a product to the trucks plan assuming traditional logistics.
      * @param product The product that we should find the lowest cost of adding.
@@ -25,9 +21,9 @@ export default class TraditionalTruck extends Truck{
             product.volume * product.quantity > this.properties.volume) return best;
 
         // Loop over all orders, that aren't delivery orders.
-        let lowestIndex = (this.plan.orders.length !== 0) ? this.plan.currentIndex + 1: 0;
-        for (let pickup = lowestIndex; pickup <= this.plan.orders.length; pickup++) {
-            if (pickup < this.plan.orders.length && this.plan.orders[pickup].type === "delivery") continue;
+        let lowestIndex = (this.planManager.getPlanLength() !== 0) ? this.planManager.getIndex() + 1: 0;
+        for (let pickup = lowestIndex; pickup <= this.planManager.getPlanLength(); pickup++) {
+            if (pickup < this.planManager.getPlanLength() && this.planManager.getOrder(pickup).type === "delivery") continue;
             let delivery = pickup;
             let cost = this.getCost(product, pickup, delivery);
             if (cost < best.cost) best = {cost: cost, pickup: pickup, delivery: delivery};

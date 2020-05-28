@@ -18,6 +18,8 @@ export class FreightPlatform {
      */
     _goods;
 
+    _processedGoods = [];
+
     /**
      * This is the construct for the freight platform.
      * @param trucks The available trucks in the simulation.
@@ -45,6 +47,7 @@ export class FreightPlatform {
     distributeGoodsOverTrucks() {
         while (this._goods.length !== 0) {
             let good = this._goods.pop();
+            this._processedGoods.push(good);
             let insert = good.getBestInsert();
             this._trucks[insert.truckIndex].assignToGood(good, insert.pickup, insert.delivery);
             this._goods.forEach(good => {good.updateTruck(this._trucks[insert.truckIndex], insert.truckIndex)});
@@ -65,5 +68,9 @@ export class FreightPlatform {
             }
             this._goods[j + 1] = element;
         }
+    }
+
+    getProcessedGoods(){
+        return this._processedGoods;
     }
 }

@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import UpdateMessage from "@/classes/util/UpdateMessage";
 
 export class TruckView{
 
@@ -31,18 +32,18 @@ export class TruckView{
         }
     }
 
-    update(eventSource){
-        try{
-            if(eventSource.disabled){
+    update(eventSource,message){
+        switch (message){
+            case UpdateMessage.Disabled:
                 this.view.remove();
-            }else{
-                this.view.setLatLng(eventSource.location);
-            }
-        }catch (e) {
-            console.err("impossible to set truck location");
-            console.log("truck location : ",eventSource.location);
-            console.log("truck route : ",eventSource._currentRoute);
-            throw new Error("Check the truck location and route");
+                break;
+            case UpdateMessage.Relocated:
+                try{
+                    this.view.setLatLng(eventSource.location);
+                }catch{
+                    console.warn("invalid truck location");
+                }
+                break;
         }
     }
 
