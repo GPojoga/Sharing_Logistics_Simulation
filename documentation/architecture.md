@@ -78,21 +78,48 @@ In a more abstract way, the Vue app can split into three parts: the state, actio
 
 The state consists of a store with the data.
 The actions are defined as functions in the .vue files and indirectly called by the user.
-The view consists of Vue components, which can be visualised as a tree.
-For our project, the view is composed of the following Vue components:
-![Application's architecture](images/architecture.png)
-
-The root component of the view is called App.vue.
-This App.vue file is linked to by a file called main.js, which first renders the app and then mounts it.
-
-The top-level components are the three views, or web pages, called Home.vue, OutputPage.vue and SettingsPage.vue.
-
-The Home view consists of two high-level components, ControlPanel.vue and Map.vue.
-In the ControlPanel the user can enter their input and choose values for the given parameters that will determine the simulation.
-
-These high-level components use the middle-level components JourneyInput, ProductInput, VehicleSelector and CalculateRate.
-
-These middle-level components, on their turn, may use the base components: LocationInput and SelectorCheckBox.
+The view consists of Vue components, which can be visualised as a component hierarchy diagram. 
+Where multiple smaller components make up a larger component.
+For our project, the following Vue components compose the view:
+![Application's architecture](images/component-hierarchy.png)
+  1. The App component is the root component of the webapp, it encompasses everything.
+  It is connected to the router which tells it which page to show.
+  2. OutputPage is the component responsible for displaying the output once the simulation has run.
+  It contains a BasicButton with allows the user to return to the HomePage.
+  3. HomePage is the component where the user sets the parameters of the simulation as well as where the simulation is displayed.
+  It contains a SimplifiedMap to show the simulation, a ControlPanel to change the parameters, and a TimeControl to change the time during the running of the simulation.
+  4. SettingsPage allows the user to change specific settings in the simulation.
+  It contains SettingsGlobalVariable to set settings for the global variables, and SettingsTruckVariables set of settings of variables for each truck.
+  5. SimplifiedMap is the component to show a map to the user.
+  It doesn't contain any other components.
+  6. ControlPanel allows the user change parameters in the simulation.
+  It contains a BasicButton to go to the SettingsPage, a FleetInput to change the trucks, a CargoInput to change the goods, and a CalculateRate component to start the simulation.
+  7. TimeControl is the component allowing the user to change the passage of time while the simulation is running.
+  It contains multiple BasicRoundButtons to get user input on controls.
+  8. SettingsGlobalVariables is the component allowing the user to change globals variables.
+  It contains multiple InputNumberBox to model the variables in the webapp.
+  9. SettingsTruckVariables is a component allowing the user to change variables for a certain truck type. 
+  It contains multiple InputNumberBox to model the variables in the webapp. 
+  10. CalculateRate is the component allowing the user to start the simulation with Sharing enabled or disabled.
+  It contains two BasicButtons to get user input on controls.
+  11. FleetInput is the component allowing the user to change the parameters of all trucks in the simulation.
+  It contains multiple FleetVehicleInput for each truck in the simulation.
+  12. FleetVehicleInput is a component allowing the user to change parameters of a certain truck entry.
+  It contains LocationInput for the starting location of the truck as well as BasicInput for the number of truck in this entry.
+  13. CargoInput is the component allowing the user to change the parameters of all goods in the simulation.
+  It contains multiple CargoGoodInput for each good in the simulation.
+  14. CargoGoodInput is a component allowing the user to change parameters of a certain good entry.
+  It contains LocationInput for pickup and delivery location of the good as well as BasicInput for the InputNumberBox parameters of the good entry.
+  15. LocationInput allows the user to input a location.
+  It contains BasicInput to allow the user to type the location as well as BasicButton to allow the user to select a location through the map.
+  16. InputNumberBox is the component handling number input for the user. 
+  It contains a BasicInput to get user input.
+  17. BasicButton gets basic input from the user through a square shaped button.
+  It is a basic component and thus contains no other components.
+  18. BasicInput gets basic input from the user through a text field.
+  It is a basic component and thus contains no other components.
+  19. BasicRoundButton get basic input from the user through a circle shaped button.
+  It is a basic component and thus contains no other component.
 
 The exact file structure and explanations of what the responsibility of each file is, can be found below.
 ````
@@ -251,13 +278,14 @@ Each member of this team has their own Vue component to work on however, we crea
 When two components needed to be connected, the two team members worked on it together.
 Moreover, if anyone needed help, we of course helped our teammate with their part(s).
 
-The division was as follows:
+The division during the first block was as follows:
 Antonin created the VehicleSelector,
 Bjar created the ProductInput,
 Gheorghe created the Map and the store,
 Lorenzo created the ControlPanelOutput and,
 Lonneke created the JourneyInput.
 
+The division during the second block was more nuanced check Trello for more details.
 
 ## Change log
 <!--
@@ -273,4 +301,4 @@ Lonneke created the JourneyInput.
 | Gheorghe | 20-04-2020 | Updated the introduction and the application architecture
 | Antonin  | 26-04-2020 | Updated the file structure and application architecture
 | Gheorghe | 04-05-2020 | Updated the introduction
-| Antonin  | 26-05-2020 | Updated the file structure and hierarchy diagram added class structure. <!--TODO-->
+| Antonin  | 26-05-2020 | Updated the file structure and hierarchy diagram.
