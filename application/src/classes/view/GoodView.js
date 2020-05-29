@@ -6,9 +6,16 @@ export class GoodView{
     view = Object;
 
     constructor(good,mapObject){
-        this.view = L.circleMarker(good.pickUp,{
+        /*this.view = L.circleMarker(good.pickUp,{
             radius : 5 * good.quantity,
             color : 'yellow'
+        });
+         */
+        this.view = L.marker(good.pickUp, {
+            icon: L.icon({
+                iconUrl: 'assets/goods.svg',
+                iconSize: [38, 95],
+            })
         });
         this.view.addTo(mapObject);
     }
