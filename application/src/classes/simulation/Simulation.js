@@ -5,6 +5,7 @@ import Good from "../goods/Good";
 import TraditionalTruck from "../trucks/TraditionalTruck";
 import TruckTracker from "@/classes/simulation/TruckTracker";
 import avg from "@/util/avg";
+import UpdateMessage from "@/classes/util/UpdateMessage";
 
 /**
  * This comment is a TODO.
@@ -104,7 +105,7 @@ export class Simulation {
                 store.state.map,        // map object
                 30                      // tick rate
             );
-            sharedTruck.addListenerHasFinished(this);
+            sharedTruck.addListener(this);
             trucks.push(sharedTruck);
         });
         return trucks;
@@ -119,7 +120,7 @@ export class Simulation {
                 store.state.map,        // map object
                 30                      // tick rate
             );
-            traditionalTruck.addListenerHasFinished(this);
+            traditionalTruck.addListener(this);
             trucks.push(traditionalTruck);
         });
         return trucks;
@@ -129,14 +130,17 @@ export class Simulation {
         this._trucksList.forEach(truck => truck.sendHome());
     }
 
-    updateHasFinished(source) {
-        this._truckTracker.completed(source);
-        if(this._goodsList.length === 0 && this._truckTracker.finished){
-            this.finish();
+    update(source,message) {
+        if(message === UpdateMessage.FinishedPlan){
+            this._truckTracker.completed(source);
+            if(this._goodsList.length === 0 && this._truckTracker.finished){
+                this.finish();
+            }
         }
     }
 
     finish(){
+        console.log("Simulation FINISHED");
         const totalFuelConsumed = this._trucksList.reduce((total,nextTruck) => {
             return total + nextTruck.fuelConsumed;
         }, 0);

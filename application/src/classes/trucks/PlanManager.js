@@ -133,7 +133,7 @@ export default class PlanManager{
     }
 
     update(source,message){
-        if(message === UpdateMessage.Finished){
+        if(message === UpdateMessage.FinishedOrder){
             this.plan.currentIndex += 1;
             this.start();
         }

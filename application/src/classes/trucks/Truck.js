@@ -217,10 +217,10 @@ export default class Truck extends Observable{
                 break;
             case "home":
                 console.log("Truck finished route and arrived at home");
-                this.notifyHasFinishedListeners(this);
+                this.notify(UpdateMessage.FinishedPlan);
         }
         this.isMoving = false;
-        this.notify(UpdateMessage.Finished);
+        this.notify(UpdateMessage.FinishedOrder);
     }
 
 
