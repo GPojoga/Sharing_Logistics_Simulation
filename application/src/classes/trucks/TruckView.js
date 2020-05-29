@@ -16,10 +16,11 @@ export class TruckView{
         });
          */
         this.view = L.marker(truck.location,{
-            iconUrl : this.__pickTruckType(),
-            iconSize: [38, 95],
-            iconAnchor: [22, 94],
-            popupAnchor: [-3, -76]
+          icon: L.icon({
+             // iconUrl: 'assets/light_duty_van.svg',
+              iconSize: [38, 95],
+              iconUrl: this.__pickTruckType(truck)
+          })
         });
         this.view.addTo(mapObject);
     }
