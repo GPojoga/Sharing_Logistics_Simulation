@@ -1,6 +1,7 @@
 import {Observable} from "../util/Observable";
 import {GoodView} from "../view/GoodView";
 import UpdateMessage from "@/classes/util/UpdateMessage";
+import store from "../../store/index.js";
 
 export default class Good extends Observable{
 
@@ -26,6 +27,11 @@ export default class Good extends Observable{
     delivery = Object;
     disabled = false;
 
+    initialTime = null;
+    pickupTime = null;
+    deliveryTime = null;
+
+    timer = Object;
     /**
      * An array of best insertions for each available truck in the simulation.
      */
@@ -42,7 +48,25 @@ export default class Good extends Observable{
         this.volume = volume.value;
         this.pickUp = pickUp;
         this.delivery = delivery;
+        this.timer = store.getters.time;
+        this.initialTime = this.timer.elapsedTime;
         this.addListener(new GoodView(this, mapObj));
+    }
+
+    pickup(){
+        this.pickupTime = this.timer.elapsedTime;
+    }
+
+    deliver(){
+        this.deliveryTime = this.timer.elapsedTime;
+    }
+
+    getTransitTime(){
+        return this.deliveryTime - this.pickupTime;
+    }
+
+    getDeliveryTime(){
+        return this.deliveryTime - this.initialTime;
     }
 
     /**

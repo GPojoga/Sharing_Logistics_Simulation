@@ -204,11 +204,13 @@ export default class Truck extends Observable{
         switch (order.type) {
             case "pickUp":
                 console.log("Truck picked up good");
+                order.good.pickup();
                 this.currentLoad.weight += order.good.quantity * order.good.weight;
                 this.currentLoad.volume += order.good.quantity * order.volume;
                 break;
             case "delivery":
                 console.log("Truck delivered good");
+                order.good.deliver();
                 this.currentLoad.weight -= order.good.quantity * order.good.weight;
                 this.currentLoad.volume -= order.good.quantity * order.good.volume;
                 this.nrDeliveredGoods += 1;

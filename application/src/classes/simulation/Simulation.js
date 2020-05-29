@@ -4,6 +4,8 @@ import SharedTruck from "../trucks/SharedTruck";
 import Good from "../goods/Good";
 import TraditionalTruck from "../trucks/TraditionalTruck";
 import TruckTracker from "@/classes/simulation/TruckTracker";
+import avg from "@/util/avg";
+
 /**
  * This comment is a TODO.
  *
@@ -146,7 +148,15 @@ export class Simulation {
             numberOfTrucks : this._trucksList.filter(truck => truck.nrDeliveredGoods > 0).length, // Not necessarily equal to the length of the trucks array! Some trucks may be left unused.
             fuelConsumed : totalFuelConsumed,
             co2emissions : totalFuelConsumed * 2.67, // Based on emissions burnt/liter = 2,67 kg CO2 / ltr
-            time : this._store.getters.time.elapsedTime
+            time : this._store.getters.time.elapsedTime,
+            averageDeliveryTime : avg(this._freightPlatform.getProcessedGoods().reduce((accumulator,current) => {
+                accumulator.push(current.getDeliveryTime());
+                return accumulator;
+            },[])),
+            averageTransitTime : avg(this._freightPlatform.getProcessedGoods().reduce((accumulator,current) => {
+                accumulator.push(current.getTransitTime());
+                return accumulator;
+            },[])),
         };
 
         this._store.commit('setSimulationResults', {type : this._simType, results : results});
