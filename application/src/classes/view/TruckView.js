@@ -36,10 +36,11 @@ export class TruckView{
                 return 'assets/train_truck.svg';
             default:
                 console.log(truck.properties.type);
-                console.error("Invalid truck type. Check the red truck !");
-                return 'red';
+                console.error("Invalid truck type. Check the default marker !");
+                return L.Icon.Default;
         }
     }
+
     __pickColor(truck){
         switch(truck.properties.type){
             case "Light":
@@ -69,5 +70,4 @@ export class TruckView{
                 break;
         }
     }
-
 }
