@@ -99,31 +99,43 @@ export class Simulation {
     _initializeSharedTrucks(store){
         let trucks = [];
         store.state.trucks.forEach(truck => {
-            const sharedTruck = new SharedTruck(
-                truck.type,             // type
-                truck.startLocation,    // location
-                store.state.map,        // map object
-                30                      // tick rate
-            );
-            sharedTruck.addListener(this);
-            trucks.push(sharedTruck);
+            for(let i = 0;i < truck.quantity;i++){
+                trucks.push(this._createSharedTruck(truck,store));
+            }
         });
         return trucks;
+    }
+
+    _createSharedTruck(truck,store){
+        const sharedTruck = new SharedTruck(
+            truck.type,             // type
+            truck.startLocation,    // location
+            store.state.map,        // map object
+            30                      // tick rate
+        );
+        sharedTruck.addListener(this);
+        return sharedTruck;
     }
 
     _initializeTraditionalTrucks(store){
         let trucks = [];
         store.state.trucks.forEach(truck => {
-            const traditionalTruck = new TraditionalTruck(
-                truck.type,             // type
-                truck.startLocation,    // location
-                store.state.map,        // map object
-                30                      // tick rate
-            );
-            traditionalTruck.addListener(this);
-            trucks.push(traditionalTruck);
+            for(let i = 0;i < truck.quantity;i++){
+                trucks.push(this._createTraditionalTruck(truck,store));
+            }
         });
         return trucks;
+    }
+
+    _createTraditionalTruck(truck,store){
+        const traditionalTruck = new TraditionalTruck(
+            truck.type,             // type
+            truck.startLocation,    // location
+            store.state.map,        // map object
+            30                      // tick rate
+        );
+        traditionalTruck.addListener(this);
+        return traditionalTruck;
     }
 
     sendTrucksHome(){
