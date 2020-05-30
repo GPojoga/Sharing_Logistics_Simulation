@@ -61,7 +61,8 @@
                 selected: null,                     // The location currently selected.
                 possibilities: null,                // A list of possible locations based on the currently inputted text.
                 displayPossibilities: false,        // A boolean keeping track of if the possibilities should be shown.
-                waitingToShowPossibilities: false
+                waitingToShowPossibilities: false,
+                buttonObserver: false               // A boolean observing when the gps button is pressed
             }
         },
         watch: {
@@ -70,7 +71,10 @@
                     // There is a location already
                     this.reverseGeocode(this.location.lat, this.location.lng).then(
                         lc => {
-                            this.enteredText = lc;
+                            if (this.enteredText === null || this.enteredText === '' || this.buttonObserver === true){
+                                this.enteredText = lc;
+                                this.buttonObserver = false;
+                            }
                         }
                     );
                 } else {
@@ -148,6 +152,7 @@
             },
 
             activateGpsButton(){
+                this.buttonObserver = true;
                 this.$store.state.tempForMap = true;
                 this.$store.state.tempForForward = this.forward;
                 this.$store.state.tempForSetter = this.setter;

@@ -117,7 +117,7 @@ export default class PlanManager{
     }
 
     getOrder(index){
-        return this.plan[index];
+        return this.plan.orders[index];
     }
 
     getPlanLength(){

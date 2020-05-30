@@ -93,7 +93,7 @@ export default class Good extends Observable{
         let insert = truck.getLowestCost(this);
         insert.truckIndex = index;
         this.trucksInserts[index] = insert;
-        if (this.bestInsert === index) {
+        if (this.bestInsert.truckIndex === index) {
             // Case the truck that has been updated held the previous title of best insert.
             this.findBestInsert();
         } else {
