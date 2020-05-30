@@ -28,7 +28,7 @@ export default class Router{
 
     _postRequest(request){
         let self = this;
-        return fetch(request,{mode:"no-cors"})
+        return fetch(request)
             .then(response => {
                 if (response.status === 200){
                     return response;
