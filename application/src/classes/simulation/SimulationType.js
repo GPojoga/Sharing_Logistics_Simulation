@@ -3,5 +3,6 @@
  */
 export const simulationType = {
     TRADITIONAL: 0,
-    SHARED: 1
+    SHARED: 1,
+    NONE: 2,
 };

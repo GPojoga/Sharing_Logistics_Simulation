@@ -4,6 +4,7 @@ import mutations from "./mutations";
 import actions from "./actions";
 import getters from "./getters.js";
 import {Time} from "../classes/Time.js";
+import {simulationType} from "@/classes/simulation/SimulationType.js";
 
 Vue.use(Vuex);
 
@@ -96,6 +97,7 @@ export default new Vuex.Store({
         tempForForward : null,
         tempForSetter : null,
 
+        currentSimulationType : simulationType.None,
         traditionalSimulation : null,
         sharedSimulation : null,
 

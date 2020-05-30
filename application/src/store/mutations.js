@@ -102,6 +102,7 @@ export const mutations = {
         }
         state.time.reset();
         state.traditionalSimulation.start();
+        state.currentSimulationType = simulationType.TRADITIONAL;
     },
 
     startSharedSimulation(state){
@@ -113,6 +114,7 @@ export const mutations = {
         }
         state.time.reset();
         state.sharedSimulation.start();
+        state.currentSimulationType = simulationType.SHARED;
     },
     /**
      * This function sets the max payload of a truck type at a certain index.

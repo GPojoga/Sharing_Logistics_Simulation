@@ -14,6 +14,7 @@ import UpdateMessage from "@/classes/util/UpdateMessage";
  * @param store
  */
 export class Simulation {
+    _allGoodsList = [];
     _trucksList = [];
     _goodsList = [];
     _store = null;
@@ -69,19 +70,29 @@ export class Simulation {
         this._trucksList.forEach(truck => truck.disable());
     }
 
+    getTrucks(){
+        return this._trucksList;
+    }
+
     initializeGoods(store){
         let goods = [];
         store.state.goods.forEach(good => {
-            goods.push(new Good(
+            let prod = new Good(
                 good.quantity,          // quantity
                 good.weight,            // weight
                 good.volume,            // volume
                 good.pickupLocation,    // pickUp
                 good.deliveryLocation,  // delivery
                 store.state.map         // map object
-            ));
+            );
+            goods.push(prod);
+            this._allGoodsList.push(prod);
         });
         return goods;
+    }
+
+    getAllGoods(){
+        return this._allGoodsList;
     }
 
     initializeTrucks(simType,store){
@@ -165,14 +176,18 @@ export class Simulation {
             fuelConsumed : totalFuelConsumed,
             co2emissions : totalFuelConsumed * 2.67, // Based on emissions burnt/liter = 2,67 kg CO2 / ltr
             time : this._store.getters.time.elapsedTime,
-            averageDeliveryTime : avg(this._freightPlatform.getProcessedGoods().reduce((accumulator,current) => {
-                accumulator.push(current.getDeliveryTime());
-                return accumulator;
-            },[])),
-            averageTransitTime : avg(this._freightPlatform.getProcessedGoods().reduce((accumulator,current) => {
-                accumulator.push(current.getTransitTime());
-                return accumulator;
-            },[])),
+            averageDeliveryTime : this._freightPlatform.getProcessedGoods().length === 0 ?
+                0 :
+                avg(this._freightPlatform.getProcessedGoods().reduce((accumulator,current) => {
+                    accumulator.push(current.getDeliveryTime());
+                    return accumulator;
+                },[])),
+            averageTransitTime : this._freightPlatform.getProcessedGoods().length === 0 ?
+                0 :
+                avg(this._freightPlatform.getProcessedGoods().reduce((accumulator,current) => {
+                    accumulator.push(current.getTransitTime());
+                     return accumulator;
+                },[])),
         };
 
         this._store.commit('setSimulationResults', {type : this._simType, results : results});

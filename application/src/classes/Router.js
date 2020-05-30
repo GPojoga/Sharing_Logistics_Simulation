@@ -28,7 +28,7 @@ export default class Router{
 
     _postRequest(request){
         let self = this;
-        return fetch(request)
+        return fetch(request,{mode:"no-cors"})
             .then(response => {
                 if (response.status === 200){
                     return response;
@@ -37,7 +37,7 @@ export default class Router{
                     return new Promise( function(resolve){
                         setTimeout(function () {
                             resolve(self._postRequest(request));
-                        } ,1000);
+                        } ,3000);
                     });
                 }
             });
