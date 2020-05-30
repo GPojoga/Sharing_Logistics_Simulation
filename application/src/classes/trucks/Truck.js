@@ -91,7 +91,7 @@ export default class Truck extends Observable{
      * }
      * @private
      */
-    route;
+    route = Object;
 
     /**
      * updates per second
