@@ -37,6 +37,9 @@
                 <p v-if="productList.length === 0">
                     The product list is empty
                 </p>
+                <div v-for="(good,index) in productList" :key="index" >
+                    <GoodComponent :good="good"/>
+                </div>
             </div>
         </div>
     </div>
@@ -46,12 +49,26 @@
 <script>
     import {simulationType} from "@/classes/simulation/SimulationType";
     import TruckComponent from "@/components/TruckComponent";
+    import GoodComponent from "@/components/GoodComponent";
     export default {
         name: "SimulationData",
         components:{
+            GoodComponent,
           TruckComponent
         },
+        watch :{
+            simulationStatus(newStatus){
+                if (newStatus){
+                    this.expand();
+                }else{
+                    this.shrink();
+                }
+            }
+        },
         computed:{
+            simulationStatus(){
+              return this.$store.state.isRunning;
+            },
             currentSimulationType : function(){
                 switch (this.$store.state.currentSimulationType) {
                     case simulationType.TRADITIONAL:
@@ -98,9 +115,18 @@
         methods :{
             collapseSD() {
                 this.$refs["simulationData"].style.top = this.$refs["simulationData"].style.top === "0%" ? "-80%" : "0%";
-
                 this.$refs["collapseArrow"].style.transform = this.$refs["simulationData"].style.top === "0%" ?
                     "rotate(180deg)" : "rotate(0deg)";
+            },
+            expand(){
+                this.updateSimulationDataPanel("0%","rotate(180deg)");
+            },
+            shrink(){
+                this.updateSimulationDataPanel("80%","rotate(0deg)");
+            },
+            updateSimulationDataPanel(top,rotation){
+                this.$refs["simulationData"].style.top = top;
+                this.$refs["collapseArrow"].style.transform = rotation;
             },
             selectTrucks(){
                 this.activate(this.$refs["truckButton"],this.$refs["productButton"]);
