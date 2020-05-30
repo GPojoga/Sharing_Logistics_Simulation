@@ -2,18 +2,22 @@
     <div id="truckComponent">
         <img id="image" v-bind:src="truckImage" v-bind:alt="truck.properties.type"/>
         <div id="preview">
-            <p class="text"> Initial Location : </p>
-            <p class="text"> Current Location : </p>
-            <p class="text"> Destination : </p>
-            <p class="text"> More : </p>
+            <DetailsComponent text="Initial Location" :data="truck.initialLocation"/>
+            <DetailsComponent text="Current Location" :data="truck.location"/>
+            <DetailsComponent text="Destination" :data="truck.route.end"/>
         </div>
     </div>
 </template>
 
 <script>
     import Truck from "@/classes/trucks/Truck.js"
+    import DetailsComponent from "@/components/LocationComponent";
+
     export default {
         name: "TruckComponent",
+        components :{
+          DetailsComponent,
+        },
         props:{
             truck: Truck
         },
@@ -52,10 +56,8 @@
         display: inline-block;
         position: relative;
         padding: 3%;
-    }
-
-    .text{
-        margin: 0.5em;
+        width: 68%;
+        top: 1px;
     }
 
 </style>
