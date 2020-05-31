@@ -18,7 +18,9 @@
         <div class="numberVehicles">
             <label>
                 Number of vehicles
-                <basic-input class="inputNumbers" type="number" v-model="lastInput" min="1" oninput="this.value = Math.abs(this.value)" v-on:input="setTruckQuantity(lastInput)" />
+                <div class="quantityField">
+                    <InputNumberBox :field="truck.quantity" setter="setTruckQuantity" :forward="{index: index}" placeholder="#"/>
+                </div>
             </label>
         </div>
         <LocationInput :location="truck.startLocation" label="Currently at" :setter="'setTruckStartingLocation'" :forward="{index : this.index}"/>
@@ -27,11 +29,11 @@
 
 <script>
     import LocationInput from "./InputLocation";
-    import BasicInput from "./BasicInput";
+    import InputNumberBox from "./InputNumberBox";
 
     export default {
         name: "FleetVehicleInput",
-        components: {BasicInput, LocationInput},
+        components: {LocationInput, InputNumberBox},
         props: {
             index : Number
         },
@@ -204,5 +206,14 @@
     }
     .circle.cross:after {
         transform:rotateZ(-45deg);
+    }
+
+    /* Style for the quantity field box */
+    .quantityField {
+
+        display: inline-block;
+        width : 25%;
+        margin-right : 0;
+        margin-left: 24%;
     }
 </style>

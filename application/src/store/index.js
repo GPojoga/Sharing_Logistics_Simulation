@@ -76,9 +76,9 @@ export default new Vuex.Store({
         trucks : [
             // Default a single truck with no info.
             {
-                type : null,          // The type of truck inputted from truckTypes
-                quantity : 1,         // The quantity of trucks inputted, default 1
-                startLocation : null  // The location the truck(s) start at.
+                type : null,                                            // The type of truck inputted from truckTypes
+                quantity : {value : 1, error : false, message : ""},    // The quantity of trucks inputted, default 1
+                startLocation : null                                    // The location the truck(s) start at.
             }
         ],
         // An array of inputted good objects
@@ -107,26 +107,22 @@ export default new Vuex.Store({
          * @param min The lower bound of the number.
          * @param max The upper bound of the number.
          * @param canZero If the number can be equal to zero or not.
+         * @param canDecimal If the number can be a decimal number or not.
          * @return Array has type [
          *      0 Boolean: First element of the array is a boolean stating if the number is valid.
          *      1 String: Second element of the array is a corresponding error message.
          * ]
          */
-        checkNumber : function(num, min, max, canZero){
-            if (num === "") {
-                return [true, "Field can't be empty"];
-            }
+        checkNumber : function(num, min, max, canZero, canDecimal){
             let value = Number(num);
-            if (isNaN(value)){
-                return [true, "Must be a number"];
-            }
-            if (!(min <= value && value <= max)) {
-                return [true, ("Must be between " + String(min) + " and " + String(max))];
-            }
-            if (!canZero && value === 0) {
-                return [true, "Must not be 0"];
-            }
-            return [false, ""];
+
+            if (num === "") return [true, "Field can't be empty"];
+            if (isNaN(value)) return [true, "Must be a number"];
+            if (!(min <= value && value <= max)) return [true, ("Must be between " + String(min) + " and " + String(max))];
+            if (!canZero && value === 0) return [true, "Must not be 0"];
+            if (!canDecimal && !Number.isInteger(value)) return [true, "Must be an integer number"]
+
+            return [false, ""];  // Passes all checks
         }
     },
 

@@ -110,7 +110,7 @@ export class Simulation {
     _initializeSharedTrucks(store){
         let trucks = [];
         store.state.trucks.forEach(truck => {
-            for(let i = 0;i < truck.quantity;i++){
+            for(let i = 0; i < truck.quantity.value; i++){
                 trucks.push(this._createSharedTruck(truck,store));
             }
         });
@@ -131,7 +131,7 @@ export class Simulation {
     _initializeTraditionalTrucks(store){
         let trucks = [];
         store.state.trucks.forEach(truck => {
-            for(let i = 0;i < truck.quantity;i++){
+            for(let i = 0; i < truck.quantity.value; i++){
                 trucks.push(this._createTraditionalTruck(truck,store));
             }
         });
