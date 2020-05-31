@@ -240,4 +240,25 @@
         border: 0;
     }
 
+    /* Scrollbar layout */
+    /* width */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f9ff;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #2284ff;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #197cd8;
+    }
+
 </style>
