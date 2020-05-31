@@ -1,5 +1,5 @@
 <template>
-    <l-map  class="map selectorCursor" ref="map"
+    <l-map  id="map" :class="activeGPS ? 'selectorCursor' : 'dragCursor'" ref="map"
             :options="{
                     zoomControl:false
                   }"
@@ -53,13 +53,19 @@
             this.$store.commit("setMap", {map: this.$refs.map.mapObject});
         },
 
+        computed : {
+            activeGPS : function () {
+                return this.$store.state.tempForMap;
+            }
+        },
+
         methods: {
             /**
              * This function only adds a new location if the GPS button is pressed.
              * @param event
              */
             addLocation(event){
-                if (this.$store.state.tempForMap) {
+                if (this.activeGPS) {
                     if (!this.timeoutId) {
                         this.timeoutId = setTimeout(() => {
                             //Single click
@@ -85,7 +91,8 @@
 </script>
 
 <style scoped>
-    .map{
+    /* Style of the map itself */
+    #map{
         height: 100%;
         width: 100%;
         position: absolute;
@@ -93,7 +100,13 @@
         z-index: 0;
     }
 
+    /* Style of the cursor when a location is being selected. */
     .selectorCursor {
         cursor: crosshair;
+    }
+
+    /* Style of the cursor when a location is being selected*/
+    .dragCursor {
+        cursor: grab;
     }
 </style>

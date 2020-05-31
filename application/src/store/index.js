@@ -4,7 +4,7 @@ import mutations from "./mutations";
 import actions from "./actions";
 import getters from "./getters.js";
 import {Time} from "../classes/Time.js";
-import {simulationType} from "@/classes/simulation/SimulationType.js";
+import {simulationType} from "../classes/simulation/SimulationType.js";
 
 Vue.use(Vuex);
 
@@ -78,7 +78,7 @@ export default new Vuex.Store({
             {
                 type : null,                                            // The type of truck inputted from truckTypes
                 quantity : {value : 1, error : false, message : ""},    // The quantity of trucks inputted, default 1
-                startLocation : null                                    // The location the truck(s) start at.
+                startLocation : {value: null, error: true, message: "Field can't be empty", text: null}  // The location the truck(s) start at.
             }
         ],
         // An array of inputted good objects
@@ -88,8 +88,8 @@ export default new Vuex.Store({
                 quantity : {value: null, error: true, message:"Field can't be empty"},  //The quantity of the good
                 weight : {value: null, error: true, message:"Field can't be empty"},    // The weight of the good kg
                 volume : {value: null, error: true, message:"Field can't be empty"},    // The volume of the good m^3
-                pickupLocation : null,   // The location the good needs to be pickup
-                deliveryLocation : null  // The location the good needs to be delivered
+                pickupLocation : {value: null, error: true, message:"Field can't be empty", text: null},    // The location the good needs to be pickup
+                deliveryLocation : {value: null, error: true, message: "Field can't be empty", text: null}  // The location the good needs to be delivered
             }
         ],
 
@@ -122,6 +122,22 @@ export default new Vuex.Store({
             if (!canZero && value === 0) return [true, "Must not be 0"];
             if (!canDecimal && !Number.isInteger(value)) return [true, "Must be an integer number"]
 
+            return [false, ""];  // Passes all checks
+        },
+
+        /**
+         * This is a helper function to check if location fields are valid.
+         * @param coords The coordinates of the location that was inputted.
+         * @param text The text in the text field.
+         * @return Array has type [
+         *      0 Boolean: First element of the array is a boolean stating if the number is valid.
+         *      1 String: Second element of the array is a corresponding error message.
+         * ]
+         */
+        checkLocation : function (coords, text) {
+            if (text === null) return [true, "Field can't be empty"];
+            if (coords === null) return [true, "Must be known location"];
+            // TODO: possibly do some more checks with coords here.
             return [false, ""];  // Passes all checks
         }
     },
