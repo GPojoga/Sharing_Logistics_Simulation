@@ -1,7 +1,7 @@
 <template>
     <div id="component">
         <DataPosition :text="text" v-on:extend="extend()" v-on:shrink="shrink()"/>
-        <input ref="input" id="input" v-model="this.location" readonly>
+        <input ref="input" class="input" v-model="this.location" readonly>
     </div>
 </template>
 
@@ -63,7 +63,7 @@
         margin: 0;
         font-size: 100%;
     }
-    #input{
+    .input{
         width: 100%;
         height: 0;
         background-color: white;
