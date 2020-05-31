@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import DataPosition from "@/components/SimulationData/DataPosition";
+    import DataPosition from "@/components/simulationData/DataPosition";
     export default {
         name: "LocationComponent",
         components : {
@@ -69,7 +69,7 @@
         background-color: white;
         border: solid 1px #007FEB;
         margin-top: 5%;
-        transition: height 0.5s;
+        transition: height 0.25s;
         font-size: 100%;
         text-align: left;
         overflow: auto;

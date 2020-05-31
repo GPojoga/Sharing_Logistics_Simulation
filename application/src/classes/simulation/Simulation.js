@@ -76,6 +76,7 @@ export class Simulation {
 
     initializeGoods(store){
         let goods = [];
+        this._allGoodsList = [];
         store.state.goods.forEach(good => {
             let prod = new Good(
                 good.quantity,          // quantity

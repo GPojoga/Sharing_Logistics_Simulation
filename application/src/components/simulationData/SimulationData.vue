@@ -48,8 +48,8 @@
 
 <script>
     import {simulationType} from "@/classes/simulation/SimulationType";
-    import TruckComponent from "@/components/SimulationData/TruckComponent";
-    import GoodComponent from "@/components/GoodComponent";
+    import TruckComponent from "@/components/simulationData/TruckComponent";
+    import GoodComponent from "@/components/simulationData/GoodComponent";
     export default {
         name: "SimulationData",
         components:{

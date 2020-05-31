@@ -19,8 +19,8 @@
 
 <script>
     import Truck from "@/classes/trucks/Truck.js"
-    import LocationComponent from "@/components/SimulationData/LocationComponent";
-    import DataPosition from "@/components/SimulationData/DataPosition";
+    import LocationComponent from "@/components/simulationData/LocationComponent";
+    import DataPosition from "@/components/simulationData/DataPosition";
 
     export default {
         name: "TruckComponent",
@@ -33,10 +33,8 @@
         },
         computed : {
             truckImage : function() {
-                let toReturn = "assets/" +
+                return "assets/" +
                     this.$store.getters.truckTypes.find(x => x.key === this.truck.properties.type).img;
-                console.log(toReturn);
-                return toReturn;
             },
 
         },
