@@ -112,6 +112,8 @@ export default class Truck extends Observable{
     disabled = false;
 
     planManager = Object;
+
+    currentOrder = Object;
     /**
      *
      * @param type truck type ("Light"|"Heavy"|"Train")
@@ -182,6 +184,7 @@ export default class Truck extends Observable{
      * @private
      */
     followOrder(order){
+        this.currentOrder = order;
         if (this.disabled){
             return;
         }
@@ -206,7 +209,7 @@ export default class Truck extends Observable{
                 console.log("Truck picked up good");
                 order.good.pickup();
                 this.currentLoad.weight += order.good.quantity * order.good.weight;
-                this.currentLoad.volume += order.good.quantity * order.volume;
+                this.currentLoad.volume += order.good.quantity * order.good.volume;
                 break;
             case "delivery":
                 console.log("Truck delivered good");
