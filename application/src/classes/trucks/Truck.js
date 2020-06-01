@@ -329,7 +329,6 @@ export default class Truck extends Observable {
             if (waitedTime < this.LOADING_TIME) {
                 this._loadOrUnload(waitedTime + time, callback)
             } else {
-                console.log(callback);
                 callback();
             }
         },1000/this._tickRate);

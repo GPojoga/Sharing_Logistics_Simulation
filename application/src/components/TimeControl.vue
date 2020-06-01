@@ -106,7 +106,7 @@
         padding: 10px;
 
         background: white;
-        box-shadow: 2px 10px 10px 4px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
         border-radius: 4px;
     }
 

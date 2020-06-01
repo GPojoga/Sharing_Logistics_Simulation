@@ -2,9 +2,7 @@
     <div id="simulationData" ref="simulationData" class="collapsible">
         <div id="collapseController">
             <button id="collapseButton" v-on:click="collapseSD()">
-                <svg ref="collapseArrow" id="collapseArrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 323 213">
-                    <path transform= "rotate(90 162.54376220703122,104.99998474121091) " d="m258.8,122l-136,136c-9.4,9.4 -24.6,9.4 -33.9,0l-22.6,-22.6c-9.4,-9.4 -9.4,-24.6 0,-33.9l96.4,-96.4l-96.4,-96.4c-9.4,-9.4 -9.4,-24.6 0,-33.9l22.5,-22.8c9.4,-9.4 24.6,-9.4 33.9,0l136,136c9.5,9.4 9.5,24.6 0.1,34z"/>
-                </svg>
+                <i class="fas fa-angle-left" id="collapseArrowSimData"></i>
             </button>
         </div>
         <div id="header">
@@ -114,19 +112,26 @@
         },
         methods :{
             collapseSD() {
-                this.$refs["simulationData"].style.top = this.$refs["simulationData"].style.top === "0%" ? "-80%" : "0%";
-                this.$refs["collapseArrow"].style.transform = this.$refs["simulationData"].style.top === "0%" ?
-                    "rotate(180deg)" : "rotate(0deg)";
+                let simulationData = document.getElementById('simulationData');
+                let collapseArrowSimData = document.getElementById('collapseArrowSimData');
+
+                collapseArrowSimData.style.transform = this.controlPanelLeftPos === 0 ?
+                    "rotate(0)" : "rotate(180deg)";
+
+                simulationData.style.right = (simulationData.style.right === "0px" ? "-400px" : "0px");
+                collapseArrowSimData.style.transform = simulationData.style.right === "0px" ? "rotate(180deg)" : "rotate(0deg)";
+                // this.$refs["collapseArrow"].style.transform = this.$refs["simulationData"].style.right === "0px" ?
+                //     "rotate(180deg)" : "rotate(0deg)";
             },
             expand(){
-                this.updateSimulationDataPanel("0%","rotate(180deg)");
+                this.updateSimulationDataPanel("0px","rotate(180deg)");
             },
             shrink(){
-                this.updateSimulationDataPanel("80%","rotate(0deg)");
+                this.updateSimulationDataPanel("-400px","rotate(0deg)");
             },
-            updateSimulationDataPanel(top,rotation){
-                this.$refs["simulationData"].style.top = top;
-                this.$refs["collapseArrow"].style.transform = rotation;
+            updateSimulationDataPanel(right,rotation){
+                this.$refs["simulationData"].style.right = right;
+                this.$refs["collapseArrowSimData"].style.transform = rotation;
             },
             selectTrucks(){
                 this.activate(this.$refs["truckButton"],this.$refs["productButton"]);
@@ -153,19 +158,16 @@
     #simulationData {
         background: rgb(255, 255, 255);
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-        height: 80%;
+        height: 100%;
         width: 400px;
         overflow: visible;
         position: absolute;
-        right: 1em;
         color: #007FEB;
-        transition: top 1s;
-        top:-80%;
+        transition: right 1s;
+        right: -400px;
     }
 
     .content{
-        width : 100%;
-        height : 90%;
         overflow-y: scroll;
     }
 
@@ -185,18 +187,18 @@
     }
 
     #header{
-        width: 100%;
-        height : 10%;
+        height: 60px;
+        padding: 10px 10px 0 10px;
         background-color: #007FEB;
     }
 
     #options{
-        height: 50%;
+        height: 30px;
     }
 
     #simulationType {
         width: 100%;
-        height: 50%;
+        height: 30px;
         color: white;
         text-align: center;
         font-weight: bold;
@@ -205,12 +207,12 @@
 
     #collapseController{
         opacity: 0.9;
-        width: 14%;
-        height: 4%;
+        width: 23px;
+        height: 48px;
         position: absolute;
         bottom: 100%;
-        top: 100%;
-        left: 43%;
+        top: 8px;
+        right: 100%;
     }
 
     #collapseButton{
@@ -222,14 +224,13 @@
         border-radius: 2px;
         cursor: pointer;
         padding: 0;
-        box-shadow: 10px 5px 20px rgba(0, 0, 0, 0.3);
+        box-shadow: -10px 5px 20px rgba(0, 0, 0, 0.3);
     }
 
-    #collapseArrow{
-        width : 50%;
-        height : 50%;
-        fill: #007FEB;
-        transition: transform 1s;
+    #collapseArrowSimData{
+        font-size: 200%;
+        color: #007FEB;
+        transition: transform 0.5s;
     }
 
     button:focus{
