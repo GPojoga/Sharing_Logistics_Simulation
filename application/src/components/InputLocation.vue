@@ -3,11 +3,17 @@
         <label style="display: block;">
             {{ label }}
         </label>
-        <basic-input :title="info" :class="isValid ? 'valid' : 'invalid'" type="text" v-model="enteredText" v-on:input="updatePossibilities"/>
+
+        <basic-input :title="info" :class="isValid ? 'valid' : 'invalid'" type="text" v-model="enteredText"
+                     @input="updatePossibilities" @focus="toggleFocus" @blur="toggleFocus"/>
         <div class="gpsContainer">
-            <basic-button @click="activateGpsButton" type="button" layout="solid" class="gpsButton" :class="{ gpsOn: gpsActivated}"><i class="fas fa-map-marked-alt"></i></basic-button>
+            <basic-button @click="activateGpsButton" type="button" layout="solid" class="gpsButton"
+                          :class="{ gpsOn: gpsActivated}">
+                <i class="fas fa-map-marked-alt"/>
+            </basic-button>
         </div>
-        <div class="optionList" :id="idSuggestions" v-if="displayPossibilities && possibilities != null">
+
+        <div class="optionList" :id="idSuggestions" v-if="displayPossibilities && isFocus && possibilities != null">
             <p class="option" v-for="(p, i) in possibilities" :id="i" :key="i" @click="selectLocation(p)">
                 {{ p.label }}
             </p>
@@ -62,7 +68,8 @@
                 possibilities: null,                // A list of possible locations based on the currently inputted text.
                 displayPossibilities: false,        // A boolean keeping track of if the possibilities should be shown.
                 waitingToShowPossibilities: false,
-                buttonObserver: false               // A boolean observing when the gps button is pressed
+                buttonObserver: false,              // A boolean observing when the gps button is pressed
+                isFocus: false                      // A boolean modeling if the input is focused.
             }
         },
         mounted() {
@@ -87,7 +94,7 @@
                 if (this.enteredText !== '') {
                     this.displayPossibilities = true;
 
-                    if (this.waitingToShowPossibilities === false) {
+                    if (!this.waitingToShowPossibilities) {
                         this.waitingToShowPossibilities = true;
 
                         const self = this;
@@ -104,18 +111,18 @@
                         }, 1000);
                     }
                 } else {
+                    this.displayPossibilities = false;
                     this.possibilities = null;
-                    this.selectLocation(null);
                 }
+                this.selectLocation(null);
             },
             /**
              * This function deactivates the suggestions box, and selects the one the user clicked on.
              * @param pickedLocation The location picked by the user.
              */
             selectLocation(pickedLocation) {
-                this.displayPossibilities = false;
                 this.selected = pickedLocation;
-                if (pickedLocation !== null) { this.enteredText = pickedLocation.label; }
+                if (pickedLocation !== null) this.enteredText = pickedLocation.label;
                 this.addToStore();
             },
             /**
@@ -136,6 +143,14 @@
                 this.$store.state.tempForMap = true;
                 this.$store.state.tempForForward = this.forward;
                 this.$store.state.tempForSetter = this.setter;
+            },
+            /**
+             * This function toggles the focus on the search text field for locations.
+             */
+            toggleFocus() {
+                setTimeout( () => {
+                    this.isFocus = !this.isFocus;
+                }, 100);  // Tolerance so the suggestions have time to be clicked
             }
         },
         computed: {
@@ -165,8 +180,8 @@
         background-color: white;
         display: flex;
         flex-direction: column;
-        position: relative;
-        z-index: 1; /* Put on top of other elements */
+        position: absolute;
+        z-index: 2; /* Put on top of other elements */
         opacity: 1; /* Make not transparent */
 
         /* Set border of the list with suggestions for places */
@@ -184,6 +199,7 @@
     .location {
         text-align: left;
         margin-top: 10px;
+        position: relative;
     }
 
     .location > ::placeholder{
@@ -229,7 +245,6 @@
         border-color: #fb2223;
         color: #fc3131;
     }
-
 
     .gpsOn {
         background-color: grey;

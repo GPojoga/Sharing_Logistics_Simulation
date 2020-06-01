@@ -89,7 +89,7 @@ export default {
     background: rgb(255, 255, 255);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     height: 100%;
-    width: 400px;
+    width: 21.5%;
     overflow: visible;
     position: absolute;
     left: 0;
