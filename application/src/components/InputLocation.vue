@@ -3,7 +3,7 @@
         <label style="display: block;">
             {{ label }}
         </label>
-        <input type="text" :list="idSuggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
+        <input type="text" :list="idSuggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off" :disabled='isDisabled'>
         <div class="optionList" :id="idSuggestions" v-if="displayPossibilities && possibilities != null">
             <p class="option" v-for="(p, i) in possibilities" :id="i" :key="i" @click="selectLocation(p)">
                 {{ p.label }}
@@ -159,6 +159,9 @@
             },
             gpsActivated() {
                 return this.$store.state.tempForMap && (this.$store.state.tempForForward === this.forward);
+            },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
             }
         }
     }

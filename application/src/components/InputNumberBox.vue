@@ -51,9 +51,14 @@
                 }
             },
 
-            isDisabled: function () {
-                return !this.terms;
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
             }
+
+            /*
+            isDisabled: function () {
+                return this.terms;
+            }*/
         },
         methods: {
             /**
