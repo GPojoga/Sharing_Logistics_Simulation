@@ -72,18 +72,17 @@ export default new Vuex.Store({
 
 
         // Input Variables:
-        // An array of inputted truck objects
-        trucks : [
-            // Default a single truck with no info.
-
-        ],
+        // An array of inputted truck objects a single truck with no info is added when App.vue is mounted.
+        trucks : [],
         // An array of inputted good objects a single good with no info is added when App.vue is mounted.
         goods : [],
 
+        // variables used for communication between location input and the map.
         tempForMap : false,
         tempForForward : null,
         tempForSetter : null,
 
+        // Objects of the simulation currently being run.
         currentSimulationType : simulationType.None,
         traditionalSimulation : null,
         sharedSimulation : null,
