@@ -62,10 +62,16 @@ export default class Good extends Observable{
     }
 
     getTransitTime(){
+        if(this.deliveryTime === null){
+            return null;
+        }
         return this.deliveryTime - this.pickupTime;
     }
 
     getDeliveryTime(){
+        if(this.deliveryTime === null){
+            return null;
+        }
         return this.deliveryTime - this.initialTime;
     }
 

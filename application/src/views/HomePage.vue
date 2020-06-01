@@ -11,7 +11,7 @@
     import ControlPanel from "../components/ControlPanel";
     import SimplifiedMap from "../components/SimplifiedMap";
     import TimeControl from "../components/TimeControl";
-    import SimulationData from "@/components/SimulationData";
+    import SimulationData from "@/components/simulationData/SimulationData";
 
     export default {
         name: 'HomePage',

@@ -66,6 +66,7 @@ export class TruckView{
                     this.view.setLatLng(eventSource.location);
                 }catch{
                     console.warn("invalid truck location");
+                    console.log("Truck : ",this.truck);
                 }
                 break;
         }
