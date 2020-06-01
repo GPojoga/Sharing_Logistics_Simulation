@@ -46,19 +46,19 @@ export default class Good extends Observable{
         this.quantity = quantity.value;
         this.weight = weight.value;
         this.volume = volume.value;
-        this.pickUp = pickUp;
-        this.delivery = delivery;
+        this.pickUp = pickUp.value;
+        this.delivery = delivery.value;
         this.timer = store.getters.time;
-        this.initialTime = this.timer.elapsedTime;
+        this.initialTime = store.getters.time.getTimePassed();
         this.addListener(new GoodView(this, mapObj));
     }
 
     pickup(){
-        this.pickupTime = this.timer.elapsedTime;
+        this.pickupTime = this.timer.getTimePassed();
     }
 
     deliver(){
-        this.deliveryTime = this.timer.elapsedTime;
+        this.deliveryTime = this.timer.getTimePassed();
     }
 
     getTransitTime(){

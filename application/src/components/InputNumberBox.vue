@@ -85,7 +85,7 @@
     .invalid {
         background: #fff5fa;
         border-color: #fb2223;
-         color: #fc3131;
+        color: #fc3131;
      }
 
     /* Remove online around input box when selected */

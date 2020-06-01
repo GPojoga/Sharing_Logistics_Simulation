@@ -119,10 +119,10 @@ export class Simulation {
 
     _createSharedTruck(truck,store){
         const sharedTruck = new SharedTruck(
-            truck.type,             // type
-            truck.startLocation,    // location
-            store.state.map,        // map object
-            30                      // tick rate
+            truck.type,                   // type
+            truck.startLocation.value,    // location
+            store.state.map,              // map object
+            30                            // tick rate
         );
         sharedTruck.addListener(this);
         return sharedTruck;
@@ -140,10 +140,10 @@ export class Simulation {
 
     _createTraditionalTruck(truck,store){
         const traditionalTruck = new TraditionalTruck(
-            truck.type,             // type
-            truck.startLocation,    // location
-            store.state.map,        // map object
-            30                      // tick rate
+            truck.type,                   // type
+            truck.startLocation.value,    // location
+            store.state.map,              // map object
+            30                            // tick rate
         );
         traditionalTruck.addListener(this);
         return traditionalTruck;

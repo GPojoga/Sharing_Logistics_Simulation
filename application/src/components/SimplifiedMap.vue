@@ -9,7 +9,7 @@
             :maxBounds="maxBounds"
             :maxBoundsViscosity="maxBoundsViscosity"
             :zoomAnimation="zoomAnimation"
-            @click="addLocation"
+            @click="processClick"
     >
         <l-tile-layer :url="url"/>
         <l-control-zoom position="bottomright"/>
@@ -47,34 +47,33 @@
                 routingMachine: null
             };
         },
-
         mounted () {
             // Relay the map the the store of the webapp.
             this.$store.commit("setMap", {map: this.$refs.map.mapObject});
         },
-
         computed : {
             activeGPS : function () {
                 return this.$store.state.tempForMap;
+            },
+            forward : function () {
+                return this.$store.state.tempForForward;
+            },
+            setter : function () {
+                return this.$store.state.tempForSetter;
             }
         },
 
         methods: {
             /**
              * This function only adds a new location if the GPS button is pressed.
-             * @param event
+             * @param event The event of clicking the map.
              */
-            addLocation(event){
+            processClick(event){
                 if (this.activeGPS) {
                     if (!this.timeoutId) {
                         this.timeoutId = setTimeout(() => {
                             //Single click
-
-                            let payload = this.$store.state.tempForForward;
-                            payload.location = event.latlng;
-                            let setter = this.$store.state.tempForSetter;
-                            this.$store.commit(setter, payload);
-
+                            this.setLocation(event.latlng)
                             this.timeoutId = null;
                         }, 400); //tolerance in ms
                         this.$store.state.tempForMap = false;
@@ -85,6 +84,36 @@
                         this.$store.state.tempForMap = false;
                     }
                 }
+            },
+
+            /**
+             * This function performs the reverse geo-coding. If it is possible to identify
+             * the location using the coordinates, then the name of the location is returned.
+             * Otherwise, a string of the form '[<lat>,<lon>]' is returned.
+             * @param lat latitude coordinates of the location.
+             * @param lon longitude coordinates of the location.
+             * @returns {Promise<string|*>} Promises to return a String representation of the coordinates.
+             */
+            async reverseGeocode(lat,lon){
+                let url = 'https://nominatim.openstreetmap.org/reverse?format=json';
+                url += '&lat=' + lat + '&lon=' + lon;
+                let result = await fetch(url);
+                let json = await result.json();
+                if (json.display_name !== undefined) {
+                    return json.display_name;
+                }
+                return '[' + lat +',' + lon + ']';
+            },
+
+            /**
+             * This function sets a location in the state of the webapp.
+             * @param coords The coordinates of the location.
+             */
+            async setLocation(coords){
+                let payload = this.forward;
+                payload.location = coords;
+                payload.text = await this.reverseGeocode(coords.lat, coords.lng);
+                this.$store.commit(String(this.setter), payload);
             }
         }
     }

@@ -159,8 +159,8 @@ export const mutations = {
             quantity : {value: null, error: true, message:"Field can't be empty"},
             weight : {value: null, error: true, message:"Field can't be empty"},
             volume : {value: null, error: true, message:"Field can't be empty"},
-            pickupLocation : null,
-            deliveryLocation : null
+            pickupLocation : {value: null, error: true, message:"Field can't be empty", text: null},
+            deliveryLocation : {value: null, error: true, message: "Field can't be empty", text: null}
         };
         state.goods.push(good);
     },
@@ -218,10 +218,11 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param location The object the pickup location of the good should be set too.
      * @param index The index of the good that should be changed.
+     * @param text The new pickup location in text format.
      */
-    setGoodPickupLocation(state, {location, index}){
-        // TODO: Add checking the location here.
-        state.goods[index].pickupLocation = location;
+    setGoodPickupLocation(state, {location, index, text}){
+        let check = state.checkLocation(location, text);
+        state.goods[index].pickupLocation = {value: location, text: text, error: check[0], message: check[1]};
     },
 
     /**
@@ -229,10 +230,11 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param location The object the delivery location of the good should be set too.
      * @param index The index of the good that should be changed.
+     * @param text The new delivery location in text format.
      */
-    setGoodDeliveryLocation(state, {location, index}){
-        // TODO: Add checking the value here.
-        state.goods[index].deliveryLocation = location;
+    setGoodDeliveryLocation(state, {location, index, text}){
+        let check = state.checkLocation(location, text);
+        state.goods[index].deliveryLocation = {value: location, text: text, error: check[0], message: check[1]};
     },
 
     /**
@@ -243,7 +245,7 @@ export const mutations = {
         let truck = {
             type : null,
             quantity :  {value : 1, error : false, message : ""},
-            startLocation : null
+            startLocation : {value: null, error: true, message: "Field can't be empty", text: null}
         };
         state.trucks.push(truck);
     },
@@ -275,7 +277,6 @@ export const mutations = {
      * @param index The index of the truck that should be changed.
      */
     setTruckQuantity(state, {value: value, index}){
-        console.log(value);
         let check = state.checkNumber(value, 0, 20, false, false);
         state.trucks[index].quantity.error = check[0];
         state.trucks[index].quantity.message = check[1];
@@ -287,10 +288,11 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param location The new starting location.
      * @param index The index of the truck that should be changed.
+     * @param text The new starting location in text format.
      */
-    setTruckStartingLocation(state, {location, index}){
-        // TODO: add checking the location here.
-        state.trucks[index].startLocation = location;
+    setTruckStartingLocation(state, {location, index, text}){
+        let check = state.checkLocation(location, text);
+        state.trucks[index].startLocation = {value: location, text: text, error: check[0], message: check[1]};
     }
 };
 
