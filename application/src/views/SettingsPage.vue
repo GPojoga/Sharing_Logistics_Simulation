@@ -56,7 +56,6 @@
         font-size: 40px;
         text-align: center;
         margin : 0;
-        height : 100%;
     }
 
     /* Style the container containing the constants */
@@ -65,6 +64,7 @@
         border: 2px solid #007feb;
         background-color: white;
         width: 600px;
+        height: 550px;
         margin-left: auto;
         margin-right: auto;
         overflow: auto;

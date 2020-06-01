@@ -4,7 +4,7 @@ import mutations from "./mutations";
 import actions from "./actions";
 import getters from "./getters.js";
 import {Time} from "../classes/Time.js";
-import {simulationType} from "@/classes/simulation/SimulationType.js";
+import {simulationType} from "../classes/simulation/SimulationType.js";
 
 Vue.use(Vuex);
 
@@ -72,31 +72,17 @@ export default new Vuex.Store({
 
 
         // Input Variables:
-        // An array of inputted truck objects
-        trucks : [
-            // Default a single truck with no info.
-            {
-                type : null,          // The type of truck inputted from truckTypes
-                quantity : 1,         // The quantity of trucks inputted, default 1
-                startLocation : null  // The location the truck(s) start at.
-            }
-        ],
-        // An array of inputted good objects
-        goods : [
-            // Default a single good with no info.
-            {
-                quantity : {value: null, error: true, message:"Field can't be empty"},  //The quantity of the good
-                weight : {value: null, error: true, message:"Field can't be empty"},    // The weight of the good kg
-                volume : {value: null, error: true, message:"Field can't be empty"},    // The volume of the good m^3
-                pickupLocation : null,   // The location the good needs to be pickup
-                deliveryLocation : null  // The location the good needs to be delivered
-            }
-        ],
+        // An array of inputted truck objects a single truck with no info is added when App.vue is mounted.
+        trucks : [],
+        // An array of inputted good objects a single good with no info is added when App.vue is mounted.
+        goods : [],
 
+        // variables used for communication between location input and the map.
         tempForMap : false,
         tempForForward : null,
         tempForSetter : null,
 
+        // Objects of the simulation currently being run.
         currentSimulationType : simulationType.None,
         traditionalSimulation : null,
         sharedSimulation : null,
@@ -107,26 +93,39 @@ export default new Vuex.Store({
          * @param min The lower bound of the number.
          * @param max The upper bound of the number.
          * @param canZero If the number can be equal to zero or not.
+         * @param canDecimal If the number can be a decimal number or not.
          * @return Array has type [
          *      0 Boolean: First element of the array is a boolean stating if the number is valid.
          *      1 String: Second element of the array is a corresponding error message.
          * ]
          */
-        checkNumber : function(num, min, max, canZero){
-            if (num === "") {
-                return [true, "Field can't be empty"];
-            }
+        checkNumber : function(num, min, max, canZero, canDecimal){
             let value = Number(num);
-            if (isNaN(value)){
-                return [true, "Must be a number"];
-            }
-            if (!(min <= value && value <= max)) {
-                return [true, ("Must be between " + String(min) + " and " + String(max))];
-            }
-            if (!canZero && value === 0) {
-                return [true, "Must not be 0"];
-            }
-            return [false, ""];
+
+            if (num === "") return [true, "Field can't be empty"];
+            if (isNaN(value)) return [true, "Must be a number"];
+            if (!(min <= value && value <= max)) return [true, ("Must be between " + String(min) + " and " + String(max))];
+            if (!canZero && value === 0) return [true, "Must not be 0"];
+            if (!canDecimal && !Number.isInteger(value)) return [true, "Must be an integer number"]
+
+            return [false, ""];  // Passes all checks
+        },
+
+        /**
+         * This is a helper function to check if location fields are valid.
+         * @param coords The coordinates of the location that was inputted.
+         * @param text The text in the text field.
+         * @return Array has type [
+         *      0 Boolean: First element of the array is a boolean stating if the number is valid.
+         *      1 String: Second element of the array is a corresponding error message.
+         * ]
+         */
+        checkLocation : function (coords, text) {
+            if (text === null || text === "") return [true, "Field can't be empty"];
+            if (coords === null) return [true, "Must be known location"];
+            // TODO: possibly do some more checks with coords here.
+
+            return [false, ""];  // Passes all checks
         }
     },
 

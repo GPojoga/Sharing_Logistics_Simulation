@@ -8,7 +8,8 @@
   export default {
     name: 'App',
     mounted() {
-      // TODO : initialize the store data here.
+      this.$store.commit('addNewTruck');
+      this.$store.commit('addNewGood');
     }
   }
 </script>

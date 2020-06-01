@@ -27,7 +27,7 @@ export default class CostHandler{
         for(let i = pickupIndex + 1;i < deliveryIndex;i++){
             // Increase cost of transport due to increase in weight caused by the good.
             let distance = haversine(location,this.plan.orders[i].location)/1000;
-            fuel += good.quantity * good.weight * distance * this.properties.consumptionPerKg;
+            fuel += good.quantity * good.weight * distance * this.truck.properties.consumptionPerKg;
             weight = good.quantity * good.weight + this.plan.orders[i].expectedLoad.weight;
             location = this.plan.orders[i].location;  // Update location and weight
         }

@@ -6,7 +6,9 @@
         <basic-input type="text"
                      v-model="enteredText"
                      v-on:input="updatePossibilities"
-                     :class="{ optionListActivatedInput : displayPossibilities && inputFocus }"
+                     :class="[{ optionListActivatedInput : displayPossibilities && inputFocus },
+                                isValid ? 'valid' : 'invalid' ]"
+                     :title="info"
                      @focus="setInputFocus(true)"
                      @blur="setInputFocus(false)" />
         <div class="gpsContainer">
@@ -67,48 +69,24 @@
                 selected: null,                     // The location currently selected.
                 possibilities: null,                // A list of possible locations based on the currently inputted text.
                 displayPossibilities: false,        // A boolean keeping track of if the possibilities should be shown.
-                inputFocus: false,                  // A boolean tracking if the input element is in focus
                 waitingToShowPossibilities: false,
                 buttonObserver: false               // A boolean observing when the gps button is pressed
             }
         },
+        mounted() {
+            this.enteredText = this.location.text;
+        },
         watch: {
             location: function() {
-                if (this.location != null) {
-                    // There is a location already
-                    this.reverseGeocode(this.location.lat, this.location.lng).then(
-                        lc => {
-                            if (this.enteredText === null || this.enteredText === '' || this.buttonObserver === true){
-                                this.enteredText = lc;
-                                this.buttonObserver = false;
-                            }
-                        }
-                    );
-                } else {
-                    // The location is empty
-                    this.enteredText = '';
+                if (this.location.value != null) {
+                    if (this.enteredText === null || this.enteredText === '' || this.buttonObserver) {
+                        this.enteredText = this.location.text;
+                        this.buttonObserver = false;
+                    }
                 }
             }
         },
         methods: {
-            /**
-             * This function performs the reverse geo-coding. If it is possible to identify
-             * the location using the coordinates, then the name of the location is returned.
-             * Otherwise, a string of the form '[<lat>,<lon>]' is returned.
-             * @param lat latitude coordinates of the location.
-             * @param lon longitude coordinates of the location.
-             * @returns {Promise<string|*>} Promises to return a String representation of the coordinates.
-             */
-            async reverseGeocode(lat,lon){
-                let url = 'https://nominatim.openstreetmap.org/reverse?format=json';
-                url += '&lat=' + lat + '&lon=' + lon;
-                let result = await fetch(url);
-                let json = await result.json();
-                if (json.display_name !== undefined) {
-                    return json.display_name;
-                }
-                return '[' + lat +',' + lon + ']';
-            },
             /**
              * This function is called every time the user inputs a new character. It queries
              * the geo-coder, and returns a list of top 5 suggestions.
@@ -155,9 +133,12 @@
                 let payload = this.forward;
                 // Add the inputted location to the payload.
                 payload.location = (this.selected === null) ? null : L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
+                payload.text = this.enteredText;
                 this.$store.commit(this.setter, payload);
             },
-
+            /**
+             * This function activates the gps button so that the user can select a location on the map.
+             */
             activateGpsButton(){
                 this.buttonObserver = true;
                 this.$store.state.tempForMap = true;
@@ -180,6 +161,12 @@
             },
             gpsActivated() {
                 return this.$store.state.tempForMap && (this.$store.state.tempForForward === this.forward);
+            },
+            info() {
+                return this.location.message;
+            },
+            isValid() {
+                return !this.location.error;
             }
         }
     }
@@ -248,6 +235,21 @@
         text-decoration: none;
         display: inline-block;
     }
+
+    /* Change the font when the input is valid */
+    .valid {
+        background: #f1f9ff;
+        border-color: #1187EC;
+        color: #007FEB;
+    }
+
+    /* Change the font when the input is invalid */
+    .invalid {
+        background: #fff5fa;
+        border-color: #fb2223;
+        color: #fc3131;
+    }
+
 
     .gpsOn {
         background-color: grey;
