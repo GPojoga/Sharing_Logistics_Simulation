@@ -1,10 +1,11 @@
 
 import {Observable} from "../util/Observable";
 import {TruckView} from "../view/TruckView";
+import {truckState} from "./TruckState";
 import store from "../../store/index.js";
-import PlanManager from "@/classes/trucks/PlanManager";
-import UpdateMessage from "@/classes/util/UpdateMessage";
-import TruckPropertyHandler from "@/classes/trucks/TruckPropertyHandler";
+import PlanManager from "./PlanManager";
+import UpdateMessage from "../util/UpdateMessage";
+import TruckPropertyHandler from "./TruckPropertyHandler";
 
 /**
  * this is the abstract class for truck
@@ -13,7 +14,9 @@ import TruckPropertyHandler from "@/classes/trucks/TruckPropertyHandler";
  * @class Truck
  * @abstract
  */
-export default class Truck extends Observable{
+export default class Truck extends Observable {
+    // Constant: signifies the time that a truck takes to load or unload a good.
+    LOADING_TIME = 60; // 1 minute
 
     /**
      * {
@@ -104,12 +107,7 @@ export default class Truck extends Observable{
      */
     _lastUpdate = 0;
 
-    /**
-     * the state of the truck : moving | not moving
-     */
-    isMoving = false;
-
-    disabled = false;
+    state;
 
     planManager = Object;
 
@@ -126,6 +124,7 @@ export default class Truck extends Observable{
         if (this.constructor === Truck) {
             throw new Error('Can not instantiate abstract class Truck!');
         }
+        this.state = truckState.WAITING_FOR_ORDER;
         this.initialLocation = location;
         this.location = location;
         this._tickRate = tickRate;
@@ -136,7 +135,7 @@ export default class Truck extends Observable{
     }
 
     disable(){
-        this.disabled = true;
+        this.state = truckState.DISABLED;
         console.log("Truck : disabled");
         this.notify(UpdateMessage.Disabled);
     }
@@ -185,7 +184,7 @@ export default class Truck extends Observable{
      */
     followOrder(order){
         this.currentOrder = order;
-        if (this.disabled){
+        if (this.state === truckState.DISABLED){
             return;
         }
         setTimeout(() => {
@@ -193,37 +192,39 @@ export default class Truck extends Observable{
                 this._updateRouteProgress();
                 this.followOrder(order);
             } else {
+                // Truck has arrived at the next location.
                 this._completeOrder(order);
             }
         },1000/this._tickRate);
     }
 
     /**
-     * the actions to be take after the order was completed
+     * the actions to be taken after the order was completed
      * @param order the order that was finished
      * @private
      */
     _completeOrder(order){
+        this.state = truckState.LOADING;
+        const self = this;
         switch (order.type) {
             case "pickUp":
-                console.log("Truck picked up good");
-                order.good.pickup();
-                this.currentLoad.weight += order.good.quantity * order.good.weight;
-                this.currentLoad.volume += order.good.quantity * order.good.volume;
+                console.log('Truck is loading a good...');
+                this._loadOrUnload(0, function() {
+                    self._pickupGood(order);
+                });
                 break;
             case "delivery":
-                console.log("Truck delivered good");
-                order.good.deliver();
-                this.currentLoad.weight -= order.good.quantity * order.good.weight;
-                this.currentLoad.volume -= order.good.quantity * order.good.volume;
-                this.nrDeliveredGoods += 1;
+                console.log('Truck is unloading a good...');
+                this._loadOrUnload(0, function() {
+                    self._deliverGood(order);
+                });
                 break;
             case "home":
                 console.log("Truck finished route and arrived at home");
                 this.notify(UpdateMessage.FinishedPlan);
+                this.state = truckState.WAITING_FOR_ORDER;
+                this.notify(UpdateMessage.FinishedOrder);
         }
-        this.isMoving = false;
-        this.notify(UpdateMessage.FinishedOrder);
     }
 
 
@@ -293,5 +294,44 @@ export default class Truck extends Observable{
     _setLocation(location){
         this.location = location;
         this.notify(UpdateMessage.Relocated);
+    }
+
+    _pickupGood(order) {
+        console.log("Truck picked up good");
+        order.good.pickup();
+        this.currentLoad.weight += order.good.quantity * order.good.weight;
+        this.currentLoad.volume += order.good.quantity * order.good.volume;
+
+        this.state = truckState.WAITING_FOR_ORDER;
+        this.notify(UpdateMessage.FinishedOrder);
+    }
+
+    _deliverGood(order) {
+        console.log("Truck delivered good");
+        order.good.deliver();
+        this.currentLoad.weight -= order.good.quantity * order.good.weight;
+        this.currentLoad.volume -= order.good.quantity * order.good.volume;
+        this.nrDeliveredGoods += 1;
+
+        this.state = truckState.WAITING_FOR_ORDER;
+        this.notify(UpdateMessage.FinishedOrder);
+    }
+
+    /**
+     * makes the truck wait a constant amount of time at a place of delivery or pickup
+     * @param waitedTime
+     * @private
+     */
+    _loadOrUnload(waitedTime, callback){
+        setTimeout(() => {
+            let time = store.getters.time.getTimePassed(this._lastUpdate);
+            this._lastUpdate += time;
+            if (waitedTime < this.LOADING_TIME) {
+                this._loadOrUnload(waitedTime + time, callback)
+            } else {
+                console.log(callback);
+                callback();
+            }
+        },1000/this._tickRate);
     }
 }
