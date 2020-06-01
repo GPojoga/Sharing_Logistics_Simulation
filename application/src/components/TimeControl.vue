@@ -106,9 +106,8 @@
         padding: 10px;
 
         background: white;
-        border: 1px #007feb solid;
         box-shadow: 2px 10px 10px 4px rgba(0, 0, 0, 0.3);
-        border-radius: 10px;
+        border-radius: 4px;
     }
 
     #infoContainer {
