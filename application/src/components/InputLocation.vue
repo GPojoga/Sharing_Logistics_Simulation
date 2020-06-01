@@ -6,6 +6,7 @@
         <basic-input type="text"
                      v-model="enteredText"
                      v-on:input="updatePossibilities"
+                     :disabled='isDisabled'
                      :class="[{ optionListActivatedInput : displayPossibilities && inputFocus },
                                 isValid ? 'valid' : 'invalid' ]"
                      :title="info"
@@ -167,8 +168,12 @@
             },
             isValid() {
                 return !this.location.error;
+            },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
             }
-        }
+        },
+
     }
 </script>
 

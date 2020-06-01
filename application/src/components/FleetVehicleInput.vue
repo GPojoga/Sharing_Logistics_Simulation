@@ -3,7 +3,7 @@
         <div class="header">
             <span>Vehicle {{ index + 1 }}</span>
             <div class="remove">
-                <button @click="removeVehicle" type="button" class="button circle cross"></button>
+                <button @click="removeVehicle" type="button" class="button circle cross" :disabled="isDisabled"></button>
             </div>
         </div>
         <div class="row">
@@ -80,6 +80,9 @@
              */
             truck() {
                 return this.$store.getters.trucks[this.index];
+            },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
             },
         }
     }

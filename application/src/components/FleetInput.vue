@@ -3,7 +3,7 @@
         <FleetVehicleInput v-for="(_,index) in fleet" :key="index" :index="index"/>
 
         <div class="add">
-            <button @click="addVehicle" type="button" class="button circle plus"/>
+            <button @click="addVehicle" type="button" class="button circle plus" :disabled='isDisabled'/>
             Add vehicle
         </div>
         <div style="clear: both;"></div> <!-- Makes sure the previous float doesn't overlap with the next element -->
@@ -30,6 +30,9 @@
              */
             fleet() {
                 return this.$store.getters.trucks;
+            },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
             }
         }
     }

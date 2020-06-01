@@ -9,7 +9,7 @@
       <FleetInput/>
       <CargoInput :products-valid="validProducts" @productChange="setValidProducts"/>
       <div class="buttonsContainer">
-        <basic-button layout="solid" class="settingContainer">
+        <basic-button layout="solid" class="settingContainer" :disabled="isDisabled">
           <router-link to="/settings">
             Settings
           </router-link>
@@ -80,7 +80,12 @@ export default {
         }
       }
     }
-  }
+  },
+  computed: {
+    isDisabled : function() {
+      return this.$store.getters.isRunning;
+    }
+  },
 }
 </script>
 
