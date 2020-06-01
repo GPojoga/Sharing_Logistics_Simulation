@@ -6,6 +6,8 @@ import TraditionalTruck from "../trucks/TraditionalTruck";
 import TruckTracker from "@/classes/simulation/TruckTracker";
 import avg from "@/util/avg";
 import UpdateMessage from "@/classes/util/UpdateMessage";
+import store from "../../store/index.js";
+
 
 /**
  * This comment is a TODO.
@@ -175,7 +177,7 @@ export class Simulation {
             }, 0),
             numberOfTrucks : this._trucksList.filter(truck => truck.nrDeliveredGoods > 0).length, // Not necessarily equal to the length of the trucks array! Some trucks may be left unused.
             fuelConsumed : totalFuelConsumed,
-            co2emissions : totalFuelConsumed * 2.67, // Based on emissions burnt/liter = 2,67 kg CO2 / ltr
+            co2emissions : totalFuelConsumed * store.getters.emissionRate.value,
             time : this._store.getters.time.elapsedTime,
             averageDeliveryTime : this._freightPlatform.getProcessedGoods().length === 0 ?
                 0 :
