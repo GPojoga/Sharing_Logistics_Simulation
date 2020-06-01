@@ -75,23 +75,10 @@ export default new Vuex.Store({
         // An array of inputted truck objects
         trucks : [
             // Default a single truck with no info.
-            {
-                type : null,                                            // The type of truck inputted from truckTypes
-                quantity : {value : 1, error : false, message : ""},    // The quantity of trucks inputted, default 1
-                startLocation : {value: null, error: true, message: "Field can't be empty", text: null}  // The location the truck(s) start at.
-            }
+
         ],
-        // An array of inputted good objects
-        goods : [
-            // Default a single good with no info.
-            {
-                quantity : {value: null, error: true, message:"Field can't be empty"},  //The quantity of the good
-                weight : {value: null, error: true, message:"Field can't be empty"},    // The weight of the good kg
-                volume : {value: null, error: true, message:"Field can't be empty"},    // The volume of the good m^3
-                pickupLocation : {value: null, error: true, message:"Field can't be empty", text: null},    // The location the good needs to be pickup
-                deliveryLocation : {value: null, error: true, message: "Field can't be empty", text: null}  // The location the good needs to be delivered
-            }
-        ],
+        // An array of inputted good objects a single good with no info is added when App.vue is mounted.
+        goods : [],
 
         tempForMap : false,
         tempForForward : null,
@@ -135,9 +122,10 @@ export default new Vuex.Store({
          * ]
          */
         checkLocation : function (coords, text) {
-            if (text === null) return [true, "Field can't be empty"];
+            if (text === null || text === "") return [true, "Field can't be empty"];
             if (coords === null) return [true, "Must be known location"];
             // TODO: possibly do some more checks with coords here.
+
             return [false, ""];  // Passes all checks
         }
     },

@@ -92,28 +92,6 @@
         font-weight: bold;
     }
 
-    /* Remove the scrollbar that appears when the input box is selected */
-    .inputNumbers::-webkit-outer-spin-button, .inputNumbers::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    .inputNumbers {
-        float: right;
-        margin-top: 0;
-
-        /* Remove the scroll bar in Firefox */
-        -moz-appearance: textfield;
-
-        /* Change the text; font, size, ect... */
-        text-align: center;
-        font-family: "Arial", Arial, sans-serif;
-        font-weight: bold;
-        font-size: 90%;
-
-        width: 25%;
-    }
-
     .header {
         height: 40px;
         width: 100%;

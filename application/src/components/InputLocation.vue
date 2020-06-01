@@ -70,11 +70,8 @@
         },
         watch: {
             location: function() {
-                console.log("hi");
                 if (this.location.value != null) {
-                    console.log("hey");
                     if (this.enteredText === null || this.enteredText === '' || this.buttonObserver) {
-                        console.log("Hello");
                         this.enteredText = this.location.text;
                         this.buttonObserver = false;
                     }
@@ -131,7 +128,9 @@
                 payload.text = this.enteredText;
                 this.$store.commit(this.setter, payload);
             },
-
+            /**
+             * This function activates the gps button so that the user can select a location on the map.
+             */
             activateGpsButton(){
                 this.buttonObserver = true;
                 this.$store.state.tempForMap = true;

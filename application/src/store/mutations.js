@@ -156,11 +156,11 @@ export const mutations = {
      */
     addNewGood(state) {
         let good = {
-            quantity : {value: null, error: true, message:"Field can't be empty"},
-            weight : {value: null, error: true, message:"Field can't be empty"},
-            volume : {value: null, error: true, message:"Field can't be empty"},
-            pickupLocation : {value: null, error: true, message:"Field can't be empty", text: null},
-            deliveryLocation : {value: null, error: true, message: "Field can't be empty", text: null}
+            quantity : {value: null, error: true, message:"Field can't be empty"},  //The quantity of the good
+            weight : {value: null, error: true, message:"Field can't be empty"},    // The weight of the good kg
+            volume : {value: null, error: true, message:"Field can't be empty"},    // The volume of the good m^3
+            pickupLocation : {value: null, error: true, message:"Field can't be empty", text: null},    // The location the good needs to be pickup
+            deliveryLocation : {value: null, error: true, message: "Field can't be empty", text: null}  // The location the good needs to be delivered
         };
         state.goods.push(good);
     },
@@ -243,10 +243,10 @@ export const mutations = {
      */
     addNewTruck(state){
         let truck = {
-            type : null,
-            quantity :  {value : 1, error : false, message : ""},
-            startLocation : {value: null, error: true, message: "Field can't be empty", text: null}
-        };
+            type : state.truckTypes[0].key,                                                          // The type of truck inputted from truckTypes, default light van.
+            quantity : {value : 1, error : false, message : ""},                                     // The quantity of trucks inputted, default 1
+            startLocation : {value: null, error: true, message: "Field can't be empty", text: null}  // The location the truck(s) start at.
+        }
         state.trucks.push(truck);
     },
 
@@ -266,7 +266,6 @@ export const mutations = {
      * @param index The index of the truck that should be changed.
      */
     setTruckType(state, {type, index}){
-        // TODO: Add checking the value here.
         state.trucks[index].type = type;
     },
 
