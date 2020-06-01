@@ -22,9 +22,9 @@
     input{
         margin-top: 5px;
         margin-right: 1%;
-        height: 30px;
+        height: 31px;
         background-color: #f1f9ff;
-        border: 0.5px solid #2284ff;
+        border: 0px solid #2284ff;
         color: #007feb;
         font-size: medium;
         border-radius: 5px;

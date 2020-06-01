@@ -3,16 +3,16 @@
         <label style="display: block;">
             {{ label }}
         </label>
+        <basic-input :title="info"  type="text" v-model="enteredText" :disabled="isDisabled"
+                     @input="updatePossibilities" @focus="toggleFocus" @blur="toggleFocus"
+                     :class="[{ optionListActivatedInput : displayPossibilities && isFocus }, isValid ? 'valid' : 'invalid' ]"/>
 
-        <basic-input :title="info" :class="isValid ? 'valid' : 'invalid'" type="text" v-model="enteredText"
-                     @input="updatePossibilities" @focus="toggleFocus" @blur="toggleFocus"/>
         <div class="gpsContainer">
             <basic-button @click="activateGpsButton" type="button" layout="solid" class="gpsButton"
                           :class="{ gpsOn: gpsActivated}">
                 <i class="fas fa-map-marked-alt"/>
             </basic-button>
         </div>
-
         <div class="optionList" :id="idSuggestions" v-if="displayPossibilities && isFocus && possibilities != null">
             <p class="option" v-for="(p, i) in possibilities" :id="i" :key="i" @click="selectLocation(p)">
                 {{ p.label }}
@@ -168,15 +168,19 @@
             },
             isValid() {
                 return !this.location.error;
+            },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
             }
-        }
+        },
+
     }
 </script>
 
 <style scoped>
     /* Contains all options for places */
     .optionList {
-        width: 88%;
+        width: 88.4%;
         background-color: white;
         display: flex;
         flex-direction: column;
@@ -185,9 +189,15 @@
         opacity: 1; /* Make not transparent */
 
         /* Set border of the list with suggestions for places */
-        border: 0.5px solid #2284ff;
-        border-radius: 4px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border: 0px solid #2284ff;
+        border-radius: 0 0 4px 4px;
+        box-shadow: 0 7px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    /* Styles the bottom border radiuses when the option list is open */
+    .optionListActivatedInput {
+        border-radius: 4px 4px 0 0;
+        box-shadow: 0 7px 8px 0 rgba(0, 0, 0, 0.2);
     }
 
     /* One option in the list of possible places */

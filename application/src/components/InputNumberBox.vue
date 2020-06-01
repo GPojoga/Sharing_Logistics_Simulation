@@ -6,6 +6,7 @@
                    type="text"
                    v-model="lastInput"
                    :placeholder="placeholder"
+                   :disabled='isDisabled'
                    v-on:input="processInput"/>
         </label>
     </div>
@@ -44,6 +45,9 @@
                     'valid': this.isValid(),
                     'invalid': !this.isValid(),
                 }
+            },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
             }
         },
         methods: {
