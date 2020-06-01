@@ -163,7 +163,7 @@
         overflow: visible;
         position: absolute;
         color: #007FEB;
-        transition: right 1s;
+        transition: right 0.5s;
         right: -400px;
     }
 
