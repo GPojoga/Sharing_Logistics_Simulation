@@ -118,16 +118,6 @@
                 this.$refs["collapseArrow"].style.transform = this.$refs["simulationData"].style.top === "0%" ?
                     "rotate(180deg)" : "rotate(0deg)";
             },
-            expand(){
-                this.updateSimulationDataPanel("0%","rotate(180deg)");
-            },
-            shrink(){
-                this.updateSimulationDataPanel("80%","rotate(0deg)");
-            },
-            updateSimulationDataPanel(top,rotation){
-                this.$refs["simulationData"].style.top = top;
-                this.$refs["collapseArrow"].style.transform = rotation;
-            },
             selectTrucks(){
                 this.activate(this.$refs["truckButton"],this.$refs["productButton"]);
                 this.listToBeDisplayed = "truckList";

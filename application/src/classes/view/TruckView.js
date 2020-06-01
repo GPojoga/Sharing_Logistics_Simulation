@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import UpdateMessage from "@/classes/util/UpdateMessage";
+import UpdateMessage from "@/classes/util/UpdateMessage.js";
 
 export class TruckView{
 
@@ -66,7 +66,7 @@ export class TruckView{
                     this.view.setLatLng(eventSource.location);
                 }catch{
                     console.warn("invalid truck location");
-                    console.log("Truck : ",this.truck);
+                    console.warn("Truck : ",this.truck);
                 }
                 break;
         }

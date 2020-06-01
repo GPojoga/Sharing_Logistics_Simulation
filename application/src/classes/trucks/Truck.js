@@ -58,12 +58,6 @@ export default class Truck extends Observable{
     distanceTravelled = 0;
 
     /**
-     * the number of co2 emissions, calculated based on the fuel consumed
-     * @type {number}
-     */
-    co2emissions = 0;
-
-    /**
      * total number of delivered goods by this truck
      * @type {number}
      */
@@ -137,7 +131,6 @@ export default class Truck extends Observable{
 
     disable(){
         this.disabled = true;
-        console.log("Truck : disabled");
         this.notify(UpdateMessage.Disabled);
     }
 
