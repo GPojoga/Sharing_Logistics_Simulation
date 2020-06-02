@@ -1,6 +1,7 @@
 import Router from "@/classes/Router";
 import UpdateMessage from "@/classes/util/UpdateMessage";
 import CostHandler from "@/classes/trucks/CostHandler";
+import {truckState} from "./TruckState";
 
 export default class PlanManager{
 
@@ -54,8 +55,8 @@ export default class PlanManager{
     }
 
     start(){
-        if(!this.truck.isMoving && this.plan.currentIndex < this.plan.orders.length){
-            this.truck.isMoving = true;
+        if(this.truck.state === truckState.WAITING_FOR_ORDER && this.plan.currentIndex < this.plan.orders.length){
+            this.truck.state = truckState.MOVING;
             let order = this.plan.orders[this.plan.currentIndex];
             this.router.getRoute(this.truck.location,order.location).then( route => {
                 this.truck.route = Object.assign(route,{
@@ -134,6 +135,7 @@ export default class PlanManager{
 
     update(source,message){
         if(message === UpdateMessage.FinishedOrder){
+            console.log('Next order');
             this.plan.currentIndex += 1;
             this.start();
         }

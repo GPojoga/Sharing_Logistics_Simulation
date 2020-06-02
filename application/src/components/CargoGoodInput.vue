@@ -5,7 +5,7 @@
                 Good {{index + 1}}
             </span>
             <div class="remove">
-                <button @click="removeGood" type="button" class="button circle cross"/>
+                <button @click="removeGood" type="button" class="button circle cross" :disabled="isDisabled"/>
             </div>
         </div>
 
@@ -62,6 +62,9 @@
                         forward: {index: this.index}
                     }
                 ]
+            },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
             }
         },
         methods: {

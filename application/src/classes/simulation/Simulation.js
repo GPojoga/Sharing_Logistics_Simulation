@@ -6,6 +6,8 @@ import TraditionalTruck from "../trucks/TraditionalTruck";
 import TruckTracker from "@/classes/simulation/TruckTracker";
 import avg from "@/util/avg";
 import UpdateMessage from "@/classes/util/UpdateMessage";
+import store from "../../store/index.js";
+
 
 /**
  * This comment is a TODO.
@@ -111,7 +113,7 @@ export class Simulation {
     _initializeSharedTrucks(store){
         let trucks = [];
         store.state.trucks.forEach(truck => {
-            for(let i = 0;i < truck.quantity;i++){
+            for(let i = 0; i < truck.quantity.value; i++){
                 trucks.push(this._createSharedTruck(truck,store));
             }
         });
@@ -120,10 +122,10 @@ export class Simulation {
 
     _createSharedTruck(truck,store){
         const sharedTruck = new SharedTruck(
-            truck.type,             // type
-            truck.startLocation,    // location
-            store,        // store object
-            30                      // tick rate
+            truck.type,                   // type
+            truck.startLocation.value,    // location
+            store,             // map object
+            30                            // tick rate
         );
         sharedTruck.addListener(this);
         return sharedTruck;
@@ -132,7 +134,7 @@ export class Simulation {
     _initializeTraditionalTrucks(store){
         let trucks = [];
         store.state.trucks.forEach(truck => {
-            for(let i = 0;i < truck.quantity;i++){
+            for(let i = 0; i < truck.quantity.value; i++){
                 trucks.push(this._createTraditionalTruck(truck,store));
             }
         });
@@ -141,10 +143,10 @@ export class Simulation {
 
     _createTraditionalTruck(truck,store){
         const traditionalTruck = new TraditionalTruck(
-            truck.type,             // type
-            truck.startLocation,    // location
-            store,        // store object
-            30                      // tick rate
+            truck.type,                   // type
+            truck.startLocation.value,    // location
+            store,              // map object
+            30                            // tick rate
         );
         traditionalTruck.addListener(this);
         return traditionalTruck;
@@ -175,7 +177,7 @@ export class Simulation {
             }, 0),
             numberOfTrucks : this._trucksList.filter(truck => truck.nrDeliveredGoods > 0).length, // Not necessarily equal to the length of the trucks array! Some trucks may be left unused.
             fuelConsumed : totalFuelConsumed,
-            co2emissions : totalFuelConsumed * 2.67, // Based on emissions burnt/liter = 2,67 kg CO2 / ltr
+            co2emissions : totalFuelConsumed * store.getters.emissionRate.value,
             time : this._store.getters.time.elapsedTime,
             averageDeliveryTime : this._freightPlatform.getProcessedGoods().length === 0 ?
                 0 :

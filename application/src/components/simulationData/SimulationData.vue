@@ -154,10 +154,10 @@
         background: rgb(255, 255, 255);
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         height: 80%;
-        width: 400px;
+        width: 21.5%;
         overflow: visible;
         position: absolute;
-        right: 1em;
+        right: 1%;
         color: #007FEB;
         transition: top 1s;
         top:-80%;

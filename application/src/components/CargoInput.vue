@@ -5,7 +5,7 @@
         </div>
 
         <div>
-            <button @click="addGood" type="button" class="button circle plus"/>
+            <button @click="addGood" type="button" class="button circle plus" :disabled='isDisabled'/>
             Add good
         </div>
     </div>
@@ -21,6 +21,9 @@
             cargo() {
                 return this.$store.getters.goods;
             },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
+            }
         },
         methods: {
             /**

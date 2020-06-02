@@ -3,7 +3,7 @@
         <div class="header">
             <span>Vehicle {{ index + 1 }}</span>
             <div class="remove">
-                <button @click="removeVehicle" type="button" class="button circle cross"></button>
+                <button @click="removeVehicle" type="button" class="button circle cross" :disabled="isDisabled"></button>
             </div>
         </div>
         <div class="row">
@@ -18,20 +18,22 @@
         <div class="numberVehicles">
             <label>
                 Number of vehicles
-                <basic-input class="inputNumbers" type="number" v-model="lastInput" min="1" oninput="this.value = Math.abs(this.value)" v-on:input="setTruckQuantity(lastInput)" />
+                <div class="quantityField">
+                    <InputNumberBox :field="truck.quantity" setter="setTruckQuantity" :forward="{index: index}" placeholder="#"/>
+                </div>
             </label>
         </div>
-        <LocationInput :location="truck.startLocation" label="Currently at" :setter="'setTruckStartingLocation'" :forward="{index : this.index}"/>
+        <LocationInput :location="truck.startLocation" label="Starting at" :setter="'setTruckStartingLocation'" :forward="{index : this.index}"/>
     </div>
 </template>
 
 <script>
     import LocationInput from "./InputLocation";
-    import BasicInput from "./BasicInput";
+    import InputNumberBox from "./InputNumberBox";
 
     export default {
         name: "FleetVehicleInput",
-        components: {BasicInput, LocationInput},
+        components: {LocationInput, InputNumberBox},
         props: {
             index : Number
         },
@@ -79,6 +81,9 @@
             truck() {
                 return this.$store.getters.trucks[this.index];
             },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
+            },
         }
     }
 </script>
@@ -88,28 +93,6 @@
         text-align: left;
         height: 35px;
         font-weight: bold;
-    }
-
-    /* Remove the scrollbar that appears when the input box is selected */
-    .inputNumbers::-webkit-outer-spin-button, .inputNumbers::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    .inputNumbers {
-        float: right;
-        margin-top: 0;
-
-        /* Remove the scroll bar in Firefox */
-        -moz-appearance: textfield;
-
-        /* Change the text; font, size, ect... */
-        text-align: center;
-        font-family: "Arial", Arial, sans-serif;
-        font-weight: bold;
-        font-size: 90%;
-
-        width: 25%;
     }
 
     .header {
@@ -204,5 +187,14 @@
     }
     .circle.cross:after {
         transform:rotateZ(-45deg);
+    }
+
+    /* Style for the quantity field box */
+    .quantityField {
+
+        display: inline-block;
+        width : 25%;
+        margin-right : 0;
+        margin-left: 24%;
     }
 </style>

@@ -29,7 +29,7 @@ export default class Router{
     _postRequest(request){
         let self = this;
         return fetch(request)
-            .then(response => {
+            .then((response) => {
                 if (response.status === 200){
                     return response;
                 }else {
@@ -40,7 +40,15 @@ export default class Router{
                         } ,3000);
                     });
                 }
-            });
+            }).catch( () => {
+                console.warn("The OSRM response is not valid, trying again ...");
+                return new Promise( function(resolve){
+                    setTimeout(function () {
+                        resolve(self._postRequest(request));
+                    } ,3000);
+                });
+            }
+        )
     }
     __unpackResponse(json){
         return {

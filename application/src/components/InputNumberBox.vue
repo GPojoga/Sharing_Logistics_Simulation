@@ -6,6 +6,7 @@
                    type="text"
                    v-model="lastInput"
                    :placeholder="placeholder"
+                   :disabled='isDisabled'
                    v-on:input="processInput"/>
         </label>
     </div>
@@ -44,6 +45,9 @@
                     'valid': this.isValid(),
                     'invalid': !this.isValid(),
                 }
+            },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
             }
         },
         methods: {
@@ -85,7 +89,7 @@
     .invalid {
         background: #fff5fa;
         border-color: #fb2223;
-         color: #fc3131;
+        color: #fc3131;
      }
 
     /* Remove online around input box when selected */

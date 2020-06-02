@@ -28,7 +28,7 @@ export const mutations = {
      * @param value The value the max speed should be set too.
      */
     setMaxSpeed(state, {value}) {
-        let check = state.checkNumber(value, 0, 1000, false);
+        let check = state.checkNumber(value, 0, 1000, false, true);
         state.maxSpeed.error = check[0];
         state.maxSpeed.message = check[1];
         state.maxSpeed.value = value;
@@ -40,7 +40,7 @@ export const mutations = {
      * @param value The value the emission rate should be set too.
      */
     setEmissionRate(state, {value}) {
-        let check = state.checkNumber(value, 0, 100, true);
+        let check = state.checkNumber(value, 0, 100, true, true);
         state.emissionRate.error = check[0];
         state.emissionRate.message = check[1];
         state.emissionRate.value = value;
@@ -53,7 +53,7 @@ export const mutations = {
      * @param index The index of the truck type that should be changed.
      */
     setVolume(state, {value, index}){
-        let check = state.checkNumber(value, 0, 999, false);
+        let check = state.checkNumber(value, 0, 999, false, true);
         state.truckTypes[index].volume.error = check[0];
         state.truckTypes[index].volume.message = check[1];
         state.truckTypes[index].volume.value = value;
@@ -61,10 +61,9 @@ export const mutations = {
 
     /**
      * Creates a Simulation instance and stores it in traditionalSimulation or sharedSimulation in the store's state.
-     * @param state
-     * @param simType
-     * @param store
-     * @param router
+     * @param state The current state that should be changed.
+     * @param simType The type of simulation being set.
+     * @param store The store of the application.
      */
     setSimulation(state,{type : simType,store : store}){
         if(!state.map){
@@ -88,42 +87,42 @@ export const mutations = {
 
     /**
      * Sets the results of the given simulation type with the given results.
-     * @param state
-     * @param type
-     * @param results
+     * @param state The current state that should be changed.
+     * @param type The type of simulation that was run.
+     * @param results The results of running the simulation.
      */
     setSimulationResults(state, {type, results}) {
         console.log(results);
-        if (type === simulationType.TRADITIONAL) {
-            state.simulationResults.traditional = results;
-        } else if (type === simulationType.SHARED) {
-            state.simulationResults.shared = results;
-        }
+        if (type === simulationType.TRADITIONAL) state.simulationResults.traditional = results;
+        else if (type === simulationType.SHARED) state.simulationResults.shared = results;
     },
 
+    /**
+     * This function starts the simulation of the traditional method.
+     * @param state The current state that should be changed.
+     */
     startTraditionalSimulation(state){
-        if(state.traditionalSimulation === null){
-            throw new Error("Traditional simulation was not set");
-        }
-        if (state.sharedSimulation !== null){
-            state.sharedSimulation.stop();
-        }
+        if(state.traditionalSimulation === null) throw new Error("Traditional simulation was not set");
+        if (state.sharedSimulation !== null) state.sharedSimulation.stop();
+
         state.time.reset();
         state.traditionalSimulation.start();
         state.currentSimulationType = simulationType.TRADITIONAL;
     },
 
+    /**
+     * This function starts the simulation of the Sharing logistics method.
+     * @param state The current state that should be changed.
+     */
     startSharedSimulation(state){
-        if(state.sharedSimulation === null){
-            throw new Error("Shared simulation was not set");
-        }
-        if(state.traditionalSimulation !== null){
-            state.traditionalSimulation.stop();
-        }
+        if(state.sharedSimulation === null) throw new Error("Shared simulation was not set");
+        if(state.traditionalSimulation !== null) state.traditionalSimulation.stop();
+
         state.time.reset();
         state.sharedSimulation.start();
         state.currentSimulationType = simulationType.SHARED;
     },
+
     /**
      * This function sets the max payload of a truck type at a certain index.
      * @param state The current state that should be changed.
@@ -131,7 +130,7 @@ export const mutations = {
      * @param index The index of the truck type that should be changed.
      */
     setMaxPayload(state, {value, index}){
-        let check = state.checkNumber(value, 0, 9999, false);
+        let check = state.checkNumber(value, 0, 9999, false, true);
         state.truckTypes[index].maxPayload.error = check[0];
         state.truckTypes[index].maxPayload.message = check[1];
         state.truckTypes[index].maxPayload.value = value;
@@ -144,7 +143,7 @@ export const mutations = {
      * @param index The index of the truck type that should be changed.
      */
     setConsumptionEmpty(state, {value, index}){
-        let check = state.checkNumber(value, 0, 10, true);
+        let check = state.checkNumber(value, 0, 10, true, true);
         state.truckTypes[index].consumptionEmpty.error = check[0];
         state.truckTypes[index].consumptionEmpty.message = check[1];
         state.truckTypes[index].consumptionEmpty.value = value;
@@ -157,7 +156,7 @@ export const mutations = {
      * @param index The index of the truck type that should be changed.
      */
     setConsumptionFull(state, {value, index}){
-        let check = state.checkNumber(value, 0, 20, true);
+        let check = state.checkNumber(value, 0, 20, true, true);
         state.truckTypes[index].consumptionFull.error = check[0];
         state.truckTypes[index].consumptionFull.message = check[1];
         state.truckTypes[index].consumptionFull.value = value;
@@ -169,11 +168,11 @@ export const mutations = {
      */
     addNewGood(state) {
         let good = {
-            quantity : {value: null, error: true, message:"Field can't be empty"},
-            weight : {value: null, error: true, message:"Field can't be empty"},
-            volume : {value: null, error: true, message:"Field can't be empty"},
-            pickupLocation : null,
-            deliveryLocation : null
+            quantity : {value: null, error: true, message:"Field can't be empty"},  //The quantity of the good
+            weight : {value: null, error: true, message:"Field can't be empty"},    // The weight of the good kg
+            volume : {value: null, error: true, message:"Field can't be empty"},    // The volume of the good m^3
+            pickupLocation : {value: null, error: true, message:"Field can't be empty", text: null},    // The location the good needs to be pickup
+            deliveryLocation : {value: null, error: true, message: "Field can't be empty", text: null}  // The location the good needs to be delivered
         };
         state.goods.push(good);
     },
@@ -194,7 +193,7 @@ export const mutations = {
      * @param index The index of the good that should be changed.
      */
     setGoodQuantity(state, {value, index}){
-        let check = state.checkNumber(value, 0, 99, false);
+        let check = state.checkNumber(value, 0, 99, false, false);
         state.goods[index].quantity.error = check[0];
         state.goods[index].quantity.message = check[1];
         state.goods[index].quantity.value = value;
@@ -207,7 +206,7 @@ export const mutations = {
      * @param index The index of the good that should be changed.
      */
     setGoodWeight(state, {value, index}){
-        let check = state.checkNumber(value, 0, 4700, false);
+        let check = state.checkNumber(value, 0, 4700, false, true);
         state.goods[index].weight.error = check[0];
         state.goods[index].weight.message = check[1];
         state.goods[index].weight.value = value;
@@ -220,7 +219,7 @@ export const mutations = {
      * @param index The index of the good that should be changed.
      */
     setGoodVolume(state, {value, index}){
-        let check = state.checkNumber(value, 0, 8.925, false);
+        let check = state.checkNumber(value, 0, 8.925, false, true);
         state.goods[index].volume.error = check[0];
         state.goods[index].volume.message = check[1];
         state.goods[index].volume.value = value;
@@ -231,10 +230,11 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param location The object the pickup location of the good should be set too.
      * @param index The index of the good that should be changed.
+     * @param text The new pickup location in text format.
      */
-    setGoodPickupLocation(state, {location, index}){
-        // TODO: Add checking the location here.
-        state.goods[index].pickupLocation = location;
+    setGoodPickupLocation(state, {location, index, text}){
+        let check = state.checkLocation(location, text);
+        state.goods[index].pickupLocation = {value: location, text: text, error: check[0], message: check[1]};
     },
 
     /**
@@ -242,10 +242,11 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param location The object the delivery location of the good should be set too.
      * @param index The index of the good that should be changed.
+     * @param text The new delivery location in text format.
      */
-    setGoodDeliveryLocation(state, {location, index}){
-        // TODO: Add checking the value here.
-        state.goods[index].deliveryLocation = location;
+    setGoodDeliveryLocation(state, {location, index, text}){
+        let check = state.checkLocation(location, text);
+        state.goods[index].deliveryLocation = {value: location, text: text, error: check[0], message: check[1]};
     },
 
     /**
@@ -254,10 +255,10 @@ export const mutations = {
      */
     addNewTruck(state){
         let truck = {
-            type : null,
-            quantity : 1,
-            startLocation : null
-        };
+            type : state.truckTypes[0].key,                                                          // The type of truck inputted from truckTypes, default light van.
+            quantity : {value : 1, error : false, message : ""},                                     // The quantity of trucks inputted, default 1
+            startLocation : {value: null, error: true, message: "Field can't be empty", text: null}  // The location the truck(s) start at.
+        }
         state.trucks.push(truck);
     },
 
@@ -277,19 +278,20 @@ export const mutations = {
      * @param index The index of the truck that should be changed.
      */
     setTruckType(state, {type, index}){
-        // TODO: Add checking the value here.
         state.trucks[index].type = type;
     },
 
     /**
      * This function sets the quantity of a truck at a certain index in the array of trucks in the state.
      * @param state The current state that should be changed.
-     * @param quantity The new quantity of trucks that should replace the old.
+     * @param value The new quantity of trucks that should replace the old.
      * @param index The index of the truck that should be changed.
      */
-    setTruckQuantity(state, {quantity, index}){
-        // TODO: add checking the value here.
-        state.trucks[index].quantity = quantity;
+    setTruckQuantity(state, {value: value, index}){
+        let check = state.checkNumber(value, 0, 20, false, false);
+        state.trucks[index].quantity.error = check[0];
+        state.trucks[index].quantity.message = check[1];
+        state.trucks[index].quantity.value = value;
     },
 
     /**
@@ -297,10 +299,11 @@ export const mutations = {
      * @param state The current state that should be changed.
      * @param location The new starting location.
      * @param index The index of the truck that should be changed.
+     * @param text The new starting location in text format.
      */
-    setTruckStartingLocation(state, {location, index}){
-        // TODO: add checking the location here.
-        state.trucks[index].startLocation = location;
+    setTruckStartingLocation(state, {location, index, text}){
+        let check = state.checkLocation(location, text);
+        state.trucks[index].startLocation = {value: location, text: text, error: check[0], message: check[1]};
     }
 };
 
