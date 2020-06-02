@@ -18,7 +18,7 @@
           <div class="innerPanel">
             <div class="outputElement">
               <h2>Trucks finished after</h2>
-              <p class="output">{{sim.time === 0? "Simulation hasn't run yet!" : printTime(sharing.time)}}</p>
+              <p class="output">{{sim.time === 0? "Simulation hasn't run yet!" : printTime(sim.time)}}</p>
             </div>
             <div class="outputElement">
               <h2>Total distance</h2>
