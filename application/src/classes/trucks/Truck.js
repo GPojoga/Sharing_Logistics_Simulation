@@ -1,7 +1,6 @@
 
 import {Observable} from "../util/Observable";
 import {TruckView} from "../view/TruckView";
-import store from "../../store/index.js";
 import PlanManager from "@/classes/trucks/PlanManager";
 import UpdateMessage from "@/classes/util/UpdateMessage";
 import TruckPropertyHandler from "@/classes/trucks/TruckPropertyHandler";
@@ -107,15 +106,16 @@ export default class Truck extends Observable{
 
     planManager = Object;
 
+    state;
     currentOrder = Object;
     /**
      *
      * @param type truck type ("Light"|"Heavy"|"Train")
      * @param location initial location of the truck
-     * @param mapObj the map on which the truck is visualized
+     * @param store the map on which the truck is visualized
      * @param tickRate updates per second
      */
-    constructor(type,location,mapObj,tickRate) {
+    constructor(type,location,store,tickRate) {
         super();
         if (this.constructor === Truck) {
             throw new Error('Can not instantiate abstract class Truck!');
@@ -123,9 +123,10 @@ export default class Truck extends Observable{
         this.initialLocation = location;
         this.location = location;
         this._tickRate = tickRate;
+        this.store = store;
         this.planManager = new PlanManager(this);
-        this.properties = TruckPropertyHandler.getProperties(type);
-        this.addListener(new TruckView(this,mapObj));
+        this.properties = TruckPropertyHandler.getProperties(store,type);
+        this.addListener(new TruckView(this,store.getters.map));
         this.addListener(this.planManager);
     }
 
@@ -225,7 +226,7 @@ export default class Truck extends Observable{
      * @private
      */
     _updateRouteProgress(){
-        let time = store.getters.time.getTimePassed(this._lastUpdate);
+        let time = this.store.getters.time.getTimePassed(this._lastUpdate);
         this._lastUpdate += time;
         this._updateRouteProgressHelper(this.route.route,time);
     }

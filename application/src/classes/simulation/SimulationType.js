@@ -2,7 +2,7 @@
  * JavaScript doesn't support Enums natively, so this is as close as it gets.
  */
 export const simulationType = {
-    TRADITIONAL: 0,
+    TRADITIONAL: 2,
     SHARED: 1,
-    NONE: 2,
+    NONE: 0,
 };

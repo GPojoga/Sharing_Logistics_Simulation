@@ -1,15 +1,14 @@
-import store from "@/store";
-
 export default {
 
     /**
      * This method retrieves the description of the truck from storage
      * and sets the properties of the truck according to its type
+     * @param store
      * @param type truck type
      * @private
      */
-    getProperties(type){
-        let props = this._getPropertiesFromStorage(type);
+    getProperties(store,type){
+        let props = this._getPropertiesFromStorage(store,type);
         return {
             type : type,
             volume : parseFloat(props.volume.value),
@@ -24,11 +23,12 @@ export default {
      * This function retrieves the properties of the given truck type
      * from the store. If the type does not exist in the store, the
      * Train type is set by default
+     * @param store
      * @param type truck type
      * @private
      * @return Object
      */
-    _getPropertiesFromStorage(type){
+    _getPropertiesFromStorage(store,type){
         let tType = store.state.truckTypes.find(x => x.key === type);
         let props;
         if(tType !== undefined){

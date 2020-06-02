@@ -25,10 +25,14 @@
     "@vue/cli-plugin-eslint": "~4.2.0",
     "@vue/cli-plugin-router": "^4.3.0",
     "@vue/cli-service": "~4.2.0",
+    "@vue/test-utils": "^1.0.3",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
+    "babel-jest": "^26.0.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
     "jest": "^26.0.1",
+    "vue-jest": "^3.0.5",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -50,13 +54,19 @@
     "> 1%",
     "last 2 versions"
   ],
-  "jest" : {
-      "modulePaths": [
-        "src",
-        "test"
-      ],
-      "moduleDirectories": [
-      "node_modules"
-    ]
+  "jest": {
+    "verbose": true,
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "vue-jest",
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
   }
 }

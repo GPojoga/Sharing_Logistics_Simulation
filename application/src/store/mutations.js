@@ -67,14 +67,22 @@ export const mutations = {
      * @param router
      */
     setSimulation(state,{type : simType,store : store}){
-        if(simType === simulationType.TRADITIONAL){
-            if(state.traditionalSimulation === null){
-                state.traditionalSimulation = new Simulation(simType,store);
-            }
-        } else {
-            if(state.sharedSimulation === null){
-                state.sharedSimulation = new Simulation(simType,store);
-            }
+        if(!state.map){
+            throw Error('The map object was not set. The simulation cannot be initialized ');
+        }
+        switch(simType){
+            case simulationType.TRADITIONAL:
+                if(state.traditionalSimulation === null) {
+                    state.traditionalSimulation = new Simulation(simType, store);
+                }
+                break;
+            case simulationType.SHARED:
+                if(state.sharedSimulation === null){
+                    state.sharedSimulation = new Simulation(simType,store);
+                }
+                break;
+            default :
+                throw Error("Invalid simulation type");
         }
     },
 

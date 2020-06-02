@@ -1,8 +1,8 @@
-import Truck from "./Truck"
+import Truck from "@/classes/trucks/Truck.js"
 
 export default class SharedTruck extends Truck{
-    constructor(type,location,mapObj,tickRate) {
-        super(type,location,mapObj,tickRate);
+    constructor(type,location,store,tickRate) {
+        super(type,location,store,tickRate);
     }
 
     /**

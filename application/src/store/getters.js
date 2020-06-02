@@ -69,6 +69,18 @@ export const getters = {
      */
     map: state => {
         return state.map;
+    },
+
+    traditionalSimulation : state => {
+        return state.traditionalSimulation;
+    },
+
+    sharedSimulation : state => {
+        return state.sharedSimulation;
+    },
+
+    currentSimulationType : state => {
+        return state.currentSimulationType;
     }
 };
 
