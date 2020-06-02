@@ -54,8 +54,8 @@ export default {
       let controlPanel = document.getElementById('controlPanel');
       let collapseArrow = document.getElementById('collapseArrow');
 
-      this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -25 : 0;
-      controlPanel.style.left = this.controlPanelLeftPos.toString(10) + "%";
+      this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -425 : 0;
+      controlPanel.style.left = this.controlPanelLeftPos.toString(10) + "px";
 
       collapseArrow.style.transform = this.controlPanelLeftPos === 0 ?
               "rotate(0)" : "rotate(180deg)";
@@ -94,7 +94,7 @@ export default {
     background: rgb(255, 255, 255);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     height: 100%;
-    width: 25%;
+    width: 425px;
     overflow: visible;
     position: absolute;
     left: 0;
