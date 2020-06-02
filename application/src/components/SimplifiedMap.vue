@@ -1,5 +1,5 @@
 <template>
-    <l-map  id="map" :class="activeGPS ? 'selectorCursor' : 'dragCursor'" ref="map"
+    <l-map  id="map" ref="map" :style="activeGPS ? 'cursor: crosshair' : 'cursor: grab'"
             :options="{
                     zoomControl:false
                   }"
@@ -29,7 +29,6 @@
             LTileLayer,
             LControlZoom,
         },
-
         data () {
             return {
                 url: mapLayoutUrl,
@@ -127,15 +126,5 @@
         position: absolute;
         background: #f7f7ff;
         z-index: 0;
-    }
-
-    /* Style of the cursor when a location is being selected. */
-    .selectorCursor {
-        cursor: crosshair;
-    }
-
-    /* Style of the cursor when a location is being selected*/
-    .dragCursor {
-        cursor: grab;
     }
 </style>
