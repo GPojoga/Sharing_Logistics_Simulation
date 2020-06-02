@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div v-for="variable in truckVariables" :key="variable.name">
+    <div class="truckVariables">
+        <div v-for="variable in truckVariables" :key="variable.name" class="variableContainer">
             <div class="variableName">
                 <p class="variableSubText">
                     {{variable.name}}
@@ -65,11 +65,22 @@
 </script>
 
 <style scoped>
+    /* Style the container of all variables for one truck */
+    .truckVariables {
+        display: block;
+    }
+
+    /* Contains a variable name and field */
+    .variableContainer {
+        height: 40px;
+        overflow: hidden;
+        display: block;
+    }
+
     /* Style an entry of the name column */
     .variableName {
         width: 40%;
-        height: 30px;
-
+        height: 100%;
         float: left;
         text-align: left;
         padding-left: 7.5%;
@@ -84,8 +95,6 @@
     /* Style an entry of the constant field */
     .variableField {
         width: 40%;
-        height: 30px;
-
         float: right;
         text-align: center;
         padding-right: 5%;

@@ -285,7 +285,7 @@ Gheorghe created the Map and the store,
 Lorenzo created the ControlPanelOutput and,
 Lonneke created the JourneyInput.
 
-The division during the second block was more nuanced check Trello for more details.
+The division during the second block was more nuanced. Check Trello for more details.
 
 ## Change log
 <!--

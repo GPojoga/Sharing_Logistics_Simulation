@@ -74,7 +74,7 @@
         /* Change the text; font, size, ect... */
         text-align: center;
         font-size: 90%;
-
+        margin-top: 0;
         width: 100%;
     }
 

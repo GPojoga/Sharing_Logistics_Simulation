@@ -20,18 +20,24 @@ export default new Vuex.Store({
         // The results of the two types of simulations.
         simulationResults : {
             traditional : {
+                finished : false,
                 distance : 0,
                 numberOfTrucks : 0,
                 co2emissions : 0,
                 fuelConsumed : 0,
-                time : 0
+                time : 0,
+                averageDeliveryTime : 0,
+                averageTransitTime : 0
             },
             shared : {
+                finished : false,
                 distance : 0,
                 numberOfTrucks : 0,
                 co2emissions : 0,
                 fuelConsumed : 0,
-                time : 0
+                time : 0,
+                averageDeliveryTime : 0,
+                averageTransitTime : 0
             }
         },
 

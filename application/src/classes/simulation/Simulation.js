@@ -170,11 +170,17 @@ export class Simulation {
 
     finish(){
         console.log("Simulation FINISHED");
+
+        /* Stop the time */
+        this._store.getters.time.togglePause();
+
+        /* Calculate the results */
         const totalFuelConsumed = this._trucksList.reduce((total,nextTruck) => {
             return total + nextTruck.fuelConsumed;
         }, 0);
 
         const results = {
+            finished : true,
             distance : this._trucksList.reduce((total,nextTruck) => {
                 return total + nextTruck.distanceTravelled;
             }, 0),

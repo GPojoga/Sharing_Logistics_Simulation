@@ -109,7 +109,7 @@ export class Time {
     }
 
     /**
-     * This method pauses/plays the simulation.
+     * This method pauses the simulation.
      */
     togglePause() {
         if (store.getters.isRunning) this.isPaused = !this.isPaused;

@@ -7,58 +7,43 @@
     </div>
 
     <div id="main">
-      <div class="header">
-        <h1>Sharing Logistics</h1>
-      </div>
-      <div id="newWayPanel" class="panel">
-        <div class="innerPanel">
-          <div class="outputElement">
-            <h2>Trucks finished after</h2>
-            <p class="output">{{sharing.time === 0? "Simulation hasn't run yet!" : printTime(sharing.time)}}</p>
-          </div>
-          <div class="outputElement">
-            <h2>Total distance</h2>
-            <p class="output">{{Math.round(sharing.distance)}} m</p>
-          </div>
-          <div class="outputElement">
-            <h2>Number of vehicles used</h2>
-            <p class="output">{{sharing.numberOfTrucks}}</p>
-          </div>
-          <div class="outputElement">
-            <h2>CO<sub>2</sub> emissions</h2>
-            <p class="output">{{sharing.co2emissions.toFixed(1)}} kg</p>
-          </div>
-          <div class="outputElement">
-            <h2>Fuel consumed</h2>
-            <p class="output">{{sharing.fuelConsumed.toFixed(2)}} L</p>
-          </div>
+      <div v-for="(sim, index) in [sharing, traditional]"
+           v-bind:key="index"
+           class="simulationResultsField">
+        <div class="header">
+          <h1 v-if="index === 0">Sharing Logistics</h1>
+          <h1 v-if="index === 1">Traditional Method</h1>
         </div>
-      </div>
-
-      <div class="header">
-        <h1>Traditional Method</h1>
-      </div>
-      <div id="oldWayPanel" class="panel">
-        <div class="innerPanel">
-          <div class="outputElement">
-            <h2>Trucks finished after</h2>
-            <p class="output">{{traditional.time === 0? "Simulation hasn't run yet!" : printTime(traditional.time)}}</p>
-          </div>
-          <div class="outputElement">
-            <h2>Total distance</h2>
-            <p class="output">{{Math.round(traditional.distance)}} m</p>
-          </div>
-          <div class="outputElement">
-            <h2>Number of vehicles used</h2>
-            <p class="output">{{traditional.numberOfTrucks}}</p>
-          </div>
-          <div class="outputElement">
-            <h2>CO<sub>2</sub>  emissions</h2>
-            <p class="output">{{traditional.co2emissions.toFixed(1)}} kg</p>
-          </div>
-          <div class="outputElement">
-            <h2>Fuel consumed</h2>
-            <p class="output">{{traditional.fuelConsumed.toFixed(2)}} L</p>
+        <div class="panel" :class="{ newWayPanel : index === 0, oldWayPanel : index === 1 }">
+          <div class="innerPanel">
+            <div class="outputElement">
+              <h2>Trucks finished after</h2>
+              <p class="output">{{sim.time === 0? "Simulation hasn't run yet!" : printTime(sharing.time)}}</p>
+            </div>
+            <div class="outputElement">
+              <h2>Total distance</h2>
+              <p class="output">{{Math.round(sim.distance)}} m</p>
+            </div>
+            <div class="outputElement">
+              <h2>Number of vehicles used</h2>
+              <p class="output">{{sim.numberOfTrucks}}</p>
+            </div>
+            <div class="outputElement">
+              <h2>CO<sub>2</sub> emissions</h2>
+              <p class="output">{{sim.co2emissions.toFixed(1)}} kg</p>
+            </div>
+            <div class="outputElement">
+              <h2>Fuel consumed</h2>
+              <p class="output">{{sim.fuelConsumed.toFixed(2)}} L</p>
+            </div>
+            <div class="outputElement">
+              <h2>Average delivery time</h2>
+              <p class="output">{{printTime(sim.averageDeliveryTime)}}</p>
+            </div>
+            <div class="outputElement">
+              <h2>Average transit time</h2>
+              <p class="output">{{printTime(sim.averageTransitTime)}}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -96,6 +81,12 @@
 </script>
 
 <style>
+  /* Stylize the container of the header and panel */
+  .simulationResultsField {
+    width: 50vw;
+    display: inline-block;
+  }
+
   /* Stylize the navigation button */
   .navbar {
     height: 30px;
@@ -137,13 +128,13 @@
 
   /* Stylize the titles of both results */
   .header {
-    width: 40vw;
+    width: 30vw;
     display: inline-block;
     text-align: center;
   }
 
   /* Set the new way to the left */
-  #newWayPanel{
+  .newWayPanel{
     left: 10vw;
   }
 
@@ -153,7 +144,7 @@
   }
 
   /* Set the old way to the right */
-  #oldWayPanel{
+  .oldWayPanel{
     right: 10vw;
   }
 
