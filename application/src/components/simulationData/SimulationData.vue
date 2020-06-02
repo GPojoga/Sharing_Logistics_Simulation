@@ -42,6 +42,11 @@
                 </div>
             </div>
         </div>
+        <div id="endButtonContainer" v-if="simulationStatus">
+            <BasicButton id="endButton" @click="endSimulation">
+                End Simulation
+            </BasicButton>
+        </div>
     </div>
 
 </template>
@@ -50,9 +55,11 @@
     import {simulationType} from "@/classes/simulation/SimulationType";
     import TruckComponent from "@/components/simulationData/TruckComponent";
     import GoodComponent from "@/components/simulationData/GoodComponent";
+    import BasicButton from "../BasicButton";
     export default {
         name: "SimulationData",
         components:{
+            BasicButton,
             GoodComponent,
           TruckComponent
         },
@@ -60,8 +67,6 @@
             simulationStatus(newStatus){
                 if (newStatus){
                     this.expand();
-                }else{
-                    this.shrink();
                 }
             }
         },
@@ -142,8 +147,10 @@
 
                 toDeactivate.style.background = "#007FEB";
                 toDeactivate.style.fill = "white";
+            },
+            endSimulation(){
+                this.currentSimulation.stop();
             }
-
         }
     }
 
@@ -165,7 +172,7 @@
 
     .content{
         width : 100%;
-        height : 90%;
+        height : 80%;
         overflow-y: scroll;
     }
 
@@ -188,6 +195,16 @@
         width: 100%;
         height : 10%;
         background-color: #007FEB;
+    }
+
+    #endButtonContainer{
+        width: 100%;
+        height: 10%;
+        background-color: #007FEB;
+    }
+
+    #endButton{
+        margin-top: 5%;
     }
 
     #options{

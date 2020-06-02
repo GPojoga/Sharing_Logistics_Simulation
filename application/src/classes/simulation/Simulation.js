@@ -49,10 +49,13 @@ export class Simulation {
         if(this._running){
             this._running = false;
             this._store.state.isRunning = false;
+            this._store.state.currentSimulationType = simulationType.NONE;
             console.log("Goods : ",JSON.parse(JSON.stringify(this._goodsList)));
             this._disableGoods();
             this._disableTrucks();
-            console.log("Simulation : disabled everything");
+            console.log("Simulation " + ": disabled everything");
+            this._goodsList = [];
+            this._trucksList = [];
         }
     }
 
