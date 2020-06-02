@@ -2,11 +2,11 @@ import store from "../store/index.js";
 
 export class Time {
     // Constants representing the min and max speed the simulation can run.
-    MIN_SPEED = 1/64;
-    MAX_SPEED = 64;
+    MIN_SPEED = 1/4;
+    MAX_SPEED = 1024;
 
     // Constant representing the default speed of the simulation.
-    DEFAULT_SPEED = 1;
+    DEFAULT_SPEED = 16;
 
     // Constant representing the number of frequency of time updates.
     UPDATE_RATE = 100;

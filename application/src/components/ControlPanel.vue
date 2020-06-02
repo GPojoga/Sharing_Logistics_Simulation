@@ -54,8 +54,8 @@ export default {
       let controlPanel = document.getElementById('controlPanel');
       let collapseArrow = document.getElementById('collapseArrow');
 
-      this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -400 : 0;
-      controlPanel.style.left = this.controlPanelLeftPos.toString(10) + "px";
+      this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -25 : 0;
+      controlPanel.style.left = this.controlPanelLeftPos.toString(10) + "%";
 
       collapseArrow.style.transform = this.controlPanelLeftPos === 0 ?
               "rotate(0)" : "rotate(180deg)";
