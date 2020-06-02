@@ -11,14 +11,14 @@ export class GoodView{
         this.viewPickUp = L.marker(good.pickUp, {
             icon: L.icon({
                 iconUrl: 'assets/good_pickup.svg',
-                iconSize: [38, 95],
+                iconSize: [30, 40],
             })
         });
 
         this.viewDrop = L.marker(good.delivery, {
             icon: L.icon({
                 iconUrl: 'assets/good_drop.svg',
-                iconSize: [38, 95],
+                iconSize: [30, 40],
             })
         });
 
