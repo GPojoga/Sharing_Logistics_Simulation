@@ -47,6 +47,9 @@
                 End Simulation
             </BasicButton>
         </div>
+        <div v-else>
+            Simulation finished
+        </div>
     </div>
 
 </template>

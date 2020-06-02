@@ -92,7 +92,7 @@ export const mutations = {
      * @param results The results of running the simulation.
      */
     setSimulationResults(state, {type, results}) {
-        console.log(results);
+        state.isRunning = false;
         if (type === simulationType.TRADITIONAL) state.simulationResults.traditional = results;
         else if (type === simulationType.SHARED) state.simulationResults.shared = results;
     },
