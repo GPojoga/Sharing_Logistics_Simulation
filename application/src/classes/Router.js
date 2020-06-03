@@ -37,7 +37,7 @@ export default class Router{
                     return new Promise( function(resolve){
                         setTimeout(function () {
                             resolve(self._postRequest(request));
-                        } ,3000);
+                        } ,2000);
                     });
                 }
             }).catch( () => {
@@ -45,7 +45,7 @@ export default class Router{
                 return new Promise( function(resolve){
                     setTimeout(function () {
                         resolve(self._postRequest(request));
-                    } ,3000);
+                    } ,2000);
                 });
             }
         )

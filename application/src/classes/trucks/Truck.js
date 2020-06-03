@@ -242,8 +242,8 @@ export default class Truck extends Observable {
      */
     _updateRouteProgressHelper(route,time){
         let distance = 0;
-        while(time > this.route.timeSegment){
-            if(route[this.route.index].duration === 0){
+        while(time >= this.route.timeSegment){
+            if(this.route.index === this.route.route.length - 1){
                 this.distanceTravelled += distance;
                 this.fuelConsumed += this.computeFuelConsumed(distance, this.currentLoad.weight);
                 this._setLocation(route[this.route.index].coordinates);
