@@ -84,11 +84,11 @@ export class Simulation {
         this._allGoodsList = [];
         store.state.goods.forEach(good => {
             let prod = new Good(
-                good.quantity,          // quantity
-                good.weight,            // weight
-                good.volume,            // volume
-                good.pickupLocation,    // pickUp
-                good.deliveryLocation,  // delivery
+                good.quantity.value,          // quantity
+                good.weight.value,            // weight
+                good.volume.value,            // volume
+                good.pickupLocation.value,    // pickUp
+                good.deliveryLocation.value,  // delivery
                 store.state.map         // map object
             );
             goods.push(prod);
@@ -201,7 +201,6 @@ export class Simulation {
                      return accumulator;
                 },[])),
         };
-
         this._store.commit('setSimulationResults', {type : this._simType, results : results});
     }
 }

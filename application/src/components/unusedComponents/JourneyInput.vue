@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import LocationInput from "../InputLocation";
+    import LocationInput from "../LocationInput";
 
 
     export default {

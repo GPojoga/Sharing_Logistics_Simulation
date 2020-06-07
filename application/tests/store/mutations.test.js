@@ -98,3 +98,77 @@ describe('addNewGood',() => {
         expect(store.getters.goods.length).toEqual(n + 1);
     });
 });
+
+describe('removeGood',()=>{
+   it('removes an entry from the goods list',()=>{
+     store.commit('addNewGood');
+     let n = store.getters.goods.length;
+     store.commit('removeGood',{index:0});
+     expect(store.getters.goods.length).toEqual(n - 1);
+   });
+});
+
+describe('set good properties',()=>{
+    store.commit('addNewGood');
+    it('sets the quantity of the good on index 0 ',()=>{
+        store.commit('setGoodQuantity',{value : 42,index:0});
+        expect(store.getters.goods[0].quantity.value).toEqual(42);
+    });
+    it('sets the weight of the good on index 0 ',()=>{
+       store.commit('setGoodWeight',{value : 56,index:0});
+       expect(store.getters.goods[0].weight.value).toEqual(56);
+    });
+    it('sets the volume of the good on index 0',()=>{
+       store.commit('setGoodVolume',{value : 21,index:0});
+       expect(store.getters.goods[0].volume.value).toEqual(21);
+    });
+    it('sets the pickup location of the good on index 0',()=>{
+       store.commit('setGoodPickupLocation',{location:{lat:1,lng:1},index:0,text:"some Text"});
+       expect(store.getters.goods[0].pickupLocation.value).toStrictEqual({lat:1,lng:1});
+       expect(store.getters.goods[0].pickupLocation.text).toBe("some Text");
+    });
+    it('sets the delivery location of the good on index 0',()=>{
+        store.commit('setGoodDeliveryLocation',{location:{lat:42,lng:21},index:0,text:"some delivery"});
+        expect(store.getters.goods[0].deliveryLocation.value).toStrictEqual({lat:42,lng:21});
+        expect(store.getters.goods[0].deliveryLocation.text).toBe("some delivery");
+    });
+});
+
+describe('addNewTruck',()=>{
+    store.state.trucks = [];
+    it('adds a new entry to the truck list',()=>{
+        let n = store.getters.trucks.length;
+       store.commit('addNewTruck');
+       expect(store.getters.trucks.length).toEqual(n+1);
+    });
+});
+
+describe('removeTruck',()=>{
+    store.state.trucks = [];
+    store.commit('addNewTruck');
+   it('removes a truck from the truck list',()=>{
+       let n = store.getters.trucks.length;
+       store.commit('removeTruck',{index:0});
+       expect(store.getters.trucks.length).toEqual(n-1);
+   });
+});
+
+describe('set truck properties',()=>{
+    beforeEach(()=>{
+        store.state.trucks = [];
+        store.commit('addNewTruck');
+    });
+   it('sets the truck type',()=>{
+       store.commit('setTruckType',{type:'light',index:0});
+       expect(store.getters.trucks[0].type).toBe('light');
+   });
+   it('sets the truck quantity',()=>{
+     store.commit('setTruckQuantity',{value:4,index:0});
+     expect(store.getters.trucks[0].quantity.value).toEqual(4)
+   });
+   it('sets the truck starting location ',()=>{
+      store.commit('setTruckStartingLocation',{location:{lat:34,lng:54},index:0,text:'some starting location'});
+      expect(store.getters.trucks[0].startLocation.value).toStrictEqual({lat:34,lng:54});
+      expect(store.getters.trucks[0].startLocation.text).toBe('some starting location');
+   });
+});

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    import LocationInput from "./InputLocation";
+    import LocationInput from "./LocationInput";
     import InputNumberBox from "./InputNumberBox";
 
     export default {

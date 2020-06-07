@@ -127,7 +127,7 @@ export default new Vuex.Store({
          * ]
          */
         checkLocation : function (coords, text) {
-            if (text === null || text === "") return [true, "Field can't be empty"];
+            if (!text) return [true, "Field can't be empty"];
             if (coords === null) return [true, "Must be known location"];
             // TODO: possibly do some more checks with coords here.
 

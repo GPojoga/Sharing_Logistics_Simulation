@@ -43,11 +43,11 @@ export default class Good extends Observable{
 
     constructor(quantity, weight, volume, pickUp, delivery, mapObj){
         super();
-        this.quantity = quantity.value;
-        this.weight = weight.value;
-        this.volume = volume.value;
-        this.pickUp = pickUp.value;
-        this.delivery = delivery.value;
+        this.quantity = quantity;
+        this.weight = weight;
+        this.volume = volume;
+        this.pickUp = pickUp;
+        this.delivery = delivery;
         this.timer = store.getters.time;
         this.initialTime = store.getters.time.getTimePassed();
         this.addListener(new GoodView(this, mapObj));
@@ -101,7 +101,7 @@ export default class Good extends Observable{
         this.trucksInserts[index] = insert;
         if (this.bestInsert.truckIndex === index) {
             // Case the truck that has been updated held the previous title of best insert.
-            this.findBestInsert();
+            this._findBestInsert();
         } else {
             // Case another truck was updated.
             if (this.bestInsert.cost > insert.cost) this.bestInsert = insert;
@@ -111,7 +111,7 @@ export default class Good extends Observable{
     /**
      * This method is call in cases where the truck with the best insert has been updated and the best insert is lost.
      */
-    findBestInsert(){
+    _findBestInsert(){
         this.bestInsert = {cost: Infinity, pickup: null, delivery: null, truckIndex: null};
         for (let i = 0; i < this.trucksInserts.length; i++){
             if (this.bestInsert.cost > this.trucksInserts[i].cost) this.bestInsert = this.trucksInserts[i];
