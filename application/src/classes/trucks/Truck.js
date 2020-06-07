@@ -178,7 +178,7 @@ export default class Truck extends Observable {
      * follow the current route
      * @private
      */
-    followOrder(order){
+    _followOrder(order){
         this.currentOrder = order;
         if (this.state === truckState.DISABLED){
             return;

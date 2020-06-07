@@ -64,7 +64,7 @@ export default class PlanManager{
                     distSegment : route.route[0].distance,
                     timeSegment : route.route[0].duration
                 });
-                this.truck.followOrder(order);
+                this.truck._followOrder(order);
             });
         }
     }
