@@ -125,7 +125,7 @@ As a user of this applet I think the following non-functional requirements are i
 TODO
 
 
-
+<!-- scalability of the trucks and goods is important! Memory is limited -->
 
 
    - [x] (N1.1) The results should be on a separate output page from which I can easily go back to the input page.
