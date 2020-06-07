@@ -258,7 +258,7 @@ export const mutations = {
             type : state.truckTypes[0].key,                                                          // The type of truck inputted from truckTypes, default light van.
             quantity : {value : 1, error : false, message : ""},                                     // The quantity of trucks inputted, default 1
             startLocation : {value: null, error: true, message: "Field can't be empty", text: null}  // The location the truck(s) start at.
-        }
+        };
         state.trucks.push(truck);
     },
 

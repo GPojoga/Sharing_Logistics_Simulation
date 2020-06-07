@@ -1,4 +1,4 @@
-import {FreightPlatform} from "./FreightPlatform";
+import FreightPlatform from "./FreightPlatform";
 import {simulationType} from "./SimulationType";
 import SharedTruck from "../trucks/SharedTruck";
 import Good from "../goods/Good";
@@ -30,7 +30,7 @@ export class Simulation {
         this._store = store;
     }
 
-    simulate(){
+    _simulate(){
         this._freightPlatform = new FreightPlatform(this._trucksList, this._goodsList);
         this._freightPlatform.distributeGoodsOverTrucks();
         this.sendTrucksHome();
@@ -38,11 +38,11 @@ export class Simulation {
 
     start(){
         console.log('start simulation');
-        this.reset();
+        this._reset();
         this._running = true;
         this._store.state.isRunning = true;
         this._store.getters.time.run();
-        this.simulate();
+        this._simulate();
     }
 
     stop(){
@@ -50,16 +50,14 @@ export class Simulation {
             this._running = false;
             this._store.state.isRunning = false;
             this._store.state.currentSimulationType = simulationType.NONE;
-            console.log("Goods : ",JSON.parse(JSON.stringify(this._goodsList)));
             this._disableGoods();
             this._disableTrucks();
-            console.log("Simulation " + ": disabled everything");
             this._goodsList = [];
             this._trucksList = [];
         }
     }
 
-    reset(){
+    _reset(){
         this.stop();
         this._goodsList = this.initializeGoods(this._store);
         this._trucksList = this.initializeTrucks(this._simType,this._store);

@@ -21,7 +21,6 @@ export default class TruckTracker{
         } else {
             console.error("Invalid Truck");
         }
-
     }
 
     checkFinished(){

@@ -7,7 +7,7 @@
  *
  * The idea of a freight platform is based on the real freight platform https://www.saloodo.com/.
  */
-export class FreightPlatform {
+export default class FreightPlatform {
     /**
      * A private array of the trucks in the simulation.
      */
@@ -51,7 +51,7 @@ export class FreightPlatform {
             let insert = good.getBestInsert();
             this._trucks[insert.truckIndex].assignToGood(good, insert.pickup, insert.delivery);
             this._goods.forEach(good => {good.updateTruck(this._trucks[insert.truckIndex], insert.truckIndex)});
-            this.reSortGoods();
+            this._reSortGoods();
         }
     }
 
@@ -59,7 +59,7 @@ export class FreightPlatform {
      * This method re-sorts the goods such that they are added to the simulation in a greedy manner.
      * Note: because we except the goods to already be mostly sorted, we sort them using insertion sort to get a complexity of O(n).
      */
-    reSortGoods(){
+    _reSortGoods(){
         for (let i = 0; i < this._goods.length; i++){
             let j, element = this._goods[i];
             for (j = i - 1; 0 <= j; j--) {
