@@ -7,7 +7,7 @@ import router from './router'
 Vue.config.productionTip = false;
 
 // eslint-disable-next-line
-delete L.Icon.Default.prototype._getIconUrl
+delete L.Icon.Default.prototype._getIconUrl;
 // eslint-disable-next-line
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),

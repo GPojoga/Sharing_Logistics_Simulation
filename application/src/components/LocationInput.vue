@@ -1,11 +1,20 @@
 <template>
     <div class="location">
-        <label>
-            {{ locationInputLabel }}
-            <input type="text" :list="suggestions" v-model="enteredText" v-on:input="updatePossibilities" autocomplete="off">
+        <label style="display: block;">
+            {{ label }}
         </label>
-        <div class="optionList" :id="suggestions" v-if="displayPossibilities && possibilities != null">
-            <p class="option" v-for="(p, index) in possibilities" :id="index" :key="index" @click="selectLocation(p)">
+        <basic-input :title="info"  type="text" v-model="enteredText" :disabled="isDisabled"
+                     @input="updatePossibilities" @focus="toggleFocus" @blur="toggleFocus"
+                     :class="[{ optionListActivatedInput : displayPossibilities && isFocus }, isValid ? 'valid' : 'invalid' ]"/>
+
+        <div class="gpsContainer">
+            <basic-button @click="activateGpsButton" type="button" layout="solid" class="gpsButton"
+                          :class="{ gpsOn: gpsActivated}">
+                <i class="fas fa-map-marked-alt"/>
+            </basic-button>
+        </div>
+        <div class="optionList" :id="idSuggestions" v-if="displayPossibilities && isFocus && possibilities != null">
+            <p class="option" v-for="(p, i) in possibilities" :id="i" :key="i" @click="selectLocation(p)">
                 {{ p.label }}
             </p>
         </div>
@@ -19,9 +28,13 @@
             https://github.com/smeijer/leaflet-geosearch
        An example can be found at:
             https://smeijer.github.io/leaflet-geosearch/#openstreetmap
+
+       It is a wrapper around OpenStreetMap and Nominatim, which only allows 1 request per second!
     */
     import {OpenStreetMapProvider} from "leaflet-geosearch";
     import L from "leaflet";
+    import BasicInput from "./BasicInput";
+    import BasicButton from "./BasicButton";
 
     const provider = new OpenStreetMapProvider();
 
@@ -41,55 +54,38 @@
 
     export default {
         name: "LocationInput",
+        components: {BasicButton, BasicInput},
         props: {
-            locationInputLabel: String,
-            value: Object,
-            index: Number
+            location: Object,  // This is the object that the input is altering.
+            label: String,     // This is the label displayed with the location input.
+            setter: String,    // This is the setter the input should call when it gets a new location.
+            forward: Object,   // This is the data to be forwarded to the setter.
         },
         data() {
             return {
-                enteredText: null,
-                selected: null,
-                possibilities: null,
-                displayPossibilities: false,
-                locations: this.$store.state.locations
+                enteredText: null,                  // The text inputted by the user.
+                selected: null,                     // The location currently selected.
+                possibilities: null,                // A list of possible locations based on the currently inputted text.
+                displayPossibilities: false,        // A boolean keeping track of if the possibilities should be shown.
+                waitingToShowPossibilities: false,
+                buttonObserver: false,              // A boolean observing when the gps button is pressed
+                isFocus: false                      // A boolean modeling if the input is focused.
             }
         },
-        watch:{
-            locations: function(){
-                let location = this.locations.get()[this.index]; // the location corresponding
-                                                                 // to this LocationInput
-                if (location !== null){ //location is not empty
-                    this.reverseGeocode(location.lat,location.lng).then(
-                        lc => {
-                            this.enteredText = lc;
-                        }
-                    );
-                }else{ // the location is empty
-                    this.enteredText = '';
+        mounted() {
+            this.enteredText = this.location.text;
+        },
+        watch: {
+            location: function() {
+                if (this.location.value != null) {
+                    if (this.enteredText === null || this.enteredText === '' || this.buttonObserver) {
+                        this.enteredText = this.location.text;
+                        this.buttonObserver = false;
+                    }
                 }
             }
         },
         methods: {
-            /**
-             * This function performs the reverse geo-coding. If it is possible to identify
-             * the location using the coordinates, then the name of the location is returned.
-             * Otherwise, a string of the form '[<lat>,<lon>]' is returned.
-             * @param lat latitude
-             * @param lon longitude
-             * @returns {Promise<string|*>}
-             */
-            async reverseGeocode(lat,lon){
-                let url = 'https://nominatim.openstreetmap.org/reverse?format=json';
-                url += '&lat=' + lat + '&lon=' + lon;
-                let result = await fetch(url);
-                let json = await result.json();
-                if (json.display_name !== undefined){
-                    return json.display_name;
-                }else{
-                    return '[' + lat +',' + lon + ']';
-                }
-            },
             /**
              * This function is called every time the user inputs a new character. It queries
              * the geo-coder, and returns a list of top 5 suggestions.
@@ -98,74 +94,122 @@
                 if (this.enteredText !== '') {
                     this.displayPossibilities = true;
 
-                    provider.search({ query: this.enteredText }).then(
-                        list => {
-                            this.possibilities = list.splice(0,5);
-                        }
-                    );
+                    if (!this.waitingToShowPossibilities) {
+                        this.waitingToShowPossibilities = true;
+
+                        const self = this;
+
+                        setTimeout(function() {
+                            if (self.enteredText !== '') {
+                                provider.search({ query: self.enteredText }).then(
+                                    list => {
+                                        self.possibilities = list.splice(0,5);
+                                    }
+                                );
+                                self.waitingToShowPossibilities = false;
+                            }
+                        }, 1000);
+                    }
                 } else {
                     this.displayPossibilities = false;
                     this.possibilities = null;
-                    this.selectLocation(null);
                 }
+                this.selectLocation(null);
             },
             /**
              * This function deactivates the suggestions box, and selects the one the user clicked on.
-             * @param p
+             * @param pickedLocation The location picked by the user.
              */
-            selectLocation(p) {
-                this.displayPossibilities = false;
-                this.selected = p;
-                if (p !== null){
-                    this.enteredText = p.label;
-                }
+            selectLocation(pickedLocation) {
+                this.selected = pickedLocation;
+                if (pickedLocation !== null) this.enteredText = pickedLocation.label;
                 this.addToStore();
-                this.$emit('input', this.selected);
             },
             /**
              * This function adds the selected location to the store.
              */
             addToStore() {
-                let state = this.$store.state;
-                if (this.selected === null){
-                    state.locations.set(null,this.index);
-                }else{
-                    state.locations.get()[this.index] = null;
-                    let latlng = L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
-                    state.locations.set(latlng,this.index);
-                }
+                let payload = this.forward;
+                // Add the inputted location to the payload.
+                payload.location = (this.selected === null) ? null : L.latLng(parseFloat(this.selected.y), parseFloat(this.selected.x));
+                payload.text = this.enteredText;
+                this.$store.commit(this.setter, payload);
+            },
+            /**
+             * This function activates the gps button so that the user can select a location on the map.
+             */
+            activateGpsButton(){
+                this.buttonObserver = true;
+                this.$store.state.tempForMap = true;
+                this.$store.state.tempForForward = this.forward;
+                this.$store.state.tempForSetter = this.setter;
+            },
+            /**
+             * This function toggles the focus on the search text field for locations.
+             */
+            toggleFocus() {
+                setTimeout( () => {
+                    this.isFocus = !this.isFocus;
+                }, 100);  // Tolerance so the suggestions have time to be clicked
             }
         },
         computed: {
-            suggestions() {
-                return 'suggestions' + this.value;
+            /**
+             * @returns {string} Id computed for the suggestions list.
+             */
+            idSuggestions() {
+                return 'suggestions' + this.label + this.setter + JSON.stringify(this.forward);
+            },
+            gpsActivated() {
+                return this.$store.state.tempForMap && (this.$store.state.tempForForward === this.forward);
+            },
+            info() {
+                return this.location.message;
+            },
+            isValid() {
+                return !this.location.error;
+            },
+            isDisabled : function() {
+                return this.$store.getters.isRunning;
             }
-        }
+        },
+
     }
 </script>
 
 <style scoped>
     /* Contains all options for places */
     .optionList {
-        width: 85.5%;
+        width: 88.4%;
         background-color: white;
         display: flex;
         flex-direction: column;
         position: absolute;
-        z-index: 1; /* Put on top of other elements */
+        z-index: 2; /* Put on top of other elements */
         opacity: 1; /* Make not transparent */
 
         /* Set border of the list with suggestions for places */
-        border: solid #2284ff;
-        border-width: 2px;
-        border-radius: 4px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border: 0px solid #2284ff;
+        border-radius: 0 0 4px 4px;
+        box-shadow: 0 7px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    /* Styles the bottom border radiuses when the option list is open */
+    .optionListActivatedInput {
+        border-radius: 4px 4px 0 0;
+        box-shadow: 0 7px 8px 0 rgba(0, 0, 0, 0.2);
     }
 
     /* One option in the list of possible places */
     .option {
         margin: 10px;
         cursor: pointer;
+    }
+
+    .location {
+        text-align: left;
+        margin-top: 10px;
+        position: relative;
     }
 
     .location > ::placeholder{
@@ -176,17 +220,44 @@
         display: none;
     }
 
-    input{
-        margin-top: 5px;
+    .location > input {
+        width: 85%;
         padding-left: 10px;
-        height: 30px;
-        width: 95%;
-        background-color: #f1f9ff;
-        border: solid #2284ff;
-        color: #007feb;
-        font-weight: bold;
-        font-size: medium;
+    }
+
+    /* Gps button styling */
+    .gpsContainer {
+        display: inline-block;
+    }
+
+    .gpsButton {
+        background-color: #007feb;
+        line-height: 10px;
+        border: none;
         border-radius: 5px;
+        color: white;
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    /* Change the font when the input is valid */
+    .valid {
+        background: #f1f9ff;
+        border-color: #1187EC;
+        color: #007FEB;
+    }
+
+    /* Change the font when the input is invalid */
+    .invalid {
+        background: #fff5fa;
+        border-color: #fb2223;
+        color: #fc3131;
+    }
+
+    .gpsOn {
+        background-color: grey;
     }
 
     label {

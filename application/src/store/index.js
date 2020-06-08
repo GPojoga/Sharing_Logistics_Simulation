@@ -1,109 +1,142 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import mutations from "./mutations";
+import actions from "./actions";
+import getters from "./getters.js";
+import {Time} from "../classes/Time.js";
+import {simulationType} from "../classes/simulation/SimulationType.js";
 
 Vue.use(Vuex);
-const storage = new Vuex.Store({
+
+export default new Vuex.Store({
     state: {
-        // Constants
-        maxNrLocations : 2,
-        fuelPrice : 1.45,
-        emissionBurnt : 2.67,
-        averageSpeed : 100,
-        numberTrucks : 3,
+        // Boolean to keep track of if the simulation is running.
+        isRunning: false,
+
+        // Simulation objects
+        map : Object,
+        time: new Time(),
+
+        // The results of the two types of simulations.
+        simulationResults : {
+            traditional : {
+                finished : false,
+                distance : 0,
+                numberOfTrucks : 0,
+                co2emissions : 0,
+                fuelConsumed : 0,
+                time : 0,
+                averageDeliveryTime : 0,
+                averageTransitTime : 0
+            },
+            shared : {
+                finished : false,
+                distance : 0,
+                numberOfTrucks : 0,
+                co2emissions : 0,
+                fuelConsumed : 0,
+                time : 0,
+                averageDeliveryTime : 0,
+                averageTransitTime : 0
+            }
+        },
+
+        // Global Variables:
+        emissionRate : { value : "2.67", error : false, message : "" },  // The amount of emission released for a liter of petrol.
+        maxSpeed : { value : "100", error : false, message : ""},        // The max speed a truck can traveling in km/h
+
+        // TruckType Variables:
         truckTypes : [
             {
                 key : "Light",
-                volume : 8.925,
-                maxPayload : 4700,
-                consumption0 : 0.2374,
-                consumption1 : 0.3616
+                name: "Light-duty van",
+                img: 'light_duty_van.svg',
+                volume : { value: "8.925", error : false, message : ""},             // The volume of goods the truck can transport m^3.
+                maxPayload : { value: "4700", error : false, message : ""},          // The max weight of goods the truck can transport kg.
+                consumptionEmpty : { value : ".2374", error : false, message : ""},  // The fuel consumption when the truck is empty L/km.
+                consumptionFull : { value : ".3616", error : false, message : ""},   // The fuel consumption when the truck is full L/km.
             },
             {
                 key : "Heavy",
-                volume : 91.223,
-                maxPayload : 32018,
-                consumption0 : 0.2374,
-                consumption1 : 0.3616
+                name: "Heavy-duty van",
+                img: 'heavy_duty_van.svg',
+                volume : { value: "91.223", error : false, message : ""},             // The volume of goods the truck can transport m^3.
+                maxPayload : { value: "32018", error : false, message : ""},          // The max weight of goods the truck can transport kg.
+                consumptionEmpty : { value : ".2374", error : false, message : ""},   // The fuel consumption when the truck is empty L/km.
+                consumptionFull : { value : ".3616", error : false, message : ""},    // The fuel consumption when the truck is full L/km.
             },
             {
                 key : "Train",
-                volume : 115.0,
-                maxPayload : 35300,
-                consumption0 : 0.2374,
-                consumption1 : 0.3616
+                name: "Train truck",
+                img: 'train_truck.svg',
+                volume : { value: "115.0", error : false, message : ""},              // The volume of goods the truck can transport m^3.
+                maxPayload : { value: "35300", error : false, message : ""},          // The max weight of goods the truck can transport kg.
+                consumptionEmpty : { value : ".2374", error : false, message : ""},   // The fuel consumption when the truck is empty L/km.
+                consumptionFull : { value : ".3616", error : false, message : ""},    // The fuel consumption when the truck is full L/km.
             }
         ],
-        route:{
-            distance: 0, //default value of 186.6795 km (distance between Groningen and Amsterdam).
-            time:{
-                hours: 0,
-                minutes: 0,
-            },
-            set: function(dist,time){
-                this.distance = dist;
-                this.time = time;
-                this.__ob__.dep.notify();
-            }
-        },
-        // Inputs (Variables)
-        locations : {
-            list: new Array(2).fill(null),
-            currentNrLocations: 0,
-            event: '',
-            get: function () {
-                return this.list;
-            },
-            set: function (newList, index) {
-                if (index === undefined) { // one argument
-                    let newLocations = 0;
-                    let changed = false;
-                    for (let i = 0; i < newList.length; i++) {
-                        newLocations += newList[i] !== null;
-                        changed = changed || (newList[i] !== this.list[i]);
-                        this.list[i] = newList[i];
-                    }
-                    if (changed) {
-                        let event = this.currentNrLocations !== newLocations ?
-                            'locationListUpdate' : 'locationUpdate';
-                        this.currentNrLocations = newLocations;
-                        this.event = event;
-                        this.__ob__.dep.notify();
-                    }
-                } else { // 2 arguments
-                    const a = newList === null;
-                    const b = this.list[index] === null;
-                    let event = String;
-                    if (newList !== this.list[index]) {
-                        if (a ? !b : b) {
-                            event = 'locationListUpdate';
-                            this.currentNrLocations += a ? -1 : 1;
-                        } else {
-                            event = 'locationUpdate';
-                        }
-                        this.list[index] = newList;
-                        this.event = event;
-                        this.__ob__.dep.notify();
-                    }
-                }
-                if (this.currentNrLocations <= 1){
-                    storage.state.route.set(0,{hours:0,minutes:0});
-                }
-            }
+
+
+        // Input Variables:
+        // An array of inputted truck objects a single truck with no info is added when App.vue is mounted.
+        trucks : [],
+        // An array of inputted good objects a single good with no info is added when App.vue is mounted.
+        goods : [],
+
+        // variables used for communication between location input and the map.
+        tempForMap : false,
+        tempForForward : null,
+        tempForSetter : null,
+
+        // Objects of the simulation currently being run.
+        currentSimulationType : simulationType.None,
+        traditionalSimulation : null,
+        sharedSimulation : null,
+
+        /**
+         * This is a helper function to check if number fields are valid.
+         * @param num The number being checked as a String.
+         * @param min The lower bound of the number.
+         * @param max The upper bound of the number.
+         * @param canZero If the number can be equal to zero or not.
+         * @param canDecimal If the number can be a decimal number or not.
+         * @return Array has type [
+         *      0 Boolean: First element of the array is a boolean stating if the number is valid.
+         *      1 String: Second element of the array is a corresponding error message.
+         * ]
+         */
+        checkNumber : function(num, min, max, canZero, canDecimal){
+            let value = Number(num);
+
+            if (num === "") return [true, "Field can't be empty"];
+            if (isNaN(value)) return [true, "Must be a number"];
+            if (!(min <= value && value <= max)) return [true, ("Must be between " + String(min) + " and " + String(max))];
+            if (!canZero && value === 0) return [true, "Must not be 0"];
+            if (!canDecimal && !Number.isInteger(value)) return [true, "Must be an integer number"]
+
+            return [false, ""];  // Passes all checks
         },
 
-        A : {
-            vehicles : new Array(3).fill(0),
-            cargo : []
-        },
-        B : {
-            vehicles : new Array(3).fill(0),
-            cargo : []
+        /**
+         * This is a helper function to check if location fields are valid.
+         * @param coords The coordinates of the location that was inputted.
+         * @param text The text in the text field.
+         * @return Array has type [
+         *      0 Boolean: First element of the array is a boolean stating if the number is valid.
+         *      1 String: Second element of the array is a corresponding error message.
+         * ]
+         */
+        checkLocation : function (coords, text) {
+            if (!text) return [true, "Field can't be empty"];
+            if (coords === null) return [true, "Must be known location"];
+            // TODO: possibly do some more checks with coords here.
+
+            return [false, ""];  // Passes all checks
         }
-
-
     },
-    getters: {},
-    mutations: {},
-    actions: {}
+
+    // Imported from the files getters.js, mutations.js and actions.js.
+    getters,
+    mutations,
+    actions
 });
-export default storage;

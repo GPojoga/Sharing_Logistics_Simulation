@@ -6,33 +6,41 @@
       </button>
     </div>
     <div class = "content">
-      <JourneyInput :date-valid="validDate" :locations-valid="validLocations" @dateChange="setValidDate" @journeyChange="setValidLocations"/>
-      <VehicleSelector :total-valid="validVehicles" :field-valid="validVehiclesFields" @vehicleChange="setValidVehicles"/>
-      <ProductInput :products-valid="validProducts" @productChange="setValidProducts"/>
-      <CalculateRate @calculateRate="calculateRate"/>
+      <FleetInput/>
+      <CargoInput :products-valid="validProducts" @productChange="setValidProducts"/>
+      <div class="buttonsContainer">
+        <basic-button layout="solid" class="settingContainer" :disabled="isDisabled">
+          <router-link to="/settings">
+            Settings
+          </router-link>
+        </basic-button>
+        <div class="calculateContainer">
+          <CalculateRate @calculateTraditional="calculateRate('traditional')"
+                         @calculateSharing="calculateRate('shared')"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-
-import VehicleSelector from "./VehicleSelector";
-import JourneyInput from "./JourneyInput";
-import ProductInput from "./ProductInput";
+import CargoInput from "./CargoInput";
 import CalculateRate from "./CalculateRate";
+import FleetInput from "./FleetInput";
+import {simulationType} from '../classes/simulation/SimulationType';
+import BasicButton from "./BasicButton";
 
 export default {
   name: 'ControlPanel',
   components: {
+    BasicButton,
+    FleetInput,
     CalculateRate,
-    JourneyInput,
-    VehicleSelector,
-    ProductInput
+    CargoInput
   },
   data() {
     return {
       controlPanelLeftPos: 0,
-
       validLocations: true,
       validDate : true,
       validVehicles: true,
@@ -46,120 +54,50 @@ export default {
       let controlPanel = document.getElementById('controlPanel');
       let collapseArrow = document.getElementById('collapseArrow');
 
-      this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -400 : 0;
+      this.controlPanelLeftPos = this.controlPanelLeftPos === 0 ? -425 : 0;
       controlPanel.style.left = this.controlPanelLeftPos.toString(10) + "px";
 
       collapseArrow.style.transform = this.controlPanelLeftPos === 0 ?
               "rotate(0)" : "rotate(180deg)";
     },
-    /**
-     * This function checks if the journey input is correct
-     * @returns {boolean} true if input is within constraints false otherwise.
-     */
-    checkJourneyInput() {
-      let isCorrect = (this.$store.state.locations.list[0] !== null) && (this.$store.state.locations.list[1] !== null);
-      this.validLocations = isCorrect;
-      return isCorrect;
-    },
     setValidLocations() {
       this.validLocations = true;
-    },
-    /**
-     * This function checks if the input date is correct.
-     * @returns {boolean} true if input is within constraints false otherwise.
-     */
-    checkDateInput() {
-      let isCorrect = true;
-      if (this.$store.state.departureDate === ""){
-        isCorrect = false;
-        this.validDate = false;
-      }
-      return isCorrect;
-    },
-    setValidDate() {
-      this.validDate = true;
-    },
-    /**
-     * This function checks if the input vehicle is correct.
-     * @returns {boolean} true if input is within constraints false otherwise.
-     */
-    checkVehicleInput() {
-      let isCorrect = true;
-      let vehicles = this.$store.state.A.vehicles;
-      let sum = 0;
-      for (let i = 0; i < vehicles.length; i++) {
-        sum += vehicles[i];
-        if (vehicles[i] < 0){
-          isCorrect = false;
-          this.validVehiclesFields[i] = false;
-        }
-      }
-      if (sum === 0){
-        isCorrect = false;
-        this.validVehicles = false;
-      }
-      return isCorrect;
-    },
-    setValidVehicles() {
-      this.validVehicles = true;
-      this.validVehiclesFields[0] = true;
-      this.validVehiclesFields[1] = true;
-      this.validVehiclesFields[2] = true;
-    },
-    /**
-     * This function checks if the input products is correct.
-     * @returns {boolean} true if input is within constraints false otherwise.
-     */
-    checkProductsInput() {
-      let isCorrect = true;
-      let maxWeight = this.$store.state.truckTypes[0].maxPayload;
-      let maxVolume = this.$store.state.truckTypes[0].volume;
-      let products = this.$store.state.A.cargo;
-      for (let i = 0; i < products.length; i++){
-        if (products[i].quantity === "" || products[i].quantity < 0) {
-          isCorrect = false;
-          this.validProducts = false;
-        }
-        if (products[i].weight === "" || products[i].weight < 1 || products[i].weight > maxWeight) {
-          isCorrect = false;
-          this.validProducts = false;
-        }
-        if (products[i].volume === "" || products[i].volume < 1 || products[i].volume > maxVolume) {
-          isCorrect = false;
-          this.validProducts = false;
-        }
-      }
-      return isCorrect;
     },
     setValidProducts() {
       this.validProducts = true;
     },
     checkInputs() {
-      let isCorrect = true;
-      isCorrect = this.checkJourneyInput() && isCorrect;
-      isCorrect = this.checkDateInput() && isCorrect;
-      isCorrect  = this.checkProductsInput() && isCorrect;
-      return this.checkVehicleInput() && isCorrect;
+      return true;
     },
-    calculateRate() {
+    calculateRate(type) {
       if (this.checkInputs()){
-        this.$router.push('output');
+        const simType = (type === 'traditional')? simulationType.TRADITIONAL : simulationType.SHARED;
+        this.$store.commit("setSimulation",{type : simType,store : this.$store});
+        if(simType === simulationType.TRADITIONAL){
+          this.$store.commit("startTraditionalSimulation");
+        }else{
+          this.$store.commit("startSharedSimulation");
+        }
       }
     }
-  }
+  },
+  computed: {
+    isDisabled : function() {
+      return this.$store.getters.isRunning;
+    }
+  },
 }
 </script>
 
 <style scoped>
-  #controlPanel{
+  #controlPanel {
     background: rgb(255, 255, 255);
-    border: solid #007FEB;
-    height: 98%;
-    width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    height: 100%;
+    width: 425px;
     overflow: visible;
     position: absolute;
-    top: 0.5%;
-    left:0;
+    left: 0;
     color: #007FEB;
     transition: left 0.5s;
   }
@@ -167,29 +105,33 @@ export default {
   .content{
     width: 100%;
     height: 100%;
-    overflow:auto;
+    overflow: auto;
+    position: relative;
   }
 
   #collapseController{
     opacity: 0.9;
-    width: 10%;
-    height: 10%;
+    width: 23px;
+    height: 48px;
     position: absolute;
-    right:-15%;
-    top:5%;
+    left: 100%;
+    top: 8px;
   }
 
   #collapseButton{
+    z-index: -1;
     width: 100%;
     height: 100%;
-    border: solid #f6f6f6;
-    position: absolute;
-    background-color: #f6f6f6;
-    border-radius: 12px;
+    border: 0;
+    background-color: white;
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 10px 5px 20px rgba(0, 0, 0, 0.3);
   }
 
   #collapseArrow{
-    font-size: 300%;
+    font-size: 200%;
     color: #007FEB;
     transition: transform 0.5s;
   }
@@ -202,10 +144,42 @@ export default {
     border: 0;
   }
 
+  /* Style the container containing the settingContainer and calculateContainer */
+  .buttonsContainer {
+    padding: 10px;
+    height: 80px;
+  }
+
+  /* Style the container of the link to settings */
+  .settingContainer {
+    margin : 0;
+    width: 30%;
+    float : left;
+    display: inline-block;
+  }
+
+  /* Style the link itself */
+  a {
+    text-decoration: none;
+    color: #FFF;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+  }
+
+  /* Style the container for the calc button */
+  .calculateContainer {
+    width : 50%;
+    height : 120px;
+    margin : 0;
+    float : right;
+    display: inline-block;
+  }
+
   /* Scrollbar layout */
   /* width */
    ::-webkit-scrollbar {
-     width: 8px;
+     width: 6px;
    }
 
   /* Track */

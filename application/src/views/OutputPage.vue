@@ -1,43 +1,50 @@
 <template>
   <div>
     <div class="navbar">
-      <router-link to="/">Home</router-link>
+      <basic-button layout="solid">
+        <router-link to="/">Home</router-link>
+      </basic-button>
     </div>
 
     <div id="main">
-      <div id="newWay" class="header">
-        <h2>Sharing Logistics</h2>
-      </div>
-      <div id="newWayPanel" class="panel">
-        <div class="outputElement">
-          <h3>Transport time</h3>
-          <p class="output">{{Math.round(sharing.time)}} h</p>
+      <div v-for="(sim, index) in [sharing, traditional]"
+           v-bind:key="index"
+           class="simulationResultsField">
+        <div class="header">
+          <h1 v-if="index === 0">Sharing Logistics</h1>
+          <h1 v-if="index === 1">Traditional Method</h1>
         </div>
-        <div class="outputElement">
-          <h3>Number of vehicles used</h3>
-          <p class="output">{{sharing.count}}</p>
-        </div>
-        <div class="outputElement">
-          <h3>CO2 emissions</h3>
-          <p class="output">{{Math.round(sharing.emission)}} kg</p>
-        </div>
-      </div>
-
-      <div id="oldWay" class="header">
-        <h2>Traditional Method</h2>
-      </div>
-      <div id="oldWayPanel" class="panel">
-        <div class="outputElement">
-          <h3>Transport time</h3>
-          <p class="output">{{Math.round(traditional.time)}} h</p>
-        </div>
-        <div class="outputElement">
-          <h3>Number of vehicles used</h3>
-          <p class="output">{{traditional.count}}</p>
-        </div>
-        <div class="outputElement">
-          <h3>CO2 emissions</h3>
-          <p class="output">{{Math.round(traditional.emission)}} kg</p>
+        <div class="panel" :class="{ newWayPanel : index === 0, oldWayPanel : index === 1 }">
+          <div class="innerPanel">
+            <div class="outputElement">
+              <h2>Trucks finished after</h2>
+              <p class="output">{{sim.time === 0? "Simulation hasn't run yet!" : printTime(sim.time)}}</p>
+            </div>
+            <div class="outputElement">
+              <h2>Total distance</h2>
+              <p class="output">{{Math.round(sim.distance)}} m</p>
+            </div>
+            <div class="outputElement">
+              <h2>Number of vehicles used</h2>
+              <p class="output">{{sim.numberOfTrucks}}</p>
+            </div>
+            <div class="outputElement">
+              <h2>CO<sub>2</sub> emissions</h2>
+              <p class="output">{{sim.co2emissions.toFixed(1)}} kg</p>
+            </div>
+            <div class="outputElement">
+              <h2>Fuel consumed</h2>
+              <p class="output">{{sim.fuelConsumed.toFixed(2)}} L</p>
+            </div>
+            <div class="outputElement">
+              <h2>Average delivery time</h2>
+              <p class="output">{{printTime(sim.averageDeliveryTime)}}</p>
+            </div>
+            <div class="outputElement">
+              <h2>Average transit time</h2>
+              <p class="output">{{printTime(sim.averageTransitTime)}}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -45,183 +52,42 @@
 </template>
 
 <script>
+  import BasicButton from "../components/BasicButton";
   export default {
-    name: 'App',
-    components: {},
-    data() {
-      return {
-        traditional : {
-          time : 0,
-          count : 0,
-          emission : 0
-        },
-        sharing : {
-          time : 0,
-          count : 0,
-          emission : 0
-        }
+    name: 'OutputPage',
+    components: {BasicButton},
+    methods: {
+      printTime(seconds) {
+        seconds = Math.round(seconds);
+
+        const hours = Math.floor(seconds / 3600);
+        seconds = seconds - hours*3600;
+
+        const minutes = Math.floor(seconds / 60);
+        seconds = seconds - minutes*60;
+
+        return hours + ' h ' + minutes + ' m ' + seconds + ' s';
       }
     },
-    mounted() {
-      this.findTraditional();
-      this.findSharing();
-    },
-    methods : {
-      /**
-       * This function finds the total number of trucks.
-       * @param trucks array with the counts of all trucks.
-       * @returns {*} The total number of trucks.
-       */
-      sumTrucks(trucks) {
-        return trucks[0] + trucks[1] + trucks[2];
+    computed: {
+      sharing() {
+        return this.$store.state.simulationResults.shared;
       },
-      /**
-       * This function sends trucks loaded with the goods, in an array.
-       * @param good The good that needs to be transported.
-       * @param trucks The list of trucks available.
-       * @returns {[]} A list of trucks, where each truck has a certain type and payload.
-       */
-      sendTrucks(good, trucks) {
-        let sentTrucks = [];
-
-        // Base case no trucks left
-        if (Number(good.quantity) === 0 || this.sumTrucks(trucks) === 0){
-          return sentTrucks;
-        }
-
-        let totalWeight = Number(good.quantity) * Number(good.weight);
-        let totalVolume = Number(good.quantity) * Number(good.volume);
-
-        //Case in which all goods fit in a single truck
-        for (let i = 0; i < this.$store.state.numberTrucks; i++){
-          let truck = this.$store.state.truckTypes[i];
-          if (trucks[i] > 0 && truck.volume > totalVolume && truck.maxPayload > totalWeight) {
-            trucks[i]--;
-            good.quantity = "0";
-            sentTrucks.push([truck, totalWeight]);
-            return sentTrucks;
-          }
-        }
-
-        // Case more than one truck needed
-        for (let i = this.$store.state.numberTrucks - 1; i >= 0; i--){
-          if (Number(good.quantity) > 0 && trucks[i] > 0){
-            let truck = this.$store.state.truckTypes[i];
-            let qFit = Math.min(Math.floor(truck.volume / Number(good.volume)), Math.floor(truck.maxPayload / Number(good.weight)));
-            good.quantity = String(Number(good.quantity) - qFit);
-            trucks[i]--;
-            sentTrucks = this.sendTrucks(good, trucks);
-            sentTrucks.push([truck, qFit * Number(good.weight)]);
-          }
-        }
-
-        return sentTrucks;
-      },
-      /**
-       * This function simulates the traditional method of sending packages between two points A & B.
-       */
-      findTraditional() {
-        let dis = this.$store.state.route.distance;
-        let goods = this.$store.state.A.cargo.map(a => Object.assign({}, a));
-        let trucks = this.$store.state.A.vehicles.slice();
-
-        //TODO: change this so it supports goods being sent from both locations
-        for (let i = 0; i < goods.length; i++){
-          let good = goods[i];
-          while (Number(good.quantity > 0)) {
-            let trucksSent = this.sendTrucks(good, trucks);
-            this.traditional.count += trucksSent.length;
-
-            for (let j = 0; j < trucksSent.length; j++){
-              let truck = trucksSent[j][0];
-              let payload = trucksSent[j][1];
-              let fuel_rate = truck.consumption0 + payload/truck.maxPayload * (truck.consumption1 - truck.consumption0);
-              this.traditional.emission += this.$store.state.emissionBurnt * dis * fuel_rate;
-            }
-
-            if (trucks[0] === 0 && trucks[1] === 0 && trucks[2] === 0){
-              trucks = this.$store.state.A.vehicles.slice();
-              this.traditional.time += 2 * dis / this.$store.state.averageSpeed;
-            } else if (i + 1 === goods.length) {
-              //Added this is case it is last goods that needs to be transported.
-              this.traditional.time += 2 * dis / this.$store.state.averageSpeed;
-            }
-          }
-        }
-      },
-      /**
-       * This function finds the average good given a array of goods.
-       * @param goods The array of goods to find the average from.
-       * @returns {{volume: string, quantity: string, weight: string}} A good representing the average of a list.
-       */
-      getAverageGood(goods) {
-        let quantity = 0;
-        let totalWeight = 0;
-        let totalVolume = 0;
-        for (let i = 0; i < goods.length; i++){
-          quantity += Number(goods[i].quantity);
-          totalWeight += Number(goods[i].weight) * Number(goods[i].quantity);
-          totalVolume += Number(goods[i].volume) * Number(goods[i].quantity);
-        }
-
-        return {
-          quantity: String(quantity),
-          weight: String(totalWeight/quantity),
-          volume: String(totalVolume/quantity)
-        };
-      },
-      /**
-       * This function finds the reusable trucks, making a journey back.
-       * @param sentTrucks The array of sent trucks
-       * @returns {number[]} The count of each type of truck sent.
-       */
-      getReusableTrucks(sentTrucks) {
-        let reusable = [0, 0, 0];
-
-        for (let i = 0; i < sentTrucks.length; i++){
-          if (sentTrucks[i][0].key === "Light"){
-            reusable[0]++;
-          } else if (sentTrucks[i][0].key === "Heavy"){
-            reusable[1]++;
-          } else { // key === "Train"
-            reusable[2]++;
-          }
-        }
-
-        return reusable;
-      },
-      /**
-       * This function simulates the sharing method of sending packages between two points A & B.
-       */
-      findSharing() {
-        let dis = this.$store.state.route.distance;
-        let goods = this.$store.state.A.cargo.map(a => Object.assign({}, a));
-        let trucks = this.$store.state.A.vehicles.slice();
-
-        // TODO: change this so it supports goods being sent from both locations
-        let good = this.getAverageGood(goods);
-        while (Number(good.quantity) > 0){
-
-          let trucksSent = this.sendTrucks(good, trucks);
-          this.sharing.count += trucksSent.length;
-
-          for (let j = 0; j < trucksSent.length; j++){
-            let truck = trucksSent[j][0];
-            let payload = trucksSent[j][1];
-            let fuel_rate = truck.consumption0 + payload/truck.maxPayload * (truck.consumption1 - truck.consumption0);
-            this.sharing.emission += this.$store.state.emissionBurnt * dis * fuel_rate;
-          }
-
-          trucks = this.$store.state.A.vehicles.slice();
-          this.sharing.time += 2 * dis / this.$store.state.averageSpeed;
-        }
-
+      traditional() {
+        return this.$store.state.simulationResults.traditional;
       }
     }
   }
 </script>
 
 <style>
+  /* Stylize the container of the header and panel */
+  .simulationResultsField {
+    width: 50vw;
+    display: inline-block;
+  }
+
+  /* Stylize the navigation button */
   .navbar {
     height: 30px;
     text-align: center;
@@ -229,53 +95,86 @@
     padding-top: 20px;
   }
 
+  /* Style of the link aka the navigation button */
   a {
     text-decoration: none;
     color: #FFF;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    background: #007feb;
     padding: 8px 12px;
   }
 
+  /* Style the headers of the results */
+  h2 {
+    font-size: 1.3em;
+  }
+
+  /* Stylize the panel of both results */
   .panel {
     height: 70vh;
-    width: 30vw;
+    width: 38vw;
     background-color: #f1f9ff;
     position: absolute;
     top: 20vh;
     border-radius: 10px;
-    padding: 10px 50px;
     display: inline-block;
-    overflow: auto;
+    overflow: hidden;
   }
 
+  /* Stylize the part inside the panel separately, such that the scrollbar doesn't create square corners on the right. */
+  .innerPanel {
+    overflow-y: auto;
+    height: 100%;
+    padding: 10px 50px;
+  }
+
+  /* Stylize the titles of both results */
   .header {
-    width: 40vw;
+    width: 30vw;
     display: inline-block;
     text-align: center;
   }
 
-  #newWayPanel{
+  /* Set the new way to the left */
+  .newWayPanel{
     left: 10vw;
   }
 
+  /* Style the output div */
   .outputElement {
-    margin: 40px 0px;
+    margin: 40px 0;
   }
 
-  #oldWayPanel{
+  /* Set the old way to the right */
+  .oldWayPanel{
     right: 10vw;
   }
 
+  /* Stylize the output text */
   .output{
     text-align: center;
-    font-family: "Arial", Arial, sans-serif;
-    margin: 20px;
+    margin: 0;
     color: #007FEB;
     font-weight: bold;
-    font-size: 130%;
+    font-size: 1em;
   }
-  
+
+  /* Scrollbar layout */
+  /* width */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f9ff;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #2284ff;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #197cd8;
+  }
 </style>

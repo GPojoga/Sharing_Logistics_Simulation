@@ -1,80 +1,113 @@
 <template>
     <div class="calcRate">
-        <button @click="calculateRate" type="button" class="calcRateButton">Calculate Rate</button>
+        <div class="simulationButton">
+            <basic-button @click="calculateTraditional" type="button" class="calcRateButton">Simulate traditional method</basic-button>
+        </div>
+        <div class="simulationButton">
+            <basic-button @click="calculateSharing" type="button" class="calcRateButton">Simulate shared method</basic-button>
+        </div>
+        <div class="simulationButton">
+            <basic-button layout="solid" type="button" class="calcRateButton" @click="showOutput">
+                Show results
+            </basic-button>
+        </div>
     </div>
 </template>
 
 <script>
-
+    import BasicButton from "./BasicButton";
     export default {
         name: "CalculateRate",
-
-        data: function () {
+        components: {BasicButton},
+        data() {
             return {
-                info : this.$store.state
-            }
+                message : "Error(s) found, \nplease check the input highlighted in red.",
+            };
         },
-
-
+        computed : {
+            emissionRate : function () {
+                return this.$store.getters.emissionRate;
+            },
+            maxSpeed : function () {
+                return this.$store.getters.maxSpeed;
+            },
+            truckTypes : function () {
+                return this.$store.getters.truckTypes;
+            },
+            trucks : function () {
+                return this.$store.getters.trucks;
+            },
+            goods : function () {
+                return this.$store.getters.goods;
+            },
+        },
         methods: {
-            calculateRate(){
-              this.$emit("calculateRate");
+            /**
+             * This is a helper function for the checkForErrors function. It checks for errors in the global variables.
+             */
+            globalVariableError(){
+                return (this.emissionRate.error || this.maxSpeed.error);
             },
-            getInput(){
-                alert("Position From = " + this.getPositionFrom() +
-                      "\nPosition To = "   + this.getPositionTo()   +
-                      "\nLight Duty Van = " + this.getVehicleA() +
-                      "\nHeavy Duty Van = " + this.getVehicleB() +
-                      "\nTrain Trucks = " + this.getVehicleC() +
-                      "\nTotal Quantity = " + this.getTotalQuantity() +
-                      "\nTotal Weight = " + this.getTotalWeight() +
-                      "\nTotal Volume = " + this.getTotalVolume() );
-            },
-
-            getPositionFrom() {
-                return JSON.stringify(this.$store.state.locations[0].pos, null, 2);
-            },
-
-            getPositionTo(){
-                return JSON.stringify(this.$store.state.locations[1].pos, null, 2);
-            },
-
-            getVehicleA() {
-                return this.$store.state.A.vehicles[0];
-            },
-
-            getVehicleB() {
-                return this.$store.state.A.vehicles[1];
-            },
-
-            getVehicleC() {
-                return this.$store.state.A.vehicles[2];
-            },
-
-            getTotalQuantity(){
-                let sum = 0;
-                for (let step = 0; step < this.$store.state.A.cargo.length; step++) {
-                    sum += Number(this.$store.state.A.cargo[step].quantity)
+            /**
+             * This is a helper function for the checkForErrors function. It checks for errors in the truck variables.
+             */
+            truckVariableError(){
+                for (let i = 0; i < this.truckTypes.length; i++){
+                    let type = this.truckTypes[i];
+                    if (type.volume.error || type.maxPayload.error) return true;
+                    if (type.consumptionEmpty.error || type.consumptionFull.error) return true;
                 }
-                return sum;
+                return false;  // No errors found
             },
-
-            getTotalWeight(){
-                let sum = 0;
-                for (let step = 0; step < this.$store.state.A.cargo.length; step++) {
-                    sum += Number(this.$store.state.A.cargo[step].weight)
+            /**
+             * This is a helper function for the checkForErrors function. It checks for errors in the truck input.
+             */
+            truckInputError(){
+                for (let i = 0; i < this.trucks.length; i++){
+                    let truck = this.trucks[i];
+                    if (truck.quantity.error) return true;
+                    if (truck.startLocation.error) return true;
                 }
-                return sum;
+                return false;  // No errors found
             },
-
-            getTotalVolume(){
-                let sum = 0;
-                for (let step = 0; step < this.$store.state.A.cargo.length; step++) {
-                    sum += Number(this.$store.state.A.cargo[step].volume)
+            /**
+             * This is a helper function for the checkForErrors function. It checks for errors in the good input.
+             */
+            goodInputError(){
+                for (let i = 0; i < this.goods.length; i++){
+                    let good = this.goods[i];
+                    if (good.quantity.error || good.weight.error || good.volume.error) return true;
+                    if (good.pickupLocation.error || good.deliveryLocation.error) return true;
                 }
-                return sum;
+
+                return false;  // No errors found
+            },
+            /**
+             * This function checks for errors in the input of the simulation before running the simulation.
+             */
+            checkForErrors(){
+                return (this.globalVariableError() || this.truckVariableError() || this.truckInputError() || this.goodInputError());
+            },
+            /**
+             * This function is called when the user wants to simulate the traditional transportation.
+             */
+            calculateTraditional(){
+                if (this.checkForErrors()) alert(this.message);
+                else this.$emit("calculateTraditional");
+            },
+            /**
+             * This function is called when the user wants to simulate the sharing logistics transportation.
+             */
+            calculateSharing(){
+                if (this.checkForErrors()) alert(this.message);
+                else this.$emit("calculateSharing");
+            },
+            /**
+             * This function is called when the user wants to see the output it brings them to the output page.
+             */
+            showOutput(){
+                this.$router.push('output');
             }
-
         }
     }
 
@@ -83,32 +116,14 @@
 
 
 <style scoped>
-    .calcRate {
-        margin: 25px;
-        text-align: right;
-        color: #007FEB;
-        font-family: "Arial", Arial, sans-serif;
-        font-weight: bold;
-        font-size: 100%;
-    }
-
     .calcRateButton{
-        background-color: #ff0000;
-        line-height: 10px;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        padding: 15px 10px;
-        text-align: center;
+        width: 100%;
         text-decoration: none;
         display: inline-block;
-        font-size: 16px;
     }
 
-    .calcRateButton:hover{
-        box-shadow: 0 3px 8px 2px rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-        cursor: pointer;
+    .simulationButton {
+        margin-bottom: 5px;
     }
-
 
 </style>
