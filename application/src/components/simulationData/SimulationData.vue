@@ -64,7 +64,7 @@
         components:{
             BasicButton,
             GoodComponent,
-          TruckComponent
+            TruckComponent
         },
         watch :{
             simulationStatus(newStatus){
