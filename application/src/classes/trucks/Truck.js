@@ -186,7 +186,7 @@ export default class Truck extends Observable {
         setTimeout(() => {
             if(this.route.index < this.route.route.length - 1){
                 this._updateRouteProgress();
-                this.followOrder(order);
+                this._followOrder(order);
             } else {
                 // Truck has arrived at the next location.
                 this._completeOrder(order);
