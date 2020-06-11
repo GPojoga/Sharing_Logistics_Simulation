@@ -18,12 +18,12 @@ export const getters = {
     },
 
     /**
-     * Getter of the max speed of trucks variable.
+     * Getter of the max good splits of all goods.
      * @param state The current state of the webapp.
-     * @returns {any} The max speed of trucks as a Number.
+     * @returns {any} The max number of times a good can be split into different orders.
      */
-    maxSpeed: state => {
-        return state.maxSpeed;
+    maxGoodSplits: state => {
+        return state.maxGoodSplits;
     },
 
     /**

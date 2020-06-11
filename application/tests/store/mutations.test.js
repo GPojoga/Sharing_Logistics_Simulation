@@ -18,10 +18,10 @@ describe('setMap',()=>{
    })
 });
 
-describe('setMaxSpeed',()=>{
-   it('correctly sets a normal speed',()=>{
-       store.commit('setMaxSpeed',{value : 56});
-       expect(store.getters.maxSpeed).toEqual({error: false, message: "", value: 56});
+describe('setMaxGoodSplits',()=>{
+   it('correctly sets a max times a good is split',()=>{
+       store.commit('setMaxGoodSplits',{value : 56});
+       expect(store.getters.maxGoodSplits).toEqual({error: false, message: "", value: 56});
    });
 });
 

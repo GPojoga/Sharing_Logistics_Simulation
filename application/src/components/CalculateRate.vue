@@ -28,8 +28,8 @@
             emissionRate : function () {
                 return this.$store.getters.emissionRate;
             },
-            maxSpeed : function () {
-                return this.$store.getters.maxSpeed;
+            maxGoodSplits : function () {
+                return this.$store.getters.maxGoodSplits;
             },
             truckTypes : function () {
                 return this.$store.getters.truckTypes;
@@ -46,7 +46,7 @@
              * This is a helper function for the checkForErrors function. It checks for errors in the global variables.
              */
             globalVariableError(){
-                return (this.emissionRate.error || this.maxSpeed.error);
+                return (this.emissionRate.error || this.maxGoodSplits.error);
             },
             /**
              * This is a helper function for the checkForErrors function. It checks for errors in the truck variables.

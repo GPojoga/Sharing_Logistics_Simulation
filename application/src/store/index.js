@@ -43,7 +43,7 @@ export default new Vuex.Store({
 
         // Global Variables:
         emissionRate : { value : "2.67", error : false, message : "" },  // The amount of emission released for a liter of petrol.
-        maxSpeed : { value : "100", error : false, message : ""},        // The max speed a truck can traveling in km/h
+        maxGoodSplits : { value : "10", error : false, message : ""},        // The max speed a truck can traveling in km/h
 
         // TruckType Variables:
         truckTypes : [
