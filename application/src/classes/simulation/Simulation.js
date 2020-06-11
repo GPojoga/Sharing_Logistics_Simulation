@@ -80,18 +80,19 @@ export class Simulation {
     initializeGoods(store){
         let goods = [];
         this._allGoodsList = [];
-        store.state.goods.forEach(good => {
-            let prod = new Good(
-                good.quantity.value,          // quantity
-                good.weight.value,            // weight
-                good.volume.value,            // volume
-                good.pickupLocation.value,    // pickUp
-                good.deliveryLocation.value,  // delivery
-                store.state.map         // map object
-            );
-            goods.push(prod);
-            this._allGoodsList.push(prod);
-        });
+        for (let i = 0; i < store.state.goods.length; i++) {
+            let input = store.state.goods[i];
+            let good = new Good(
+                input.quantity.value,
+                input.weight.value,
+                input.volume.value,
+                input.pickupLocation.value,
+                input.deliveryLocation.value,
+                store.getters.map,
+                i);
+            goods.push(good);
+            this._allGoodsList.push(good);
+        }
         return goods;
     }
 
