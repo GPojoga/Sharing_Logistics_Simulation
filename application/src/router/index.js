@@ -22,16 +22,6 @@ const routes = [
     path: '/settings',
     name: 'SettingsPage',
     component: () => import('../views/SettingsPage')
-  },
-  {
-    path: '/sharing',
-    name: 'SharingPage',
-    component: () => import('../views/SharingPage')
-  },
-  {
-    path: '/traditional',
-    name: 'TraditionalPage',
-    component: () => import('../views/TraditionalPage')
   }
 ];
 
