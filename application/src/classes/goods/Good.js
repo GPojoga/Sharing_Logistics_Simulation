@@ -141,7 +141,7 @@ export default class Good extends Observable{
     /**
      * @returns {number} This method returns the key of the package the product belonged too originally.
      */
-    getKeyNumber() {
+    getKey() {
         return this.key;
     }
 
