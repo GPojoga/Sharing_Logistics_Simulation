@@ -25,6 +25,8 @@ export class Simulation {
     _running = false;
     _freightPlatform = Object;
 
+    TEMP = 10;
+
     constructor(simType,store) {
         this._simType = simType;
         this._store = store;
@@ -78,20 +80,27 @@ export class Simulation {
     }
 
     initializeGoods(store){
+        console.log("trying to make good list");
         let goods = [];
         this._allGoodsList = [];
         for (let i = 0; i < store.state.goods.length; i++) {
             let input = store.state.goods[i];
-            let good = new Good(
-                input.quantity.value,
-                input.weight.value,
-                input.volume.value,
-                input.pickupLocation.value,
-                input.deliveryLocation.value,
-                store.getters.map,
-                i);
-            goods.push(good);
-            this._allGoodsList.push(good);
+            let splits = this.TEMP;
+            for (let j = 0; j < splits; j++){  // Split goods based on split constant
+                let quantity = Math.floor((Number(input.quantity.value) + splits - 1 - j)/splits);
+                if (quantity === 0) break;
+                let good = new Good(
+                    quantity,
+                    input.weight.value,
+                    input.volume.value,
+                    input.pickupLocation.value,
+                    input.deliveryLocation.value,
+                    store.getters.map,
+                    i);
+                goods.push(good);
+                console.log("adding good");
+                this._allGoodsList.push(good);
+            }
         }
         return goods;
     }

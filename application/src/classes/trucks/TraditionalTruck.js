@@ -19,7 +19,12 @@ export default class TraditionalTruck extends Truck{
         let previous = this.planManager.getOrder(index - 1);
         let next = this.planManager.getOrder(index);
 
-        if (next.type === "delivery") return (previous.type === "pickUp" && good.getKey() === previous.good.getKey());
+        if (next.type === "delivery") {
+            let isCompatible = (previous.type === "pickUp" && good.getKey() === previous.good.getKey());
+            let hasCapacity = (previous.expectedLoad.weight + good.weight * good.quantity < this.properties.maxPayload
+                && previous.expectedLoad.volume + good.volume * good.quantity < this.properties.volume);
+            return (isCompatible && hasCapacity);
+        }
         else return (previous.type === "delivery");
     }
 
