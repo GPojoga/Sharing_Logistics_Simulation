@@ -77,28 +77,26 @@ As a user of this applet I want to be able to...
    - [x] (C1.1) compare the two methods based on the CO2 emission.
    - [x] (C1.2) compare the two methods based on the total distance travelled.
    - [x] (C1.3) compare the two methods based on the number of trucks used so that I get an indication of additional costs, such as paying truck drivers.
-2. [x] (C2) input at least *one* truck moving from a given start location to a given destination.
+2. [x] (C2) input a truck, which is a sort of blueprint.
+    - [x] (C2.1) specify one given start location for all trucks so that the path and distance travelled by the trucks can be simulated realistically on a real map.
+    - [x] (C2.2) specify the quantity of the truck such that multiple trucks can pickup goods.
 3. [x] (C3) input multiple goods.
-   - [x] (C4.1) specify the pick-up and delivery location of every good so that I can see what effect this has on the transportation of these goods under both systems.
-   - [x] (C4.2) specify the quantity of a good so that I don't have to fill in the same good multiple times
+   - [x] (C3.1) specify the pick-up and delivery location of every good so that I can see what effect this has on the transportation of these goods under both systems.
+   - [x] (C3.2) specify the quantity of a good so that I don't have to fill in the same good multiple times
 
 ### Important User Stories - should haves
-As a user of this applet I want to be able to...  
-1. [x] (I1) input *multiple* trucks so that the path and distance travelled by the trucks can be simulated more realistically.
-    - [x] (I1.1) input a single starting location and a single destination in the entire application from and to which all trucks travel.
-2. [x] (I2) have three types of vehicles with different sizes so that I can easily vary between different types of trucks.
-   - [x] (I2.1) change the number of vehicles of each type so that I can observe the difference this makes to the comparison.
-3. [x] (I3) vary some parameters of the goods so that I can make the simulation more realistic.
-   - [x] (I3.1) change the weight of the goods that need to be transported so that I can see what effects this has on both systems of transportation.
-   - [x] (I3.2) change the size of the goods that need to be transported so that I can see what effect this has on the transportation of these goods under both systems.
+As a user of this applet I want to be able to...
+2. [x] (I1) select the type of truck in the blueprint for a truck.
+   - [x] (I1.1) have three predefined types of vehicles with different sizes so that I can easily vary between different types of trucks.
+3. [x] (I2) vary some parameters of the goods so that I can make the simulation more realistic.
+   - [x] (I2.1) change the weight of the goods that need to be transported so that I can see what effects this has on both systems of transportation.
+   - [x] (I2.2) change the size of the goods that need to be transported so that I can see what effect this has on the transportation of these goods under both systems.
 
 ### Useful User Stories - could haves
 As a user of this applet I want to be able to...  
 1. [x] (U1) change the starting locations of trucks and pickup and delivery locations of goods using a digital map so that I can change the locations easily by clicking.
-2. [x] (U2) add trucks one by one and set parameters so that I can have more control over the trucks that are inputted.
-   - [x] (U2.1) input a different starting location for each truck and _no_ destination, so that the simulation is more realistic and more similar to Uber.
-   - [x] (U2.2) set the type of truck for each truck by choosing one of the three predefined types.
-   - [x] (U2.3) set the quantity of each truck that is inputted.
+2. [x] (U2) add multiple blueprints for trucks so that I can have more control over the trucks that are inputted.
+   - [x] (U2.1) input a different starting location for each (blueprint of a) truck so that the simulation is more realistic and more similar to Uber.
 3. [x] (U3) (but not obliged to) vary parameters that are used in the background of the simulation
 such that I can adapt these values to more realistic ones and see the influence that varying these values has.
 These parameters are:
@@ -153,7 +151,6 @@ clear these are not included.
 Some user stories with lower priorities can (partly) overwrite user stories with higher priorities.
 This is for example the case for user stories C2, I1 and U2.
 
-
 ![User story map](images/user_story_map.png)
 
 ## Non functional Requirements
@@ -199,19 +196,13 @@ and form a separate module, these can easily be transferred to a backend applica
 ## Traceability Matrix
 | **Requirement** | **Files Affected** | **Test** | **Passed**
 |----------------|------------|--------|---------|
-| Be able to compare the CO2 emission of the two methods    |   |   |   |
-| Be able to compare the time difference of the two methods|   |   |   |
-| Be able to change the points A & B|   |   |   |
-| Be able to change the radius of the points A & B |   |   |   |
-| Be able to change the number of vehicles of a specific type  |   |   |   |
-| Have 3 predefined vehicle types |   |   |   |
-| Be able to change the weight of the goods |   |   |   |
-| Be able to change the size of a good |   |   |   |
-| Be able to specify the pick-up location of a good   |   |   |   |
-| Be able to specify the delivery location of a good   |   |   |   |
-| Be able to change the points A & B using a digital map   |   |   |   |
-| Be able to visualize the current location of a truck   |   |   |   |
-| Be able to visualize the CO2 emission of a specific truck  |   |   |   |
+| C1.1 |   |   |   |
+| C1.2 |   |   |   |
+| C1.3 |   |   |   |
+| C2.1 |   |   |   |
+| C2.2 |   |   |   |
+| C3.1 |   |   |   |
+| C3.2 |   |   |   |
 
 
 ## Meeting Log
