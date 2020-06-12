@@ -24,7 +24,7 @@ where each truck can perform tasks for multiple clients simultaneously.
 
 The goal of this project is to produce a program with simulation functionality.
 The simulation should provide insight into the use of resources and carbon emissions in the context of transport of goods by road vehicles.
-Two processes need to be simulated so that they can be compared. The first process should be the current (traditional)
+Two processes need to be simulated so that they can be compared. The first process should be the current (traditional) 
 method that goods are transported, the second process should be the **sharing logistics** method.
 
 ### System overview
@@ -101,7 +101,7 @@ As a user of this applet I want to be able to...
 such that I can adapt these values to more realistic ones and see the influence that varying these values has.
 These parameters are:
     - emission burnt factor
-    - average speed of all trucks
+    - max number of splits of the goods
     - for each type of truck:
         - the max volume
         - max payload
@@ -116,10 +116,10 @@ can compare the two methods (traditional and sharing logistics) visually.
    - [x] (U4.5) view per good how its values (picked up or not, delivered or not, current location) change during the simulation.
    - [x] (U4.6) choose if I simulate the traditional method or the sharing logistics method.
    - [x] (U4.7) control the time of the simulation.
-       - [x] (U4.6.1) pause/continue the time so that I can take as long as I want if I need to inspect the current state of the animation.
-       - [x] (U4.6.2) accelerate the time so that the simulation can finish in a reasonable time.
-       - [x] (U4.6.3) decelerate the time so that I can slow down the simulation if it is going too fast.
-
+       - [x] (U4.7.1) pause/continue the time so that I can take as long as I want if I need to inspect the current state of the animation.
+       - [x] (U4.7.2) accelerate the time so that the simulation can finish in a reasonable time.
+       - [x] (U4.7.3) decelerate the time so that I can slow down the simulation if it is going too fast.
+       
 
 
 ### Unused User Stories - won't haves
@@ -134,7 +134,7 @@ for their good to be delivered.
 5. [ ] (W5) upload a file containing data on trucks and goods to the applet, so that I don't have to input every truck and good
 in the applet by hand but can immediately use real data.
 6. [ ] (W6) track the time of day during which a truck travels and the differences that come with it, such as a difference in traffic
-at certain roads and thus the speed at which a truck travels, the fact that a truck driver can only drive a certain
+at certain roads and thus the speed at which a truck travels, the fact that a truck driver can only drive a certain 
 amount of time before having to take a break, the fact that a truck driver needs to sleep, etc.
 
 
@@ -142,7 +142,7 @@ amount of time before having to take a break, the fact that a truck driver needs
 
 The user story map gives a visual overview of all the main user stories in the categories critical, important and useful.
 
-The user goes through the tasks in the same order as the tasks are in, from left to right. Each user story is placed underneath
+The user goes through the tasks in the same order as the tasks are in, from left to right. This represents the user  Each user story is placed underneath
 the subtask that it is a part of, in the row corresponding to its priority.
 
 Note that each user story can be split into multiple sub-user stories, but to keep the user story map
@@ -157,7 +157,7 @@ This is for example the case for user stories C2, I1 and U2.
 We group the non-functional requirements based on the categories in the book The Quest for Software Requirements by Roxanne Miller.
 Examples of these categories are usability, safety, integrity, efficiency and reusability.
 
-Some categories that are not relevant to our project are access security and safety (since we have no private data) and interoperability
+Some categories that are not relevant to our project are access security and safety (since we have no private data) and interoperability 
 (since the system isn't coupled to others).
 
 1. [ ] (N1) usability: ease with which the user is able to learn, operate, prepare inputs and interpret outputs through interaction with a system.
@@ -209,6 +209,10 @@ and form a separate module, these can easily be transferred to a backend applica
 |U1   | components/CargoGoodInput.vue, components/FleetVehicleInput.vue, store/, components/SimplifiedMap.vue, components/LocationInput.vue  |  U_T_U1 | :heavy_check_mark:  |
 |U2   |  App.vue, components/ControlPanel.vue, components/FleetInput.vue,  | U_T_U2  | :heavy_check_mark:  |
 |U2.1   | components/FleetVehicleInput.vue, store/, components/LocationInput.vue  | U_T_U2.1  | :heavy_check_mark:  |
+| U3 | views/SettingsPage.vue, store/index.js |  |  |
+| U4.7.1 | classes/Time.js | Toggle and pause time | x |
+| U4.7.2 | classes/Time.js | Accelerate time | x |
+| U4.7.3 | classes/Time.js | Decelerate time | x |
 
 #### User tests:
 U_T_I2 :
@@ -219,6 +223,7 @@ U_T_I2 :
   5. If the entered values are valid the color of the background of the input box will turn from red to blue
   6. In order to test whether the given parameters affect the simulation, run the same type of simulation with different weight/volume values and analyze the results, by pressing the button "Show results" from the control panel.
   7. If weight/volume is the only variable parameter, then its value must be proportional with the fuel consumed during the simulation
+
 
 U_T_U1 :
   1. Execute the application
