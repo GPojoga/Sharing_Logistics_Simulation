@@ -24,7 +24,7 @@ where each truck can perform tasks for multiple clients simultaneously.
 
 The goal of this project is to produce a program with simulation functionality.
 The simulation should provide insight into the use of resources and carbon emissions in the context of transport of goods by road vehicles.
-Two processes need to be simulated so that they can be compared. The first process should be the current (traditional) 
+Two processes need to be simulated so that they can be compared. The first process should be the current (traditional)
 method that goods are transported, the second process should be the **sharing logistics** method.
 
 ### System overview
@@ -57,8 +57,8 @@ locations, number and types of goods, etc.
 
 We have divided the requirements in five categories: the functional requirements (divided into critical, important, useful and unused user stories)
 and non-functional requirements. Must haves, should haves, could haves and won't haves are different ways of classifying the functional requirements, from the naming system called MoSCoW.
- 
-Critical, important and useful user stories have different degrees of priority: high, middle and low, respectively. 
+
+Critical, important and useful user stories have different degrees of priority: high, middle and low, respectively.
 The critical user stories are ones that have to be in the final product: they are must haves. They have to
 be in the minimum viable product (MVP). Important user stories should be in the final product, but have less priority
 than critical user stories: they are should haves. Useful user stories would be nice to add to the system if time allows
@@ -96,7 +96,7 @@ As a user of this applet I want to be able to...
 As a user of this applet I want to be able to...  
 1. [x] (U1) change the starting locations of trucks and pickup and delivery locations of goods using a digital map so that I can change the locations easily by clicking.
 2. [x] (U2) add multiple blueprints for trucks so that I can have more control over the trucks that are inputted.
-   - [x] (U2.1) input a different starting location for each (blueprint of a) truck so that the simulation is more realistic and more similar to Uber.
+   - [x] (U2.1) input a different starting location for each (blueprint of a) truck so that the simulation is more realistic.
 3. [x] (U3) (but not obliged to) vary parameters that are used in the background of the simulation
 such that I can adapt these values to more realistic ones and see the influence that varying these values has.
 These parameters are:
@@ -119,7 +119,7 @@ can compare the two methods (traditional and sharing logistics) visually.
        - [x] (U4.6.1) pause/continue the time so that I can take as long as I want if I need to inspect the current state of the animation.
        - [x] (U4.6.2) accelerate the time so that the simulation can finish in a reasonable time.
        - [x] (U4.6.3) decelerate the time so that I can slow down the simulation if it is going too fast.
-       
+
 
 
 ### Unused User Stories - won't haves
@@ -134,7 +134,7 @@ for their good to be delivered.
 5. [ ] (W5) upload a file containing data on trucks and goods to the applet, so that I don't have to input every truck and good
 in the applet by hand but can immediately use real data.
 6. [ ] (W6) track the time of day during which a truck travels and the differences that come with it, such as a difference in traffic
-at certain roads and thus the speed at which a truck travels, the fact that a truck driver can only drive a certain 
+at certain roads and thus the speed at which a truck travels, the fact that a truck driver can only drive a certain
 amount of time before having to take a break, the fact that a truck driver needs to sleep, etc.
 
 
@@ -157,7 +157,7 @@ This is for example the case for user stories C2, I1 and U2.
 We group the non-functional requirements based on the categories in the book The Quest for Software Requirements by Roxanne Miller.
 Examples of these categories are usability, safety, integrity, efficiency and reusability.
 
-Some categories that are not relevant to our project are access security and safety (since we have no private data) and interoperability 
+Some categories that are not relevant to our project are access security and safety (since we have no private data) and interoperability
 (since the system isn't coupled to others).
 
 1. [ ] (N1) usability: ease with which the user is able to learn, operate, prepare inputs and interpret outputs through interaction with a system.
@@ -203,7 +203,50 @@ and form a separate module, these can easily be transferred to a backend applica
 | C2.2 |   |   |   |
 | C3.1 |   |   |   |
 | C3.2 |   |   |   |
+| I2   |  App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue | U_T_I2 | :heavy_check_mark:  |
+|I2.1   | components/CargoGoodInput.vue, components/InputNumberBox.vue,  store/  | tests/store/mutations.test.js (set good properties)  |  :heavy_check_mark: |
+|I2.2   | components/CargoGoodInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set good properties)  |  :heavy_check_mark: |
+|U1   | components/CargoGoodInput.vue, components/FleetVehicleInput.vue, store/, components/SimplifiedMap.vue, components/LocationInput.vue  |  U_T_U1 | :heavy_check_mark:  |
+|U2   |  App.vue, components/ControlPanel.vue, components/FleetInput.vue,  | U_T_U2  | :heavy_check_mark:  |
+|U2.1   | components/FleetVehicleInput.vue, store/, components/LocationInput.vue  | U_T_U2.1  | :heavy_check_mark:  |
 
+#### User tests:
+U_T_I2 :
+  1. Execute the application
+  2. Go to control panel
+  3. Create as many Good entries as necessary
+  4. For each Good input the desired weight and volume, in the according input boxes
+  5. If the entered values are valid the color of the background of the input box will turn from red to blue
+  6. In order to test whether the given parameters affect the simulation, run the same type of simulation with different weight/volume values and analyze the results, by pressing the button "Show results" from the control panel.
+  7. If weight/volume is the only variable parameter, then its value must be proportional with the fuel consumed during the simulation
+
+U_T_U1 :
+  1. Execute the application
+  2. Go to control panel
+  3. Create as many Good/ Truck entries as necessary
+  4. Each truck has only one location input (initial location), while each good has two location inputs (From, To)
+  5. Next to each location input a location button is present. It looks the following way : ![Location Button](images/location_button.png)
+  6. After it is pressed, you can select any location on the map.
+  7. After the location has been selected, the location input will contain the name of the selected location.
+  8. If this way was selected the initial location of a specific type, then after the simulation starts, the icon for that truck will be initially displayed at that location.
+  9. If this way was selected the pickup/delivery location of a product, then after the simulation starts, the respective icon will be displayed at that location.
+
+U_T_U2:
+  1. Execute the application
+  2. Go to the control panel
+  3. Find the button ![Add vehicle Button](images/add_vehicle_button.png)
+  4. By pressing this button
+
+U_T_U2.1:
+  1. Execute the application
+  2. Create as many truck entries as necessary
+  3. Now we will focus on one single truck entry, as the same process applies to the others.
+  2. There are 2 ways for setting the initial location of a truck. The first way is the one described in U_T_U1. The second one is by typing the desired location in the location input box.
+  3. The location input box has the label "Starting at"
+  4. While typing the name of the location, a dropdown menu will suggest some locations.
+  5. If the menu contains the desired location, select it. Otherwise, continue typing
+  6. After the location was inputted. If the entered location is valid the color of the background of the location input box will turn from red to blue
+  7. If the location is valid, then after the simulation starts, the icon for that truck will be initially displayed at that location.
 
 ## Meeting Log
 | **When**  | **What**
