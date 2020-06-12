@@ -24,7 +24,7 @@ where each truck can perform tasks for multiple clients simultaneously.
 
 The goal of this project is to produce a program with simulation functionality.
 The simulation should provide insight into the use of resources and carbon emissions in the context of transport of goods by road vehicles.
-Two processes need to be simulated so that they can be compared. The first process should be the current (traditional) 
+Two processes need to be simulated so that they can be compared. The first process should be the current (traditional)
 method that goods are transported, the second process should be the **sharing logistics** method.
 
 ### System overview
@@ -57,8 +57,8 @@ locations, number and types of goods, etc.
 
 We have divided the requirements in five categories: the functional requirements (divided into critical, important, useful and unused user stories)
 and non-functional requirements. Must haves, should haves, could haves and won't haves are different ways of classifying the functional requirements, from the naming system called MoSCoW.
- 
-Critical, important and useful user stories have different degrees of priority: high, middle and low, respectively. 
+
+Critical, important and useful user stories have different degrees of priority: high, middle and low, respectively.
 The critical user stories are ones that have to be in the final product: they are must haves. They have to
 be in the minimum viable product (MVP). Important user stories should be in the final product, but have less priority
 than critical user stories: they are should haves. Useful user stories would be nice to add to the system if time allows
@@ -96,12 +96,12 @@ As a user of this applet I want to be able to...
 As a user of this applet I want to be able to...  
 1. [x] (U1) change the starting locations of trucks and pickup and delivery locations of goods using a digital map so that I can change the locations easily by clicking.
 2. [x] (U2) add multiple blueprints for trucks so that I can have more control over the trucks that are inputted.
-   - [x] (U2.1) input a different starting location for each (blueprint of a) truck so that the simulation is more realistic and more similar to Uber.
+   - [x] (U2.1) input a different starting location for each (blueprint of a) truck so that the simulation is more realistic.
 3. [x] (U3) (but not obliged to) vary parameters that are used in the background of the simulation
 such that I can adapt these values to more realistic ones and see the influence that varying these values has.
 These parameters are:
     - emission burnt factor
-    - average speed of all trucks
+    - max number of splits of the goods
     - for each type of truck:
         - the max volume
         - max payload
@@ -116,10 +116,10 @@ can compare the two methods (traditional and sharing logistics) visually.
    - [x] (U4.5) view per good how its values (picked up or not, delivered or not, current location) change during the simulation.
    - [x] (U4.6) choose if I simulate the traditional method or the sharing logistics method.
    - [x] (U4.7) control the time of the simulation.
-       - [x] (U4.6.1) pause/continue the time so that I can take as long as I want if I need to inspect the current state of the animation.
-       - [x] (U4.6.2) accelerate the time so that the simulation can finish in a reasonable time.
-       - [x] (U4.6.3) decelerate the time so that I can slow down the simulation if it is going too fast.
-       
+       - [x] (U4.7.1) pause/continue the time so that I can take as long as I want if I need to inspect the current state of the animation.
+       - [x] (U4.7.2) accelerate the time so that the simulation can finish in a reasonable time.
+       - [x] (U4.7.3) decelerate the time so that I can slow down the simulation if it is going too fast.
+
 
 
 ### Unused User Stories - won't haves
@@ -134,7 +134,7 @@ for their good to be delivered.
 5. [ ] (W5) upload a file containing data on trucks and goods to the applet, so that I don't have to input every truck and good
 in the applet by hand but can immediately use real data.
 6. [ ] (W6) track the time of day during which a truck travels and the differences that come with it, such as a difference in traffic
-at certain roads and thus the speed at which a truck travels, the fact that a truck driver can only drive a certain 
+at certain roads and thus the speed at which a truck travels, the fact that a truck driver can only drive a certain
 amount of time before having to take a break, the fact that a truck driver needs to sleep, etc.
 
 
@@ -142,7 +142,7 @@ amount of time before having to take a break, the fact that a truck driver needs
 
 The user story map gives a visual overview of all the main user stories in the categories critical, important and useful.
 
-The user goes through the tasks in the same order as the tasks are in, from left to right. Each user story is placed underneath
+The user goes through the tasks in the same order as the tasks are in, from left to right. This represents the user  Each user story is placed underneath
 the subtask that it is a part of, in the row corresponding to its priority.
 
 Note that each user story can be split into multiple sub-user stories, but to keep the user story map
@@ -157,7 +157,7 @@ This is for example the case for user stories C2, I1 and U2.
 We group the non-functional requirements based on the categories in the book The Quest for Software Requirements by Roxanne Miller.
 Examples of these categories are usability, safety, integrity, efficiency and reusability.
 
-Some categories that are not relevant to our project are access security and safety (since we have no private data) and interoperability 
+Some categories that are not relevant to our project are access security and safety (since we have no private data) and interoperability
 (since the system isn't coupled to others).
 
 1. [ ] (N1) usability: ease with which the user is able to learn, operate, prepare inputs and interpret outputs through interaction with a system.
@@ -194,22 +194,33 @@ Note that requirement N3.1 requires the addition of a backend, which may take mo
 and form a separate module, these can easily be transferred to a backend application with JavaScript.
 
 ## Traceability Matrix
-| **Requirement** | **Files Affected** | **Test** | **Passed** |
-|-----------------|--------------------|----------|------------|
-| C1   | classes/, | UserTest1 | Yes |
-| C1.1 | Simulation.js, SimulationType.js, SharedTruck.js, TraditionalTruck.js, store/getters.js, store/index.js, store/mutations.js, OutputPage.vue | UserTest 1.1 | Yes |
-| C1.2 | Simulation.js, SimulationType.js, SharedTruck.js, TraditionalTruck.js, store/getters.js, store/index.js, store/mutations.js, OutputPage.vue | UserTest 1.2 | Yes |
-| C1.3 | Simulation.js, SimulationType.js, SharedTruck.js, TraditionalTruck.js, store/getters.js, store/index.js, store/mutations.js, OutputPage.vue | UserTest 1.3 | Yes |
-| C2.1 |   |   |   |
-| C2.2 |   |   |   |
-| C3.1 |   |   |   |
-| C3.2 |   |   |   |
-| I1   | Truck.js, TruckPropertyHandler.js, ControlPanel.vue, FleetInput.vue, SettingsTruckVariables.vue, store/getters.js, store/index.js, store/mutations.js | UserTest 2 | Yes |
-| I1.1 | Truck.js, TruckPropertyHandler.js, ControlPanel.vue, FleetInput.vue, SettingsTruckVariables.vue, store/getters.js, store/index.js, store/mutations.js | TruckPropertyHandler.test.js + UserTest 2.1 | Yes |
+| **Requirement** | **Files Affected** | **Test** | **Passed**
+|----------------|------------|--------|---------|
+| C1     | classes/, OutputPage.vue, state/ | U_T_I1 | :heavy_check_mark: |
+| C1.1   | OutputPage.vue, state/ | U_T_I1.1 | :heavy_check_mark: |
+| C1.2   | OutputPage.vue, state/ | U_T_I1.2 | :heavy_check_mark: |
+| C1.3   | OutputPage.vue, state/ | U_T_I1.3 | :heavy_check_mark: |
+| C2     | App.vue, views/Home.vue, components/ControlPanel.vue, components/FleetInput.vue  |   |   |
+| C2.1   | components/FleetVehicleInput.vue, components/LocationInput.vue, store/  |  tests/store/mutations.test.js (set truck properties) | :heavy_check_mark:  |
+| C2.2   | components/FleetVehicleInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set truck properties)  |  :heavy_check_mark: |
+| C3     | App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue  |   |   |
+| C3.1   | components/CargoGoodInput.vue, components/LocationInput.vue, store/  | tests/store/mutations.test.js (set good properties) | :heavy_check_mark:  |
+| C3.2   | components/CargoGoodInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set good properties) | :heavy_check_mark:  |
+| I1     | Truck.js, TruckPropertyHandler.js, FleetInput.vue, SettingsTruckVariables.vue, store/ | mutations.test.js (set truck properties) + U_T_I1 | :heavy_check_mark: |
+| I1.1   | Truck.js, TruckPropertyHandler.js, FleetInput.vue, SettingsTruckVariables.vue, store/ | mutations.test.js (set truck properties) + TruckPropertyHandler.test.js + U_T_I1.1 | :heavy_check_mark: |
+| I2     |  App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue | U_T_I2 | :heavy_check_mark:  |
+| I2.1   | components/CargoGoodInput.vue, components/InputNumberBox.vue,  store/  | tests/store/mutations.test.js (set good properties)  |  :heavy_check_mark: |
+| I2.2   | components/CargoGoodInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set good properties)  |  :heavy_check_mark: |
+| U1     | components/CargoGoodInput.vue, components/FleetVehicleInput.vue, store/, components/SimplifiedMap.vue, components/LocationInput.vue  |  U_T_U1 | :heavy_check_mark:  |
+| U2     |  App.vue, components/ControlPanel.vue, components/FleetInput.vue,  | U_T_U2  | :heavy_check_mark:  |
+| U2.1   | components/FleetVehicleInput.vue, store/, components/LocationInput.vue  | U_T_U2.1  | :heavy_check_mark:  |
+| U3     | views/SettingsPage.vue, store/index.js |  |  |
+| U4.7.1 | classes/Time.js | Toggle and pause time | x |
+| U4.7.2 | classes/Time.js | Accelerate time | x |
+| U4.7.3 | classes/Time.js | Decelerate time | x |
 
-### User Tests
-Find below the steps to reproduce the user tests in the traceability matrix above.
-#### User Test 1
+#### User tests:
+U_T_I1 : 
  1. Navigate to the SettingsPage
  2. Enter/Change input until all fields are no longer red.
  3. Navigate to the HomePage and repeat step 2.
@@ -220,22 +231,67 @@ Find below the steps to reproduce the user tests in the traceability matrix abov
  8. Wait for simulation to complete. (in case the simulation is paused, press the unpause button)
  9. Navigate to the OutputPage by pressing the blue Show results button.
 
-#### User Test 1.1
+U_T_C1.1 :
   1. Complete steps 1-9 of User Test 1.
   2. Compare CO2 emission for Sharing Logistics (left) vs Traditional Method (left). 
 
-#### User Test 1.2
+U_T_C1.2 :
   1. Complete steps 1-9 of User Test 1.
   2. Compare number of trucks used for Sharing Logistics (left) vs Traditional Method (right). 
 
-#### User Test 1.3
+U_T_C1.3 :
   1. Complete steps 1-9 of User Test 1.
   2. Compare total distance travelled for Sharing Logistics (left) vs Traditional Method (right). 
 
-#### User Test 2
+U_T_I1 :
   1. Navigate to the HomePage.
-  2. In case there is no truck add a new truck by pressing the Add vehicle button labelled with a cross.
+  2. In case there is no truck add a new truck by pressing ![Add vehicle Button](images/add_vehicle_button.png)
   3. Press one of the 3 different vehicle drawings.
+  
+U_T_I1.1 : 
+  1. Navigate to the HomePage.
+  2. In case there is no truck add a new truck by pressing ![Add vehicle Button](images/add_vehicle_button.png)
+  3. Press one of the 3 different vehicle drawings to change according to desired truck type.
+
+U_T_I2 :
+  1. Execute the application
+  2. Go to control panel
+  3. Create as many Good entries as necessary
+  4. For each Good input the desired weight and volume, in the according input boxes
+  5. If the entered values are valid the color of the background of the input box will turn from red to blue
+  6. In order to test whether the given parameters affect the simulation, run the same type of simulation with different weight/volume values and analyze the results, by pressing the button "Show results" from the control panel.
+  7. If weight/volume is the only variable parameter, then its value must be proportional with the fuel consumed during the simulation
+
+
+U_T_U1 :
+  1. Execute the application
+  2. Go to control panel
+  3. Create as many Good/ Truck entries as necessary
+  4. Each truck has only one location input (initial location), while each good has two location inputs (From, To)
+  5. Next to each location input a location button is present. It looks the following way : ![Location Button](images/location_button.png)
+  6. After it is pressed, you can select any location on the map.
+  7. After the location has been selected, the location input will contain the name of the selected location.
+  8. If this way was selected the initial location of a specific type, then after the simulation starts, the icon for that truck will be initially displayed at that location.
+  9. If this way was selected the pickup/delivery location of a product, then after the simulation starts, the respective icon will be displayed at that location.
+
+U_T_U2:
+  1. Execute the application
+  2. Go to the control panel
+  3. Find the button ![Add vehicle Button](images/add_vehicle_button.png)
+  4. By pressing this button a new truck will be added to the truck list
+  5. In order to visualize the trucks from the truck list, specify different initial locations and types, then start the simulation, let the number of vehicles for each entry be 1, as this way the icons will not override each other and the results will be more obvious.
+  6. After the simulation was started, at every given initial location a truck icon, that represents the type of its truck, will be displayed. This proves that trucks were added to the simulation. 
+
+U_T_U2.1:
+  1. Execute the application
+  2. Create as many truck entries as necessary
+  3. Now we will focus on one single truck entry, as the same process applies to the others.
+  2. There are 2 ways for setting the initial location of a truck. The first way is the one described in U_T_U1. The second one is by typing the desired location in the location input box.
+  3. The location input box has the label "Starting at"
+  4. While typing the name of the location, a dropdown menu will suggest some locations.
+  5. If the menu contains the desired location, select it. Otherwise, continue typing
+  6. After the location was inputted. If the entered location is valid the color of the background of the location input box will turn from red to blue
+  7. If the location is valid, then after the simulation starts, the icon for that truck will be initially displayed at that location.
 
 ## Meeting Log
 | **When**  | **What**

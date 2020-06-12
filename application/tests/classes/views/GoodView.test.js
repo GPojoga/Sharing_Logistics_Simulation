@@ -1,8 +1,8 @@
-import GoodView from "../../../src/classes/view/GoodView";
-import {icon} from "leaflet/dist/leaflet-src.esm";
-import good_pickup from "public/assets/good_pickup.svg"
-import good_drop from "public/assets/good_drop.svg"
 import {createLocalVue, mount} from "@vue/test-utils";
+import SimplifiedMap from "@/components/SimplifiedMap";
+import store from "@/store";
+import UpdateMessage from "../../../src/classes/util/UpdateMessage";
+import {GoodView} from "../../../src/classes/view/GoodView";
 
 const localVue = createLocalVue();
 mount(SimplifiedMap,{
@@ -10,29 +10,11 @@ mount(SimplifiedMap,{
     store
 });
 
-let map = store.getters.map;
-
-describe("GoodPickUp Icon", () => {
-    it("renders the good pickupIcon", () => {
-        expect(icon.find("svg").prop("src")).toEqual(good_pickup);
-    });
+test('update location', ()=>{
+    let map = store.getters.map;
+    let goodView = new GoodView({pickUp: {lat: 1, lng: 1}, delivery: {lat: 2, lng:2}}, map);
+    expect(goodView.viewPickUp.getLatLng()).toEqual({lat: 1, lng:1});
+    expect(goodView.viewDrop.getLatLng()).toEqual({lat: 2, lng:2});
+    goodView.update({location: {lat: 5, lng: 5}}, UpdateMessage.Relocated);
+    expect(goodView.viewPickUp.getLatLng()).toEqual({lat:5,lng:5});
 });
-
-describe("GoodDrop Icon", () => {
-    it("renders the good pickupIcon", () => {
-        expect(icon.find("svg").prop("src")).toEqual(good_drop);
-    });
-});
-
-describe('Goods icon added to the map',()=>{
-    it('the goods is correctly picked up',()=>{
-        expect(this.viewPickUp.addTo(mapObject));
-    });
-});
-
-describe('Goods icon added to the map',()=>{
-    it('the goods is correctly picked up',()=>{
-        expect(this.viewDrop.addTo(mapObject));
-    });
-});
-

@@ -1,6 +1,11 @@
-import {icon} from "leaflet/dist/leaflet-src.esm";
-import light_duty_van from "public/assets/light_duty_van.svg"
+import Truck from "@/classes/trucks/Truck";
 import {createLocalVue, mount} from "@vue/test-utils";
+import SimplifiedMap from "@/components/SimplifiedMap";
+import store from "@/store";
+import UpdateMessage from "../../../src/classes/util/UpdateMessage";
+import {truckState} from "@/classes/trucks/TruckState"
+import {TruckView} from "../../../src/classes/view/TruckView";
+
 
 const localVue = createLocalVue();
 mount(SimplifiedMap,{
@@ -8,19 +13,11 @@ mount(SimplifiedMap,{
     store
 });
 
-let map = store.getters.map;
-
-describe("light_duty_van Icon", () => {
-    it("renders the light van pickupIcon", () => {
-        expect(icon.find("svg").prop("src")).toEqual(light_duty_van);
-    });
+test('update location', ()=>{
+    let map = store.getters.map;
+    let truckView = new TruckView({location: {lat: 1, lng: 1}, properties: {type: "Light"}}, map);
+    expect(truckView.view.getLatLng()).toEqual({lat: 1, lng:1});
+    truckView.update({location: {lat: 5, lng: 5}}, UpdateMessage.Relocated);
+    expect(truckView.view.getLatLng()).toEqual({lat:5,lng:5});
 });
-
-describe('Truck icon added to the map',()=>{
-    it('the truck is correctly added up',()=>{
-        expect(this.view.addTo(mapObject));
-    });
-});
-
-
 
