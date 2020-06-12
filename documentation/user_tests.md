@@ -26,6 +26,40 @@ in natural language like a sort of recipe to be executed by human beings.
   1. Complete steps 1-9 of U_T_C1.
   2. Compare total distance travelled for Sharing Logistics (left) vs Traditional Method (right). 
 
+## U_T_C2:
+  1. Execute the application
+  2. Go to control panel
+  3. In case there is no truck, add a new truck by pressing: ![Add vehicle Button](images/add_vehicle_button.png)
+
+## U_T_C2.1:
+  1. Complete steps 1-3 of U_T_C2
+  2. Specify the location input (initial location) of the truck by:
+	  2.1.1.	 Typing the initial location in the specific field
+	  2.2.1.	Pressing the location button that looks like: ![Location Button](images/location_button.png)
+	  2.2.2.	After pressed, you can select any location on the map
+ 3. After the location has been selected, the location input will contain the name of the selected location
+
+## U_T_C2.2:
+1. Complete steps 1-3 of C2
+2. For each vehicle input,  specify the desired quantity of vehicles from the same initial location
+
+## U_T_C3:
+  1. Execute the application
+  2. Go to control panel
+  3. In case there is no good, add a new good by pressing: ![Add good Button](images/add_good_button.png)
+
+## U_T_C3.1:
+  1. Complete steps 1-3 of U_T_C3
+  2. Specify the location input (From and To) of the truck by:
+	  2.1.1.	 Typing the location in the specific field
+	  2.2.1.	Pressing the location button that looks like: ![Location Button](images/location_button.png)
+	  2.2.2.	After pressed, you can select any location on the map
+ 3. After the locations have been selected, the location input will contain the names of the selected locations
+
+## U_T_C3.2:
+1. Complete steps 1-3 of C3
+2. For each good input,  specify the desired quantity of goods that have the same specifications in terms of weight, volume, pickup and deliver locations. 
+
 ## U_T_I1 :
   1. Navigate to the HomePage.
   2. In case there is no truck add a new truck by pressing ![Add vehicle Button](images/add_vehicle_button.png)
