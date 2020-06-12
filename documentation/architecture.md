@@ -85,7 +85,7 @@ For our project, the following Vue components compose the view:
   2. OutputPage is the component responsible for displaying the output once the simulation has run.
   It contains a BasicButton with allows the user to return to the HomePage.
   3. HomePage is the component where the user sets the parameters of the simulation as well as where the simulation is displayed.
-  It contains a SimplifiedMap to show the simulation, a ControlPanel to change the parameters, and a TimeControl to change the time during the running of the simulation.
+  It contains a SimplifiedMap to show the simulation, a ControlPanel to change the parameters, a TimeControl to change the time during the running of the simulation, and a data panel to display data during the simulation.
   4. SettingsPage allows the user to change specific settings in the simulation.
   It contains SettingsGlobalVariable to set settings for the global variables, and SettingsTruckVariables set of settings of variables for each truck.
   5. ControlPanel allows the user change parameters in the simulation.
@@ -129,10 +129,12 @@ For our project, the following Vue components compose the view:
   24. BasicInput gets basic input from the user through a text field.
   It is a basic component and thus contains no other components.
 
-During the first block of development of the web-app, the ControlPanel over coupled compared to the of rest the component hierarchy .
-However after we inevitably added more components we made an effort to keep components balanced.   
+During the first block of development of the web-app, the ControlPanel over coupled compared to the of rest the component hierarchy.
+However after we inevitably added more components we made an effort to keep components balanced. 
+This is reflected by the fact that each component only has 0-4 child components, with most components having 2 or 3. 
 
-The exact file structure and explanations of what the responsibility of each file is, can be found below.
+The exact file structure can be found below.
+A short description of responsibilities is also provided for each of the files.
 ````
 ├── public
 │   ├── assets
