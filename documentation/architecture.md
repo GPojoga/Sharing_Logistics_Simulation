@@ -216,6 +216,18 @@ Note that each element of the view can access the application's store.
 Since Vue is meant to create Single Page Applications, we added a router to the project.
 What this router essentially does is mounting one of the three views (Home, OutputPage or SettingsPage) to App.vue.
 
+During the second block we mostly focused on developing a package that would allow us to simulate the traditional and the shared logistics in similar conditions. The package is located in `src/classes`. It contains the following packages :
+  - goods
+  - simulation
+  - trucks
+  - util
+  - view
+
+Besides them, it contains the class `Router` which is responsible for sending requests to OSRM, as well as, for the processing of the responses. It also contains the class `Time` which allows us to control the time of the simulation i.e., to speed up, to slow down, as well as, to determine specific time related data such as delivery time, transit time etc. .
+
+The most complex sub-packages are `simulation` and `trucks`. The package `trucks` contains all the necessary functionality for the simulation of a truck, e.g., change the location according to a specific route, determine the route given the starting and ending location by using and instance of the class `Router`. There are two types of trucks `TraditionalTruck` and `SharedTruck` which extend the abstract class `Truck`. The main difference between them is the way they accept orders. A `TraditionalTruck` will only transport the goods from a single order at a time, while a `SharedTruck` can transport goods from multiple orders at the same time, given that it has enough space.
+
+The sub-package `simulation` is responsible for the distribution of the goods over trucks. It initializes the trucks according to the simulation type i.e., a shared simulation will initialize the trucks as instances of `SharedTruck`, and respectively as instances of `TraditionalTruck` in the case of a traditional simulation. The class `Simulation` is liable for keeping track of the trucks' progress, and when all the trucks have finished with their orders and returned home, as well as, all the goods are delivered, it will generate the results which will be stored in the storage, and afterwards used for the comparison of the logistic systems.
 
 ## Technology Stack
 <!--
@@ -320,4 +332,4 @@ The division during the second block was more nuanced. Check Trello for more det
 | Gheorghe | 04-05-2020 | Updated the introduction
 | Antonin  | 26-05-2020 | Updated the file structure and hierarchy diagram
 | Antonin  | 12-06-2020 | Updated the file structure and hierarchy diagram
-| Gheorghe   | 12-06-2020  | Small changes in the introduction and Technology Stack  |
+| Gheorghe   | 12-06-2020  | Small changes in the introduction and Technology Stack. Updated the architectural overview  |
