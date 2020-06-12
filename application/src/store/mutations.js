@@ -23,15 +23,15 @@ export const mutations = {
     },
 
     /**
-     * This is the setter function of the max speed of all trucks.
+     * This is the setter function of the max number of times a good can be split.
      * @param state The current state that should be changed.
-     * @param value The value the max speed should be set too.
+     * @param value The value the max good splits should be set too.
      */
-    setMaxSpeed(state, {value}) {
-        let check = state.checkNumber(value, 0, 1000, false, true);
-        state.maxSpeed.error = check[0];
-        state.maxSpeed.message = check[1];
-        state.maxSpeed.value = value;
+    setMaxGoodSplits(state, {value}) {
+        let check = state.checkNumber(value, 0, 10000, false, false);
+        state.maxGoodSplits.error = check[0];
+        state.maxGoodSplits.message = check[1];
+        state.maxGoodSplits.value = value;
     },
 
     /**

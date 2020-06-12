@@ -22,6 +22,7 @@ export default class CostHandler{
         if (pickupIndex < deliveryIndex){  // If the truck returns to the planned path after pickup.
             fuel += this.truck.computeFuelConsumed(haversine(location,this.plan.orders[pickupIndex].location),weight);
             location = this.plan.orders[pickupIndex].location;
+            weight = good.quantity * good.weight + this.plan.orders[pickupIndex].expectedLoad.weight;
         }
 
         for(let i = pickupIndex + 1;i < deliveryIndex;i++){

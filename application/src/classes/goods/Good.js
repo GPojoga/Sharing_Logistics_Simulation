@@ -41,7 +41,12 @@ export default class Good extends Observable{
      */
     bestInsert = Object;
 
-    constructor(quantity, weight, volume, pickUp, delivery, mapObj){
+    /**
+     * This variable keeps track of the original package the belonged to before the package was split up.
+     */
+    key = Number(NaN);
+
+    constructor(quantity, weight, volume, pickUp, delivery, mapObj, key){
         super();
         this.quantity = quantity;
         this.weight = weight;
@@ -51,6 +56,7 @@ export default class Good extends Observable{
         this.timer = store.getters.time;
         this.initialTime = store.getters.time.getTimePassed();
         this.addListener(new GoodView(this, mapObj));
+        this.key = key;
     }
 
     pickup(){
@@ -130,6 +136,13 @@ export default class Good extends Observable{
      */
     getLowestCost() {
         return this.bestInsert.cost;
+    }
+
+    /**
+     * @returns {number} This method returns the key of the package the product belonged too originally.
+     */
+    getKey() {
+        return this.key;
     }
 
     disable(){

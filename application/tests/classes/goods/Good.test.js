@@ -13,7 +13,7 @@ mount(SimplifiedMap,{
 let map = store.getters.map;
 let good;
 beforeEach(()=>{
-    good = new Good(21,32,12,{lat:1,lng:1},{lat:2,lng:2},map);
+    good = new Good(21,32,12,{lat:1,lng:1},{lat:2,lng:2},map,0);
 });
 
 describe('initialize Good',()=>{
@@ -25,6 +25,7 @@ describe('initialize Good',()=>{
         expect(good.delivery).toStrictEqual({lat:2,lng:2});
         expect(good.timer).toBeTruthy();
         expect(good.initialTime).toEqual(0);
+        expect(good.key).toEqual(0);
     });
 });
 
@@ -53,7 +54,7 @@ describe('pickup and deliver',()=>{
 
 test('transit and delivery time',()=>{
     let time = store.getters.time;
-    good = new Good(21,32,12,{lat:1,lng:1},{lat:2,lng:2},map);
+    good = new Good(21,32,12,{lat:1,lng:1},{lat:2,lng:2},map,1);
     time.reset();
     time.run();
     let timeTillPickUp;
@@ -80,7 +81,7 @@ describe('truck selection',()=>{
            Object.assign({truckIndex:1},trucks[1].getLowestCost(good))]);
    });
    it('correctly updates the given truck',()=>{
-      good = new Good(21,32,12,{lat:1,lng:1},{lat:2,lng:2},map);
+      good = new Good(21,32,12,{lat:1,lng:1},{lat:2,lng:2},map,2);
       good.giveTruckList(trucks);
       let truck = new TraditionalTruck('Heavy',{lat:3,lng:3},store,30);
       good.updateTruck(truck,1);

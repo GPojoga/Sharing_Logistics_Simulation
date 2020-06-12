@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import mutations from "./mutations";
 import actions from "./actions";
 import getters from "./getters.js";
-import {Time} from "../classes/Time.js";
+import Time from "../classes/Time.js";
 import {simulationType} from "../classes/simulation/SimulationType.js";
 
 Vue.use(Vuex);
@@ -43,7 +43,7 @@ export default new Vuex.Store({
 
         // Global Variables:
         emissionRate : { value : "2.67", error : false, message : "" },  // The amount of emission released for a liter of petrol.
-        maxSpeed : { value : "100", error : false, message : ""},        // The max speed a truck can traveling in km/h
+        maxGoodSplits : { value : "10", error : false, message : ""},        // The max speed a truck can traveling in km/h
 
         // TruckType Variables:
         truckTypes : [

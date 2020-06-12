@@ -18,10 +18,10 @@ describe('setMap',()=>{
    })
 });
 
-describe('setMaxSpeed',()=>{
-   it('correctly sets a normal speed',()=>{
-       store.commit('setMaxSpeed',{value : 56});
-       expect(store.getters.maxSpeed).toEqual({error: false, message: "", value: 56});
+describe('setMaxGoodSplits',()=>{
+   it('correctly sets a max times a good is split',()=>{
+       store.commit('setMaxGoodSplits',{value : 56});
+       expect(store.getters.maxGoodSplits).toEqual({error: false, message: "", value: 56});
    });
 });
 
@@ -40,17 +40,32 @@ describe('setVolume',()=>{
 });
 
 describe('setSimulation',()=>{
-   it('correctly sets the Traditional Simulation', ()=>{
+    it('no map object', () => {
+        store.state.map = null;
+        try {
+            store.commit('setSimulation', {type: simulationType.NONE, store: store});
+        } catch (e) {
+            expect(e.message).toBe('The map object was not set. The simulation cannot be initialized ');
+        }
+    });
+    it('correctly sets the Traditional Simulation', ()=>{
        store.commit('setMap',{map : mapWrapper.vm.$refs["map"].mapObject});
-       new Error("MAP : " + store.getters.map);
        store.commit('setSimulation',{type : simulationType.TRADITIONAL,store : store});
        expect(store.getters.traditionalSimulation._simType).toEqual(simulationType.TRADITIONAL);
-   });
-   it('correctly sets the Shared Simulation', ()=>{
+    });
+    it('correctly sets the Shared Simulation', ()=>{
        store.commit('setMap',{map : mapWrapper.vm.$refs["map"].mapObject});
        store.commit('setSimulation',{type : simulationType.SHARED,store : store});
        expect(store.getters.sharedSimulation._simType).toEqual(simulationType.SHARED);
-   });
+    });
+    it('invalid simulation type', () => {
+        store.commit('setMap', {map : mapWrapper.vm.$refs["map"].mapObject});
+        try {
+            store.commit('setSimulation', {type : simulationType.NONE, store: store});
+        } catch (e) {
+            expect(e.message).toBe('Invalid simulation type');
+        }
+    })
 });
 
 describe('setSimulationResults',()=>{
@@ -68,11 +83,45 @@ describe('setSimulationResults',()=>{
 });
 
 describe('startTraditionalSimulation', ()=>{
-   //TODO : check input is necessary
+    it('throws error if simulation not set', () => {
+        store.state.traditionalSimulation = null;
+        try {
+            store.commit('startTraditionalSimulation');
+        } catch (e) {
+            expect(e.message).toBe("Traditional simulation was not set");
+        }
+        expect(store.getters.isRunning).toBe(false);
+    });
+    it('correctly starts the traditional simulation', () => {
+        store.state.goods = store.state.trucks = [];
+        store.state.traditionalSimulation = new Simulation(simulationType.TRADITIONAL, store);
+        store.state.sharedSimulation = null;
+        store.commit('startTraditionalSimulation');
+        expect(store.getters.isRunning).toBe(true);
+        expect(store.getters.currentSimulationType).toBe(simulationType.TRADITIONAL);
+        store.state.traditionalSimulation.stop();
+    });
 });
 
 describe('startSharedSimulation', ()=>{
-    //TODO : check input is necessary
+    it('throws error if simulation not set', () => {
+        store.state.sharedSimulation = null;
+        try {
+            store.commit('startSharedSimulation');
+        } catch (e) {
+            expect(e.message).toBe("Shared simulation was not set");
+        }
+        expect(store.getters.isRunning).toBe(false);
+    });
+    it('correctly starts the shared simulation', () => {
+        store.state.goods = store.state.trucks = [];
+        store.state.traditionalSimulation = null;
+        store.state.sharedSimulation = new Simulation(simulationType.SHARED, store);
+        store.commit('startSharedSimulation');
+        expect(store.getters.isRunning).toBe(true);
+        expect(store.getters.currentSimulationType).toBe(simulationType.SHARED);
+        store.state.sharedSimulation.stop();
+    });
 });
 
 describe('setMaxPayload',() => {

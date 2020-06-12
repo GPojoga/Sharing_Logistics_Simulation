@@ -30,10 +30,10 @@
                         setter: "setEmissionRate"
                     },
                     {
-                        name: "Max Speed",
-                        unit: "km/h",
-                        field: this.$store.getters.maxSpeed,
-                        setter: "setMaxSpeed"
+                        name: "Max Good Splits",
+                        unit: "#",
+                        field: this.$store.getters.maxGoodSplits,
+                        setter: "setMaxGoodSplits"
                     }
                 ]
             }

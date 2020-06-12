@@ -24,5 +24,13 @@ describe('checkNumber',()=>{
 });
 
 describe('checkLocation',()=>{
-    //TODO
+    it('no location name and no coordinates', () => {
+        expect(store.state.checkLocation(null, '')).toStrictEqual([true, "Field can't be empty"]);
+    });
+    it('location name but no coordinates', () => {
+        expect(store.state.checkLocation(null, 'dummy text')).toStrictEqual([true, "Must be known location"]);
+    });
+    it('location name and coordinates', () => {
+        expect(store.state.checkLocation({lat:3, lng:5}, 'dummy text')).toStrictEqual([false, ""]);
+    })
 });
