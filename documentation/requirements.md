@@ -194,6 +194,9 @@ Note that requirement N3.1 requires the addition of a backend, which may take mo
 and form a separate module, these can easily be transferred to a backend application with JavaScript.
 
 ## Traceability Matrix
+
+The tests that couldn't be tested with a unit test were written as 'user tests', which can be found in the document user_tests.md in the documentation folder of our GitHub repository.
+
 | **Requirement** | **Files Affected** | **Test** | **Passed**
 |----------------|------------|--------|---------|
 | C1.1 |   |   |   |
@@ -215,9 +218,9 @@ and form a separate module, these can easily be transferred to a backend applica
 | U3.2 | views/SettingsPage.vue, store/index.js | U_T_U3.2 | :heavy_check_mark: |
 | U3.3.1 | views/SettingsPage.vue, store/index.js | U_T_U3.3.1 | :heavy_check_mark: |
 | U3.3.2 | views/SettingsPage.vue, store/index.js | U_T_U3.3.2 | :heavy_check_mark: |
-| U3.3.3 | views/SettingsPage.vue, store/index.js | U_T_U3.3.3 |  |
-| U3.3.4 | views/SettingsPage.vue, store/index.js | U_T_U3.3.4 |  |
-| U4 | classes/simulation/Simulation.js | Simulation.test.js: 'simulation initialization', 'simulation start', 'simulation stop', 'initialize goods', 'initialize trucks', 'send trucks home', update' |  |
+| U3.3.3 | views/SettingsPage.vue, store/index.js | U_T_U3.3.3 | :heavy_check_mark: |
+| U3.3.4 | views/SettingsPage.vue, store/index.js | U_T_U3.3.4 | :heavy_check_mark: |
+| U4 | classes/simulation/Simulation.js | Simulation.test.js: 'simulation initialization', 'simulation start', 'simulation stop', 'initialize goods', 'initialize trucks', 'send trucks home', update' | :heavy_check_mark: |
 | U4.1 | views/TruckView.test.js, views/TruckView.test.js, util/UpdateMessage | Update Location | :heavy_check_mark: |
 | U4 .2 | classes/Good.js, classes/Good.test.js, views/GoodView.js, | Update Location | :heavy_check_mark: |
 | U4 .3 | components/simulationData/SimulationData.vue | U_T_U4.3 | :heavy_check_mark: |
