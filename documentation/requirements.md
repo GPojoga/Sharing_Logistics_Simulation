@@ -222,11 +222,11 @@ The tests that couldn't be tested with a unit test were written as 'user tests',
 | U3.3.4 | views/SettingsPage.vue, store/index.js | U_T_U3.3.4 | :heavy_check_mark: |
 | U4 | classes/simulation/Simulation.js | Simulation.test.js: 'simulation initialization', 'simulation start', 'simulation stop', 'initialize goods', 'initialize trucks', 'send trucks home', update' | :heavy_check_mark: |
 | U4.1 | views/TruckView.test.js, views/TruckView.test.js, util/UpdateMessage | Update Location | :heavy_check_mark: |
-| U4 .2 | classes/Good.js, classes/Good.test.js, views/GoodView.js, | Update Location | :heavy_check_mark: |
-| U4 .3 | components/simulationData/SimulationData.vue | U_T_U4.3 | :heavy_check_mark: |
-| U4 .4 | classes/Truck.js, classes/Truck.test.js, views/TruckView.js, views/TruckView.test.js| Truck Initialization, Add Good	 | :heavy_check_mark: |
-| U4 .5 | classes/Good.js | Pick Up and delivery | :heavy_check_mark: |
-| U4 .6 | classes/trucks/SharedTruck.js, classes/trucks/TraditionalTruck.js, components/ControlPanel.vue| U_T_U4.6	| :heavy_check_mark: |
+| U4.2 | classes/Good.js, classes/Good.test.js, views/GoodView.js, | Update Location | :heavy_check_mark: |
+| U4.3 | components/simulationData/SimulationData.vue | U_T_U4.3 | :heavy_check_mark: |
+| U4.4 | classes/Truck.js, classes/Truck.test.js, views/TruckView.js, views/TruckView.test.js| Truck Initialization, Add Good	 | :heavy_check_mark: |
+| U4.5 | classes/Good.js | Pick Up and delivery | :heavy_check_mark: |
+| U4.6 | classes/trucks/SharedTruck.js, classes/trucks/TraditionalTruck.js, components/ControlPanel.vue| U_T_U4.6	| :heavy_check_mark: |
 | U4.7.1 | classes/Time.js | Time.test.js: 'Toggle and pause time' | :heavy_check_mark: |
 | U4.7.2 | classes/Time.js | Time.test.js: 'Accelerate time' | :heavy_check_mark: |
 | U4.7.3 | classes/Time.js | Time.test.js: 'Decelerate time' | :heavy_check_mark: |
