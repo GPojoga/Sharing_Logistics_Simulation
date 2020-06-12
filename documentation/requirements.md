@@ -100,13 +100,13 @@ As a user of this applet I want to be able to...
 3. [x] (U3) (but not obliged to) vary parameters that are used in the background of the simulation
 such that I can adapt these values to more realistic ones and see the influence that varying these values has.
 These parameters are:
-    - emission burnt factor
-    - max number of splits of the goods
-    - for each type of truck:
-        - the max volume
-        - max payload
-        - empty fuel consumption
-        - full fuel consumption.
+    - [x] (U3.1) emission burnt factor
+    - [x] (U3.2) max number of splits of the goods
+    -  [x] (U3.3) for each type of truck:
+        - [x] (U3.3.1) the max volume
+        - [x] (U3.3.2) max payload
+        - [x] (U3.3.3) empty fuel consumption
+        - [x] (U3.3.4) full fuel consumption.
 4. [x] (U4) actually simulate (i.e. animate) the movement of trucks and goods over time so that I can more realistically see how the trucks and goods are transported over time and so that I
 can compare the two methods (traditional and sharing logistics) visually.
    - [x] (U4.1) have an animation of a moving truck so that I can have a visual representation of the problem.
@@ -142,13 +142,13 @@ amount of time before having to take a break, the fact that a truck driver needs
 
 The user story map gives a visual overview of all the main user stories in the categories critical, important and useful.
 
-The user goes through the tasks in the same order as the tasks are in, from left to right. This represents the user  Each user story is placed underneath
-the subtask that it is a part of, in the row corresponding to its priority.
+The order of the tasks represents the user flow, from left to right. Each task can be divided into subtasks.
+Each user story is placed underneath the subtask that it is a part of, in the row corresponding to its priority.
 
 Note that each user story can be split into multiple sub-user stories, but to keep the user story map
 clear these are not included.
 
-Some user stories with lower priorities can (partly) overwrite user stories with higher priorities.
+Some user stories with lower priorities extend user stories with higher priorities.
 This is for example the case for user stories C2, I1 and U2.
 
 ![User story map](images/user_story_map.png)
@@ -166,11 +166,11 @@ Some categories that are not relevant to our project are access security and saf
    - [x] (N1.3) The map and the input panel should be on the same page of the web application.
    - [x] (N1.4) Each type of truck should have different images.
    - [ ] (N1.5) Each of the routes that trucks travel along should be visualised and have different colors so that the user knows the route of each truck in advance.
-   - [ ] (N1.6) The simulation should have default values for certain parameters so that the user can quickly start simulating.
+   - [ ] (N1.6) The simulation should have **default values** for certain parameters so that the user can quickly start simulating.
         These parameters are:
         - [x] (N1.6.1) Global parameters
             - [x] (N1.6.1.1) Emission burnt factor
-            - [x] (N1.6.1.1) Average speed of all trucks
+            - [x] (N1.6.1.1) Max number of splits of goods
         - [x] (N1.6.2) Truck type specific parameters
             - [x] (N1.6.2.1) Max volume
             - [x] (N1.6.2.2) Max payload
@@ -194,104 +194,45 @@ Note that requirement N3.1 requires the addition of a backend, which may take mo
 and form a separate module, these can easily be transferred to a backend application with JavaScript.
 
 ## Traceability Matrix
+
+The tests that couldn't be tested with a unit test were written as 'user tests', which can be found in the document user_tests.md in the documentation folder of our GitHub repository.
+
 | **Requirement** | **Files Affected** | **Test** | **Passed**
 |----------------|------------|--------|---------|
 | C1     | classes/, OutputPage.vue, state/ | U_T_I1 | :heavy_check_mark: |
 | C1.1   | OutputPage.vue, state/ | U_T_I1.1 | :heavy_check_mark: |
 | C1.2   | OutputPage.vue, state/ | U_T_I1.2 | :heavy_check_mark: |
 | C1.3   | OutputPage.vue, state/ | U_T_I1.3 | :heavy_check_mark: |
-| C2     | App.vue, views/Home.vue, components/ControlPanel.vue, components/FleetInput.vue  |   |   |
-| C2.1   | components/FleetVehicleInput.vue, components/LocationInput.vue, store/  |  tests/store/mutations.test.js (set truck properties) | :heavy_check_mark:  |
-| C2.2   | components/FleetVehicleInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set truck properties)  |  :heavy_check_mark: |
-| C3     | App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue  |   |   |
-| C3.1   | components/CargoGoodInput.vue, components/LocationInput.vue, store/  | tests/store/mutations.test.js (set good properties) | :heavy_check_mark:  |
-| C3.2   | components/CargoGoodInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set good properties) | :heavy_check_mark:  |
+| C2   | App.vue, views/Home.vue, components/ControlPanel.vue, components/FleetInput.vue  |   |   |
+| C2.1 | components/FleetVehicleInput.vue, components/LocationInput.vue, store/  |  tests/store/mutations.test.js (set truck properties) | :heavy_check_mark:  |
+| C2.2 | components/FleetVehicleInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set truck properties)  |  :heavy_check_mark: |
+| C3   | App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue  |   |   |
+| C3.1 | components/CargoGoodInput.vue, components/LocationInput.vue, store/  | tests/store/mutations.test.js (set good properties) | :heavy_check_mark:  |
+| C3.2 | components/CargoGoodInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set good properties) | :heavy_check_mark:  |
 | I1     | Truck.js, TruckPropertyHandler.js, FleetInput.vue, SettingsTruckVariables.vue, store/ | mutations.test.js (set truck properties) + U_T_I1 | :heavy_check_mark: |
 | I1.1   | Truck.js, TruckPropertyHandler.js, FleetInput.vue, SettingsTruckVariables.vue, store/ | mutations.test.js (set truck properties) + TruckPropertyHandler.test.js + U_T_I1.1 | :heavy_check_mark: |
-| I2     |  App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue | U_T_I2 | :heavy_check_mark:  |
+| I2   |  App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue | U_T_I2 | :heavy_check_mark:  |
 | I2.1   | components/CargoGoodInput.vue, components/InputNumberBox.vue,  store/  | tests/store/mutations.test.js (set good properties)  |  :heavy_check_mark: |
 | I2.2   | components/CargoGoodInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set good properties)  |  :heavy_check_mark: |
-| U1     | components/CargoGoodInput.vue, components/FleetVehicleInput.vue, store/, components/SimplifiedMap.vue, components/LocationInput.vue  |  U_T_U1 | :heavy_check_mark:  |
-| U2     |  App.vue, components/ControlPanel.vue, components/FleetInput.vue,  | U_T_U2  | :heavy_check_mark:  |
+| U1   | components/CargoGoodInput.vue, components/FleetVehicleInput.vue, store/, components/SimplifiedMap.vue, components/LocationInput.vue  |  U_T_U1 | :heavy_check_mark:  |
+| U2   |  App.vue, components/ControlPanel.vue, components/FleetInput.vue,  | U_T_U2  | :heavy_check_mark:  |
 | U2.1   | components/FleetVehicleInput.vue, store/, components/LocationInput.vue  | U_T_U2.1  | :heavy_check_mark:  |
-| U3     | views/SettingsPage.vue, store/index.js |  |  |
-| U4.7.1 | classes/Time.js | Toggle and pause time | x |
-| U4.7.2 | classes/Time.js | Accelerate time | x |
-| U4.7.3 | classes/Time.js | Decelerate time | x |
-
-#### User tests:
-U_T_I1 : 
- 1. Navigate to the SettingsPage
- 2. Enter/Change input until all fields are no longer red.
- 3. Navigate to the HomePage and repeat step 2.
- 4. Press Simulate tradition method button at the bottom right of left panel.
- 5. In case of popup return to step 1.
- 6. Wait for simulation to complete, (optional press + button at bottom of page to speed up simulation)
- 7. Press Simulate shared method button at the bottom right of left panel.
- 8. Wait for simulation to complete. (in case the simulation is paused, press the unpause button)
- 9. Navigate to the OutputPage by pressing the blue Show results button.
-
-U_T_C1.1 :
-  1. Complete steps 1-9 of User Test 1.
-  2. Compare CO2 emission for Sharing Logistics (left) vs Traditional Method (left). 
-
-U_T_C1.2 :
-  1. Complete steps 1-9 of User Test 1.
-  2. Compare number of trucks used for Sharing Logistics (left) vs Traditional Method (right). 
-
-U_T_C1.3 :
-  1. Complete steps 1-9 of User Test 1.
-  2. Compare total distance travelled for Sharing Logistics (left) vs Traditional Method (right). 
-
-U_T_I1 :
-  1. Navigate to the HomePage.
-  2. In case there is no truck add a new truck by pressing ![Add vehicle Button](images/add_vehicle_button.png)
-  3. Press one of the 3 different vehicle drawings.
-  
-U_T_I1.1 : 
-  1. Navigate to the HomePage.
-  2. In case there is no truck add a new truck by pressing ![Add vehicle Button](images/add_vehicle_button.png)
-  3. Press one of the 3 different vehicle drawings to change according to desired truck type.
-
-U_T_I2 :
-  1. Execute the application
-  2. Go to control panel
-  3. Create as many Good entries as necessary
-  4. For each Good input the desired weight and volume, in the according input boxes
-  5. If the entered values are valid the color of the background of the input box will turn from red to blue
-  6. In order to test whether the given parameters affect the simulation, run the same type of simulation with different weight/volume values and analyze the results, by pressing the button "Show results" from the control panel.
-  7. If weight/volume is the only variable parameter, then its value must be proportional with the fuel consumed during the simulation
-
-
-U_T_U1 :
-  1. Execute the application
-  2. Go to control panel
-  3. Create as many Good/ Truck entries as necessary
-  4. Each truck has only one location input (initial location), while each good has two location inputs (From, To)
-  5. Next to each location input a location button is present. It looks the following way : ![Location Button](images/location_button.png)
-  6. After it is pressed, you can select any location on the map.
-  7. After the location has been selected, the location input will contain the name of the selected location.
-  8. If this way was selected the initial location of a specific type, then after the simulation starts, the icon for that truck will be initially displayed at that location.
-  9. If this way was selected the pickup/delivery location of a product, then after the simulation starts, the respective icon will be displayed at that location.
-
-U_T_U2:
-  1. Execute the application
-  2. Go to the control panel
-  3. Find the button ![Add vehicle Button](images/add_vehicle_button.png)
-  4. By pressing this button a new truck will be added to the truck list
-  5. In order to visualize the trucks from the truck list, specify different initial locations and types, then start the simulation, let the number of vehicles for each entry be 1, as this way the icons will not override each other and the results will be more obvious.
-  6. After the simulation was started, at every given initial location a truck icon, that represents the type of its truck, will be displayed. This proves that trucks were added to the simulation. 
-
-U_T_U2.1:
-  1. Execute the application
-  2. Create as many truck entries as necessary
-  3. Now we will focus on one single truck entry, as the same process applies to the others.
-  2. There are 2 ways for setting the initial location of a truck. The first way is the one described in U_T_U1. The second one is by typing the desired location in the location input box.
-  3. The location input box has the label "Starting at"
-  4. While typing the name of the location, a dropdown menu will suggest some locations.
-  5. If the menu contains the desired location, select it. Otherwise, continue typing
-  6. After the location was inputted. If the entered location is valid the color of the background of the location input box will turn from red to blue
-  7. If the location is valid, then after the simulation starts, the icon for that truck will be initially displayed at that location.
+| U3.1 | views/SettingsPage.vue, store/index.js | U_T_U3.1 | :heavy_check_mark: |
+| U3.2 | views/SettingsPage.vue, store/index.js | U_T_U3.2 | :heavy_check_mark: |
+| U3.3.1 | views/SettingsPage.vue, store/index.js | U_T_U3.3.1 | :heavy_check_mark: |
+| U3.3.2 | views/SettingsPage.vue, store/index.js | U_T_U3.3.2 | :heavy_check_mark: |
+| U3.3.3 | views/SettingsPage.vue, store/index.js | U_T_U3.3.3 | :heavy_check_mark: |
+| U3.3.4 | views/SettingsPage.vue, store/index.js | U_T_U3.3.4 | :heavy_check_mark: |
+| U4 | classes/simulation/Simulation.js | Simulation.test.js: 'simulation initialization', 'simulation start', 'simulation stop', 'initialize goods', 'initialize trucks', 'send trucks home', update' | :heavy_check_mark: |
+| U4.1 | views/TruckView.test.js, views/TruckView.test.js, util/UpdateMessage | Update Location | :heavy_check_mark: |
+| U4.2 | classes/Good.js, classes/Good.test.js, views/GoodView.js, | Update Location | :heavy_check_mark: |
+| U4.3 | components/simulationData/SimulationData.vue | U_T_U4.3 | :heavy_check_mark: |
+| U4.4 | classes/Truck.js, classes/Truck.test.js, views/TruckView.js, views/TruckView.test.js| Truck Initialization, Add Good	 | :heavy_check_mark: |
+| U4.5 | classes/Good.js | Pick Up and delivery | :heavy_check_mark: |
+| U4.6 | classes/trucks/SharedTruck.js, classes/trucks/TraditionalTruck.js, components/ControlPanel.vue| U_T_U4.6	| :heavy_check_mark: |
+| U4.7.1 | classes/Time.js | Time.test.js: 'Toggle and pause time' | :heavy_check_mark: |
+| U4.7.2 | classes/Time.js | Time.test.js: 'Accelerate time' | :heavy_check_mark: |
+| U4.7.3 | classes/Time.js | Time.test.js: 'Decelerate time' | :heavy_check_mark: |
 
 ## Meeting Log
 | **When**  | **What**
@@ -317,5 +258,3 @@ our GitHub repository.
 | Lonneke Pulles | 28th May | User Stories. Non-functional requirements. Actors and stakeholders. | Extract all 'be able to's. Add actors and stakeholders. Change non-functional user stories to requirements and link them to standard categories (in line with Mohammed's feedback). Process feedback from Mohammed: specify actors.
 | Lonneke Pulles | 3rd June | User Stories. | Process feedback from Mohammed: Categorize, specify and explain non-functional requirements more.
 | Lonneke Pulles | 10th June | Won't haves. Could haves. Non-functional requirements. User story map. | Added or changed all won't have requirements. Added or changed U4.2 and U4.4 to U4.7, C3, I1 and U2, (not used) non-functionals (quantified them). Added explanation of sharing logistics to introduction. Add user story map.
-
-| Lonneke Pulles | TODO/future | User Stories. | Do spelling/grammar check. Explain user stories more and make them less abstract. Make introduction and user stories a bit longer.
