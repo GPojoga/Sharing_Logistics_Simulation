@@ -90,42 +90,58 @@ For our project, the following Vue components compose the view:
   It contains a SimplifiedMap to show the simulation, a ControlPanel to change the parameters, and a TimeControl to change the time during the running of the simulation.
   4. SettingsPage allows the user to change specific settings in the simulation.
   It contains SettingsGlobalVariable to set settings for the global variables, and SettingsTruckVariables set of settings of variables for each truck.
-  5. SimplifiedMap is the component to show a map to the user.
-  It doesn't contain any other components.
-  6. ControlPanel allows the user change parameters in the simulation.
+  5. ControlPanel allows the user change parameters in the simulation.
   It contains a BasicButton to go to the SettingsPage, a FleetInput to change the trucks, a CargoInput to change the goods, and a CalculateRate component to start the simulation.
-  7. TimeControl is the component allowing the user to change the passage of time while the simulation is running.
+  6. SimplifiedMap is the component to show a map to the user.
+  It doesn't contain any other components.
+  7. SimulationData is the component displaying real-time data as the simulation is running to the user.
+  It contains a BasicButton to get user input on when to end the simulation, as well as GoodComponent and TruckComponent to display data about goods and trucks.
+  8. TimeControl is the component allowing the user to change the passage of time while the simulation is running.
   It contains multiple BasicRoundButtons to get user input on controls.
-  8. SettingsGlobalVariables is the component allowing the user to change globals variables.
+  9. SettingsGlobalVariables is the component allowing the user to change globals variables.
   It contains multiple InputNumberBox to model the variables in the webapp.
-  9. SettingsTruckVariables is a component allowing the user to change variables for a certain truck type. 
+  10. SettingsTruckVariables is a component allowing the user to change variables for a certain truck type. 
   It contains multiple InputNumberBox to model the variables in the webapp. 
-  10. CalculateRate is the component allowing the user to start the simulation with Sharing enabled or disabled.
-  It contains two BasicButtons to get user input on controls.
   11. FleetInput is the component allowing the user to change the parameters of all trucks in the simulation.
   It contains multiple FleetVehicleInput for each truck in the simulation.
-  12. FleetVehicleInput is a component allowing the user to change parameters of a certain truck entry.
-  It contains LocationInput for the starting location of the truck as well as BasicInput for the number of truck in this entry.
-  13. CargoInput is the component allowing the user to change the parameters of all goods in the simulation.
+  12. CargoInput is the component allowing the user to change the parameters of all goods in the simulation.
   It contains multiple CargoGoodInput for each good in the simulation.
-  14. CargoGoodInput is a component allowing the user to change parameters of a certain good entry.
+  13. GoodComponent is the component responsible for displaying real-time data about goods as the simulation is running.
+  It contains multiple LocationComponent to display data about locations, and a single DataPosition to know when to display additional data.
+  14. TruckComponent is the component responsible for displaying real-time data about trucks as the simulation is running.
+  It contains multiple LocationComponent to display data about locations, and a single DataPosition to know when to display additional data. 
+  15. CalculateRate is the component allowing the user to start the simulation with Sharing enabled or disabled.
+  It contains two BasicButtons to get user input on controls.
+  16. FleetVehicleInput is a component allowing the user to change parameters of a certain truck entry.
+  It contains LocationInput for the starting location of the truck as well as BasicInput for the number of truck in this entry.
+  17. CargoGoodInput is a component allowing the user to change parameters of a certain good entry.
   It contains LocationInput for pickup and delivery location of the good as well as BasicInput for the InputNumberBox parameters of the good entry.
-  15. LocationInput allows the user to input a location.
+  18. LocationComponent is a component responsible for displaying real-time data about a particular location. 
+  It contains a single DataPosition to know when to display the additional data. 
+  19. LocationInput allows the user to input a location.
   It contains BasicInput to allow the user to type the location as well as BasicButton to allow the user to select a location through the map.
-  16. InputNumberBox is the component handling number input for the user. 
+  20. InputNumberBox is the component handling number input for the user. 
   It contains a BasicInput to get user input.
-  17. BasicButton gets basic input from the user through a square shaped button.
+  21. BasicButton gets basic input from the user through a square shaped button.
   It is a basic component and thus contains no other components.
-  18. BasicInput gets basic input from the user through a text field.
-  It is a basic component and thus contains no other components.
-  19. BasicRoundButton get basic input from the user through a circle shaped button.
+  22. BasicRoundButton get basic input from the user through a circle shaped button.
   It is a basic component and thus contains no other component.
+  23. DataPosition get basic input from the user through a button, it determines whether data should be collapsed or not.
+  It is a basic component and thus contains no other component.
+  24. BasicInput gets basic input from the user through a text field.
+  It is a basic component and thus contains no other components.
+
+During the first block of development of the web-app, the ControlPanel over coupled compared to the of rest the component hierarchy . 
+However after we inevitably added more components we made an effort to keep components balanced.   
 
 The exact file structure and explanations of what the responsibility of each file is, can be found below.
 ````
 ├── public
 │   ├── assets
-│   │   ├── credits
+│   │   ├── credits                     # link to site where diagrams where taken
+│   │   ├── good_drop.svg               # diagram of a delivery location of a good
+│   │   ├── good_pickup.svg             # diagram of a pickup location of a good
+│   │   ├── goods.svg                   # diagram of a good used int he webapp
 │   │   ├── heavy_duty_van.svg          # diagram of heavy duty van used in the webapp
 │   │   ├── light_duty_van.svg          # diagram of light duty van used in the webapp
 │   │   └── train_truck.svg             # diagram of train truck used in the webapp
@@ -135,45 +151,51 @@ The exact file structure and explanations of what the responsibility of each fil
     ├── main.js                         # renders and mounts the app
     ├── App.vue                         # the root of the app
     ├── classes                         # folder containing all classes use in the simulation
-    │   ├── FreightPlatform.js          # The class that distributes the goods among the trucks
     │   ├── goods
-    │   │   ├── Good.js                 # The class representing a good in the simulation
-    │   │   └── GoodView.js             # The class responsible for drawing the good on the map.
-    │   ├── Observable.js               # A class that other objects can observe. 
+    │   │   └── Good.js                 # The class representing a good in the simulation
     │   ├── Router.js                   # The class used for routing trucks.
-    │   ├── Simulation.js               # The class containing the simulation.
-    │   ├── SimulationType.js           # The class defining the different simulation types.
+    │   ├── simulation
+    │   │   ├── FreightPlatform.js      # The class that distributes the goods among the trucks
+    │   │   ├── Simulation.js           # The class containing the simulation.
+    │   │   ├── SimulationType.js       # The class defining the different simulation types.
+    │   │   └── TruckTracker.js         # This class keeps track of which trucks are done with there delivering all goods.
     │   ├── Time.js                     # The class responsible for the passage of time during the simulation.
     │   ├── trucks
+    │   │   ├── CostHandler.js          # This class handles finding the cost of adding a new order to a truck.
+    │   │   ├── PlanManager.js          # This class handles the orders of a truck in a simulation.
     │   │   ├── SharedTruck.js          # The class containing the logic for how a truck operates in a sharing logistics simulation.
     │   │   ├── TraditionalTruck.js     # The class containing the logic for how a truck operates in a traditional simulation.
     │   │   ├── Truck.js                # The class representing a truck in the simulation.
-    │   │   └── TruckView.js            # The class responsible for drawing the truck on the map.
-    │   ├── TruckTracker.js             # This class keeps track of which trucks are done with there delivering all goods.
-    │   └── unusedClasses               # This is a directory contains classes that aren't used anymore.
-    │       ├── SharedRouter.js
-    │       └── TraditionalRouter.js
+    │   │   ├── TruckPropertyHandler.js # This class stores the properties of a truck in the simulation.
+    │   │   └── TruckState.js           # This class represents the different states of a truck. 
+    │   ├── util
+    │   │   ├── Observable.js           # A class that other objects can observe.
+    │   │   └── UpdateMessage.js        # This class represents the different updates messages that can be sent.
+    │   └── view
+    │       ├── GoodView.js             # The class responsible for drawing the good on the map.
+    │       └── TruckView.js            # The class responsible for drawing the truck on the map.
     ├── components
+    │   ├── BasicButton.vue             # base input for a square button with text in it
+    │   ├── BasicInput.vue              # base input for a text box
+    │   ├── BasicRoundButton.vue        # base input for a round button
     │   ├── CalculateRate.vue           # input button to run the simulation
     │   ├── CargoGoodInput.vue          # input component for a single good
     │   ├── CargoInput.vue              # input component for all the goods
     │   ├── ControlPanel.vue            # the panel on the left of the screen that handles the input
-    │   ├── FleetInput.vue              # input component for all vehicle types 
+    │   ├── FleetInput.vue              # input component for all vehicle types
     │   ├── FleetVehicleInput.vue       # input component for 1 vehicle type
-    │   ├── InputLocation.vue           # base input component for locations
     │   ├── InputNumberBox.vue          # base input component for numbers
-    │   ├── RoundButton.vue             # base input for a round button
+    │   ├── LocationInput.vue           # base input component for locations
     │   ├── SettingsGlobalVariables.vue # input for changing a global variable for the simulation
     │   ├── SettingsTruckVariables.vue  # input for changing a variable of a certain truck type
     │   ├── SimplifiedMap.vue           # displays the map and its components
-    │   ├── TimeControl.vue             # displays the time of the simulation
-    │   └── unusedComponents            # components that are no longer used
-    │       ├── DateInput.vue
-    │       ├── JourneyInput.vue
-    │       ├── Map.vue
-    │       ├── SelectorCheckBox.vue
-    │       ├── VehicleSelectorEntry.vue
-    │       └── VehicleSelector.vue
+    │   ├── simulationData
+    │   │   ├── DataPosition.vue        # gets input from the user whether or not a container should be collapsed or not
+    │   │   ├── GoodComponent.vue       # displays data related to goods while the simulation is running
+    │   │   ├── LocationComponent.vue   # displays data related to locations while the simulation is running
+    │   │   ├── SimulationData.vue      # displays data while the simulation is running
+    │   │   └── TruckComponent.vue      # displays data related to trucks while the simulation is running
+    │   └── TimeControl.vue             # displays the time of the simulation
     ├── router
     │   └── index.js                    # contains the references to the pages of the application
     ├── store
@@ -182,14 +204,13 @@ The exact file structure and explanations of what the responsibility of each fil
     │   ├── index.js                    # stores information that multiple parts of the application need access to
     │   └── mutations.js                # changes the information of the applications
     ├── util
-    │   ├── EuclidDist.js               # A utility function to distance between two coordinates on a flat plane.
-    │   └── haversine.js                # A utility function to calculated the real distance between two coordinates.
+    │   ├── avg.js                      # a utility function to get the average value of a list of values
+    │   ├── EuclidDist.js               # a utility function to distance between two coordinates on a flat plane.
+    │   └── haversine.js                # a utility function to calculated the real distance between two coordinates.
     └── views
         ├── HomePage.vue                # contains the input panel and the map
         ├── OutputPage.vue              # displays the simulated results
-        ├── SettingsPage.vue            # contains constants that can be changed
-        ├── SharingPage.vue
-        └── TraditionalPage.vue
+        └── SettingsPage.vue            # contains constants that can be changed
 ````
 
 Note that each element of the view can access the application's store.
@@ -301,4 +322,5 @@ The division during the second block was more nuanced. Check Trello for more det
 | Gheorghe | 20-04-2020 | Updated the introduction and the application architecture
 | Antonin  | 26-04-2020 | Updated the file structure and application architecture
 | Gheorghe | 04-05-2020 | Updated the introduction
-| Antonin  | 26-05-2020 | Updated the file structure and hierarchy diagram.
+| Antonin  | 26-05-2020 | Updated the file structure and hierarchy diagram
+| Antonin  | 12-06-2020 | Updated the file structure and hierarchy diagram
