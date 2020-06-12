@@ -101,7 +101,7 @@ As a user of this applet I want to be able to...
 such that I can adapt these values to more realistic ones and see the influence that varying these values has.
 These parameters are:
     - emission burnt factor
-    - average speed of all trucks
+    - max number of splits of the goods
     - for each type of truck:
         - the max volume
         - max payload
@@ -116,9 +116,9 @@ can compare the two methods (traditional and sharing logistics) visually.
    - [x] (U4.5) view per good how its values (picked up or not, delivered or not, current location) change during the simulation.
    - [x] (U4.6) choose if I simulate the traditional method or the sharing logistics method.
    - [x] (U4.7) control the time of the simulation.
-       - [x] (U4.6.1) pause/continue the time so that I can take as long as I want if I need to inspect the current state of the animation.
-       - [x] (U4.6.2) accelerate the time so that the simulation can finish in a reasonable time.
-       - [x] (U4.6.3) decelerate the time so that I can slow down the simulation if it is going too fast.
+       - [x] (U4.7.1) pause/continue the time so that I can take as long as I want if I need to inspect the current state of the animation.
+       - [x] (U4.7.2) accelerate the time so that the simulation can finish in a reasonable time.
+       - [x] (U4.7.3) decelerate the time so that I can slow down the simulation if it is going too fast.
        
 
 
@@ -142,7 +142,7 @@ amount of time before having to take a break, the fact that a truck driver needs
 
 The user story map gives a visual overview of all the main user stories in the categories critical, important and useful.
 
-The user goes through the tasks in the same order as the tasks are in, from left to right. Each user story is placed underneath
+The user goes through the tasks in the same order as the tasks are in, from left to right. This represents the user  Each user story is placed underneath
 the subtask that it is a part of, in the row corresponding to its priority.
 
 Note that each user story can be split into multiple sub-user stories, but to keep the user story map
@@ -203,6 +203,10 @@ and form a separate module, these can easily be transferred to a backend applica
 | C2.2 |   |   |   |
 | C3.1 |   |   |   |
 | C3.2 |   |   |   |
+| U3 | views/SettingsPage.vue, store/index.js |  |  |
+| U4.7.1 | classes/Time.js | Toggle and pause time | x |
+| U4.7.2 | classes/Time.js | Accelerate time | x |
+| U4.7.3 | classes/Time.js | Decelerate time | x |
 
 
 ## Meeting Log

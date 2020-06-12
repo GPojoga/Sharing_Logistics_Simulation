@@ -1,6 +1,6 @@
 import store from "../store/index.js";
 
-export class Time {
+export default class Time {
     // Constants representing the min and max speed the simulation can run.
     MIN_SPEED = 1/4;
     MAX_SPEED = 1024;
@@ -10,7 +10,6 @@ export class Time {
 
     // Constant representing the number of frequency of time updates.
     UPDATE_RATE = 100;
-
 
     // The total time that has passed since the start of the simulation
     elapsedTime;
@@ -99,7 +98,6 @@ export class Time {
         if (!this.isFastest()) this.playSpeed *= 2;
     }
 
-
     /**
      * This method is the getter for the variable isPaused.
      * @returns {*} A boolean determining whether the simulation is paused or not.
@@ -109,7 +107,8 @@ export class Time {
     }
 
     /**
-     * This method pauses the simulation.
+     * When the simulation is running, this method pauses the time if it was not paused
+     * and starts the time if it was.
      */
     togglePause() {
         if (store.getters.isRunning) this.isPaused = !this.isPaused;
