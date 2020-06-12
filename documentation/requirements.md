@@ -24,7 +24,7 @@ where each truck can perform tasks for multiple clients simultaneously.
 
 The goal of this project is to produce a program with simulation functionality.
 The simulation should provide insight into the use of resources and carbon emissions in the context of transport of goods by road vehicles.
-Two processes need to be simulated so that they can be compared. The first process should be the current (traditional) 
+Two processes need to be simulated so that they can be compared. The first process should be the current (traditional)
 method that goods are transported, the second process should be the **sharing logistics** method.
 
 ### System overview
@@ -119,7 +119,7 @@ can compare the two methods (traditional and sharing logistics) visually.
        - [x] (U4.7.1) pause/continue the time so that I can take as long as I want if I need to inspect the current state of the animation.
        - [x] (U4.7.2) accelerate the time so that the simulation can finish in a reasonable time.
        - [x] (U4.7.3) decelerate the time so that I can slow down the simulation if it is going too fast.
-       
+
 
 
 ### Unused User Stories - won't haves
@@ -134,7 +134,7 @@ for their good to be delivered.
 5. [ ] (W5) upload a file containing data on trucks and goods to the applet, so that I don't have to input every truck and good
 in the applet by hand but can immediately use real data.
 6. [ ] (W6) track the time of day during which a truck travels and the differences that come with it, such as a difference in traffic
-at certain roads and thus the speed at which a truck travels, the fact that a truck driver can only drive a certain 
+at certain roads and thus the speed at which a truck travels, the fact that a truck driver can only drive a certain
 amount of time before having to take a break, the fact that a truck driver needs to sleep, etc.
 
 
@@ -157,7 +157,7 @@ This is for example the case for user stories C2, I1 and U2.
 We group the non-functional requirements based on the categories in the book The Quest for Software Requirements by Roxanne Miller.
 Examples of these categories are usability, safety, integrity, efficiency and reusability.
 
-Some categories that are not relevant to our project are access security and safety (since we have no private data) and interoperability 
+Some categories that are not relevant to our project are access security and safety (since we have no private data) and interoperability
 (since the system isn't coupled to others).
 
 1. [ ] (N1) usability: ease with which the user is able to learn, operate, prepare inputs and interpret outputs through interaction with a system.
@@ -240,7 +240,9 @@ U_T_U2:
   1. Execute the application
   2. Go to the control panel
   3. Find the button ![Add vehicle Button](images/add_vehicle_button.png)
-  4. By pressing this button
+  4. By pressing this button a new truck will be added to the truck list
+  5. In order to visualize the trucks from the truck list, specify different initial locations and types, then start the simulation, let the number of vehicles for each entry be 1, as this way the icons will not override each other and the results will be more obvious.
+  6. After the simulation was started, at every given initial location a truck icon, that represents the type of its truck, will be displayed. This proves that trucks were added to the simulation. 
 
 U_T_U2.1:
   1. Execute the application
