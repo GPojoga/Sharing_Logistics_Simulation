@@ -212,6 +212,12 @@ and form a separate module, these can easily be transferred to a backend applica
 |U2   |  App.vue, components/ControlPanel.vue, components/FleetInput.vue,  | U_T_U2  | :heavy_check_mark:  |
 |U2.1   | components/FleetVehicleInput.vue, store/, components/LocationInput.vue  | U_T_U2.1  | :heavy_check_mark:  |
 | U3 | views/SettingsPage.vue, store/index.js |  |  |
+| U4.1 | views/TruckView.test.js, views/TruckView.test.js, util/UpdateMessage | Update Location | :heavy_check_mark: |
+| U4 .2 | classes/Good.js, classes/Good.test.js, views/GoodView.js, | Update Location | :heavy_check_mark: |
+| U4 .3 | components/simulationData/SimulationData.vue | U_T_U4.3 | :heavy_check_mark: |
+| U4 .4 | classes/Truck.js, classes/Truck.test.js, views/TruckView.js, views/TruckView.test.js| Truck Initialization, Add Good	 | :heavy_check_mark: |
+| U4 .5 | classes/Good.js | Pick Up and delivery | :heavy_check_mark: |
+| U4 .6 | classes/trucks/SharedTruck.js, classes/trucks/TraditionalTruck.js, components/ControlPanel.vue| U_T_U4.6	| :heavy_check_mark: |
 | U4.7.1 | classes/Time.js | Toggle and pause time | x |
 | U4.7.2 | classes/Time.js | Accelerate time | x |
 | U4.7.3 | classes/Time.js | Decelerate time | x |
