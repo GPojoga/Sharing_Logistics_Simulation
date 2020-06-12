@@ -194,16 +194,48 @@ Note that requirement N3.1 requires the addition of a backend, which may take mo
 and form a separate module, these can easily be transferred to a backend application with JavaScript.
 
 ## Traceability Matrix
-| **Requirement** | **Files Affected** | **Test** | **Passed**
-|----------------|------------|--------|---------|
-| C1.1 |   |   |   |
-| C1.2 |   |   |   |
-| C1.3 |   |   |   |
+| **Requirement** | **Files Affected** | **Test** | **Passed** |
+|-----------------|--------------------|----------|------------|
+| C1   | classes/, | UserTest1 | Yes |
+| C1.1 | Simulation.js, SimulationType.js, SharedTruck.js, TraditionalTruck.js, store/getters.js, store/index.js, store/mutations.js, OutputPage.vue | UserTest 1.1 | Yes |
+| C1.2 | Simulation.js, SimulationType.js, SharedTruck.js, TraditionalTruck.js, store/getters.js, store/index.js, store/mutations.js, OutputPage.vue | UserTest 1.2 | Yes |
+| C1.3 | Simulation.js, SimulationType.js, SharedTruck.js, TraditionalTruck.js, store/getters.js, store/index.js, store/mutations.js, OutputPage.vue | UserTest 1.3 | Yes |
 | C2.1 |   |   |   |
 | C2.2 |   |   |   |
 | C3.1 |   |   |   |
 | C3.2 |   |   |   |
+| I1   | Truck.js, TruckPropertyHandler.js, ControlPanel.vue, FleetInput.vue, SettingsTruckVariables.vue, store/getters.js, store/index.js, store/mutations.js | UserTest 2 | Yes |
+| I1.1 | Truck.js, TruckPropertyHandler.js, ControlPanel.vue, FleetInput.vue, SettingsTruckVariables.vue, store/getters.js, store/index.js, store/mutations.js | TruckPropertyHandler.test.js + UserTest 2.1 | Yes |
 
+### User Tests
+Find below the steps to reproduce the user tests in the traceability matrix above.
+#### User Test 1
+ 1. Navigate to the SettingsPage
+ 2. Enter/Change input until all fields are no longer red.
+ 3. Navigate to the HomePage and repeat step 2.
+ 4. Press Simulate tradition method button at the bottom right of left panel.
+ 5. In case of popup return to step 1.
+ 6. Wait for simulation to complete, (optional press + button at bottom of page to speed up simulation)
+ 7. Press Simulate shared method button at the bottom right of left panel.
+ 8. Wait for simulation to complete. (in case the simulation is paused, press the unpause button)
+ 9. Navigate to the OutputPage by pressing the blue Show results button.
+
+#### User Test 1.1
+  1. Complete steps 1-9 of User Test 1.
+  2. Compare CO2 emission for Sharing Logistics (left) vs Traditional Method (left). 
+
+#### User Test 1.2
+  1. Complete steps 1-9 of User Test 1.
+  2. Compare number of trucks used for Sharing Logistics (left) vs Traditional Method (right). 
+
+#### User Test 1.3
+  1. Complete steps 1-9 of User Test 1.
+  2. Compare total distance travelled for Sharing Logistics (left) vs Traditional Method (right). 
+
+#### User Test 2
+  1. Navigate to the HomePage.
+  2. In case there is no truck add a new truck by pressing the Add vehicle button labelled with a cross.
+  3. Press one of the 3 different vehicle drawings.
 
 ## Meeting Log
 | **When**  | **What**
