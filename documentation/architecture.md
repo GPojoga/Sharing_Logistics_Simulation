@@ -16,7 +16,7 @@
 
 _Client: Astone Shi_
 
-Version 1.5
+Version 2.0
 
 Team:
 - Antonin Thioux
@@ -219,9 +219,8 @@ Since Vue is meant to create Single Page Applications, we added a router to the 
 What this router essentially does is mounting one of the three views (Home, OutputPage or SettingsPage) to App.vue.
 
 During the second block we mostly focused on developing a package allowing us to simulate the traditional and shared logistics methods in similar conditions.
-The simulation that is required to be run is an extension of the Travelling Salesman Problem (TSP) which is know to be an NP problem.
-In order to ensure that our simulation didn't have NP time complexity we opted for a Greedy approach to running the simulation.
-This way the package we developed would have a polynomial time complexity and would run in real time. 
+The simulation that is required to be run is an extension of the Travelling Salesman Problem (TSP) which is know to be an NP problem to solve this we opted for a Greedy approach to running the simulation.
+This way the package we developed would have a polynomial time complexity, and the simulation would run in real time. 
 
 The package is located in `src/classes`.
 It contains the following packages :
@@ -322,10 +321,12 @@ Moreover, if anyone needed help, we of course helped our teammate with their par
 
 For the division of task we would make a list of task at the beginning of each sprint, and give them points according to how much time we expected each task to take.
 The point system worked as follows:
+
   - 1 point 2-4 hours
   - 3 points 4-8 hours
   - 5 points 8-16 hours
   - 7 points 16-24 hours
+
 We keep all our tasks relatively small, so we never had tasks of 5&7 points.
 Once every task for the sprint was given a certain amount of points we would divide the tasks among ourselves based on the points.
 
@@ -347,4 +348,4 @@ More details can be found on the team's trello page.
 | Gheorghe | 04-05-2020 | Updated the introduction
 | Antonin  | 26-05-2020 | Updated the file structure and hierarchy diagram
 | Antonin  | 12-06-2020 | Updated the file structure and hierarchy diagram
-| Gheorghe   | 12-06-2020  | Small changes in the introduction and Technology Stack. Updated the architectural overview  |
+| Gheorghe | 12-06-2020 | Small changes in the introduction and Technology Stack. Updated the architectural overview  
