@@ -200,11 +200,11 @@ and form a separate module, these can easily be transferred to a backend applica
 | C1.2 |   |   |   |
 | C1.3 |   |   |   |
 | C2   | App.vue, views/Home.vue, components/ControlPanel.vue, components/FleetInput.vue  |   |   |
-| C2.1 | components/FleetVehicleInput.vue, components/LocationInput.vue, /store  |  tests/store/mutations.test.js (set truck properties) | :heavy_check_mark:  |
-| C2.2 | components/FleetVehicleInput.vue, components/InputNumberBox.vue, /store  | tests/store/mutations.test.js (set truck properties)  |  :heavy_check_mark: |
+| C2.1 | components/FleetVehicleInput.vue, components/LocationInput.vue, store/  |  tests/store/mutations.test.js (set truck properties) | :heavy_check_mark:  |
+| C2.2 | components/FleetVehicleInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set truck properties)  |  :heavy_check_mark: |
 | C3   | App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue  |   |   |
-| C3.1 | components/CargoGoodInput.vue, components/LocationInput.vue, /store  | tests/store/mutations.test.js (set good properties) | :heavy_check_mark:  |
-| C3.2 | components/CargoGoodInput.vue, components/InputNumberBox.vue, /store  | tests/store/mutations.test.js (set good properties) | :heavy_check_mark:  |
+| C3.1 | components/CargoGoodInput.vue, components/LocationInput.vue, store/  | tests/store/mutations.test.js (set good properties) | :heavy_check_mark:  |
+| C3.2 | components/CargoGoodInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set good properties) | :heavy_check_mark:  |
 | I2   |  App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue | U_T_I2 | :heavy_check_mark:  |
 |I2.1   | components/CargoGoodInput.vue, components/InputNumberBox.vue,  store/  | tests/store/mutations.test.js (set good properties)  |  :heavy_check_mark: |
 |I2.2   | components/CargoGoodInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set good properties)  |  :heavy_check_mark: |
