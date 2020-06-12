@@ -33,7 +33,7 @@ Under supervision of Alex Tutea
     A brief introduction to the product, highlighting the specifics that influence the architecture and design choices.
 -->
 
-The product will be a web application that is simulating the effect that sharing space for goods would have.
+The product will be a web application that is offers the possibility of comparing the traditional and the shared logistics.
 The application's main goal is to determine if it would be a worthwhile idea to set up a platform on which companies or truck owners could offer empty space to transport other people's goods.
 
 The user can set multiple parameters for the simulation:
@@ -41,16 +41,14 @@ The user can set multiple parameters for the simulation:
 2. The number of trucks for each of three predefined types,
 3. The parameters for every product i.e.,  volume, weight, quantity as well as pick-up and delivery locations.
 
-The user has to input the location A and B and specify their radius.
-Afterwards, the pick-up location of every product must be within the radius of any of these points.
-The delivery location must be imputed analogously.
-This approach is necessary for the shared logistics model, where a truck picks up as many products as possible around a given point and then delivers them within the radius of the other one.
-
 The three metrics that will show the result of the simulation are:
-- Transport time
-- CO2 emissions
+- Total transportation time
+- Total traveled distance by all trucks
 - Number of trucks used
-
+- Total CO2 emissions
+- Total fuel consumed
+- Average delivery time
+- Average transit time
 
 ## Architectural overview
 <!--
@@ -73,12 +71,12 @@ This latter contains javascript files and so-called Vue (view) components, which
 Each component consists of three parts: an html template, a Vue part (where local data is stored and methods are created) and a css style part.
 These types of components are called single-file components and this is what largely characterises .vue files.
 
-In a more abstract way, the Vue app can split into three parts: the state, actions and the view.
+In a more abstract way, the Vue app be can split into three parts: the state, actions and the view.
 ![Main parts of a Vue app.](images/vuex.png)
 
 The state consists of a store with the data.
 The actions are defined as functions in the .vue files and indirectly called by the user.
-The view consists of Vue components, which can be visualised as a component hierarchy diagram. 
+The view consists of Vue components, which can be visualised as a component hierarchy diagram.
 Where multiple smaller components make up a larger component.
 For our project, the following Vue components compose the view:
 ![Application's architecture](images/component-hierarchy.png)
@@ -100,8 +98,8 @@ For our project, the following Vue components compose the view:
   It contains multiple BasicRoundButtons to get user input on controls.
   9. SettingsGlobalVariables is the component allowing the user to change globals variables.
   It contains multiple InputNumberBox to model the variables in the webapp.
-  10. SettingsTruckVariables is a component allowing the user to change variables for a certain truck type. 
-  It contains multiple InputNumberBox to model the variables in the webapp. 
+  10. SettingsTruckVariables is a component allowing the user to change variables for a certain truck type.
+  It contains multiple InputNumberBox to model the variables in the webapp.
   11. FleetInput is the component allowing the user to change the parameters of all trucks in the simulation.
   It contains multiple FleetVehicleInput for each truck in the simulation.
   12. CargoInput is the component allowing the user to change the parameters of all goods in the simulation.
@@ -109,18 +107,18 @@ For our project, the following Vue components compose the view:
   13. GoodComponent is the component responsible for displaying real-time data about goods as the simulation is running.
   It contains multiple LocationComponent to display data about locations, and a single DataPosition to know when to display additional data.
   14. TruckComponent is the component responsible for displaying real-time data about trucks as the simulation is running.
-  It contains multiple LocationComponent to display data about locations, and a single DataPosition to know when to display additional data. 
+  It contains multiple LocationComponent to display data about locations, and a single DataPosition to know when to display additional data.
   15. CalculateRate is the component allowing the user to start the simulation with Sharing enabled or disabled.
   It contains two BasicButtons to get user input on controls.
   16. FleetVehicleInput is a component allowing the user to change parameters of a certain truck entry.
   It contains LocationInput for the starting location of the truck as well as BasicInput for the number of truck in this entry.
   17. CargoGoodInput is a component allowing the user to change parameters of a certain good entry.
   It contains LocationInput for pickup and delivery location of the good as well as BasicInput for the InputNumberBox parameters of the good entry.
-  18. LocationComponent is a component responsible for displaying real-time data about a particular location. 
-  It contains a single DataPosition to know when to display the additional data. 
+  18. LocationComponent is a component responsible for displaying real-time data about a particular location.
+  It contains a single DataPosition to know when to display the additional data.
   19. LocationInput allows the user to input a location.
   It contains BasicInput to allow the user to type the location as well as BasicButton to allow the user to select a location through the map.
-  20. InputNumberBox is the component handling number input for the user. 
+  20. InputNumberBox is the component handling number input for the user.
   It contains a BasicInput to get user input.
   21. BasicButton gets basic input from the user through a square shaped button.
   It is a basic component and thus contains no other components.
@@ -131,7 +129,7 @@ For our project, the following Vue components compose the view:
   24. BasicInput gets basic input from the user through a text field.
   It is a basic component and thus contains no other components.
 
-During the first block of development of the web-app, the ControlPanel over coupled compared to the of rest the component hierarchy . 
+During the first block of development of the web-app, the ControlPanel over coupled compared to the of rest the component hierarchy .
 However after we inevitably added more components we made an effort to keep components balanced.   
 
 The exact file structure and explanations of what the responsibility of each file is, can be found below.
@@ -167,7 +165,7 @@ The exact file structure and explanations of what the responsibility of each fil
     │   │   ├── TraditionalTruck.js     # The class containing the logic for how a truck operates in a traditional simulation.
     │   │   ├── Truck.js                # The class representing a truck in the simulation.
     │   │   ├── TruckPropertyHandler.js # This class stores the properties of a truck in the simulation.
-    │   │   └── TruckState.js           # This class represents the different states of a truck. 
+    │   │   └── TruckState.js           # This class represents the different states of a truck.
     │   ├── util
     │   │   ├── Observable.js           # A class that other objects can observe.
     │   │   └── UpdateMessage.js        # This class represents the different updates messages that can be sent.
@@ -250,8 +248,6 @@ For the map, we use:
   Javascript mapping library.
   - Plugins we used:
     - vue2-leaflet - it provides wrapping constructs of the basic Leaflet objects, which are designed for the Vue framework.
-    - leaflet-routing-machine - this library is used for all the functionality that is related to routing.
-     Used for; finding the route, displaying the route, determining the distance and time necessary to complete the route etc.
 - leaflet GeoSearch
   - To enable searching based on addresses and names instead of coordinates.
   - Though it is called leaflet GeoSearch, it has no dependencies on Leaflet.
@@ -263,7 +259,7 @@ Since nobody in our team had any experience with creating web applications, we c
 We wanted to make a choice between the three most popular front-end Javascript frameworks, Angular, React and Vue.js.
 These frameworks allow Javascript code to be structured into components.
 
-Since is Vue.js is said to have the lowest learning curve out of the three frameworks, we decided to go with Vue.js.
+Since Vue.js is said to have the lowest learning curve out of the three frameworks, we decided to go with Vue.js.
 Our TA also recommended this and on Stackshare.io it can be seen that Vue.js has the highest approval ratings.
 
 Some other advantages of Vue.js are that:
@@ -324,3 +320,4 @@ The division during the second block was more nuanced. Check Trello for more det
 | Gheorghe | 04-05-2020 | Updated the introduction
 | Antonin  | 26-05-2020 | Updated the file structure and hierarchy diagram
 | Antonin  | 12-06-2020 | Updated the file structure and hierarchy diagram
+| Gheorghe   | 12-06-2020  | Small changes in the introduction and Technology Stack  |
