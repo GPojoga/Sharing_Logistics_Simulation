@@ -203,10 +203,10 @@ The tests that couldn't be tested with a unit test were written as 'user tests',
 | C1.1   | OutputPage.vue, state/ | U_T_I1.1 | :heavy_check_mark: |
 | C1.2   | OutputPage.vue, state/ | U_T_I1.2 | :heavy_check_mark: |
 | C1.3   | OutputPage.vue, state/ | U_T_I1.3 | :heavy_check_mark: |
-| C2   | App.vue, views/Home.vue, components/ControlPanel.vue, components/FleetInput.vue  | U_T_C2  |   |
+| C2   | App.vue, views/Home.vue, components/ControlPanel.vue, components/FleetInput.vue  | U_T_C2  | :heavy_check_mark:  |
 | C2.1 | components/FleetVehicleInput.vue, components/LocationInput.vue, store/  |  tests/store/mutations.test.js (set truck properties) + U_T_C2.1 | :heavy_check_mark:  |
 | C2.2 | components/FleetVehicleInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set truck properties) + U_T_C2.2  |  :heavy_check_mark: |
-| C3   | App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue  | U_T_C3  |   |
+| C3   | App.vue, views/Home.vue, components/ControlPanel.vue, components/CargoInput.vue  | U_T_C3  | :heavy_check_mark: |
 | C3.1 | components/CargoGoodInput.vue, components/LocationInput.vue, store/  | tests/store/mutations.test.js (set good properties) + U_T_C3.1 | :heavy_check_mark:  |
 | C3.2 | components/CargoGoodInput.vue, components/InputNumberBox.vue, store/  | tests/store/mutations.test.js (set good properties) + U_T_C3.2 | :heavy_check_mark:  |
 | I1     | Truck.js, TruckPropertyHandler.js, FleetInput.vue, SettingsTruckVariables.vue, store/ | mutations.test.js (set truck properties) + U_T_I1 | :heavy_check_mark: |
